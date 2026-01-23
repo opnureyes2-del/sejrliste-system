@@ -1,0 +1,32 @@
+# SEJR LISTE SYSTEM - Git Ignore
+
+# Active work folders (user-specific)
+10_ACTIVE/*/
+
+# Archive folders (user-specific)
+90_ARCHIVE/*/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Logs
+*.log
+*.jsonl
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Keep folder structure but ignore contents
+!10_ACTIVE/.gitkeep
+!90_ARCHIVE/.gitkeep
