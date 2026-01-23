@@ -57,8 +57,8 @@ context:
 
 status:
   operational: true
-  last_updated: "2026-01-23T06:30:00+01:00"
-  active_sejr_count: 0  # Updated by scripts
+  last_updated: "2026-01-23T22:55:27+01:00"
+  active_sejr_count: 1  # Updated by scripts
   archived_sejr_count: 0  # Updated by scripts
 
 integration:
