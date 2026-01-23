@@ -1,0 +1,55 @@
+# PATTERNS - Lærte Mønstre Fra Sejr Lister
+# Auto-updated af auto_learn.py efter hver færdig sejr
+
+system:
+  version: "1.0.0"
+  last_learned: null  # Ingen sejr completed endnu
+  total_patterns: 0
+
+learned_patterns: []
+# Format når patterns tilføjes:
+# - pattern: "Description of pattern observed"
+#   prevention: "How to prevent the problem"
+#   optimization: "How to optimize based on learning"
+#   applied_count: 0
+#   time_saved_total: "0 min"
+#   confidence: 0.0  # 0.0-1.0
+#   first_seen: "YYYY-MM-DD"
+#   last_applied: null
+
+# Eksempel pattern (vil blive tilføjet når data findes):
+# - pattern: "Always forget to commit before push"
+#   prevention: "Auto-check git status before push command"
+#   optimization: "Git hook that blocks push if uncommitted changes"
+#   applied_count: 3
+#   time_saved_total: "15 min"
+#   confidence: 0.9
+#   first_seen: "2026-01-23"
+#   last_applied: "2026-01-25"
+
+common_blockers: []
+# Format:
+# - blocker: "Description of blocker"
+#   frequency: 0  # How many times seen
+#   avg_resolution_time: "0 min"
+#   solutions:
+#     - "Solution 1"
+#     - "Solution 2"
+
+optimization_opportunities: []
+# Format:
+# - opportunity: "What can be improved"
+#   potential_time_save: "0 min per sejr"
+#   implementation_effort: "low/medium/high"
+#   priority: "low/medium/high"
+
+statistics:
+  total_sejr_completed: 0
+  avg_completion_time: null
+  fastest_sejr: null
+  slowest_sejr: null
+  most_common_pattern: null
+
+# Auto-updated by: scripts/auto_learn.py
+# Frequency: After each sejr completion
+# Purpose: Self-improving DNA layer (layer 4)
