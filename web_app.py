@@ -174,74 +174,135 @@ if st.session_state.auto_refresh:
         unsafe_allow_html=True
     )
 
-# === CUSTOM CSS ===
+# === MODERN CLEAN CSS ===
 st.markdown("""
 <style>
+    /* Hide Streamlit branding */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+
+    /* Clean typography */
+    .main-header {
+        font-size: 1.8rem;
+        font-weight: 600;
+        text-align: left;
+        padding: 0.5rem 0;
+        color: #1f2937;
+        border-bottom: 2px solid #e5e7eb;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Session timer - subtle */
     .session-timer {
         position: fixed;
-        top: 10px;
-        right: 10px;
-        background: #1a1a2e;
-        color: #4da6ff;
-        padding: 5px 15px;
-        border-radius: 20px;
-        font-family: monospace;
-        font-size: 0.9rem;
+        top: 60px;
+        right: 20px;
+        background: #f3f4f6;
+        color: #6b7280;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-family: 'SF Mono', 'Consolas', monospace;
+        font-size: 0.8rem;
         z-index: 9999;
-        border: 1px solid #333;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
-    .main-header {
-        font-size: 2.5rem;
-        font-weight: bold;
-        text-align: center;
-        padding: 1rem;
-        background: linear-gradient(90deg, #1a1a2e 0%, #16213e 100%);
-        color: #eee;
-        border-radius: 10px;
-        margin-bottom: 1rem;
-    }
+
+    /* Cards/Panels */
     .panel {
-        background: #0e1117;
-        border: 1px solid #333;
-        border-radius: 10px;
-        padding: 1rem;
-        min-height: 300px;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 1.25rem;
+        min-height: 280px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
+
     .panel-title {
-        font-size: 1.2rem;
-        font-weight: bold;
-        color: #4da6ff;
-        border-bottom: 1px solid #333;
-        padding-bottom: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border-bottom: 1px solid #f3f4f6;
+        padding-bottom: 0.75rem;
         margin-bottom: 1rem;
     }
+
+    /* Log stream */
     .log-stream {
-        background: #0a0a0a;
-        border: 1px solid #222;
-        border-radius: 5px;
-        padding: 0.5rem;
-        font-family: monospace;
-        font-size: 0.85rem;
-        max-height: 150px;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 0.75rem;
+        font-family: 'SF Mono', 'Consolas', monospace;
+        font-size: 0.75rem;
+        max-height: 140px;
         overflow-y: auto;
+        color: #374151;
     }
-    .checkbox-done { color: #00ff00; }
-    .checkbox-pending { color: #ffaa00; }
-    .metric-big { font-size: 2rem; font-weight: bold; }
+
+    /* Checkboxes */
+    .checkbox-done { color: #059669; }
+    .checkbox-pending { color: #9ca3af; }
+
+    /* Metrics */
+    .metric-big {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #111827;
+    }
+
+    /* Rank badges - modern */
     .rank-badge {
         display: inline-block;
         padding: 0.25rem 0.75rem;
-        border-radius: 20px;
-        font-weight: bold;
+        border-radius: 9999px;
+        font-weight: 500;
+        font-size: 0.75rem;
     }
-    .rank-grand-admiral { background: gold; color: black; }
-    .rank-admiral { background: silver; color: black; }
-    .rank-kaptajn { background: #cd7f32; color: white; }
+    .rank-grand-admiral {
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        color: #78350f;
+    }
+    .rank-admiral {
+        background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+        color: #374151;
+    }
+    .rank-kaptajn {
+        background: linear-gradient(135deg, #fdba74 0%, #fb923c 100%);
+        color: #7c2d12;
+    }
+    .rank-loejtnant {
+        background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 100%);
+        color: #1e3a8a;
+    }
+    .rank-kadet {
+        background: #f3f4f6;
+        color: #6b7280;
+    }
+
+    /* Streamlit overrides */
+    .stMetric {
+        background: #f9fafb;
+        padding: 1rem;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+    }
+
+    div[data-testid="stMetricValue"] {
+        font-size: 1.5rem !important;
+        color: #111827 !important;
+    }
+
+    .stProgress > div > div {
+        background-color: #10b981 !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
 # === HEADER ===
-st.markdown('<div class="main-header">🏆 SEJRLISTE VISUAL SYSTEM</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header">Sejrliste</div>', unsafe_allow_html=True)
 
 # === SESSION TIMER DISPLAY ===
 session_time = get_session_duration()
