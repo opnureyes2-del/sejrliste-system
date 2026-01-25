@@ -21,12 +21,322 @@
 import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Gtk, Adw, GLib, Gio, Pango
+from gi.repository import Gtk, Adw, GLib, Gio, Pango, Gdk
 from pathlib import Path
 import re
 import json
 from datetime import datetime
 import subprocess
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# MODERNE 2026 CSS STYLING - PASS 2 UPGRADE
+# ═══════════════════════════════════════════════════════════════════════════════
+
+MODERN_CSS = """
+/* ══════════════════════════════════════════════════════════════════
+   SEJRLISTE MESTERVÆRK - MODERNE 2026 DESIGN
+   Features: Gradients, Glassmorphism, Animations, Modern Typography
+   ══════════════════════════════════════════════════════════════════ */
+
+/* === GLOBAL COLORS === */
+@define-color accent_gradient_start #6366f1;
+@define-color accent_gradient_end #8b5cf6;
+@define-color success_glow #22c55e;
+@define-color warning_glow #f59e0b;
+@define-color bg_dark #0f0f23;
+@define-color bg_card rgba(30, 30, 60, 0.8);
+@define-color text_primary #f8fafc;
+@define-color text_secondary #94a3b8;
+
+/* === WINDOW BASE === */
+window.background {
+    background: linear-gradient(180deg,
+        #0f0f23 0%,
+        #1a1a3e 50%,
+        #0f0f23 100%);
+}
+
+/* === HEADERBAR - TRANSPARENT GLASSMORPHISM === */
+headerbar {
+    background: linear-gradient(90deg,
+        rgba(99, 102, 241, 0.15) 0%,
+        rgba(139, 92, 246, 0.15) 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+headerbar title {
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    background: linear-gradient(90deg, #f8fafc 0%, #c4b5fd 100%);
+    -gtk-icon-filter: none;
+}
+
+/* === NAVIGATION SIDEBAR === */
+.navigation-sidebar {
+    background: rgba(15, 15, 35, 0.95);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.navigation-sidebar row {
+    margin: 4px 8px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: rgba(30, 30, 60, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 200ms ease-out;
+}
+
+.navigation-sidebar row:hover {
+    background: rgba(99, 102, 241, 0.2);
+    border-color: rgba(99, 102, 241, 0.3);
+    transform: translateX(4px);
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2);
+}
+
+.navigation-sidebar row:selected {
+    background: linear-gradient(135deg,
+        rgba(99, 102, 241, 0.4) 0%,
+        rgba(139, 92, 246, 0.4) 100%);
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* === CARDS & PREFERENCE GROUPS === */
+.card, preferencesgroup {
+    background: rgba(30, 30, 60, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    padding: 16px;
+    margin: 8px 0;
+}
+
+/* === ACTION ROWS === */
+row.activatable {
+    border-radius: 12px;
+    margin: 4px 0;
+    padding: 8px 12px;
+    transition: all 150ms ease-out;
+}
+
+row.activatable:hover {
+    background: rgba(99, 102, 241, 0.1);
+}
+
+/* === PROGRESS BARS - GRADIENT GLOW === */
+progressbar trough {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    min-height: 8px;
+}
+
+progressbar progress {
+    background: linear-gradient(90deg,
+        #6366f1 0%,
+        #8b5cf6 50%,
+        #a855f7 100%);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+}
+
+progressbar.success progress {
+    background: linear-gradient(90deg,
+        #22c55e 0%,
+        #16a34a 100%);
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+}
+
+progressbar.warning progress {
+    background: linear-gradient(90deg,
+        #f59e0b 0%,
+        #d97706 100%);
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+}
+
+/* === DNA LAYER BADGES === */
+.heading {
+    color: #f8fafc;
+    font-weight: 700;
+}
+
+.caption {
+    color: #94a3b8;
+    font-size: 11px;
+    letter-spacing: 0.3px;
+}
+
+.accent {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    border-radius: 50%;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+}
+
+.success {
+    color: #22c55e;
+    text-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+}
+
+.warning {
+    color: #f59e0b;
+    text-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+}
+
+/* === BUTTONS - MODERN STYLE === */
+button {
+    border-radius: 10px;
+    padding: 8px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 150ms ease-out;
+}
+
+button:hover {
+    background: rgba(99, 102, 241, 0.2);
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
+}
+
+button.suggested-action {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border: none;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+}
+
+button.suggested-action:hover {
+    background: linear-gradient(135deg, #818cf8, #a78bfa);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+    transform: translateY(-2px);
+}
+
+button.pill {
+    border-radius: 20px;
+    padding: 10px 24px;
+}
+
+/* === SEARCH BAR === */
+searchbar {
+    background: rgba(15, 15, 35, 0.9);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+searchentry {
+    background: rgba(30, 30, 60, 0.8);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 12px;
+    padding: 10px 16px;
+    color: #f8fafc;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+searchentry:focus {
+    border-color: rgba(139, 92, 246, 0.6);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2),
+                0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* === STATUS PAGE === */
+statuspage {
+    background: transparent;
+}
+
+statuspage .icon-dropshadow {
+    color: #8b5cf6;
+}
+
+statuspage .title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #c4b5fd;
+}
+
+/* === SCROLLBAR - MINIMAL === */
+scrollbar {
+    background: transparent;
+}
+
+scrollbar slider {
+    background: rgba(139, 92, 246, 0.3);
+    border-radius: 4px;
+    min-width: 6px;
+}
+
+scrollbar slider:hover {
+    background: rgba(139, 92, 246, 0.5);
+}
+
+/* === SEPARATORS === */
+separator {
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(139, 92, 246, 0.3) 50%,
+        transparent 100%);
+    min-height: 1px;
+}
+
+/* === TITLE STYLES === */
+.title-1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #f8fafc;
+    letter-spacing: -0.5px;
+}
+
+.title-2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #f8fafc;
+}
+
+.dim-label {
+    color: #64748b;
+}
+
+/* === BOXED LIST === */
+.boxed-list {
+    background: rgba(30, 30, 60, 0.4);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.boxed-list row {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.boxed-list row:last-child {
+    border-bottom: none;
+}
+
+/* === GLOW EFFECTS === */
+.glow-purple {
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+}
+
+.glow-green {
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
+}
+
+.glow-amber {
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+}
+"""
+
+def load_custom_css():
+    """Load modern CSS styling"""
+    css_provider = Gtk.CssProvider()
+    css_provider.load_from_data(MODERN_CSS.encode())
+    Gtk.StyleContext.add_provider_for_display(
+        Gdk.Display.get_default(),
+        css_provider,
+        Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+    )
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # INTELLIGENT SEARCH ENGINE
@@ -998,9 +1308,15 @@ class MasterpieceApp(Adw.Application):
             application_id="dk.cirkelline.sejrliste.masterpiece",
             flags=Gio.ApplicationFlags.FLAGS_NONE
         )
+        # Force dark mode for modern look
+        style_manager = Adw.StyleManager.get_default()
+        style_manager.set_color_scheme(Adw.ColorScheme.FORCE_DARK)
 
     def do_activate(self):
         """Activate the application"""
+        # Load modern 2026 CSS styling
+        load_custom_css()
+
         win = MasterpieceWindow(self)
 
         # Add keyboard shortcuts
