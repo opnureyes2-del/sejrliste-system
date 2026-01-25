@@ -413,6 +413,37 @@ separator {
     box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
 }
 
+/* === PRIORITY DASHBOARD - COMMAND CENTER === */
+.priority-urgent {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.25) 0%, rgba(185, 28, 28, 0.15) 100%);
+    border-left: 4px solid #ef4444;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+}
+
+.priority-attention {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(180, 83, 9, 0.15) 100%);
+    border-left: 4px solid #f59e0b;
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
+}
+
+.priority-next {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(29, 78, 216, 0.15) 100%);
+    border-left: 4px solid #3b82f6;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+}
+
+.priority-card {
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin: 4px 0;
+    transition: all 200ms ease-out;
+}
+
+.priority-card:hover {
+    transform: translateX(8px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
 /* === CHAT STREAM - MESSENGER STYLE === */
 .chat-stream-messages {
     background: rgba(15, 15, 35, 0.6);
@@ -1905,6 +1936,255 @@ class VictoryFileManager(Gtk.Box):
         dialog.close()
 
 
+class PriorityDashboard(Gtk.Box):
+    """
+    An intelligent priority dashboard that shows what needs attention NOW.
+
+    Features:
+    - URGENT: Critical items requiring immediate action (red glow)
+    - ATTENTION: Items that should be addressed soon (amber glow)
+    - NEXT: AI-predicted next steps (blue glow)
+    - ONE-CLICK: Direct navigation to problem areas
+    - LIVE: Auto-updates every 5 seconds
+
+    This is the FIRST thing the user sees - it guides them directly
+    to where they need to be.
+    """
+
+    def __init__(self):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=16)
+        self.set_margin_start(24)
+        self.set_margin_end(24)
+        self.set_margin_top(16)
+        self.set_margin_bottom(16)
+
+        self._build_ui()
+        self._update_priorities()
+
+        # Auto-refresh every 5 seconds
+        GLib.timeout_add_seconds(5, self._update_priorities)
+
+    def _build_ui(self) -> None:
+        """Build the priority dashboard UI."""
+        # Header
+        header = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+
+        icon = Gtk.Image.new_from_icon_name("dialog-warning-symbolic")
+        icon.set_pixel_size(32)
+        icon.add_css_class("warning")
+        header.append(icon)
+
+        title_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+
+        title = Gtk.Label(label="⚡ Priority Dashboard")
+        title.set_halign(Gtk.Align.START)
+        title.add_css_class("title-2")
+        title_box.append(title)
+
+        subtitle = Gtk.Label(label="What needs your attention RIGHT NOW")
+        subtitle.set_halign(Gtk.Align.START)
+        subtitle.add_css_class("dim-label")
+        subtitle.add_css_class("caption")
+        title_box.append(subtitle)
+
+        header.append(title_box)
+        self.append(header)
+
+        # Priority sections container
+        self.sections_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        self.append(self.sections_box)
+
+    def _update_priorities(self) -> bool:
+        """Update priority items from current system state."""
+        # Clear existing
+        while child := self.sections_box.get_first_child():
+            self.sections_box.remove(child)
+
+        priorities = self._analyze_system()
+
+        if not any(priorities.values()):
+            # All clear!
+            clear_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+            clear_box.set_halign(Gtk.Align.CENTER)
+            clear_box.add_css_class("card")
+            clear_box.set_margin_top(16)
+            clear_box.set_margin_bottom(16)
+
+            icon = Gtk.Image.new_from_icon_name("emblem-ok-symbolic")
+            icon.set_pixel_size(48)
+            icon.add_css_class("success")
+            clear_box.append(icon)
+
+            label = Gtk.Label(label="✨ All Clear!")
+            label.add_css_class("title-3")
+            clear_box.append(label)
+
+            desc = Gtk.Label(label="No urgent items. You're on track!")
+            desc.add_css_class("dim-label")
+            clear_box.append(desc)
+
+            self.sections_box.append(clear_box)
+        else:
+            # Build priority sections
+            if priorities["urgent"]:
+                self._add_section("🔴 URGENT", priorities["urgent"], "error")
+            if priorities["attention"]:
+                self._add_section("🟡 ATTENTION", priorities["attention"], "warning")
+            if priorities["next"]:
+                self._add_section("🔵 NEXT STEPS", priorities["next"], "accent")
+
+        return True  # Continue timeout
+
+    def _analyze_system(self) -> Dict[str, List[Dict]]:
+        """Analyze system state and return priority items."""
+        priorities = {"urgent": [], "attention": [], "next": []}
+
+        # Check for incomplete active victories
+        if ACTIVE_DIR.exists():
+            for victory_dir in ACTIVE_DIR.iterdir():
+                if not victory_dir.is_dir():
+                    continue
+
+                sejr_file = victory_dir / "SEJR_LISTE.md"
+                if sejr_file.exists():
+                    content = sejr_file.read_text()
+                    done, total = count_checkboxes(content)
+
+                    if total > 0:
+                        progress = (done / total) * 100
+
+                        if progress < 30:
+                            priorities["urgent"].append({
+                                "title": f"Victory stalled: {victory_dir.name}",
+                                "subtitle": f"Only {progress:.0f}% complete ({done}/{total})",
+                                "action": "Open Victory",
+                                "path": str(victory_dir),
+                                "icon": "emblem-important-symbolic"
+                            })
+                        elif progress < 80:
+                            priorities["attention"].append({
+                                "title": f"Continue: {victory_dir.name}",
+                                "subtitle": f"{progress:.0f}% complete - push to finish!",
+                                "action": "Resume",
+                                "path": str(victory_dir),
+                                "icon": "media-playback-start-symbolic"
+                            })
+
+        # Check for missing verification
+        if ACTIVE_DIR.exists():
+            for victory_dir in ACTIVE_DIR.iterdir():
+                if not victory_dir.is_dir():
+                    continue
+
+                verify_file = victory_dir / "VERIFY_STATUS.yaml"
+                if not verify_file.exists():
+                    priorities["attention"].append({
+                        "title": f"Missing verification: {victory_dir.name}",
+                        "subtitle": "Run verification to track progress",
+                        "action": "Verify Now",
+                        "path": str(victory_dir),
+                        "icon": "emblem-ok-symbolic"
+                    })
+
+        # Check NEXT.md for predictions
+        next_file = SYSTEM_PATH / "_CURRENT" / "NEXT.md"
+        if next_file.exists():
+            content = next_file.read_text()
+            lines = [l.strip() for l in content.split('\n') if l.strip().startswith('- ')]
+            for line in lines[:3]:
+                priorities["next"].append({
+                    "title": line[2:50] + "..." if len(line) > 52 else line[2:],
+                    "subtitle": "AI predicted next action",
+                    "action": "View Details",
+                    "path": str(next_file),
+                    "icon": "weather-clear-symbolic"
+                })
+
+        # If no next steps, suggest creating new victory
+        if not priorities["next"] and not priorities["urgent"]:
+            priorities["next"].append({
+                "title": "Create a new victory",
+                "subtitle": "Start fresh with a new goal",
+                "action": "New Victory",
+                "path": "new",
+                "icon": "list-add-symbolic"
+            })
+
+        return priorities
+
+    def _add_section(self, title: str, items: List[Dict], css_class: str) -> None:
+        """Add a priority section with items."""
+        section = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+
+        # Section header
+        header = Gtk.Label(label=title)
+        header.set_halign(Gtk.Align.START)
+        header.add_css_class("heading")
+        header.add_css_class(css_class)
+        section.append(header)
+
+        # Items
+        for item in items[:3]:  # Max 3 per section
+            row = self._create_priority_row(item, css_class)
+            section.append(row)
+
+        self.sections_box.append(section)
+
+    def _create_priority_row(self, item: Dict, css_class: str) -> Gtk.Box:
+        """Create a clickable priority row."""
+        row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        row.add_css_class("card")
+        row.set_margin_start(8)
+        row.set_margin_end(8)
+
+        # Icon
+        icon = Gtk.Image.new_from_icon_name(item.get("icon", "dialog-information-symbolic"))
+        icon.set_pixel_size(24)
+        icon.add_css_class(css_class)
+        row.append(icon)
+
+        # Text
+        text_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        text_box.set_hexpand(True)
+
+        title = Gtk.Label(label=item["title"])
+        title.set_halign(Gtk.Align.START)
+        title.add_css_class("heading")
+        title.set_ellipsize(Pango.EllipsizeMode.END)
+        text_box.append(title)
+
+        subtitle = Gtk.Label(label=item["subtitle"])
+        subtitle.set_halign(Gtk.Align.START)
+        subtitle.add_css_class("caption")
+        subtitle.add_css_class("dim-label")
+        text_box.append(subtitle)
+
+        row.append(text_box)
+
+        # Action button
+        btn = Gtk.Button(label=item["action"])
+        btn.add_css_class("suggested-action")
+        btn.add_css_class("pill")
+        btn.set_valign(Gtk.Align.CENTER)
+
+        path = item["path"]
+        if path == "new":
+            btn.connect("clicked", lambda b: self._create_new_victory())
+        else:
+            btn.connect("clicked", lambda b, p=path: subprocess.Popen(["nautilus", p]))
+
+        row.append(btn)
+
+        return row
+
+    def _create_new_victory(self) -> None:
+        """Trigger new victory creation."""
+        script = SCRIPTS_DIR / "generate_sejr.py"
+        if script.exists():
+            subprocess.Popen(["python3", str(script)])
+            send_notification("New Victory", "Creating new victory...", "list-add-symbolic")
+
+
 # ==============================================================================
 # MAIN WINDOW
 # ==============================================================================
@@ -2120,14 +2400,27 @@ class MainWindow(Adw.ApplicationWindow):
         self.content_stack.set_visible_child_name("welcome")
 
     def _build_welcome_page(self) -> Gtk.Box:
-        """Build the welcome/empty state page with live stats."""
+        """Build the welcome/empty state page with priority dashboard and live stats."""
+        # Scrollable container for the whole page
+        scroll = Gtk.ScrolledWindow()
+        scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+
         main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=24)
-        main_box.set_valign(Gtk.Align.CENTER)
-        main_box.set_halign(Gtk.Align.CENTER)
-        main_box.set_margin_top(48)
+        main_box.set_margin_top(24)
         main_box.set_margin_bottom(48)
 
-        # Header
+        # ⚡ PRIORITY DASHBOARD - FIRST THING USER SEES
+        # Shows what needs attention RIGHT NOW
+        self.priority_dashboard = PriorityDashboard()
+        main_box.append(self.priority_dashboard)
+
+        # Separator
+        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        sep.set_margin_start(24)
+        sep.set_margin_end(24)
+        main_box.append(sep)
+
+        # Header (moved below priority dashboard)
         header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         header_box.set_halign(Gtk.Align.CENTER)
 
@@ -2222,7 +2515,8 @@ class MainWindow(Adw.ApplicationWindow):
         tip_label.add_css_class("dim-label")
         main_box.append(tip_label)
 
-        return main_box
+        scroll.set_child(main_box)
+        return scroll
 
     def _build_detail_page(self, victory: Dict[str, Any]) -> None:
         """Build the detail view for a victory."""
