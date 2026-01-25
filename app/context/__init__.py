@@ -24,12 +24,46 @@ def load_rules() -> str:
 
 
 def load_constraints() -> dict:
-    """Load model constraints og token budgets."""
-    import yaml
-    if CONSTRAINTS_FILE.exists():
-        with open(CONSTRAINTS_FILE) as f:
-            return yaml.safe_load(f)
-    return {}
+    """Load model constraints og token budgets (no PyYAML dependency)."""
+    if not CONSTRAINTS_FILE.exists():
+        return {}
+
+    # Simple YAML parser for our specific format
+    result = {}
+    try:
+        content = CONSTRAINTS_FILE.read_text()
+        current_section = None
+
+        for line in content.split('\n'):
+            line = line.rstrip()
+            if not line or line.strip().startswith('#'):
+                continue
+
+            # Top-level key (no indent)
+            if not line.startswith(' ') and ':' in line:
+                key = line.split(':')[0].strip()
+                value = line.split(':', 1)[1].strip() if ':' in line else ''
+                if not value:
+                    result[key] = {}
+                    current_section = key
+                else:
+                    result[key] = value.strip('"').strip("'")
+                    current_section = None
+            # Nested key (indented)
+            elif current_section and ':' in line:
+                key = line.split(':')[0].strip()
+                value = line.split(':', 1)[1].strip().strip('"').strip("'")
+                # Convert types
+                if value.lower() == 'true':
+                    value = True
+                elif value.lower() == 'false':
+                    value = False
+                elif value.isdigit():
+                    value = int(value)
+                result[current_section][key] = value
+    except:
+        pass
+    return result
 
 
 def get_model_for_task(task_type: str) -> str:

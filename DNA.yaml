@@ -225,8 +225,8 @@ files:
     - "MANUAL.md - Komplet manual (390 linjer)"
     - "ENFORCEMENT_RULES.md - 3-pass forklaring"
     - "DNA.yaml - Denne fil"
-    - "view.py - Terminal viewer"
-    - "sejr_launcher.py - GUI launcher"
+    - "view.py - Terminal viewer (simpel)"
+    - "app/sejr_app.py - TUI app (Textual)"
 
   templates:
     - "00_TEMPLATES/SEJR_TEMPLATE.md - Master template med 3-pass"

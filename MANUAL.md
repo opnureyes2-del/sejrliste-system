@@ -66,8 +66,8 @@ sejrliste systemet/
 │   ├── PATTERNS.yaml             → Lærte mønstre
 │   └── LEADERBOARD.md            → Global konkurrence leaderboard
 │
-├── view.py                   ← Terminal viewer
-└── sejr_launcher.py          ← GUI launcher
+├── view.py                   ← Terminal viewer (simpel)
+└── app/sejr_app.py           ← TUI app (Textual)
 ```
 
 > **SINGLE SOURCE OF TRUTH:** Hver sejr har KUN 4 filer - ingen redundans!
@@ -427,11 +427,11 @@ python3 scripts/auto_archive.py --sejr "X" --force
 
 ### Se Status
 ```bash
-# Terminal viewer
+# Simpel terminal viewer
 python3 view.py
 
-# GUI launcher
-python3 sejr_launcher.py
+# Avanceret TUI app (Textual)
+python3 app/sejr_app.py
 ```
 
 ### Andre Scripts

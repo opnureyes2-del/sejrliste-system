@@ -53,8 +53,8 @@ sejrliste systemet/
 ├── LOG_FORMAT.md             ← Log format specifikation
 ├── DNA.yaml                  ← System identitet
 ├── ARKITEKTUR.md             ← System arkitektur
-├── view.py                   ← Terminal viewer
-├── sejr_launcher.py          ← GUI launcher
+├── view.py                   ← Terminal viewer (simpel)
+├── app/sejr_app.py           ← TUI app (Textual - avanceret)
 │
 ├── scripts/                  ← Automatisering (9 scripts)
 │   ├── generate_sejr.py          → Opret ny sejr + CLAUDE.md
@@ -210,11 +210,11 @@ Hver 5 handlinger:
 ## VIEWS (Terminal)
 
 ```bash
-# Terminal viewer
+# Simpel terminal viewer
 python3 view.py
 
-# Steam-style launcher (GUI)
-python3 sejr_launcher.py
+# Avanceret TUI app (Textual)
+python3 app/sejr_app.py
 ```
 
 ---
