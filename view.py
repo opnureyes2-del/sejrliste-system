@@ -132,7 +132,7 @@ def display_sejr(sejr_path: Path):
     name = sejr_path.name
 
     # Parse files
-    status = parse_yaml_simple(sejr_path / "VERIFY_STATUS.yaml")
+    status = parse_yaml_simple(sejr_path / "STATUS.yaml")
     done, total = parse_checkboxes(sejr_path / "SEJR_LISTE.md")
     logs = parse_log(sejr_path / "AUTO_LOG.jsonl")
 

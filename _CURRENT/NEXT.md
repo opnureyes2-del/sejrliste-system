@@ -1,6 +1,6 @@
 # NEXT - Hvad Skal Ske Nu?
 
-**AI-Genereret:** 2026-01-25 11:52
+**AI-Genereret:** 2026-01-25 12:52
 **Baseret på:** Current state + Learned patterns
 
 ---
@@ -14,6 +14,14 @@
 ```bash
 python scripts/generate_sejr.py --name "Project Name"
 ```
+
+---
+
+## PREDICTIVE INSIGHTS (AI-Drevet)
+
+### Pattern Based
+**Observation:** 13 high-confidence patterns learned
+**Forslag:** Apply learned optimizations to avoid repeated mistakes
 
 ---
 

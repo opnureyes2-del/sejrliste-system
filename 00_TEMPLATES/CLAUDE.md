@@ -76,7 +76,7 @@
 |-----|--------|------|
 | `SEJR_LISTE.md` | Hovedopgave med alle checkboxes | **JA - START HER** |
 | `CLAUDE.md` | Denne fil - fokus lock | Du læser den nu |
-| `VERIFY_STATUS.yaml` | Automatisk status | Læses af scripts |
+| `STATUS.yaml` | 3-Pass status og scores | Læses af scripts |
 | `AUTO_LOG.jsonl` | Automatisk log | Skrives til automatisk |
 
 ---

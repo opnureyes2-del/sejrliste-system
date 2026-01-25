@@ -492,11 +492,16 @@ def archive_sejr(sejr_name: str, system_path: Path, force: bool = False):
     conclusion_file = create_archive_conclusion(sejr_path, archive_path, status)
     print(f"✅ Saved conclusion: {conclusion_file}")
 
-    # Generate SEJR DIPLOM
-    diplom_file = generate_sejr_diplom(sejr_path, archive_path, status)
-    rank_name, rank_emoji = get_rank_from_score(status.get('total_score', 0))
-    print(f"🏆 Generated diplom: {diplom_file}")
-    print(f"   {rank_emoji} RANG: {rank_name}")
+    # Generate SEJR DIPLOM (with error recovery)
+    try:
+        diplom_file = generate_sejr_diplom(sejr_path, archive_path, status)
+        rank_name, rank_emoji = get_rank_from_score(status.get('total_score', 0))
+        print(f"🏆 Generated diplom: {diplom_file}")
+        print(f"   {rank_emoji} RANG: {rank_name}")
+    except Exception as e:
+        print(f"⚠️  Warning: Could not generate diplom: {e}")
+        print(f"   Archive continues without SEJR_DIPLOM.md")
+        rank_name, rank_emoji = get_rank_from_score(status.get('total_score', 0))
 
     # Copy important files
     for file_name in ["STATUS.yaml", "AUTO_LOG.jsonl"]:

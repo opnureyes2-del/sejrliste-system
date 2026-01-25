@@ -94,7 +94,7 @@ def parse_checkboxes(filepath: Path) -> tuple:
 
 def get_sejr_info(sejr_path: Path) -> dict:
     """Get all info about a sejr including 3-PASS status."""
-    status = parse_yaml_simple(sejr_path / "VERIFY_STATUS.yaml")
+    status = parse_yaml_simple(sejr_path / "STATUS.yaml")
     done, total = parse_checkboxes(sejr_path / "SEJR_LISTE.md")
 
     completion = status.get("completion_percentage", 0)
