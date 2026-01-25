@@ -21,10 +21,12 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from app.widgets.visual_polish import (
     Colors,
+    Theme,
     StatusIndicator,
     SessionTimer,
     StatisticsView,
     ProgressAnimation,
+    RankDisplay,
     VisualPolishWidget,
 )
 
@@ -44,6 +46,88 @@ class TestColors(unittest.TestCase):
         """Test that colors are ANSI escape codes."""
         self.assertIn("\033[", Colors.GREEN)
         self.assertIn("\033[", Colors.RESET)
+
+
+class TestTheme(unittest.TestCase):
+    """Test cases for Theme class (PASS 2)."""
+
+    def test_default_theme(self):
+        """Test default theme initialization."""
+        theme = Theme()
+        self.assertEqual(theme.theme, "default")
+
+    def test_colorize_default(self):
+        """Test colorize with default theme."""
+        theme = Theme("default")
+        result = theme.colorize("test", Colors.GREEN)
+        self.assertIn(Colors.GREEN, result)
+        self.assertIn("test", result)
+
+    def test_colorize_no_color(self):
+        """Test colorize with no_color theme."""
+        theme = Theme("no_color")
+        result = theme.colorize("test", Colors.GREEN)
+        self.assertEqual(result, "test")
+
+    def test_get_icon_default(self):
+        """Test get_icon with default theme."""
+        theme = Theme("default")
+        icon = theme.get_icon("done")
+        self.assertEqual(icon, "✅")
+
+    def test_get_icon_minimal(self):
+        """Test get_icon with minimal theme."""
+        theme = Theme("minimal")
+        icon = theme.get_icon("done")
+        self.assertEqual(icon, "[OK]")
+
+
+class TestRankDisplay(unittest.TestCase):
+    """Test cases for RankDisplay class (PASS 2)."""
+
+    def test_rank_kadet(self):
+        """Test KADET rank at low score."""
+        name, icon, color = RankDisplay.get_rank(3)
+        self.assertEqual(name, "KADET")
+
+    def test_rank_lojtnant(self):
+        """Test LØJTNANT rank."""
+        name, icon, color = RankDisplay.get_rank(8)
+        self.assertEqual(name, "LØJTNANT")
+
+    def test_rank_admiral(self):
+        """Test ADMIRAL rank."""
+        name, icon, color = RankDisplay.get_rank(25)
+        self.assertEqual(name, "ADMIRAL")
+
+    def test_rank_grand_admiral(self):
+        """Test GRAND ADMIRAL rank."""
+        name, icon, color = RankDisplay.get_rank(29)
+        self.assertEqual(name, "GRAND ADMIRAL")
+
+    def test_render_rank(self):
+        """Test rank rendering."""
+        rendered = RankDisplay.render_rank(25)
+        self.assertIn("ADMIRAL", rendered)
+
+    def test_next_rank(self):
+        """Test next rank calculation."""
+        next_rank = RankDisplay.get_next_rank(20)
+        self.assertIsNotNone(next_rank)
+        name, points = next_rank
+        self.assertEqual(name, "ADMIRAL")
+        self.assertEqual(points, 4)
+
+    def test_max_rank(self):
+        """Test max rank returns None."""
+        next_rank = RankDisplay.get_next_rank(30)
+        self.assertIsNone(next_rank)
+
+    def test_progress_to_next(self):
+        """Test progress to next rank display."""
+        progress = RankDisplay.render_progress_to_next(20)
+        self.assertIn("ADMIRAL", progress)
+        self.assertIn("4 points", progress)
 
 
 class TestStatusIndicator(unittest.TestCase):

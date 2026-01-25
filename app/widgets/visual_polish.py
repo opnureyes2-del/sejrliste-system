@@ -22,6 +22,9 @@ class Colors:
     """ANSI color codes for terminal output."""
     RESET = "\033[0m"
     BOLD = "\033[1m"
+    DIM = "\033[2m"
+    ITALIC = "\033[3m"
+    UNDERLINE = "\033[4m"
 
     # Status colors
     GREEN = "\033[32m"      # Done/Complete
@@ -30,11 +33,77 @@ class Colors:
     BLUE = "\033[34m"       # In progress
     CYAN = "\033[36m"       # Info
     MAGENTA = "\033[35m"    # Special
+    WHITE = "\033[37m"      # Default
+    BLACK = "\033[30m"      # Dark
+
+    # Bright colors
+    BRIGHT_GREEN = "\033[92m"
+    BRIGHT_YELLOW = "\033[93m"
+    BRIGHT_RED = "\033[91m"
+    BRIGHT_BLUE = "\033[94m"
+    BRIGHT_CYAN = "\033[96m"
+    BRIGHT_MAGENTA = "\033[95m"
 
     # Background
     BG_GREEN = "\033[42m"
     BG_YELLOW = "\033[43m"
     BG_RED = "\033[41m"
+    BG_BLUE = "\033[44m"
+    BG_CYAN = "\033[46m"
+
+
+class Theme:
+    """
+    Theme configuration for visual polish.
+
+    Supports:
+    - Default (colorful)
+    - Minimal (reduced colors)
+    - No-color (plain text)
+    """
+
+    DEFAULT = "default"
+    MINIMAL = "minimal"
+    NO_COLOR = "no_color"
+
+    def __init__(self, theme: str = "default"):
+        self.theme = theme
+
+    def colorize(self, text: str, color: str) -> str:
+        """Apply color based on theme setting."""
+        if self.theme == self.NO_COLOR:
+            return text
+        return f"{color}{text}{Colors.RESET}"
+
+    def get_icon(self, icon_type: str) -> str:
+        """Get icon based on theme."""
+        icons = {
+            "default": {
+                "done": "✅",
+                "in_progress": "🔵",
+                "blocked": "🔴",
+                "warning": "⚠️",
+                "pending": "⏳",
+                "error": "❌",
+            },
+            "minimal": {
+                "done": "[OK]",
+                "in_progress": "[..]",
+                "blocked": "[!!]",
+                "warning": "[!]",
+                "pending": "[--]",
+                "error": "[X]",
+            },
+            "no_color": {
+                "done": "[OK]",
+                "in_progress": "[..]",
+                "blocked": "[!!]",
+                "warning": "[!]",
+                "pending": "[--]",
+                "error": "[X]",
+            },
+        }
+        return icons.get(self.theme, icons["default"]).get(icon_type, "•")
 
 
 class StatusIndicator:
@@ -245,6 +314,62 @@ class StatisticsView:
         lines.append("=" * width)
 
         return "\n".join(lines)
+
+
+class RankDisplay:
+    """
+    Display military ranks based on score.
+
+    Ranks:
+    - KADET: 0-5 points
+    - LØJTNANT: 6-12 points
+    - KAPTAJN: 13-18 points
+    - KOMMANDØR: 19-23 points
+    - ADMIRAL: 24-27 points
+    - GRAND ADMIRAL: 28-30 points
+    """
+
+    RANKS = [
+        (0, "KADET", "🎖️", Colors.WHITE),
+        (6, "LØJTNANT", "⭐", Colors.CYAN),
+        (13, "KAPTAJN", "⭐⭐", Colors.BLUE),
+        (19, "KOMMANDØR", "⭐⭐⭐", Colors.YELLOW),
+        (24, "ADMIRAL", "⭐⭐⭐⭐", Colors.GREEN),
+        (28, "GRAND ADMIRAL", "🌟🌟🌟🌟🌟", Colors.BRIGHT_MAGENTA),
+    ]
+
+    @classmethod
+    def get_rank(cls, score: int) -> tuple:
+        """Get rank based on score. Returns (name, icon, color)."""
+        for min_score, name, icon, color in reversed(cls.RANKS):
+            if score >= min_score:
+                return name, icon, color
+        return "KADET", "🎖️", Colors.WHITE
+
+    @classmethod
+    def render_rank(cls, score: int) -> str:
+        """Render rank with color and icon."""
+        name, icon, color = cls.get_rank(score)
+        return f"{color}{icon} {name}{Colors.RESET}"
+
+    @classmethod
+    def get_next_rank(cls, score: int) -> Optional[tuple]:
+        """Get next rank and points needed."""
+        for min_score, name, icon, color in cls.RANKS:
+            if score < min_score:
+                points_needed = min_score - score
+                return name, points_needed
+        return None  # Already max rank
+
+    @classmethod
+    def render_progress_to_next(cls, score: int) -> str:
+        """Render progress to next rank."""
+        next_rank = cls.get_next_rank(score)
+        if next_rank is None:
+            return f"{Colors.BRIGHT_MAGENTA}MAX RANK ACHIEVED!{Colors.RESET}"
+
+        name, points_needed = next_rank
+        return f"Next: {name} ({points_needed} points needed)"
 
 
 class ProgressAnimation:
