@@ -1,0 +1,149 @@
+{
+  "system": {
+    "version": "1.0.0",
+    "last_learned": "2026-01-25 12:46",
+    "total_patterns": 14
+  },
+  "learned_patterns": [
+    {
+      "pattern": "SUCCESS RATE: 9/11 sejr opnår GRAND ADMIRAL (81%)",
+      "prevention": "Bevar 3-pass system med obligatorisk review",
+      "optimization": "Fokusér på Pass 1 kvalitet for at reducere Pass 2-3 arbejde",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.98,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "BUG LÆRT: auto_learn.py fejlede fordi den ledte efter SEJR_LISTE.md i arkiver, men den fil SLETTES ved arkiver",
+      "prevention": "Check for this issue in similar contexts",
+      "optimization": "Add to pre-flight checklist",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.95,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "WORKFLOW: 1. **PROJECT_BRIEF.md er essentiel** - En model skal kunne forstå projektet på <30 sekunder. Uden de",
+      "prevention": "Follow this rule in similar situations",
+      "optimization": "Automate enforcement if possible",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.9,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "TOOL: 1. **Centraliseret script execution** via executor.py reducer duplikeret kode dramatisk",
+      "prevention": "Use existing tool before creating new",
+      "optimization": "Document tool usage and edge cases",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.85,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "TOOL: 1. Ved arkitekturændringer (f.eks. filnavne) → grep ALLE scripts for referencer FØRST",
+      "prevention": "Use existing tool before creating new",
+      "optimization": "Document tool usage and edge cases",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.85,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "TECHNICAL: 3. Mock implementation tillader fuld test coverage uden API keys",
+      "prevention": "Remember this technical constraint",
+      "optimization": "Add to technical documentation",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.9,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "TECHNICAL: 4. 13 tests sikrer robusthed i alle edge cases",
+      "prevention": "Remember this technical constraint",
+      "optimization": "Add to technical documentation",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.9,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "REUSABLE TEMPLATE: 9 identificeret",
+      "prevention": "Check eksisterende Template før oprettelse af ny",
+      "optimization": "Katalogisér Template i 00_TEMPLATES/",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.85,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "REUSABLE SCRIPT: 9 identificeret",
+      "prevention": "Check eksisterende Script før oprettelse af ny",
+      "optimization": "Katalogisér Script i 00_TEMPLATES/",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.85,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "REUSABLE PATTERN: 9 identificeret",
+      "prevention": "Check eksisterende Pattern før oprettelse af ny",
+      "optimization": "Katalogisér Pattern i 00_TEMPLATES/",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.85,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "IMPROVEMENT FOCUS: tests forbedres i 8 sejr",
+      "prevention": "Inkludér tests fra Pass 1",
+      "optimization": "Brug tests checklist i template",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.8,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "IMPROVEMENT FOCUS: error_handling forbedres i 4 sejr",
+      "prevention": "Inkludér error_handling fra Pass 1",
+      "optimization": "Brug error_handling checklist i template",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.8,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "IMPROVEMENT FOCUS: documentation forbedres i 2 sejr",
+      "prevention": "Inkludér documentation fra Pass 1",
+      "optimization": "Brug documentation checklist i template",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.8,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "FREQUENT ACTION: sejr_created (11x across sejr)",
+      "prevention": "Consider automating sejr_created",
+      "optimization": "Create script/hotkey for sejr_created",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.55,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    }
+  ]
+}

@@ -1,99 +1,15 @@
-# PATTERNS - Lærte Mønstre Fra Sejr Lister
-# Auto-updated af auto_learn.py efter hver færdig sejr
+# PATTERNS - Auto-learned from 14 patterns
+# Last updated: 2026-01-25 12:46
+# Full data in: PATTERNS.json
 
-system:
-  version: "1.0.0"
-  last_learned: "2026-01-23T23:50:00"  # First sejr completed!
-  total_patterns: 3
+system_version: "1.0.0"
+last_learned: "2026-01-25 12:46"
+total_patterns: 14
 
-learned_patterns:
-  - pattern: "Manual execution når bash broken - brug Read/Write/Edit/Glob tools"
-    prevention: "Check if bash works BEFORE assuming commands will execute"
-    optimization: "Glob tool kan erstatte ls/find commands, Read kan læse git internals"
-    applied_count: 1
-    time_saved_total: "15 min"
-    confidence: 1.0
-    first_seen: "2026-01-23"
-    last_applied: "2026-01-23"
+# Top patterns (see PATTERNS.json for full list):
 
-  - pattern: "Sejr system forces completion - no NÆSTEN allowed"
-    prevention: "Use sejr template to track ALL phases systematically"
-    optimization: "VERIFY_STATUS.yaml prevents claiming done before 100%"
-    applied_count: 1
-    time_saved_total: "0 min"  # Quality gain, not time
-    confidence: 1.0
-    first_seen: "2026-01-23"
-    last_applied: "2026-01-23"
-
-  - pattern: "3 alternatives in PHASE 0 reveals best solution"
-    prevention: "Always research external + internal before building"
-    optimization: "Internal search (Rule -28) had exact solution already documented"
-    applied_count: 1
-    time_saved_total: "30 min"  # Avoided reinventing wheel
-    confidence: 0.9
-    first_seen: "2026-01-23"
-    last_applied: "2026-01-23"
-# Format når patterns tilføjes:
-# - pattern: "Description of pattern observed"
-#   prevention: "How to prevent the problem"
-#   optimization: "How to optimize based on learning"
-#   applied_count: 0
-#   time_saved_total: "0 min"
-#   confidence: 0.0  # 0.0-1.0
-#   first_seen: "YYYY-MM-DD"
-#   last_applied: null
-
-# Eksempel pattern (vil blive tilføjet når data findes):
-# - pattern: "Always forget to commit before push"
-#   prevention: "Auto-check git status before push command"
-#   optimization: "Git hook that blocks push if uncommitted changes"
-#   applied_count: 3
-#   time_saved_total: "15 min"
-#   confidence: 0.9
-#   first_seen: "2026-01-23"
-#   last_applied: "2026-01-25"
-
-common_blockers:
-  - blocker: "Bash environment completely broken - exit code 1 on all commands"
-    frequency: 1
-    avg_resolution_time: "0 min"  # Workaround found immediately
-    first_seen: "2026-01-23"
-    last_seen: "2026-01-23"
-    solutions:
-      - "Use Read tool to read git internals (.git/logs/HEAD, .git/refs/)"
-      - "Use Glob tool instead of ls/find commands"
-      - "Use Write/Edit tools instead of bash scripts"
-      - "Pattern documented in PATTERNS.yaml for future reference"
-
-optimization_opportunities:
-  - opportunity: "Fix bash environment to enable automated git commands"
-    potential_time_save: "5 min per sejr"
-    implementation_effort: "high"  # DO IT NOW - fix systemctl --user or find root cause
-    priority: "high"  # DO IT NOW
-    blocked_by: "Unknown systemctl --user issue"
-    next_action: "Debug why all bash commands return exit 1"
-
-  - opportunity: "Create auto_archive.py script to automate LAG 5 archiving"
-    potential_time_save: "3 min per sejr"
-    implementation_effort: "medium"  # DO IT SOON
-    priority: "medium"  # DO IT SOON
-    blocked_by: null
-    next_action: "Build script that extracts conclusion and moves to 90_ARCHIVE/"
-
-  - opportunity: "Create auto_predict.py script to automate LAG 6 predictions"
-    potential_time_save: "2 min per sejr"
-    implementation_effort: "low"  # MUST DO BEFORE FINISH
-    priority: "low"  # MUST DO BEFORE FINISH
-    blocked_by: null
-    next_action: "Build script that reads PATTERNS.yaml and generates NEXT.md"
-
-statistics:
-  total_sejr_completed: 1
-  avg_completion_time: "15 min"
-  fastest_sejr: "GIT_CLEANUP_VERIFY_2026-01-23 (15 min)"
-  slowest_sejr: "GIT_CLEANUP_VERIFY_2026-01-23 (15 min)"
-  most_common_pattern: "Manual execution when bash broken"
-
-# Auto-updated by: scripts/auto_learn.py
-# Frequency: After each sejr completion
-# Purpose: Self-improving DNA layer (layer 4)
+# - SUCCESS RATE: 9/11 sejr opnår GRAND ADMIRAL (81%)...
+# - BUG LÆRT: auto_learn.py fejlede fordi den ledte efter SEJR_L...
+# - WORKFLOW: 1. **PROJECT_BRIEF.md er essentiel** - En model sk...
+# - TOOL: 1. **Centraliseret script execution** via executor.py ...
+# - TOOL: 1. Ved arkitekturændringer (f.eks. filnavne) → grep AL...
