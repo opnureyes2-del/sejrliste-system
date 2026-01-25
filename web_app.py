@@ -3,10 +3,17 @@
 SEJRLISTE VISUAL APP - ADMIRAL DESIGN
 Matching the plan: 3-panel layout + live AUTO_LOG stream
 Built for Rasmus by Kv1nt
+
+FEATURES:
+- Auto-refresh every 5 seconds
+- Session timer (how long working)
+- 3-panel layout
+- Live AUTO_LOG stream
+- 7 DNA layers display
 """
 import streamlit as st
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timedelta
 import re
 import subprocess
 import json
@@ -18,6 +25,7 @@ ACTIVE_DIR = SYSTEM_PATH / "10_ACTIVE"
 ARCHIVE_DIR = SYSTEM_PATH / "90_ARCHIVE"
 SCRIPTS_DIR = SYSTEM_PATH / "scripts"
 CURRENT_DIR = SYSTEM_PATH / "_CURRENT"
+APP_DIR = SYSTEM_PATH / "app"
 
 st.set_page_config(
     page_title="Sejrliste Visual System",
@@ -25,6 +33,27 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
+
+# === SESSION STATE INIT ===
+if 'session_start' not in st.session_state:
+    st.session_state.session_start = datetime.now()
+if 'auto_refresh' not in st.session_state:
+    st.session_state.auto_refresh = True
+if 'last_refresh' not in st.session_state:
+    st.session_state.last_refresh = datetime.now()
+
+# === SESSION TIMER FUNCTION ===
+def get_session_duration() -> str:
+    """Returns formatted session duration"""
+    delta = datetime.now() - st.session_state.session_start
+    hours, remainder = divmod(int(delta.total_seconds()), 3600)
+    minutes, seconds = divmod(remainder, 60)
+    if hours > 0:
+        return f"{hours}h {minutes}m {seconds}s"
+    elif minutes > 0:
+        return f"{minutes}m {seconds}s"
+    else:
+        return f"{seconds}s"
 
 # === HELPER FUNCTIONS ===
 
@@ -132,9 +161,35 @@ def run_script(script_name: str, args: list = None) -> str:
     except Exception as e:
         return f"Error: {str(e)}"
 
+# === AUTO-REFRESH (JavaScript) ===
+if st.session_state.auto_refresh:
+    st.markdown(
+        """
+        <script>
+            setTimeout(function(){
+                window.location.reload();
+            }, 5000);
+        </script>
+        """,
+        unsafe_allow_html=True
+    )
+
 # === CUSTOM CSS ===
 st.markdown("""
 <style>
+    .session-timer {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        background: #1a1a2e;
+        color: #4da6ff;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-family: monospace;
+        font-size: 0.9rem;
+        z-index: 9999;
+        border: 1px solid #333;
+    }
     .main-header {
         font-size: 2.5rem;
         font-weight: bold;
@@ -188,6 +243,10 @@ st.markdown("""
 # === HEADER ===
 st.markdown('<div class="main-header">🏆 SEJRLISTE VISUAL SYSTEM</div>', unsafe_allow_html=True)
 
+# === SESSION TIMER DISPLAY ===
+session_time = get_session_duration()
+st.markdown(f'<div class="session-timer">⏱️ Session: {session_time}</div>', unsafe_allow_html=True)
+
 # Quick stats row
 col1, col2, col3, col4, col5 = st.columns(5)
 active_count = len([f for f in ACTIVE_DIR.iterdir() if f.is_dir()]) if ACTIVE_DIR.exists() else 0
@@ -218,8 +277,17 @@ st.divider()
 with st.sidebar:
     st.title("⚙️ Actions")
 
-    if st.button("🔄 Refresh", use_container_width=True):
+    # Auto-refresh toggle
+    st.session_state.auto_refresh = st.toggle("🔄 Auto-Refresh (5s)", value=st.session_state.auto_refresh)
+
+    if st.button("🔄 Manual Refresh", use_container_width=True):
         st.rerun()
+
+    st.divider()
+
+    # Session info
+    st.write(f"⏱️ **Session:** {get_session_duration()}")
+    st.write(f"🕐 **Started:** {st.session_state.session_start.strftime('%H:%M:%S')}")
 
     st.divider()
 

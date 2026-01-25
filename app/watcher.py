@@ -1,144 +1,100 @@
 #!/usr/bin/env python3
 """
-File Watcher for Sejrliste System
-Monitors changes to key files and triggers updates
-
-Watches:
-- 10_ACTIVE/*/SEJR_LISTE.md
-- 10_ACTIVE/*/STATUS.yaml
-- 10_ACTIVE/*/AUTO_LOG.jsonl
-- _CURRENT/STATE.md
-- _CURRENT/PATTERNS.yaml
-- _CURRENT/NEXT.md
+FILE WATCHER - Real-time file monitoring for Sejrliste
+Watches key files and triggers updates
 """
-
 import time
 from pathlib import Path
+from typing import Dict, Callable
 from datetime import datetime
+import hashlib
 
-try:
-    from watchdog.observers import Observer
-    from watchdog.events import FileSystemEventHandler
-    WATCHDOG_AVAILABLE = True
-except ImportError:
-    WATCHDOG_AVAILABLE = False
+class FileWatcher:
+    """Watches files for changes and triggers callbacks"""
 
-
-class SejrFileHandler(FileSystemEventHandler):
-    """Handle file system events for sejrliste files."""
-
-    def __init__(self, callback=None):
-        self.callback = callback
-        self.last_event_time = {}
-
-    def on_modified(self, event):
-        if event.is_directory:
-            return
-
-        path = Path(event.src_path)
-
-        # Debounce: ignore events within 1 second of each other
-        now = time.time()
-        if path in self.last_event_time:
-            if now - self.last_event_time[path] < 1.0:
-                return
-
-        self.last_event_time[path] = now
-
-        # Check if it's a file we care about
-        watched_patterns = [
-            "SEJR_LISTE.md",
-            "STATUS.yaml",
-            "AUTO_LOG.jsonl",
-            "STATE.md",
-            "PATTERNS.yaml",
-            "NEXT.md",
-        ]
-
-        if path.name in watched_patterns:
-            print(f"[{datetime.now().strftime('%H:%M:%S')}] Changed: {path.name}")
-            if self.callback:
-                self.callback(path)
-
-    def on_created(self, event):
-        if event.is_directory:
-            return
-
-        path = Path(event.src_path)
-        print(f"[{datetime.now().strftime('%H:%M:%S')}] Created: {path.name}")
-        if self.callback:
-            self.callback(path)
-
-
-class SejrWatcher:
-    """Watch sejrliste system for changes."""
-
-    def __init__(self, system_path: Path, callback=None):
+    def __init__(self, system_path: Path):
         self.system_path = system_path
-        self.callback = callback
-        self.observer = None
+        self.watched_files: Dict[str, str] = {}  # path -> last_hash
+        self.callbacks: Dict[str, Callable] = {}
+        self.last_check = datetime.now()
 
-    def start(self):
-        """Start watching for file changes."""
-        if not WATCHDOG_AVAILABLE:
-            print("Warning: watchdog not installed. File watching disabled.")
-            print("Install with: pip install watchdog")
+        # Files to watch (from plan)
+        self.watch_patterns = {
+            "10_ACTIVE/*/SEJR_LISTE.md": "update_task_list",
+            "10_ACTIVE/*/STATUS.yaml": "update_progress",
+            "10_ACTIVE/*/AUTO_LOG.jsonl": "append_log_stream",
+            "_CURRENT/STATE.md": "refresh_overview",
+            "_CURRENT/PATTERNS.yaml": "update_patterns",
+            "_CURRENT/NEXT.md": "update_predictions",
+        }
+
+    def get_file_hash(self, filepath: Path) -> str:
+        """Get MD5 hash of file content"""
+        if filepath.exists():
+            content = filepath.read_bytes()
+            return hashlib.md5(content).hexdigest()
+        return ""
+
+    def register_callback(self, name: str, callback: Callable) -> None:
+        """Register callback function for file changes"""
+        self.callbacks[name] = callback
+
+    def check_file(self, filepath: Path, callback_name: str) -> bool:
+        """Check single file for changes"""
+        current_hash = self.get_file_hash(filepath)
+        str_path = str(filepath)
+
+        if str_path not in self.watched_files:
+            self.watched_files[str_path] = current_hash
             return False
 
-        self.observer = Observer()
-        handler = SejrFileHandler(callback=self.callback)
+        if current_hash != self.watched_files[str_path]:
+            self.watched_files[str_path] = current_hash
+            if callback_name in self.callbacks:
+                self.callbacks[callback_name](filepath)
+            return True
 
-        # Watch active sejr folder
-        active_dir = self.system_path / "10_ACTIVE"
-        if active_dir.exists():
-            self.observer.schedule(handler, str(active_dir), recursive=True)
+        return False
 
-        # Watch _CURRENT folder
-        current_dir = self.system_path / "_CURRENT"
-        if current_dir.exists():
-            self.observer.schedule(handler, str(current_dir), recursive=False)
+    def check_all(self) -> list:
+        """Check all watched files for changes"""
+        changes = []
+        for pattern, callback_name in self.watch_patterns.items():
+            # Handle glob patterns
+            if "*" in pattern:
+                for filepath in self.system_path.glob(pattern):
+                    if self.check_file(filepath, callback_name):
+                        changes.append((str(filepath), callback_name))
+            else:
+                filepath = self.system_path / pattern
+                if self.check_file(filepath, callback_name):
+                    changes.append((str(filepath), callback_name))
 
-        self.observer.start()
-        print(f"Watching: {self.system_path}")
-        return True
+        self.last_check = datetime.now()
+        return changes
 
-    def stop(self):
-        """Stop watching."""
-        if self.observer:
-            self.observer.stop()
-            self.observer.join()
-
-
-def watch_and_print(system_path: Path):
-    """Simple watcher that prints changes."""
-
-    def on_change(path):
-        print(f"  → File changed: {path}")
-
-    watcher = SejrWatcher(system_path, callback=on_change)
-
-    if not watcher.start():
-        return
-
-    print("Press Ctrl+C to stop watching...")
-    try:
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        print("\nStopping watcher...")
-        watcher.stop()
+    def get_status(self) -> dict:
+        """Get watcher status"""
+        return {
+            "files_watched": len(self.watched_files),
+            "callbacks_registered": len(self.callbacks),
+            "last_check": self.last_check.isoformat(),
+        }
 
 
-if __name__ == "__main__":
-    import argparse
+def create_watcher(system_path: Path) -> FileWatcher:
+    """Factory function to create configured watcher"""
+    watcher = FileWatcher(system_path)
 
-    parser = argparse.ArgumentParser(description="Watch sejrliste for changes")
-    parser.add_argument("--path", default=None, help="Path to sejrliste system")
-    args = parser.parse_args()
+    # Default callbacks (just log for now)
+    def log_change(filepath):
+        print(f"[WATCHER] File changed: {filepath}")
 
-    if args.path:
-        system_path = Path(args.path)
-    else:
-        system_path = Path(__file__).parent.parent
+    watcher.register_callback("update_task_list", log_change)
+    watcher.register_callback("update_progress", log_change)
+    watcher.register_callback("append_log_stream", log_change)
+    watcher.register_callback("refresh_overview", log_change)
+    watcher.register_callback("update_patterns", log_change)
+    watcher.register_callback("update_predictions", log_change)
 
-    watch_and_print(system_path)
+    return watcher
