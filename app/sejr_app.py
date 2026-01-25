@@ -17,6 +17,14 @@ import re
 from pathlib import Path
 from datetime import datetime
 
+# Import our executor and dna_status modules
+try:
+    from app.executor import ScriptExecutor, get_executor
+    from app.widgets.dna_status import DNAStatusWidget, DNA_LAGS
+    EXECUTOR_AVAILABLE = True
+except ImportError:
+    EXECUTOR_AVAILABLE = False
+
 try:
     from textual.app import App, ComposeResult
     from textual.containers import Container, Horizontal, Vertical, ScrollableContainer
@@ -238,7 +246,7 @@ if TEXTUAL_AVAILABLE:
 
 
     class DNAStatusPanel(Static):
-        """Shows 7 DNA lag status."""
+        """Shows 7 DNA lag status with execution indicators."""
 
         def __init__(self, data: SejrData, **kwargs):
             super().__init__(**kwargs)
@@ -250,19 +258,37 @@ if TEXTUAL_AVAILABLE:
         def get_dna_text(self) -> str:
             text = "═══ 7 DNA LAG ═══\n\n"
 
+            # Get the dna_widget from parent app if available
+            dna_widget = None
+            try:
+                dna_widget = self.app.dna_widget
+            except:
+                pass
+
             dna_layers = [
-                ("1", "SELF-AWARE", "DNA.yaml"),
-                ("2", "SELF-DOCUMENTING", "AUTO_LOG.jsonl"),
-                ("3", "SELF-VERIFYING", "auto_verify.py"),
-                ("4", "SELF-IMPROVING", "PATTERNS.yaml"),
-                ("5", "SELF-ARCHIVING", "auto_archive.py"),
-                ("6", "PREDICTIVE", "NEXT.md"),
-                ("7", "SELF-OPTIMIZING", "PHASE 0"),
+                ("1", "SELF-AWARE", "DNA.yaml", None),
+                ("2", "SELF-DOCUMENTING", "AUTO_LOG.jsonl", None),
+                ("3", "SELF-VERIFYING", "(v) verify", "auto_verify"),
+                ("4", "SELF-IMPROVING", "(l) learn", "auto_learn"),
+                ("5", "SELF-ARCHIVING", "(a) archive", "auto_archive"),
+                ("6", "PREDICTIVE", "(p) predict", "auto_predict"),
+                ("7", "SELF-OPTIMIZING", "(n) new", "generate_sejr"),
             ]
 
-            for num, name, component in dna_layers:
-                text += f"[{num}] {name}\n"
-                text += f"    └─ {component}\n"
+            for num, name, component, script in dna_layers:
+                # Get status indicator
+                indicator = "[ ]"
+                if dna_widget:
+                    status = dna_widget.get_status(int(num))
+                    if status == "running":
+                        indicator = "[*]"
+                    elif status == "complete":
+                        indicator = "[OK]"
+                    elif status == "error":
+                        indicator = "[!]"
+
+                text += f"{indicator} Lag {num}: {name}\n"
+                text += f"       └─ {component}\n"
 
             return text
 
@@ -359,6 +385,7 @@ if TEXTUAL_AVAILABLE:
             Binding("v", "verify", "Verify"),
             Binding("a", "archive", "Archive"),
             Binding("p", "predict", "Predict"),
+            Binding("l", "learn", "Learn"),
             Binding("r", "refresh", "Refresh"),
         ]
 
@@ -366,6 +393,8 @@ if TEXTUAL_AVAILABLE:
             super().__init__()
             self.system_path = system_path
             self.data = SejrData(system_path)
+            self.executor = ScriptExecutor(system_path) if EXECUTOR_AVAILABLE else None
+            self.dna_widget = DNAStatusWidget() if EXECUTOR_AVAILABLE else None
 
         def compose(self) -> ComposeResult:
             yield Header(show_clock=True)
@@ -388,21 +417,39 @@ if TEXTUAL_AVAILABLE:
             self.notify("Use: python scripts/generate_sejr.py --name 'Name'")
 
         def action_verify(self):
-            """Run verification."""
-            self.notify("Running auto_verify.py...")
-            import subprocess
-            result = subprocess.run(
-                ["python3", str(self.system_path / "scripts" / "auto_verify.py"), "--all"],
-                capture_output=True, text=True, timeout=30
-            )
-            self.action_refresh()
-            if result.returncode == 0:
-                self.notify("Verification complete!")
+            """Run verification (DNA Lag 3)."""
+            self.notify("Running auto_verify.py (DNA Lag 3)...")
+            if self.dna_widget:
+                self.dna_widget.set_active(3)
+                self.query_one("#dna-panel", DNAStatusPanel).refresh_dna()
+
+            if self.executor:
+                success, output = self.executor.run_script("auto_verify", ["--all"])
+                if self.dna_widget:
+                    if success:
+                        self.dna_widget.set_complete(3)
+                    else:
+                        self.dna_widget.set_error(3)
+                self.action_refresh()
+                if success:
+                    self.notify("Verification complete!")
+                else:
+                    self.notify(f"Error: {output[:100]}")
             else:
-                self.notify(f"Error: {result.stderr[:100]}")
+                # Fallback without executor
+                import subprocess
+                result = subprocess.run(
+                    ["python3", str(self.system_path / "scripts" / "auto_verify.py"), "--all"],
+                    capture_output=True, text=True, timeout=30
+                )
+                self.action_refresh()
+                if result.returncode == 0:
+                    self.notify("Verification complete!")
+                else:
+                    self.notify(f"Error: {result.stderr[:100]}")
 
         def action_archive(self):
-            """Archive current sejr."""
+            """Archive current sejr (DNA Lag 5)."""
             sejr_list = self.data.get_active_sejr()
             if not sejr_list:
                 self.notify("No active sejr to archive")
@@ -413,32 +460,97 @@ if TEXTUAL_AVAILABLE:
                 self.notify("Cannot archive - 3-pass not complete")
                 return
 
-            self.notify(f"Archiving {sejr['name']}...")
-            import subprocess
-            result = subprocess.run(
-                ["python3", str(self.system_path / "scripts" / "auto_archive.py"),
-                 "--sejr", sejr['name']],
-                capture_output=True, text=True, timeout=30
-            )
-            self.action_refresh()
-            if result.returncode == 0:
-                self.notify("Archived!")
+            self.notify(f"Archiving {sejr['name']} (DNA Lag 5)...")
+            if self.dna_widget:
+                self.dna_widget.set_active(5)
+                self.query_one("#dna-panel", DNAStatusPanel).refresh_dna()
+
+            if self.executor:
+                success, output = self.executor.run_script("auto_archive", ["--sejr", sejr['name']])
+                if self.dna_widget:
+                    if success:
+                        self.dna_widget.set_complete(5)
+                    else:
+                        self.dna_widget.set_error(5)
+                self.action_refresh()
+                if success:
+                    self.notify("Archived!")
+                else:
+                    self.notify(f"Error: {output[:100]}")
             else:
-                self.notify(f"Error: {result.stderr[:100]}")
+                import subprocess
+                result = subprocess.run(
+                    ["python3", str(self.system_path / "scripts" / "auto_archive.py"),
+                     "--sejr", sejr['name']],
+                    capture_output=True, text=True, timeout=30
+                )
+                self.action_refresh()
+                if result.returncode == 0:
+                    self.notify("Archived!")
+                else:
+                    self.notify(f"Error: {result.stderr[:100]}")
 
         def action_predict(self):
-            """Generate predictions."""
-            self.notify("Generating predictions...")
-            import subprocess
-            result = subprocess.run(
-                ["python3", str(self.system_path / "scripts" / "auto_predict.py")],
-                capture_output=True, text=True, timeout=30
-            )
-            self.action_refresh()
-            if result.returncode == 0:
-                self.notify("Predictions generated!")
+            """Generate predictions (DNA Lag 6)."""
+            self.notify("Generating predictions (DNA Lag 6)...")
+            if self.dna_widget:
+                self.dna_widget.set_active(6)
+                self.query_one("#dna-panel", DNAStatusPanel).refresh_dna()
+
+            if self.executor:
+                success, output = self.executor.run_script("auto_predict")
+                if self.dna_widget:
+                    if success:
+                        self.dna_widget.set_complete(6)
+                    else:
+                        self.dna_widget.set_error(6)
+                self.action_refresh()
+                if success:
+                    self.notify("Predictions generated!")
+                else:
+                    self.notify(f"Error: {output[:100]}")
             else:
-                self.notify(f"Error: {result.stderr[:100]}")
+                import subprocess
+                result = subprocess.run(
+                    ["python3", str(self.system_path / "scripts" / "auto_predict.py")],
+                    capture_output=True, text=True, timeout=30
+                )
+                self.action_refresh()
+                if result.returncode == 0:
+                    self.notify("Predictions generated!")
+                else:
+                    self.notify(f"Error: {result.stderr[:100]}")
+
+        def action_learn(self):
+            """Run pattern learning (DNA Lag 4)."""
+            self.notify("Learning patterns (DNA Lag 4)...")
+            if self.dna_widget:
+                self.dna_widget.set_active(4)
+                self.query_one("#dna-panel", DNAStatusPanel).refresh_dna()
+
+            if self.executor:
+                success, output = self.executor.run_script("auto_learn")
+                if self.dna_widget:
+                    if success:
+                        self.dna_widget.set_complete(4)
+                    else:
+                        self.dna_widget.set_error(4)
+                self.action_refresh()
+                if success:
+                    self.notify("Patterns learned!")
+                else:
+                    self.notify(f"Error: {output[:100]}")
+            else:
+                import subprocess
+                result = subprocess.run(
+                    ["python3", str(self.system_path / "scripts" / "auto_learn.py")],
+                    capture_output=True, text=True, timeout=30
+                )
+                self.action_refresh()
+                if result.returncode == 0:
+                    self.notify("Patterns learned!")
+                else:
+                    self.notify(f"Error: {result.stderr[:100]}")
 
 
 # ============================================================================
