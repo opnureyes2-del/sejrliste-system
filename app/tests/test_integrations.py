@@ -16,6 +16,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from app.integrations.context_sync import ContextSync
 from app.integrations.git_integration import GitIntegration
+from app.integrations.todo_sync import TodoSync
 
 
 class TestContextSync(unittest.TestCase):
@@ -121,14 +122,76 @@ class TestGitIntegration(unittest.TestCase):
         self.assertIn("Branch", rendered)
 
 
+class TestTodoSync(unittest.TestCase):
+    """Test cases for TodoSync (PASS 2)."""
+
+    def setUp(self):
+        """Set up test fixtures."""
+        self.system_path = Path("/home/rasmus/Desktop/sejrliste systemet")
+        self.sync = TodoSync(self.system_path)
+        # Find first active sejr
+        self.test_sejr = None
+        active_dir = self.system_path / "10_ACTIVE"
+        if active_dir.exists():
+            for folder in active_dir.iterdir():
+                if folder.is_dir() and not folder.name.startswith('.'):
+                    self.test_sejr = folder
+                    break
+
+    def test_init(self):
+        """Test TodoSync initialization."""
+        self.assertIsNotNone(self.sync.system_path)
+
+    def test_extract_todos(self):
+        """Test todo extraction from sejr."""
+        if self.test_sejr:
+            todos = self.sync.extract_todos_from_sejr(self.test_sejr)
+            self.assertIsInstance(todos, list)
+            if todos:
+                self.assertIn("content", todos[0])
+                self.assertIn("status", todos[0])
+
+    def test_get_current_phase(self):
+        """Test current phase detection."""
+        if self.test_sejr:
+            phase = self.sync.get_current_phase(self.test_sejr)
+            self.assertIn("phase", phase)
+            self.assertIn("pass", phase)
+
+    def test_get_completion_summary(self):
+        """Test completion summary."""
+        if self.test_sejr:
+            summary = self.sync.get_completion_summary(self.test_sejr)
+            self.assertIn("total", summary)
+            self.assertIn("completed", summary)
+            self.assertIn("percentage", summary)
+
+    def test_format_for_todowrite(self):
+        """Test TodoWrite format conversion."""
+        todos = [
+            {"content": "Test task", "status": "pending", "activeForm": "Testing"}
+        ]
+        formatted = self.sync.format_for_todowrite(todos)
+        self.assertEqual(len(formatted), 1)
+        self.assertEqual(formatted[0]["content"], "Test task")
+
+    def test_render_status(self):
+        """Test status rendering."""
+        if self.test_sejr:
+            rendered = self.sync.render_status(self.test_sejr)
+            self.assertIn("TODO SYNC STATUS", rendered)
+            self.assertIn("Current Pass", rendered)
+
+
 class TestIntegrationModule(unittest.TestCase):
     """Test cases for integration module imports."""
 
     def test_imports(self):
         """Test that all integrations import correctly."""
-        from app.integrations import ContextSync, GitIntegration
+        from app.integrations import ContextSync, GitIntegration, TodoSync
         self.assertIsNotNone(ContextSync)
         self.assertIsNotNone(GitIntegration)
+        self.assertIsNotNone(TodoSync)
 
 
 if __name__ == "__main__":
