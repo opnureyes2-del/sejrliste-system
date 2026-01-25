@@ -1,6 +1,6 @@
 # NEXT - Hvad Skal Ske Nu?
 
-**AI-Genereret:** 2026-01-25 02:56
+**AI-Genereret:** 2026-01-25 11:09
 **Baseret på:** Current state + Learned patterns
 
 ---
@@ -8,7 +8,7 @@
 ## NÆSTE SKRIDT (Prioriteret)
 
 ### 1. Continue with active sejr (🟡 Medium Prioritet)
-**Hvorfor:** 1 active project(s) in progress
+**Hvorfor:** 2 active project(s) in progress
 
 **Action:**
 ```bash

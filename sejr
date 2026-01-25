@@ -1,0 +1,125 @@
+#!/usr/bin/env python3
+"""
+SEJRLISTE DAILY LAUNCHER
+=========================
+
+USAGE:
+  ./sejr              # Show dashboard
+  ./sejr new "NAME"   # Create new sejr
+  ./sejr verify       # Run verification
+  ./sejr status       # Quick status
+  ./sejr app          # Launch TUI app
+
+ADMIRAL NIVEAU - Alt i én kommando
+"""
+
+import sys
+import subprocess
+from pathlib import Path
+
+SYSTEM_PATH = Path(__file__).parent
+SCRIPTS_PATH = SYSTEM_PATH / "scripts"
+APP_PATH = SYSTEM_PATH / "app"
+
+
+def show_status():
+    """Quick status overview."""
+    # Count active/archived
+    active = list((SYSTEM_PATH / "10_ACTIVE").iterdir()) if (SYSTEM_PATH / "10_ACTIVE").exists() else []
+    active = [d for d in active if d.is_dir() and not d.name.startswith('.')]
+    archived = list((SYSTEM_PATH / "90_ARCHIVE").iterdir()) if (SYSTEM_PATH / "90_ARCHIVE").exists() else []
+    archived = [d for d in archived if d.is_dir()]
+
+    print()
+    print("=" * 60)
+    print("  🎯 SEJRLISTE SYSTEM")
+    print("=" * 60)
+    print()
+    print(f"  📂 Aktive:    {len(active)}")
+    print(f"  📦 Arkiveret: {len(archived)}")
+    print()
+
+    if active:
+        print("  ─── AKTIVE SEJR ───")
+        for sejr in active[:5]:  # Max 5
+            status_file = sejr / "STATUS.yaml"
+            status = "🔵"
+            if status_file.exists():
+                content = status_file.read_text()
+                if "can_archive: true" in content:
+                    status = "✅"
+            print(f"  {status} {sejr.name}")
+
+    print()
+    print("=" * 60)
+    print("  KOMMANDOER:")
+    print("    ./sejr new 'NAME'  - Opret ny sejr")
+    print("    ./sejr verify      - Verificer alle")
+    print("    ./sejr app         - Start TUI app")
+    print("=" * 60)
+    print()
+
+
+def create_new(name: str):
+    """Create new sejr."""
+    subprocess.run([
+        sys.executable,
+        str(SCRIPTS_PATH / "generate_sejr.py"),
+        "--name", name
+    ])
+
+
+def run_verify():
+    """Run verification on all."""
+    subprocess.run([
+        sys.executable,
+        str(SCRIPTS_PATH / "auto_verify.py"),
+        "--all"
+    ])
+
+
+def run_app():
+    """Launch the TUI app."""
+    subprocess.run([
+        sys.executable,
+        str(APP_PATH / "sejr_app.py")
+    ])
+
+
+def run_simple():
+    """Launch simple terminal view."""
+    subprocess.run([
+        sys.executable,
+        str(APP_PATH / "sejr_app.py"),
+        "--simple"
+    ])
+
+
+def main():
+    args = sys.argv[1:]
+
+    if not args:
+        show_status()
+        return
+
+    cmd = args[0].lower()
+
+    if cmd == "new" and len(args) >= 2:
+        create_new(args[1])
+    elif cmd == "verify":
+        run_verify()
+    elif cmd == "app":
+        run_app()
+    elif cmd == "simple":
+        run_simple()
+    elif cmd == "status":
+        show_status()
+    elif cmd == "help":
+        print(__doc__)
+    else:
+        print(f"Unknown command: {cmd}")
+        print("Try: ./sejr help")
+
+
+if __name__ == "__main__":
+    main()

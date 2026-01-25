@@ -78,24 +78,24 @@ def write_yaml_simple(filepath: Path, data: dict):
 
 def detect_current_pass(content: str) -> int:
     """Detect which pass is currently active based on checkbox completion."""
-    # Check Pass 1 completion (matches actual SEJR_LISTE.md format)
-    pass1_section = extract_section(content, "# PASS 1:", "PASS 1 REVIEW")
+    # Check Pass 1 completion (matches actual SEJR_LISTE.md format with emojis)
+    pass1_section = extract_section(content, "# 🥉 PASS 1:", "# 🔍 PASS 1 →")
     pass1_done, pass1_total = count_checkboxes(pass1_section)
 
     # Check Pass 1 Review
-    pass1_review = extract_section(content, "PASS 1 REVIEW", "# PASS 2:")
+    pass1_review = extract_section(content, "# 🔍 PASS 1 →", "# 🥈 PASS 2:")
     pass1_review_done, pass1_review_total = count_checkboxes(pass1_review)
 
     # Check Pass 2 completion
-    pass2_section = extract_section(content, "# PASS 2:", "PASS 2 REVIEW")
+    pass2_section = extract_section(content, "# 🥈 PASS 2:", "# 🔍 PASS 2 →")
     pass2_done, pass2_total = count_checkboxes(pass2_section)
 
     # Check Pass 2 Review
-    pass2_review = extract_section(content, "PASS 2 REVIEW", "# PASS 3:")
+    pass2_review = extract_section(content, "# 🔍 PASS 2 →", "# 🥇 PASS 3:")
     pass2_review_done, pass2_review_total = count_checkboxes(pass2_review)
 
     # Check Pass 3 completion
-    pass3_section = extract_section(content, "# PASS 3:", "SEMANTISK KONKLUSION")
+    pass3_section = extract_section(content, "# 🥇 PASS 3:", "# 📦 SEMANTISK KONKLUSION")
     pass3_done, pass3_total = count_checkboxes(pass3_section)
 
     # Determine current pass
@@ -171,8 +171,8 @@ def verify_pass_progress(sejr_path: Path) -> dict:
         "can_archive": False,
     }
 
-    # Pass 1 analysis (matches actual SEJR_LISTE.md format)
-    pass1_content = extract_section(content, "# PASS 1:", "PASS 1 REVIEW")
+    # Pass 1 analysis (matches actual SEJR_LISTE.md format with emojis)
+    pass1_content = extract_section(content, "# 🥉 PASS 1:", "# 🔍 PASS 1 →")
     p1_done, p1_total = count_checkboxes(pass1_content)
     p1_score = extract_score(content, 1)
     results["pass_1"] = {
@@ -184,7 +184,7 @@ def verify_pass_progress(sejr_path: Path) -> dict:
     }
 
     # Pass 2 analysis
-    pass2_content = extract_section(content, "# PASS 2:", "PASS 2 REVIEW")
+    pass2_content = extract_section(content, "# 🥈 PASS 2:", "# 🔍 PASS 2 →")
     p2_done, p2_total = count_checkboxes(pass2_content)
     p2_score = extract_score(content, 2)
     results["pass_2"] = {
@@ -197,7 +197,7 @@ def verify_pass_progress(sejr_path: Path) -> dict:
     }
 
     # Pass 3 analysis
-    pass3_content = extract_section(content, "# PASS 3:", "SEMANTISK KONKLUSION")
+    pass3_content = extract_section(content, "# 🥇 PASS 3:", "# 📦 SEMANTISK KONKLUSION")
     p3_done, p3_total = count_checkboxes(pass3_content)
     p3_score = extract_score(content, 3)
     results["pass_3"] = {
@@ -210,7 +210,7 @@ def verify_pass_progress(sejr_path: Path) -> dict:
     }
 
     # Final verification check
-    final_section = extract_section(content, "PHASE 4: Final Verification", "PHASE 5:")
+    final_section = extract_section(content, "# ✅ FINAL VERIFICATION", "# 🏆 SEMANTISK KONKLUSION")
     final_done, final_total = count_checkboxes(final_section)
     results["final_verification"] = {
         "done": final_done,
