@@ -44,10 +44,31 @@ except ImportError:
 
 # FASE 5: Import Integrations
 try:
-    from app.integrations import ContextSync, GitIntegration, TodoSync
+    from app.integrations import ContextSync, GitIntegration, TodoSync, IntroHook
     INTEGRATIONS_AVAILABLE = True
 except ImportError:
     INTEGRATIONS_AVAILABLE = False
+
+# WATCHER INTEGRATION: Import file watcher
+try:
+    from app.watcher import SejrWatcher, WATCHDOG_AVAILABLE
+    WATCHER_AVAILABLE = WATCHDOG_AVAILABLE
+except ImportError:
+    WATCHER_AVAILABLE = False
+
+# SESSION CONTEXT: Import session management
+try:
+    from app.sessions import SejrSession, get_active_session, create_session
+    SESSIONS_AVAILABLE = True
+except ImportError:
+    SESSIONS_AVAILABLE = False
+
+# CONTEXT RULES: Import obligatoriske regler
+try:
+    from app.context import load_rules, load_constraints, get_model_for_task
+    CONTEXT_AVAILABLE = True
+except ImportError:
+    CONTEXT_AVAILABLE = False
 
 try:
     from textual.app import App, ComposeResult
@@ -461,10 +482,72 @@ if TEXTUAL_AVAILABLE:
             self.context_sync = ContextSync() if INTEGRATIONS_AVAILABLE else None
             self.todo_sync = TodoSync(system_path) if INTEGRATIONS_AVAILABLE else None
             self.git_integration = GitIntegration(system_path) if INTEGRATIONS_AVAILABLE else None
+            self.intro_hook = IntroHook() if INTEGRATIONS_AVAILABLE else None
+
+            # WATCHER INTEGRATION: File watcher for real-time updates
+            self.watcher = None
+            if WATCHER_AVAILABLE:
+                self.watcher = SejrWatcher(system_path, callback=self._on_file_change)
+
+            # SESSION CONTEXT: Load or create active session
+            self.active_session = None
+            if SESSIONS_AVAILABLE:
+                self.active_session = get_active_session()
+
+            # CONTEXT RULES: Load obligatoriske regler
+            self.sejr_rules = None
+            self.model_constraints = None
+            if CONTEXT_AVAILABLE:
+                self.sejr_rules = load_rules()
+                self.model_constraints = load_constraints()
 
             # Start session timer
             if self.session_timer:
                 self.session_timer.start()
+
+        def _on_file_change(self, path: Path):
+            """Called by watcher when a watched file changes."""
+            # Schedule refresh on main thread
+            self.call_from_thread(self._handle_file_change, path)
+
+        def _handle_file_change(self, path: Path):
+            """Handle file change on main thread."""
+            # Refresh relevant panel based on file changed
+            if path.name == "SEJR_LISTE.md" or path.name == "STATUS.yaml":
+                try:
+                    self.query_one("#sejr-panel", SejrListPanel).refresh_list()
+                    self.query_one("#status-panel", StatusPanel).refresh_status()
+                except:
+                    pass
+            elif path.name == "AUTO_LOG.jsonl":
+                try:
+                    self.query_one("#log-panel", LogStreamPanel).refresh_log()
+                except:
+                    pass
+            elif path.name in ["STATE.md", "PATTERNS.yaml", "NEXT.md"]:
+                try:
+                    self.query_one("#status-panel", StatusPanel).refresh_status()
+                except:
+                    pass
+
+            # Update session state if active
+            if self.active_session and SESSIONS_AVAILABLE:
+                try:
+                    self.active_session.log_progress("file_changed", {"file": path.name})
+                except:
+                    pass
+
+        async def on_mount(self):
+            """Called when app is mounted. Start watcher."""
+            if self.watcher:
+                started = self.watcher.start()
+                if started:
+                    self.notify("File watcher aktiv!")
+
+        async def on_unmount(self):
+            """Called when app is unmounted. Stop watcher."""
+            if self.watcher:
+                self.watcher.stop()
 
         def compose(self) -> ComposeResult:
             yield Header(show_clock=True)
@@ -555,6 +638,19 @@ if TEXTUAL_AVAILABLE:
                             })
                         except Exception as e:
                             pass  # Non-blocking
+
+                    # INTRO HOOK: Update INTRO folder on archive
+                    if self.intro_hook:
+                        try:
+                            self.intro_hook.on_sejr_archived({
+                                "name": sejr['name'],
+                                "score": sejr['total_score'],
+                                "rank": sejr['rank'],
+                                "learnings": f"Completed {sejr['checkboxes_total']} checkboxes",
+                                "archived_at": datetime.now().isoformat()
+                            })
+                        except Exception as e:
+                            pass  # Non-blocking
                     self.notify("Archived!")
                 else:
                     self.notify(f"Error: {output[:100]}")
@@ -574,6 +670,19 @@ if TEXTUAL_AVAILABLE:
                                 "name": sejr['name'],
                                 "score": sejr['total_score'],
                                 "rank": sejr['rank'],
+                                "archived_at": datetime.now().isoformat()
+                            })
+                        except Exception as e:
+                            pass  # Non-blocking
+
+                    # INTRO HOOK: Update INTRO folder on archive (fallback)
+                    if self.intro_hook:
+                        try:
+                            self.intro_hook.on_sejr_archived({
+                                "name": sejr['name'],
+                                "score": sejr['total_score'],
+                                "rank": sejr['rank'],
+                                "learnings": f"Completed {sejr['checkboxes_total']} checkboxes",
                                 "archived_at": datetime.now().isoformat()
                             })
                         except Exception as e:
@@ -662,6 +771,7 @@ def run_simple_view(system_path: Path):
 
     # FASE 5: Initialize integrations
     context_sync = ContextSync() if INTEGRATIONS_AVAILABLE else None
+    intro_hook = IntroHook() if INTEGRATIONS_AVAILABLE else None
 
     if session_timer:
         session_timer.start()
@@ -742,8 +852,11 @@ def run_simple_view(system_path: Path):
             print("\n" + "-" * 70)
             print("🔗 INTEGRATIONS:")
             print(f"   📝 Context Sync: {'✓' if context_sync else '✗'}")
+            print(f"   🪝 INTRO Hook: {'✓' if intro_hook else '✗'}")
             print(f"   🤖 Model Handler: {'✓' if MODEL_HANDLER_AVAILABLE else '✗'}")
             print(f"   🎨 Visual Polish: {'✓' if VISUAL_POLISH_AVAILABLE else '✗'}")
+            print(f"   👁️ Watcher: {'✓' if WATCHER_AVAILABLE else '✗'}")
+            print(f"   💾 Sessions: {'✓' if SESSIONS_AVAILABLE else '✗'}")
 
         # Commands
         print("\n" + f"{green}{'=' * 70}{reset}")
@@ -787,6 +900,20 @@ def run_simple_view(system_path: Path):
                             "archived_at": datetime.now().isoformat()
                         })
                         print(f"{green}✓ Journal updated{reset}")
+                    except Exception as e:
+                        pass
+
+                # INTRO HOOK: Update INTRO folder
+                if intro_hook and result.returncode == 0:
+                    try:
+                        intro_hook.on_sejr_archived({
+                            "name": sejr['name'],
+                            "score": sejr['total_score'],
+                            "rank": sejr['rank'],
+                            "learnings": f"Completed {sejr['checkboxes_total']} checkboxes",
+                            "archived_at": datetime.now().isoformat()
+                        })
+                        print(f"{green}✓ INTRO hook updated{reset}")
                     except Exception as e:
                         pass
             else:

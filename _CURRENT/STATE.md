@@ -1,36 +1,33 @@
 # CURRENT STATE - Hvor Er Vi NU?
 
-**Opdateret:** 2026-01-25 11:09
+**Opdateret:** 2026-01-25 11:11
 
 ---
 
 ## LIGE NU (Dette Øjeblik)
 
-**Arbejder på:** REAL_FUNCTIONALITY_TEST_2026-01-25
-**Næste skridt:** Start or continue sejr
+**Arbejder på:** No active sejr
+**Næste skridt:** Generate new sejr liste
 **Blokkeret af:** INTET - Check verify status for details
 
 ---
 
-## ACTIVE SEJR LISTER (2)
+## ACTIVE SEJR LISTER (0)
 
-### ❓ REAL_FUNCTIONALITY_TEST_2026-01-25
-**Status:** pass_1_in_progress
-**Progress:** 0%
-**Path:** `/home/rasmus/Desktop/sejrliste systemet/10_ACTIVE/REAL_FUNCTIONALITY_TEST_2026-01-25`
+*Ingen aktive sejr lister*
 
-### ❓ FIX_SEJRLISTE_FUNCTIONALITY_2026-01-25
-**Status:** pass_1_in_progress
-**Progress:** 0%
-**Path:** `/home/rasmus/Desktop/sejrliste systemet/10_ACTIVE/FIX_SEJRLISTE_FUNCTIONALITY_2026-01-25`
+**Start ny sejr:**
+```bash
+python scripts/generate_sejr.py --name "Your Project Name"
+```
 
 ---
 
 ## QUICK RESUME (3 Linjer)
 
-2 aktive sejr liste(r) med gennemsnitlig 0% completion.
-Kan fortsætte ved at: Åbn SEJR_LISTE.md i aktivt sejr → Udfyld phases →
-Run auto_verify.py → Archive når 100% complete.
+Sejr Liste System operationelt og klar til brug.
+Start med: python scripts/generate_sejr.py --name "Project Name"
+Derefter: Arbejd gennem SEJR_LISTE.md phases → Verify → Archive.
 
 ---
 

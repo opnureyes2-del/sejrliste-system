@@ -1,0 +1,163 @@
+# MODEL CONSTRAINTS - Token Budgets & Model Routing
+# =================================================
+# Formål: Definerer token limits og model valg per DNA lag
+# Håndhævelse: OBLIGATORISK - Budgets er IKKE vejledende
+
+# MODEL ROUTING (Automatisk Valg)
+# --------------------------------
+# Hver opgavetype har en optimal model
+
+model_routing:
+  # Komplekse opgaver → Opus (dyb tænkning)
+  architecture: "claude-opus-4-5-20251101"
+  planning: "claude-opus-4-5-20251101"
+  complex_decisions: "claude-opus-4-5-20251101"
+  pattern_analysis: "claude-opus-4-5-20251101"
+  research: "claude-opus-4-5-20251101"
+
+  # Implementation → Sonnet (kode-fokus)
+  code_writing: "claude-sonnet-4-20250514"
+  file_editing: "claude-sonnet-4-20250514"
+  refactoring: "claude-sonnet-4-20250514"
+  documentation: "claude-sonnet-4-20250514"
+
+  # Quick tasks → Haiku (hurtig + billig)
+  verification: "claude-haiku"
+  simple_checks: "claude-haiku"
+  formatting: "claude-haiku"
+  logging: "claude-haiku"
+
+# TOKEN BUDGETS PER DNA LAG
+# --------------------------
+# Hvert lag har et max token forbrug
+
+token_budgets:
+  # Lag 1: SELF-AWARE (Passiv metadata)
+  lag_1_aware: 0  # Ingen model calls - ren fil-læsning
+
+  # Lag 2: SELF-DOCUMENTING (Quick logging)
+  lag_2_documenting:
+    model: "claude-haiku"
+    max_tokens: 500
+    purpose: "Auto-log handlinger til AUTO_LOG.jsonl"
+
+  # Lag 3: SELF-VERIFYING (Tests og checks)
+  lag_3_verifying:
+    model: "claude-haiku"
+    max_tokens: 1000
+    purpose: "Kør verify commands, tæl checkboxes"
+
+  # Lag 4: SELF-IMPROVING (Pattern analysis)
+  lag_4_improving:
+    model: "claude-opus-4-5-20251101"
+    max_tokens: 3000
+    purpose: "Analysér hvad vi lærte, opdatér PATTERNS.yaml"
+
+  # Lag 5: SELF-ARCHIVING (Semantic extraction)
+  lag_5_archiving:
+    model: "claude-sonnet-4-20250514"
+    max_tokens: 1500
+    purpose: "Ekstrahér CONCLUSION.md, bevar essens"
+
+  # Lag 6: PREDICTIVE (Next steps generation)
+  lag_6_predictive:
+    model: "claude-opus-4-5-20251101"
+    max_tokens: 2000
+    purpose: "Generér NEXT.md baseret på patterns + state"
+
+  # Lag 7: SELF-OPTIMIZING (Research 3 alternatives)
+  lag_7_optimizing:
+    model: "claude-opus-4-5-20251101"
+    max_tokens: 4000
+    purpose: "External search + Internal search + 3 alternativer"
+
+# PHASE BUDGETS (Inden for Sejr)
+# -------------------------------
+
+phase_budgets:
+  phase_0_optimization:
+    model: "claude-opus-4-5-20251101"
+    max_tokens: 4000
+    description: "Research 3 alternativer, decision rationale"
+
+  phase_1_planning:
+    model: "claude-opus-4-5-20251101"
+    max_tokens: 3000
+    description: "Arkitektur, design, opdeling"
+
+  phase_2_development:
+    model: "claude-sonnet-4-20250514"
+    max_tokens: 10000
+    description: "Kode implementation (største budget)"
+
+  phase_3_verification:
+    model: "claude-haiku"
+    max_tokens: 2000
+    description: "Tests, verification, fixes"
+
+  phase_4_git:
+    model: "claude-sonnet-4-20250514"
+    max_tokens: 1000
+    description: "Commits, documentation"
+
+# ENFORCEMENT RULES
+# ------------------
+
+enforcement:
+  # Ved budget overskridelse
+  on_budget_exceeded:
+    action: "STOP"
+    message: "Token budget overskredet for {lag/phase}. Rapportér til bruger."
+    auto_continue: false
+
+  # Ved fokus tab
+  on_focus_lost:
+    action: "RE-READ"
+    message: "Fokus mistet. Læs SEJR_RULES.md igen."
+    file: "app/context/SEJR_RULES.md"
+
+  # Ved compaction forsøg
+  on_compaction_attempt:
+    action: "FORBIDDEN"
+    message: "Auto-compaction er FORBUDT. Brug semantisk arkivering i stedet."
+    alternative: "scripts/auto_archive.py"
+
+  # Ved phase skip forsøg
+  on_phase_skip:
+    action: "BLOCK"
+    message: "Kan ikke skippe til {target_phase}. Færdiggør {current_phase} først."
+
+# TOTAL SESSION BUDGET
+# ---------------------
+
+session_limits:
+  max_tokens_per_sejr: 50000
+  max_tokens_per_session: 100000
+  warning_threshold: 0.8  # Advar ved 80%
+
+  on_limit_reached:
+    action: "PAUSE"
+    message: "Session token limit nået. Gem progress og fortsæt næste session."
+
+# METRICS TRACKING
+# -----------------
+
+track_metrics:
+  - tokens_used_per_lag
+  - tokens_used_per_phase
+  - total_tokens_this_sejr
+  - total_tokens_this_session
+  - efficiency_ratio  # (checkboxes completed / tokens used)
+
+output_file: "_CURRENT/METRICS.yaml"
+
+# NOTES
+# ------
+#
+# Disse constraints er designet til at:
+# 1. Forhindre token waste (Rule -8: TOKEN EFFICIENCY)
+# 2. Sikre fokus (Rule 3: ONE THING AT A TIME)
+# 3. Muliggøre vedholdenhed (Ingen auto-compact)
+# 4. Optimere model brug (Rigtig model til rigtig opgave)
+#
+# Ved spørgsmål: Læs planen i /home/rasmus/.claude/plans/gentle-drifting-kite.md
