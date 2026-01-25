@@ -1,8 +1,8 @@
 {
   "system": {
     "version": "1.0.0",
-    "last_learned": "2026-01-25 13:26",
-    "total_patterns": 14
+    "last_learned": "2026-01-25 14:18",
+    "total_patterns": 20
   },
   "learned_patterns": [
     {
@@ -142,6 +142,66 @@
       "applied_count": 0,
       "time_saved_total": "0 min",
       "confidence": 0.55,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "SUCCESS RATE: 11/14 sejr opnår GRAND ADMIRAL (78%)",
+      "prevention": "Bevar 3-pass system med obligatorisk review",
+      "optimization": "Fokusér på Pass 1 kvalitet for at reducere Pass 2-3 arbejde",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.98,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "REUSABLE TEMPLATE: 11 identificeret",
+      "prevention": "Check eksisterende Template før oprettelse af ny",
+      "optimization": "Katalogisér Template i 00_TEMPLATES/",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.85,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "REUSABLE SCRIPT: 11 identificeret",
+      "prevention": "Check eksisterende Script før oprettelse af ny",
+      "optimization": "Katalogisér Script i 00_TEMPLATES/",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.85,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "REUSABLE PATTERN: 11 identificeret",
+      "prevention": "Check eksisterende Pattern før oprettelse af ny",
+      "optimization": "Katalogisér Pattern i 00_TEMPLATES/",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.85,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "IMPROVEMENT FOCUS: error_handling forbedres i 5 sejr",
+      "prevention": "Inkludér error_handling fra Pass 1",
+      "optimization": "Brug error_handling checklist i template",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.8,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "FREQUENT ACTION: sejr_created (14x across sejr)",
+      "prevention": "Consider automating sejr_created",
+      "optimization": "Create script/hotkey for sejr_created",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.7000000000000001,
       "first_seen": "2026-01-25",
       "last_applied": null
     }
