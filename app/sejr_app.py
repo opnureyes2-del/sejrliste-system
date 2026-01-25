@@ -1,0 +1,596 @@
+#!/usr/bin/env python3
+"""
+Sejrliste Visual App - Main TUI Application
+Built with Textual framework
+
+Hotkeys:
+  n - New sejr
+  v - Verify current
+  a - Archive (if ready)
+  p - Generate predictions
+  r - Refresh all
+  q - Quit
+"""
+
+import json
+import re
+from pathlib import Path
+from datetime import datetime
+
+try:
+    from textual.app import App, ComposeResult
+    from textual.containers import Container, Horizontal, Vertical, ScrollableContainer
+    from textual.widgets import Header, Footer, Static, ProgressBar, Label, ListView, ListItem, Button
+    from textual.reactive import reactive
+    from textual.binding import Binding
+    TEXTUAL_AVAILABLE = True
+except ImportError:
+    TEXTUAL_AVAILABLE = False
+    print("Textual not installed. Run: pip install textual")
+
+
+# ============================================================================
+# YAML PARSER (No external dependencies)
+# ============================================================================
+
+def parse_yaml_simple(filepath: Path) -> dict:
+    """Parse simple YAML without PyYAML."""
+    if not filepath.exists():
+        return {}
+
+    result = {}
+    try:
+        content = filepath.read_text(encoding="utf-8")
+        for line in content.split("\n"):
+            if ":" in line and not line.strip().startswith("#"):
+                parts = line.split(":", 1)
+                if len(parts) == 2:
+                    key = parts[0].strip()
+                    value = parts[1].strip().strip('"').strip("'")
+                    if value.lower() == "true":
+                        value = True
+                    elif value.lower() == "false":
+                        value = False
+                    elif value == "null":
+                        value = None
+                    elif value.replace(".", "").replace("-", "").isdigit():
+                        value = float(value) if "." in value else int(value)
+                    result[key] = value
+    except:
+        pass
+    return result
+
+
+def count_checkboxes(content: str) -> tuple:
+    """Count checkboxes in content. Returns (checked, total)."""
+    checked = len(re.findall(r'- \[[xX]\]', content))
+    unchecked = len(re.findall(r'- \[ \]', content))
+    return checked, checked + unchecked
+
+
+# ============================================================================
+# DATA LOADERS
+# ============================================================================
+
+class SejrData:
+    """Load and manage sejrliste data."""
+
+    def __init__(self, system_path: Path):
+        self.system_path = system_path
+        self.active_dir = system_path / "10_ACTIVE"
+        self.archive_dir = system_path / "90_ARCHIVE"
+        self.current_dir = system_path / "_CURRENT"
+
+    def get_active_sejr(self) -> list:
+        """Get all active sejr with their status."""
+        if not self.active_dir.exists():
+            return []
+
+        sejr_list = []
+        for folder in self.active_dir.iterdir():
+            if not folder.is_dir() or folder.name.startswith('.'):
+                continue
+
+            status_file = folder / "STATUS.yaml"
+            sejr_file = folder / "SEJR_LISTE.md"
+
+            status = parse_yaml_simple(status_file) if status_file.exists() else {}
+
+            # Count checkboxes
+            if sejr_file.exists():
+                content = sejr_file.read_text(encoding="utf-8")
+                done, total = count_checkboxes(content)
+            else:
+                done, total = 0, 0
+
+            sejr_list.append({
+                "name": folder.name,
+                "path": folder,
+                "current_pass": status.get("current_pass", 1),
+                "can_archive": status.get("can_archive", False),
+                "checkboxes_done": done,
+                "checkboxes_total": total,
+                "total_score": status.get("score", 0),
+                "rank": status.get("rank", "KADET"),
+            })
+
+        return sejr_list
+
+    def get_archived_count(self) -> int:
+        """Count archived sejr."""
+        if not self.archive_dir.exists():
+            return 0
+        return len([d for d in self.archive_dir.iterdir() if d.is_dir()])
+
+    def get_patterns(self) -> list:
+        """Get learned patterns from PATTERNS.yaml."""
+        patterns_file = self.current_dir / "PATTERNS.yaml"
+        if not patterns_file.exists():
+            return []
+
+        data = parse_yaml_simple(patterns_file)
+        return data.get("patterns", [])
+
+    def get_predictions(self) -> str:
+        """Get predictions from NEXT.md."""
+        next_file = self.current_dir / "NEXT.md"
+        if not next_file.exists():
+            return "No predictions yet"
+
+        content = next_file.read_text(encoding="utf-8")
+        # Return first 500 chars
+        return content[:500] + "..." if len(content) > 500 else content
+
+    def get_recent_log(self, sejr_path: Path, limit: int = 10) -> list:
+        """Get recent log entries from AUTO_LOG.jsonl."""
+        log_file = sejr_path / "AUTO_LOG.jsonl"
+        if not log_file.exists():
+            return []
+
+        entries = []
+        with open(log_file, 'r') as f:
+            for line in f:
+                try:
+                    entries.append(json.loads(line))
+                except:
+                    pass
+
+        return entries[-limit:]
+
+
+# ============================================================================
+# TEXTUAL WIDGETS
+# ============================================================================
+
+if TEXTUAL_AVAILABLE:
+
+    class StatusPanel(Static):
+        """Shows overall system status."""
+
+        def __init__(self, data: SejrData, **kwargs):
+            super().__init__(**kwargs)
+            self.data = data
+
+        def compose(self) -> ComposeResult:
+            yield Static(self.get_status_text(), id="status-text")
+
+        def get_status_text(self) -> str:
+            sejr_list = self.data.get_active_sejr()
+            archived = self.data.get_archived_count()
+
+            text = "═══ SEJRLISTE SYSTEM ═══\n\n"
+            text += f"📂 Active: {len(sejr_list)}\n"
+            text += f"📦 Archived: {archived}\n"
+            text += f"🕐 Updated: {datetime.now().strftime('%H:%M:%S')}\n"
+
+            if sejr_list:
+                sejr = sejr_list[0]
+                text += f"\n─── Current Sejr ───\n"
+                text += f"📋 {sejr['name'][:30]}\n"
+                text += f"🔄 Pass: {sejr['current_pass']}/3\n"
+                text += f"✅ Done: {sejr['checkboxes_done']}/{sejr['checkboxes_total']}\n"
+                text += f"🎖️ Rank: {sejr['rank']}\n"
+
+                if sejr['can_archive']:
+                    text += f"\n✅ READY TO ARCHIVE"
+
+            return text
+
+        def refresh_status(self):
+            """Refresh the status display."""
+            self.query_one("#status-text", Static).update(self.get_status_text())
+
+
+    class SejrListPanel(Static):
+        """Shows active sejr with progress."""
+
+        def __init__(self, data: SejrData, **kwargs):
+            super().__init__(**kwargs)
+            self.data = data
+
+        def compose(self) -> ComposeResult:
+            yield Static(self.get_list_text(), id="sejr-list-text")
+
+        def get_list_text(self) -> str:
+            sejr_list = self.data.get_active_sejr()
+
+            text = "═══ ACTIVE SEJR ═══\n\n"
+
+            if not sejr_list:
+                text += "(no active sejr)\n\n"
+                text += "Press 'n' to create new"
+                return text
+
+            for sejr in sejr_list:
+                pct = (sejr['checkboxes_done'] / sejr['checkboxes_total'] * 100) if sejr['checkboxes_total'] > 0 else 0
+                bar = "█" * int(pct / 10) + "░" * (10 - int(pct / 10))
+
+                status_icon = "✅" if sejr['can_archive'] else "🔵"
+                text += f"{status_icon} {sejr['name'][:25]}\n"
+                text += f"   [{bar}] {pct:.0f}%\n"
+                text += f"   Pass {sejr['current_pass']}/3 | Score: {sejr['total_score']}\n\n"
+
+            return text
+
+        def refresh_list(self):
+            """Refresh the list display."""
+            self.query_one("#sejr-list-text", Static).update(self.get_list_text())
+
+
+    class DNAStatusPanel(Static):
+        """Shows 7 DNA lag status."""
+
+        def __init__(self, data: SejrData, **kwargs):
+            super().__init__(**kwargs)
+            self.data = data
+
+        def compose(self) -> ComposeResult:
+            yield Static(self.get_dna_text(), id="dna-text")
+
+        def get_dna_text(self) -> str:
+            text = "═══ 7 DNA LAG ═══\n\n"
+
+            dna_layers = [
+                ("1", "SELF-AWARE", "DNA.yaml"),
+                ("2", "SELF-DOCUMENTING", "AUTO_LOG.jsonl"),
+                ("3", "SELF-VERIFYING", "auto_verify.py"),
+                ("4", "SELF-IMPROVING", "PATTERNS.yaml"),
+                ("5", "SELF-ARCHIVING", "auto_archive.py"),
+                ("6", "PREDICTIVE", "NEXT.md"),
+                ("7", "SELF-OPTIMIZING", "PHASE 0"),
+            ]
+
+            for num, name, component in dna_layers:
+                text += f"[{num}] {name}\n"
+                text += f"    └─ {component}\n"
+
+            return text
+
+        def refresh_dna(self):
+            """Refresh the DNA display."""
+            self.query_one("#dna-text", Static).update(self.get_dna_text())
+
+
+    class LogStreamPanel(Static):
+        """Shows live log stream."""
+
+        def __init__(self, data: SejrData, **kwargs):
+            super().__init__(**kwargs)
+            self.data = data
+
+        def compose(self) -> ComposeResult:
+            yield Static(self.get_log_text(), id="log-text")
+
+        def get_log_text(self) -> str:
+            sejr_list = self.data.get_active_sejr()
+
+            text = "═══ AUTO_LOG STREAM ═══\n"
+
+            if not sejr_list:
+                text += "(no active sejr)"
+                return text
+
+            entries = self.data.get_recent_log(sejr_list[0]['path'], limit=5)
+
+            for entry in entries:
+                ts = entry.get('timestamp', 'unknown')[:19]
+                action = entry.get('action', 'unknown')
+                text += f"{ts} | {action}\n"
+
+            if not entries:
+                text += "(no log entries yet)"
+
+            return text
+
+        def refresh_log(self):
+            """Refresh the log display."""
+            self.query_one("#log-text", Static).update(self.get_log_text())
+
+
+    # ========================================================================
+    # MAIN APP
+    # ========================================================================
+
+    class SejrlisteApp(App):
+        """Main Sejrliste Visual App."""
+
+        CSS = """
+        Screen {
+            layout: grid;
+            grid-size: 3 2;
+            grid-gutter: 1;
+        }
+
+        .panel {
+            border: solid green;
+            padding: 1;
+            height: 100%;
+        }
+
+        #status-panel {
+            column-span: 1;
+        }
+
+        #sejr-panel {
+            column-span: 1;
+        }
+
+        #dna-panel {
+            column-span: 1;
+        }
+
+        #log-panel {
+            column-span: 3;
+            height: 8;
+        }
+
+        Header {
+            background: $primary;
+        }
+
+        Footer {
+            background: $primary;
+        }
+        """
+
+        BINDINGS = [
+            Binding("q", "quit", "Quit"),
+            Binding("n", "new_sejr", "New Sejr"),
+            Binding("v", "verify", "Verify"),
+            Binding("a", "archive", "Archive"),
+            Binding("p", "predict", "Predict"),
+            Binding("r", "refresh", "Refresh"),
+        ]
+
+        def __init__(self, system_path: Path):
+            super().__init__()
+            self.system_path = system_path
+            self.data = SejrData(system_path)
+
+        def compose(self) -> ComposeResult:
+            yield Header(show_clock=True)
+            yield StatusPanel(self.data, classes="panel", id="status-panel")
+            yield SejrListPanel(self.data, classes="panel", id="sejr-panel")
+            yield DNAStatusPanel(self.data, classes="panel", id="dna-panel")
+            yield LogStreamPanel(self.data, classes="panel", id="log-panel")
+            yield Footer()
+
+        def action_refresh(self):
+            """Refresh all panels."""
+            self.query_one("#status-panel", StatusPanel).refresh_status()
+            self.query_one("#sejr-panel", SejrListPanel).refresh_list()
+            self.query_one("#dna-panel", DNAStatusPanel).refresh_dna()
+            self.query_one("#log-panel", LogStreamPanel).refresh_log()
+            self.notify("Refreshed!")
+
+        def action_new_sejr(self):
+            """Create new sejr (placeholder)."""
+            self.notify("Use: python scripts/generate_sejr.py --name 'Name'")
+
+        def action_verify(self):
+            """Run verification."""
+            self.notify("Running auto_verify.py...")
+            import subprocess
+            result = subprocess.run(
+                ["python3", str(self.system_path / "scripts" / "auto_verify.py"), "--all"],
+                capture_output=True, text=True, timeout=30
+            )
+            self.action_refresh()
+            if result.returncode == 0:
+                self.notify("Verification complete!")
+            else:
+                self.notify(f"Error: {result.stderr[:100]}")
+
+        def action_archive(self):
+            """Archive current sejr."""
+            sejr_list = self.data.get_active_sejr()
+            if not sejr_list:
+                self.notify("No active sejr to archive")
+                return
+
+            sejr = sejr_list[0]
+            if not sejr['can_archive']:
+                self.notify("Cannot archive - 3-pass not complete")
+                return
+
+            self.notify(f"Archiving {sejr['name']}...")
+            import subprocess
+            result = subprocess.run(
+                ["python3", str(self.system_path / "scripts" / "auto_archive.py"),
+                 "--sejr", sejr['name']],
+                capture_output=True, text=True, timeout=30
+            )
+            self.action_refresh()
+            if result.returncode == 0:
+                self.notify("Archived!")
+            else:
+                self.notify(f"Error: {result.stderr[:100]}")
+
+        def action_predict(self):
+            """Generate predictions."""
+            self.notify("Generating predictions...")
+            import subprocess
+            result = subprocess.run(
+                ["python3", str(self.system_path / "scripts" / "auto_predict.py")],
+                capture_output=True, text=True, timeout=30
+            )
+            self.action_refresh()
+            if result.returncode == 0:
+                self.notify("Predictions generated!")
+            else:
+                self.notify(f"Error: {result.stderr[:100]}")
+
+
+# ============================================================================
+# FALLBACK: Rich-based simple view (if Textual not available)
+# ============================================================================
+
+def run_simple_view(system_path: Path):
+    """Simple terminal view - NO EXTERNAL DEPENDENCIES."""
+    import subprocess
+
+    data = SejrData(system_path)
+
+    def clear_screen():
+        print("\033[2J\033[H", end="")
+
+    def print_box(title: str, content: str, width: int = 60):
+        print("┌" + "─" * (width - 2) + "┐")
+        print(f"│ {title.center(width - 4)} │")
+        print("├" + "─" * (width - 2) + "┤")
+        for line in content.split("\n"):
+            print(f"│ {line[:width-4].ljust(width - 4)} │")
+        print("└" + "─" * (width - 2) + "┘")
+
+    def show_dashboard():
+        clear_screen()
+
+        print("=" * 70)
+        print("  SEJRLISTE VISUAL SYSTEM".center(70))
+        print(f"  Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}".center(70))
+        print("=" * 70)
+        print()
+
+        # Active Sejr
+        sejr_list = data.get_active_sejr()
+        archived = data.get_archived_count()
+
+        print(f"📂 Active Sejr: {len(sejr_list)}  |  📦 Archived: {archived}")
+        print("-" * 70)
+
+        if sejr_list:
+            for sejr in sejr_list:
+                pct = (sejr['checkboxes_done'] / sejr['checkboxes_total'] * 100) if sejr['checkboxes_total'] > 0 else 0
+                bar = "█" * int(pct / 5) + "░" * (20 - int(pct / 5))
+
+                status = "✅ READY TO ARCHIVE" if sejr['can_archive'] else f"🔵 Pass {sejr['current_pass']}/3"
+
+                print(f"\n📋 {sejr['name']}")
+                print(f"   [{bar}] {pct:.0f}% ({sejr['checkboxes_done']}/{sejr['checkboxes_total']})")
+                print(f"   {status} | Rank: {sejr['rank']} | Score: {sejr['total_score']}")
+        else:
+            print("\n(No active sejr)")
+            print("Press 'n' to create new sejr")
+
+        # 7 DNA Lag
+        print("\n" + "-" * 70)
+        print("🧬 7 DNA LAG:")
+        dna = ["SELF-AWARE", "SELF-DOCUMENTING", "SELF-VERIFYING",
+               "SELF-IMPROVING", "SELF-ARCHIVING", "PREDICTIVE", "SELF-OPTIMIZING"]
+        for i, name in enumerate(dna, 1):
+            print(f"   [{i}] {name}")
+
+        # Commands
+        print("\n" + "=" * 70)
+        print("  [n]ew  [v]erify  [a]rchive  [p]redict  [r]efresh  [q]uit")
+        print("=" * 70)
+
+    def handle_command(cmd: str) -> bool:
+        if cmd == 'q':
+            return False
+        elif cmd == 'r':
+            pass  # Just refresh
+        elif cmd == 'n':
+            print("\nRun: python3 scripts/generate_sejr.py --name 'Name'")
+            input("Press Enter to continue...")
+        elif cmd == 'v':
+            print("\nRunning verification...")
+            result = subprocess.run(
+                ["python3", str(system_path / "scripts" / "auto_verify.py"), "--all"],
+                capture_output=True, text=True, timeout=30
+            )
+            print(result.stdout)
+            input("Press Enter to continue...")
+        elif cmd == 'a':
+            sejr_list = data.get_active_sejr()
+            if sejr_list and sejr_list[0]['can_archive']:
+                print(f"\nArchiving {sejr_list[0]['name']}...")
+                result = subprocess.run(
+                    ["python3", str(system_path / "scripts" / "auto_archive.py"),
+                     "--sejr", sejr_list[0]['name']],
+                    capture_output=True, text=True, timeout=30
+                )
+                print(result.stdout)
+            else:
+                print("\nNo sejr ready to archive (3-pass not complete)")
+            input("Press Enter to continue...")
+        elif cmd == 'p':
+            print("\nGenerating predictions...")
+            result = subprocess.run(
+                ["python3", str(system_path / "scripts" / "auto_predict.py")],
+                capture_output=True, text=True, timeout=30
+            )
+            print(result.stdout)
+            input("Press Enter to continue...")
+
+        return True
+
+    # Main loop
+    running = True
+    while running:
+        show_dashboard()
+        try:
+            cmd = input("\n> ").strip().lower()
+            if cmd:
+                running = handle_command(cmd)
+        except KeyboardInterrupt:
+            running = False
+        except EOFError:
+            running = False
+
+    print("\nGoodbye!")
+
+
+# ============================================================================
+# MAIN
+# ============================================================================
+
+def main():
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Sejrliste Visual App")
+    parser.add_argument("--path", default=None, help="Path to sejrliste system")
+    parser.add_argument("--simple", action="store_true", help="Use simple Rich view")
+    args = parser.parse_args()
+
+    if args.path:
+        system_path = Path(args.path)
+    else:
+        # Default: parent of app/ folder
+        system_path = Path(__file__).parent.parent
+
+    if not system_path.exists():
+        print(f"Error: System path not found: {system_path}")
+        return
+
+    print(f"Loading sejrliste from: {system_path}")
+
+    if args.simple or not TEXTUAL_AVAILABLE:
+        run_simple_view(system_path)
+    else:
+        app = SejrlisteApp(system_path)
+        app.run()
+
+
+if __name__ == "__main__":
+    main()
