@@ -8,10 +8,10 @@
 
 | Metric | Værdi |
 |--------|-------|
-| **Total Arkiveret** | 13 sejr |
-| **Grand Admiral (27-30)** | 10 |
+| **Total Arkiveret** | 14 sejr |
+| **Grand Admiral (27-30)** | 11 |
 | **Admiral (24-26)** | 0 |
-| **Gennemsnitlig Score** | 21.0/30 |
+| **Gennemsnitlig Score** | 21.6/30 |
 
 ---
 
@@ -19,6 +19,7 @@
 
 | Rang | Sejr | Score | P1 | P2 | P3 | Diplom |
 |------|------|-------|----|----|----|----|
+| 🏅 GRAND ADMIRAL | [WEB_APP_DEPLOYMENT_2026-01-25_20260125_1](WEB_APP_DEPLOYMENT_2026-01-25_20260125_140217/) | **30/30** | 10 | 10 | 10 | [🏆](WEB_APP_DEPLOYMENT_2026-01-25_20260125_140217/SEJR_DIPLOM.md) |
 | 🏅 GRAND ADMIRAL | [SYSTEM_TEST_2026-01-25_20260125_030450](SYSTEM_TEST_2026-01-25_20260125_030450/) | **27/30** | 8 | 9 | 10 | [🏆](SYSTEM_TEST_2026-01-25_20260125_030450/SEJR_DIPLOM.md) |
 | 🏅 GRAND ADMIRAL | [SCORING_FIX_TEST_2026-01-25_20260125_133](SCORING_FIX_TEST_2026-01-25_20260125_133651/) | **30/30** | 10 | 10 | 10 | [🏆](SCORING_FIX_TEST_2026-01-25_20260125_133651/SEJR_DIPLOM.md) |
 | 🔰 KADET | [REAL_WORKING_APP_2026-01-25_20260125_133](REAL_WORKING_APP_2026-01-25_20260125_133243/) | **0/30** | 0 | 0 | 0 | [🏆](REAL_WORKING_APP_2026-01-25_20260125_133243/SEJR_DIPLOM.md) |
@@ -60,5 +61,5 @@ Hver arkiveret sejr indeholder:
 
 ---
 
-**Sidst opdateret:** 2026-01-25 13:36
+**Sidst opdateret:** 2026-01-25 14:02
 **Genereret af:** auto_archive.py
