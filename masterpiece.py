@@ -971,10 +971,44 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         dna_group.add(dna_box)
         self.detail_box.append(dna_group)
 
+        # Quick Actions section
+        quick_group = Adw.PreferencesGroup()
+        quick_group.set_title("Hurtig Navigation")
+
+        quick_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        quick_box.set_halign(Gtk.Align.START)
+        quick_box.set_margin_top(8)
+        quick_box.set_margin_bottom(8)
+
+        # Open folder button
+        folder_btn = Gtk.Button(label="📁 Åbn Mappe")
+        folder_btn.add_css_class("pill")
+        folder_btn.connect("clicked", lambda b: subprocess.Popen(["nautilus", sejr["path"]]))
+        quick_box.append(folder_btn)
+
+        # Open SEJR_LISTE.md
+        sejr_file = Path(sejr["path"]) / "SEJR_LISTE.md"
+        if sejr_file.exists():
+            edit_btn = Gtk.Button(label="📝 Rediger Sejr")
+            edit_btn.add_css_class("pill")
+            edit_btn.connect("clicked", lambda b: subprocess.Popen(["xdg-open", str(sejr_file)]))
+            quick_box.append(edit_btn)
+
+        # Open terminal in folder
+        term_btn = Gtk.Button(label="💻 Terminal")
+        term_btn.add_css_class("pill")
+        term_btn.connect("clicked", lambda b: subprocess.Popen(
+            ["gnome-terminal", f"--working-directory={sejr['path']}"]
+        ))
+        quick_box.append(term_btn)
+
+        quick_group.add(quick_box)
+        self.detail_box.append(quick_group)
+
         # Files section
         files_group = Adw.PreferencesGroup()
         files_group.set_title("Filer")
-        files_group.set_description(f"{len(sejr['files'])} filer i mappen")
+        files_group.set_description(f"{len(sejr['files'])} filer - klik for at åbne")
 
         for filename in sejr["files"][:10]:
             icon_name = "text-x-generic-symbolic"
@@ -989,6 +1023,15 @@ class MasterpieceWindow(Adw.ApplicationWindow):
             file_row.set_title(filename)
             file_row.add_prefix(Gtk.Image.new_from_icon_name(icon_name))
             file_row.set_activatable(True)
+
+            # Store file path for click handler
+            file_path = Path(sejr["path"]) / filename
+            file_row.connect("activated", lambda r, fp=file_path: subprocess.Popen(["xdg-open", str(fp)]))
+
+            # Add open button
+            open_icon = Gtk.Image.new_from_icon_name("document-open-symbolic")
+            file_row.add_suffix(open_icon)
+
             files_group.add(file_row)
 
         self.detail_box.append(files_group)
@@ -1094,17 +1137,62 @@ class MasterpieceWindow(Adw.ApplicationWindow):
             self.split_view.set_show_content(True)
 
     def _on_new_sejr(self, button):
-        """Create a new sejr"""
+        """Create a new sejr with dialog for name input"""
+        # Create dialog
+        dialog = Adw.MessageDialog(
+            transient_for=self,
+            heading="Opret Ny Sejr",
+            body="Indtast navn på din nye sejr:"
+        )
+
+        # Add entry
+        entry = Gtk.Entry()
+        entry.set_placeholder_text("F.eks. MIN_FEATURE")
+        entry.set_margin_start(20)
+        entry.set_margin_end(20)
+        entry.set_margin_bottom(10)
+        dialog.set_extra_child(entry)
+
+        dialog.add_response("cancel", "Annuller")
+        dialog.add_response("create", "Opret")
+        dialog.set_response_appearance("create", Adw.ResponseAppearance.SUGGESTED)
+        dialog.set_default_response("create")
+        dialog.set_close_response("cancel")
+
+        def on_response(dialog, response):
+            if response == "create":
+                name = entry.get_text().strip()
+                if name:
+                    # Replace spaces with underscores
+                    name = name.replace(" ", "_").upper()
+                    self._create_sejr(name)
+            dialog.destroy()
+
+        dialog.connect("response", on_response)
+        dialog.present()
+
+    def _create_sejr(self, name):
+        """Actually create the sejr"""
         script_path = SCRIPTS_DIR / "generate_sejr.py"
         if script_path.exists():
             try:
                 result = subprocess.run(
-                    ["python3", str(script_path), "--name", "NY_SEJR"],
+                    ["python3", str(script_path), "--name", name],
                     cwd=str(SYSTEM_PATH),
                     capture_output=True,
                     text=True
                 )
                 self._load_sejrs()
+
+                # Find and select the new sejr
+                for sejr in self.sejrs:
+                    if name in sejr["name"]:
+                        self._build_detail_page(sejr)
+                        self.content_stack.set_visible_child_name("detail")
+                        self.split_view.set_show_content(True)
+                        # Open in Nautilus too
+                        subprocess.Popen(["nautilus", sejr["path"]])
+                        break
             except Exception as e:
                 print(f"Error: {e}")
 
@@ -1120,6 +1208,13 @@ class MasterpieceWindow(Adw.ApplicationWindow):
                 self._load_sejrs()
             except Exception as e:
                 print(f"Error: {e}")
+
+    def _open_current_folder(self):
+        """Open current sejr folder in Nautilus"""
+        if self.selected_sejr:
+            subprocess.Popen(["nautilus", self.selected_sejr["path"]])
+        else:
+            subprocess.Popen(["nautilus", str(SYSTEM_PATH)])
 
     def _auto_refresh(self):
         """Auto-refresh every 5 seconds"""
@@ -1343,6 +1438,18 @@ class MasterpieceApp(Adw.Application):
         refresh_action.connect("activate", lambda a, p: win._load_sejrs())
         self.add_action(refresh_action)
         self.set_accels_for_action("app.refresh", ["<Control>r"])
+
+        # Ctrl+O for open folder
+        open_action = Gio.SimpleAction.new("open-folder", None)
+        open_action.connect("activate", lambda a, p: win._open_current_folder())
+        self.add_action(open_action)
+        self.set_accels_for_action("app.open-folder", ["<Control>o"])
+
+        # Ctrl+N for new sejr
+        new_action = Gio.SimpleAction.new("new-sejr", None)
+        new_action.connect("activate", lambda a, p: win._on_new_sejr(None))
+        self.add_action(new_action)
+        self.set_accels_for_action("app.new-sejr", ["<Control>n"])
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
