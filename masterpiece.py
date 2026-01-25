@@ -326,6 +326,68 @@ separator {
 .glow-amber {
     box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
 }
+
+/* === CHAT STREAM - MESSENGER STYLE === */
+.chat-stream-messages {
+    background: rgba(15, 15, 35, 0.6);
+    padding: 8px;
+}
+
+.chat-bubble {
+    background: rgba(30, 30, 60, 0.9);
+    border-radius: 18px;
+    padding: 10px 14px;
+    max-width: 400px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.chat-bubble-system {
+    border-radius: 4px 18px 18px 18px;
+    background: linear-gradient(135deg,
+        rgba(99, 102, 241, 0.2) 0%,
+        rgba(30, 30, 60, 0.9) 100%);
+    border-left: 3px solid rgba(99, 102, 241, 0.6);
+}
+
+.chat-bubble-user {
+    border-radius: 18px 18px 4px 18px;
+    background: linear-gradient(135deg,
+        rgba(139, 92, 246, 0.4) 0%,
+        rgba(99, 102, 241, 0.3) 100%);
+    border-right: 3px solid rgba(139, 92, 246, 0.8);
+}
+
+.chat-sender {
+    font-weight: 700;
+    font-size: 10px;
+    color: #8b5cf6;
+    letter-spacing: 0.5px;
+}
+
+.chat-timestamp {
+    font-size: 9px;
+    margin-top: 4px;
+}
+
+.chat-link {
+    margin-top: 6px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: rgba(99, 102, 241, 0.2);
+}
+
+.chat-link:hover {
+    background: rgba(99, 102, 241, 0.4);
+}
+
+.chat-verification {
+    margin-top: 6px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
 """
 
 def load_custom_css():
@@ -338,9 +400,331 @@ def load_custom_css():
         Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
     )
 
+def send_notification(title: str, body: str, icon: str = "emblem-ok-symbolic"):
+    """Send desktop notification"""
+    try:
+        subprocess.run([
+            "notify-send",
+            "-i", icon,
+            "-a", "Sejrliste Mesterværk",
+            title,
+            body
+        ], check=False)
+    except:
+        pass
+
+def get_system_stats() -> dict:
+    """Get overall system statistics"""
+    stats = {
+        "total_sejrs": 0,
+        "active": 0,
+        "archived": 0,
+        "total_checkboxes": 0,
+        "completed_checkboxes": 0,
+        "grand_admirals": 0,
+    }
+
+    if ACTIVE_DIR.exists():
+        for folder in ACTIVE_DIR.iterdir():
+            if folder.is_dir() and not folder.name.startswith("."):
+                stats["active"] += 1
+                stats["total_sejrs"] += 1
+                sejr_file = folder / "SEJR_LISTE.md"
+                if sejr_file.exists():
+                    done, total = count_checkboxes(sejr_file.read_text())
+                    stats["total_checkboxes"] += total
+                    stats["completed_checkboxes"] += done
+
+    if ARCHIVE_DIR.exists():
+        for folder in ARCHIVE_DIR.iterdir():
+            if folder.is_dir() and not folder.name.startswith("."):
+                stats["archived"] += 1
+                stats["total_sejrs"] += 1
+                # Check for Grand Admiral (27+ score)
+                conclusion = folder / "CONCLUSION.md"
+                if conclusion.exists():
+                    content = conclusion.read_text()
+                    if "GRAND ADMIRAL" in content or "27/30" in content or "30/30" in content:
+                        stats["grand_admirals"] += 1
+
+    return stats
+
 # ═══════════════════════════════════════════════════════════════════════════════
 # INTELLIGENT SEARCH ENGINE
 # ═══════════════════════════════════════════════════════════════════════════════
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# UNIVERSAL SEJR CONVERTER - FRA ALT TIL SEJR STRUKTUR
+# ═══════════════════════════════════════════════════════════════════════════════
+
+class SejrConverter:
+    """
+    Universal converter: Enhver mappe, fil, PDF, tekst, kommando → SEJR struktur
+
+    MULTI-KONTROLBART:
+    - Manual mode: Rasmus styrer alt
+    - Kv1nt mode: AI-assisteret med forslag
+    - Admiral mode: Fuldt automatisk med verifikation
+
+    5W KONTROL:
+    - HVAD: Hvad konverteres
+    - HVOR: Hvor gemmes det
+    - HVORFOR: Formål med sejren
+    - HVORDAN: Hvilken tilgang
+    - HVORNÅR: Timeline og milestones
+    """
+
+    INPUT_TYPES = {
+        "folder": "📁 Mappe",
+        "file": "📄 Fil",
+        "pdf": "📕 PDF",
+        "text": "📝 Tekst",
+        "command": "💻 Kommando",
+    }
+
+    CONTROL_MODES = {
+        "manual": "✋ Manuel - Du styrer ALT",
+        "kv1nt": "🤖 Kv1nt - AI-assisteret med forslag",
+        "admiral": "🎖️ Admiral - Fuld automatisk",
+    }
+
+    def __init__(self, system_path: Path):
+        self.system_path = system_path
+        self.active_dir = system_path / "10_ACTIVE"
+        self.templates_dir = system_path / "00_TEMPLATES"
+
+    def analyze_input(self, input_path: str, input_type: str) -> dict:
+        """Analyze input and suggest SEJR structure"""
+        analysis = {
+            "input_path": input_path,
+            "input_type": input_type,
+            "exists": False,
+            "suggested_name": "",
+            "suggested_tasks": [],
+            "file_count": 0,
+            "total_size": 0,
+            "detected_sections": [],
+        }
+
+        path = Path(input_path)
+
+        if input_type == "folder" and path.exists() and path.is_dir():
+            analysis["exists"] = True
+            analysis["suggested_name"] = path.name.upper().replace(" ", "_")
+            files = list(path.rglob("*"))
+            analysis["file_count"] = len([f for f in files if f.is_file()])
+            analysis["total_size"] = sum(f.stat().st_size for f in files if f.is_file())
+
+            # Detect structure
+            for f in files[:20]:  # First 20 files
+                if f.is_file():
+                    analysis["suggested_tasks"].append(f"Behandl {f.name}")
+
+        elif input_type == "file" and path.exists() and path.is_file():
+            analysis["exists"] = True
+            analysis["suggested_name"] = path.stem.upper().replace(" ", "_")
+            analysis["file_count"] = 1
+            analysis["total_size"] = path.stat().st_size
+
+            # Read and analyze content
+            if path.suffix in [".md", ".txt"]:
+                try:
+                    content = path.read_text()
+                    # Find headers as tasks
+                    for line in content.split("\n"):
+                        if line.startswith("# ") or line.startswith("## "):
+                            analysis["detected_sections"].append(line.strip("#").strip())
+                except:
+                    pass
+
+        elif input_type == "text":
+            analysis["exists"] = True
+            analysis["suggested_name"] = "TEKST_PROJEKT"
+            # Parse text for structure
+            lines = input_path.split("\n")
+            for line in lines:
+                if line.strip():
+                    analysis["suggested_tasks"].append(f"[ ] {line.strip()[:50]}")
+
+        elif input_type == "command":
+            analysis["exists"] = True
+            analysis["suggested_name"] = "KOMMANDO_SEJR"
+            analysis["suggested_tasks"] = [
+                "[ ] Kør kommando",
+                "[ ] Verificer output",
+                "[ ] Dokumenter resultat",
+            ]
+
+        return analysis
+
+    def create_sejr_from_input(self, config: dict) -> Path:
+        """
+        Create SEJR structure from analyzed input
+
+        config = {
+            "name": "PROJEKT_NAVN",
+            "input_path": "/path/to/input",
+            "input_type": "folder|file|pdf|text|command",
+            "mode": "manual|kv1nt|admiral",
+            "hvad": "Beskrivelse af hvad",
+            "hvor": "Destination folder",
+            "hvorfor": "Formål",
+            "hvordan": "Tilgang",
+            "hvornaar": "Timeline",
+            "tasks": ["Task 1", "Task 2", ...],
+        }
+        """
+        # Generate folder name with date
+        date_str = datetime.now().strftime("%Y-%m-%d")
+        folder_name = f"{config['name']}_{date_str}"
+        sejr_path = self.active_dir / folder_name
+
+        # Create folder
+        sejr_path.mkdir(parents=True, exist_ok=True)
+
+        # Generate SEJR_LISTE.md content
+        sejr_content = f"""# SEJR: {config['name']}
+
+**Oprettet:** {datetime.now().strftime("%Y-%m-%d %H:%M")}
+**Status:** 🔵 PASS 1 - IN PROGRESS
+**Ejer:** Rasmus + Kv1nt
+**Current Pass:** 1/3
+
+**Kilde:** {config.get('input_type', 'unknown')} → {config.get('input_path', 'N/A')}
+**Mode:** {config.get('mode', 'manual')}
+
+---
+
+## 5W KONTROL
+
+| Kontrol | Værdi |
+|---------|-------|
+| **HVAD** | {config.get('hvad', 'Konvertering til sejr struktur')} |
+| **HVOR** | {sejr_path} |
+| **HVORFOR** | {config.get('hvorfor', 'Systematisk eksekvering')} |
+| **HVORDAN** | {config.get('hvordan', '3-pass system')} |
+| **HVORNÅR** | {config.get('hvornaar', 'Nu → Færdig')} |
+
+---
+
+## ⚠️ 3-PASS KONKURRENCE SYSTEM (OBLIGATORISK)
+
+```
+PASS 1: FUNGERENDE     → "Get it working"      → REVIEW REQUIRED
+PASS 2: FORBEDRET      → "Make it better"      → REVIEW REQUIRED
+PASS 3: OPTIMERET      → "Make it best"        → FINAL VERIFICATION
+                                                        ↓
+                                               ✅ KAN ARKIVERES
+```
+
+---
+
+# 🥉 PASS 1: FUNGERENDE ("Get It Working")
+
+## Tasks
+
+"""
+        # Add tasks
+        for task in config.get('tasks', []):
+            if not task.startswith("- [ ]"):
+                task = f"- [ ] {task}"
+            sejr_content += f"{task}\n"
+
+        sejr_content += """
+---
+
+## Verification
+
+- [ ] Alle tasks completeret
+- [ ] Output verificeret
+- [ ] Ready for Pass 2
+
+---
+
+# 🥈 PASS 2: FORBEDRET ("Make It Better")
+
+*Udfyldes efter Pass 1 er færdig*
+
+---
+
+# 🥇 PASS 3: OPTIMERET ("Make It Best")
+
+*Udfyldes efter Pass 2 er færdig*
+"""
+
+        # Write SEJR_LISTE.md
+        (sejr_path / "SEJR_LISTE.md").write_text(sejr_content)
+
+        # Create CLAUDE.md focus lock
+        claude_content = f"""# CLAUDE FOKUS LOCK - LÆS DETTE FØRST
+
+> **DU ER I EN SEJR LISTE MAPPE. DU HAR ÉN OPGAVE. FOKUSÉR.**
+
+---
+
+## 🔒 CURRENT STATE
+
+**Sejr:** {config['name']}
+**Current Pass:** 1/3
+**Status:** Pass 1 - Fungerende
+**Input:** {config.get('input_type', 'unknown')}
+
+---
+
+## 🎯 DIN ENESTE OPGAVE LIGE NU
+
+```
+Læs SEJR_LISTE.md og arbejd på første task
+```
+
+**INTET ANDET.** Færdiggør dette før du gør noget andet.
+"""
+        (sejr_path / "CLAUDE.md").write_text(claude_content)
+
+        # Create STATUS.yaml
+        status_content = f"""# SEJR STATUS
+name: {config['name']}
+created: {datetime.now().isoformat()}
+current_pass: 1
+status: in_progress
+
+input:
+  type: {config.get('input_type', 'unknown')}
+  path: {config.get('input_path', 'N/A')}
+
+control:
+  mode: {config.get('mode', 'manual')}
+  hvad: {config.get('hvad', '')}
+  hvor: {str(sejr_path)}
+  hvorfor: {config.get('hvorfor', '')}
+  hvordan: {config.get('hvordan', '')}
+  hvornaar: {config.get('hvornaar', '')}
+
+passes:
+  pass_1:
+    status: in_progress
+    score: 0
+  pass_2:
+    status: pending
+    score: 0
+  pass_3:
+    status: pending
+    score: 0
+"""
+        (sejr_path / "STATUS.yaml").write_text(status_content)
+
+        # Initialize AUTO_LOG.jsonl
+        log_entry = {
+            "timestamp": datetime.now().isoformat(),
+            "action": "sejr_created",
+            "source": config.get('input_type', 'unknown'),
+            "mode": config.get('mode', 'manual'),
+            "detail": f"Oprettet fra {config.get('input_path', 'N/A')}"
+        }
+        (sejr_path / "AUTO_LOG.jsonl").write_text(json.dumps(log_entry) + "\n")
+
+        return sejr_path
+
 
 class IntelligentSearch:
     """
@@ -621,6 +1005,301 @@ class SejrRow(Adw.ActionRow):
         self.set_activatable(True)
 
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# CHAT STREAM WIDGET - MESSENGER-STYLE INTERFACE
+# ═══════════════════════════════════════════════════════════════════════════════
+
+class ChatMessage(Gtk.Box):
+    """A single chat message in the stream - like Messenger"""
+
+    def __init__(self, sender: str, content: str, timestamp: str = None,
+                 msg_type: str = "info", file_link: str = None, verification: dict = None):
+        super().__init__(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+
+        self.file_link = file_link
+
+        # Determine if this is user message (right side) or system (left side)
+        is_user = sender.lower() in ["rasmus", "bruger", "dig", "user"]
+
+        if is_user:
+            self.set_halign(Gtk.Align.END)
+        else:
+            self.set_halign(Gtk.Align.START)
+
+        self.set_margin_start(12 if not is_user else 60)
+        self.set_margin_end(12 if is_user else 60)
+        self.set_margin_top(4)
+        self.set_margin_bottom(4)
+
+        # Avatar (only for non-user messages)
+        if not is_user:
+            avatar_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+            avatar_box.set_valign(Gtk.Align.START)
+
+            # Emoji avatar based on sender
+            avatar_emojis = {
+                "system": "🖥️",
+                "kv1nt": "🤖",
+                "admiral": "🎖️",
+                "dna": "🧬",
+                "verify": "✅",
+                "error": "❌",
+                "info": "💬",
+            }
+            emoji = avatar_emojis.get(sender.lower(), "💬")
+
+            avatar_label = Gtk.Label(label=emoji)
+            avatar_label.set_markup(f'<span size="large">{emoji}</span>')
+            avatar_box.append(avatar_label)
+
+            self.append(avatar_box)
+
+        # Message bubble
+        bubble = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        bubble.add_css_class("chat-bubble")
+        if is_user:
+            bubble.add_css_class("chat-bubble-user")
+        else:
+            bubble.add_css_class("chat-bubble-system")
+
+        # Sender name (only for non-user)
+        if not is_user:
+            sender_label = Gtk.Label(label=sender.upper())
+            sender_label.set_halign(Gtk.Align.START)
+            sender_label.add_css_class("caption")
+            sender_label.add_css_class("chat-sender")
+            bubble.append(sender_label)
+
+        # Main content
+        content_label = Gtk.Label(label=content)
+        content_label.set_halign(Gtk.Align.START if not is_user else Gtk.Align.END)
+        content_label.set_wrap(True)
+        content_label.set_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        content_label.set_max_width_chars(50)
+        content_label.set_selectable(True)
+        bubble.append(content_label)
+
+        # File link if provided
+        if file_link:
+            link_btn = Gtk.Button()
+            link_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=4)
+            link_box.append(Gtk.Image.new_from_icon_name("document-open-symbolic"))
+            link_box.append(Gtk.Label(label=Path(file_link).name))
+            link_btn.set_child(link_box)
+            link_btn.add_css_class("flat")
+            link_btn.add_css_class("chat-link")
+            link_btn.connect("clicked", self._on_file_clicked)
+            bubble.append(link_btn)
+
+        # Verification status if provided
+        if verification:
+            verify_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+            verify_box.add_css_class("chat-verification")
+
+            status_icon = "emblem-ok-symbolic" if verification.get("passed") else "dialog-warning-symbolic"
+            verify_box.append(Gtk.Image.new_from_icon_name(status_icon))
+
+            verify_label = Gtk.Label(label=verification.get("message", "Verificeret"))
+            verify_label.add_css_class("caption")
+            if verification.get("passed"):
+                verify_label.add_css_class("success")
+            else:
+                verify_label.add_css_class("warning")
+            verify_box.append(verify_label)
+
+            bubble.append(verify_box)
+
+        # Timestamp
+        if timestamp:
+            time_label = Gtk.Label(label=timestamp)
+            time_label.set_halign(Gtk.Align.END if is_user else Gtk.Align.START)
+            time_label.add_css_class("caption")
+            time_label.add_css_class("dim-label")
+            time_label.add_css_class("chat-timestamp")
+            bubble.append(time_label)
+
+        self.append(bubble)
+
+        # Avatar for user (on right side)
+        if is_user:
+            avatar_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+            avatar_box.set_valign(Gtk.Align.START)
+            avatar_label = Gtk.Label()
+            avatar_label.set_markup('<span size="large">👤</span>')
+            avatar_box.append(avatar_label)
+            self.append(avatar_box)
+
+    def _on_file_clicked(self, button):
+        """Open the linked file"""
+        if self.file_link:
+            try:
+                subprocess.Popen(["xdg-open", self.file_link])
+            except:
+                pass
+
+
+class ChatStream(Gtk.Box):
+    """A scrollable chat stream showing activity like Messenger"""
+
+    def __init__(self, sejr_path: Path = None):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        self.sejr_path = sejr_path
+        self.messages = []
+
+        # Header
+        header_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        header_box.set_margin_start(12)
+        header_box.set_margin_end(12)
+        header_box.set_margin_top(8)
+        header_box.set_margin_bottom(8)
+
+        chat_icon = Gtk.Image.new_from_icon_name("chat-symbolic")
+        header_box.append(chat_icon)
+
+        header_label = Gtk.Label(label="Activity Stream")
+        header_label.add_css_class("heading")
+        header_box.append(header_label)
+
+        # Spacer
+        spacer = Gtk.Box()
+        spacer.set_hexpand(True)
+        header_box.append(spacer)
+
+        # Clear button
+        clear_btn = Gtk.Button(icon_name="edit-clear-symbolic")
+        clear_btn.add_css_class("flat")
+        clear_btn.set_tooltip_text("Ryd stream")
+        clear_btn.connect("clicked", lambda b: self.clear_messages())
+        header_box.append(clear_btn)
+
+        self.append(header_box)
+
+        # Separator
+        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        self.append(sep)
+
+        # Scrollable message area
+        scroll = Gtk.ScrolledWindow()
+        scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        scroll.set_vexpand(True)
+        scroll.set_min_content_height(200)
+
+        self.message_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        self.message_box.add_css_class("chat-stream-messages")
+        scroll.set_child(self.message_box)
+
+        self.append(scroll)
+        self.scroll_window = scroll
+
+        # Load existing messages from AUTO_LOG.jsonl if available
+        if sejr_path:
+            self._load_from_log(sejr_path)
+
+    def _load_from_log(self, sejr_path: Path):
+        """Load messages from AUTO_LOG.jsonl"""
+        log_file = sejr_path / "AUTO_LOG.jsonl"
+        if not log_file.exists():
+            # Add welcome message
+            self.add_message(
+                sender="Kv1nt",
+                content=f"Velkommen til {sejr_path.name.split('_2026')[0].replace('_', ' ')}! Jeg holder øje med alt der sker her.",
+                msg_type="info"
+            )
+            return
+
+        try:
+            content = log_file.read_text()
+            for line in content.strip().split("\n")[-20:]:  # Last 20 entries
+                if not line.strip():
+                    continue
+                try:
+                    data = json.loads(line)
+
+                    # Determine sender based on action
+                    action = data.get("action", "unknown")
+                    if "verify" in action.lower():
+                        sender = "Verify"
+                    elif "dna" in action.lower():
+                        sender = "DNA"
+                    elif "user" in action.lower() or "rasmus" in action.lower():
+                        sender = "Rasmus"
+                    else:
+                        sender = "System"
+
+                    # Extract content
+                    detail = data.get("detail", data.get("message", str(data)))
+                    timestamp = data.get("timestamp", "")
+                    if timestamp and len(timestamp) > 16:
+                        timestamp = timestamp[11:16]  # Just HH:MM
+
+                    # File link if present
+                    file_link = data.get("file", data.get("path"))
+
+                    # Verification if present
+                    verification = None
+                    if "verify" in action.lower() or "test" in action.lower():
+                        verification = {
+                            "passed": data.get("passed", data.get("success", True)),
+                            "message": data.get("result", "Verificeret")
+                        }
+
+                    self.add_message(
+                        sender=sender,
+                        content=detail[:200],
+                        timestamp=timestamp,
+                        file_link=file_link,
+                        verification=verification
+                    )
+                except json.JSONDecodeError:
+                    pass
+        except Exception as e:
+            self.add_message(
+                sender="System",
+                content=f"Kunne ikke læse log: {e}",
+                msg_type="error"
+            )
+
+    def add_message(self, sender: str, content: str, timestamp: str = None,
+                    msg_type: str = "info", file_link: str = None, verification: dict = None):
+        """Add a new message to the stream"""
+        if not timestamp:
+            timestamp = datetime.now().strftime("%H:%M")
+
+        msg = ChatMessage(
+            sender=sender,
+            content=content,
+            timestamp=timestamp,
+            msg_type=msg_type,
+            file_link=file_link,
+            verification=verification
+        )
+
+        self.message_box.append(msg)
+        self.messages.append(msg)
+
+        # Auto-scroll to bottom
+        GLib.idle_add(self._scroll_to_bottom)
+
+    def _scroll_to_bottom(self):
+        """Scroll to the bottom of the chat"""
+        adj = self.scroll_window.get_vadjustment()
+        adj.set_value(adj.get_upper())
+        return False
+
+    def clear_messages(self):
+        """Clear all messages"""
+        while child := self.message_box.get_first_child():
+            self.message_box.remove(child)
+        self.messages = []
+
+        # Add cleared message
+        self.add_message(
+            sender="System",
+            content="Stream ryddet",
+            msg_type="info"
+        )
+
+
 class DNALayerRow(Gtk.Box):
     """A row showing a DNA layer status"""
 
@@ -716,10 +1395,16 @@ class MasterpieceWindow(Adw.ApplicationWindow):
 
         # New Sejr button
         new_btn = Gtk.Button(icon_name="list-add-symbolic")
-        new_btn.set_tooltip_text("Ny Sejr")
+        new_btn.set_tooltip_text("Ny Sejr (Ctrl+N)")
         new_btn.add_css_class("suggested-action")
         new_btn.connect("clicked", self._on_new_sejr)
         header.pack_start(new_btn)
+
+        # Universal Converter button
+        convert_btn = Gtk.Button(icon_name="document-import-symbolic")
+        convert_btn.set_tooltip_text("Konverter til Sejr (fra mappe/fil/tekst)")
+        convert_btn.connect("clicked", self._on_convert_to_sejr)
+        header.pack_start(convert_btn)
 
         # Search toggle button
         self.search_btn = Gtk.ToggleButton(icon_name="system-search-symbolic")
@@ -845,30 +1530,110 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         self.content_stack.set_visible_child_name("welcome")
 
     def _build_welcome_page(self):
-        """Build the welcome/empty state page"""
-        status_page = Adw.StatusPage()
-        status_page.set_icon_name("folder-symbolic")
-        status_page.set_title("Sejrliste Mesterværk")
-        status_page.set_description("Vælg en sejr fra biblioteket for at se detaljer")
+        """Build the welcome/empty state page with live stats"""
+        # Main container
+        main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=24)
+        main_box.set_valign(Gtk.Align.CENTER)
+        main_box.set_halign(Gtk.Align.CENTER)
+        main_box.set_margin_top(48)
+        main_box.set_margin_bottom(48)
+
+        # Header
+        header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        header_box.set_halign(Gtk.Align.CENTER)
+
+        icon = Gtk.Image.new_from_icon_name("starred-symbolic")
+        icon.set_pixel_size(64)
+        icon.add_css_class("accent")
+        header_box.append(icon)
+
+        title = Gtk.Label(label="Sejrliste Mesterværk")
+        title.add_css_class("title-1")
+        header_box.append(title)
+
+        subtitle = Gtk.Label(label="Din vej til Admiral niveau")
+        subtitle.add_css_class("dim-label")
+        header_box.append(subtitle)
+
+        main_box.append(header_box)
+
+        # Stats cards
+        stats = get_system_stats()
+        stats_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=16)
+        stats_box.set_halign(Gtk.Align.CENTER)
+
+        stat_items = [
+            ("🎯", str(stats["total_sejrs"]), "Total Sejrs"),
+            ("✅", str(stats["archived"]), "Arkiveret"),
+            ("🏅", str(stats["grand_admirals"]), "Grand Admirals"),
+            ("📊", f"{stats['completed_checkboxes']}/{stats['total_checkboxes']}", "Checkboxes"),
+        ]
+
+        for emoji, value, label in stat_items:
+            card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+            card.add_css_class("card")
+            card.set_size_request(100, 80)
+
+            emoji_label = Gtk.Label(label=emoji)
+            emoji_label.set_markup(f'<span size="x-large">{emoji}</span>')
+            card.append(emoji_label)
+
+            value_label = Gtk.Label(label=value)
+            value_label.add_css_class("title-2")
+            card.append(value_label)
+
+            desc_label = Gtk.Label(label=label)
+            desc_label.add_css_class("caption")
+            desc_label.add_css_class("dim-label")
+            card.append(desc_label)
+
+            stats_box.append(card)
+
+        main_box.append(stats_box)
+
+        # Progress to Grand Admiral
+        if stats["total_sejrs"] > 0:
+            progress_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+            progress_box.set_halign(Gtk.Align.CENTER)
+
+            admiral_pct = (stats["grand_admirals"] / max(stats["archived"], 1)) * 100
+            progress_label = Gtk.Label(label=f"Admiral Rate: {admiral_pct:.0f}%")
+            progress_label.add_css_class("caption")
+            progress_box.append(progress_label)
+
+            progress = Gtk.ProgressBar()
+            progress.set_fraction(admiral_pct / 100)
+            progress.set_size_request(300, -1)
+            if admiral_pct >= 80:
+                progress.add_css_class("success")
+            progress_box.append(progress)
+
+            main_box.append(progress_box)
 
         # Action buttons
         buttons_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
         buttons_box.set_halign(Gtk.Align.CENTER)
 
-        new_btn = Gtk.Button(label="Opret Ny Sejr")
+        new_btn = Gtk.Button(label="🚀 Opret Ny Sejr")
         new_btn.add_css_class("suggested-action")
         new_btn.add_css_class("pill")
         new_btn.connect("clicked", self._on_new_sejr)
         buttons_box.append(new_btn)
 
-        open_btn = Gtk.Button(label="Åbn Mappe")
+        open_btn = Gtk.Button(label="📁 Åbn Mappe")
         open_btn.add_css_class("pill")
         open_btn.connect("clicked", lambda b: subprocess.Popen(["nautilus", str(SYSTEM_PATH)]))
         buttons_box.append(open_btn)
 
-        status_page.set_child(buttons_box)
+        main_box.append(buttons_box)
 
-        return status_page
+        # Tip
+        tip_label = Gtk.Label(label="💡 Tip: Brug Ctrl+N for hurtig ny sejr")
+        tip_label.add_css_class("caption")
+        tip_label.add_css_class("dim-label")
+        main_box.append(tip_label)
+
+        return main_box
 
     def _build_detail_page(self, sejr):
         """Build the detail view for a sejr"""
@@ -1065,6 +1830,20 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         actions_group.add(actions_box)
         self.detail_box.append(actions_group)
 
+        # Chat Stream section - MESSENGER STYLE!
+        chat_group = Adw.PreferencesGroup()
+        chat_group.set_title("💬 Activity Stream")
+        chat_group.set_description("Live samtale om hvad der sker")
+
+        chat_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        chat_card.add_css_class("card")
+
+        self.chat_stream = ChatStream(Path(sejr["path"]))
+        chat_card.append(self.chat_stream)
+
+        chat_group.add(chat_card)
+        self.detail_box.append(chat_group)
+
     def _load_sejrs(self):
         """Load all sejrs into the sidebar"""
         self.sejrs = get_all_sejrs()
@@ -1171,6 +1950,248 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         dialog.connect("response", on_response)
         dialog.present()
 
+    def _on_convert_to_sejr(self, button):
+        """Open universal converter dialog - 5W KONTROL"""
+        dialog = Adw.Window(transient_for=self)
+        dialog.set_title("🔄 Universal Sejr Converter")
+        dialog.set_default_size(600, 700)
+        dialog.set_modal(True)
+
+        # Main content
+        main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        dialog.set_content(main_box)
+
+        # Header
+        header = Adw.HeaderBar()
+        header.set_show_end_title_buttons(True)
+        main_box.append(header)
+
+        # Content scroll
+        scroll = Gtk.ScrolledWindow()
+        scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        scroll.set_vexpand(True)
+
+        content_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
+        content_box.set_margin_start(24)
+        content_box.set_margin_end(24)
+        content_box.set_margin_top(24)
+        content_box.set_margin_bottom(24)
+
+        # Title
+        title_label = Gtk.Label(label="Konverter ALT til SEJR Struktur")
+        title_label.add_css_class("title-1")
+        content_box.append(title_label)
+
+        subtitle_label = Gtk.Label(label="Vælg input type, kontrol mode, og definer 5W")
+        subtitle_label.add_css_class("dim-label")
+        content_box.append(subtitle_label)
+
+        # === INPUT TYPE SELECTION ===
+        input_group = Adw.PreferencesGroup()
+        input_group.set_title("📥 INPUT TYPE")
+        input_group.set_description("Hvad vil du konvertere?")
+
+        self.convert_input_type = Gtk.ComboBoxText()
+        for key, label in SejrConverter.INPUT_TYPES.items():
+            self.convert_input_type.append(key, label)
+        self.convert_input_type.set_active_id("folder")
+
+        input_row = Adw.ActionRow()
+        input_row.set_title("Type")
+        input_row.add_suffix(self.convert_input_type)
+        input_group.add(input_row)
+
+        # Input path/text
+        self.convert_input_entry = Gtk.Entry()
+        self.convert_input_entry.set_placeholder_text("/sti/til/mappe/eller/fil")
+        self.convert_input_entry.set_hexpand(True)
+
+        path_row = Adw.ActionRow()
+        path_row.set_title("Kilde")
+        path_row.set_subtitle("Sti til mappe/fil, eller indtast tekst")
+        path_row.add_suffix(self.convert_input_entry)
+
+        browse_btn = Gtk.Button(icon_name="folder-open-symbolic")
+        browse_btn.set_valign(Gtk.Align.CENTER)
+        browse_btn.connect("clicked", lambda b: self._browse_for_input())
+        path_row.add_suffix(browse_btn)
+
+        input_group.add(path_row)
+        content_box.append(input_group)
+
+        # === CONTROL MODE SELECTION ===
+        mode_group = Adw.PreferencesGroup()
+        mode_group.set_title("🎛️ KONTROL MODE")
+        mode_group.set_description("Hvordan vil du styre processen?")
+
+        self.convert_mode = Gtk.ComboBoxText()
+        for key, label in SejrConverter.CONTROL_MODES.items():
+            self.convert_mode.append(key, label)
+        self.convert_mode.set_active_id("manual")
+
+        mode_row = Adw.ActionRow()
+        mode_row.set_title("Mode")
+        mode_row.add_suffix(self.convert_mode)
+        mode_group.add(mode_row)
+        content_box.append(mode_group)
+
+        # === 5W KONTROL ===
+        w5_group = Adw.PreferencesGroup()
+        w5_group.set_title("🎯 5W KONTROL")
+        w5_group.set_description("Du har TOTAL KONTROL over alt")
+
+        # HVAD
+        self.convert_hvad = Gtk.Entry()
+        self.convert_hvad.set_placeholder_text("Hvad skal konverteres/bygges?")
+        hvad_row = Adw.ActionRow()
+        hvad_row.set_title("HVAD")
+        hvad_row.set_subtitle("Beskrivelse af opgaven")
+        hvad_row.add_suffix(self.convert_hvad)
+        w5_group.add(hvad_row)
+
+        # HVORFOR
+        self.convert_hvorfor = Gtk.Entry()
+        self.convert_hvorfor.set_placeholder_text("Formål med denne sejr")
+        hvorfor_row = Adw.ActionRow()
+        hvorfor_row.set_title("HVORFOR")
+        hvorfor_row.set_subtitle("Formålet/værdien")
+        hvorfor_row.add_suffix(self.convert_hvorfor)
+        w5_group.add(hvorfor_row)
+
+        # HVORDAN
+        self.convert_hvordan = Gtk.Entry()
+        self.convert_hvordan.set_placeholder_text("3-pass system")
+        hvordan_row = Adw.ActionRow()
+        hvordan_row.set_title("HVORDAN")
+        hvordan_row.set_subtitle("Tilgangen/metoden")
+        hvordan_row.add_suffix(self.convert_hvordan)
+        w5_group.add(hvordan_row)
+
+        # HVORNÅR
+        self.convert_hvornaar = Gtk.Entry()
+        self.convert_hvornaar.set_placeholder_text("Nu → Færdig")
+        hvornaar_row = Adw.ActionRow()
+        hvornaar_row.set_title("HVORNÅR")
+        hvornaar_row.set_subtitle("Timeline/deadline")
+        hvornaar_row.add_suffix(self.convert_hvornaar)
+        w5_group.add(hvornaar_row)
+
+        content_box.append(w5_group)
+
+        # === SEJR NAME ===
+        name_group = Adw.PreferencesGroup()
+        name_group.set_title("📛 SEJR NAVN")
+
+        self.convert_name = Gtk.Entry()
+        self.convert_name.set_placeholder_text("PROJEKT_NAVN")
+        name_row = Adw.ActionRow()
+        name_row.set_title("Navn")
+        name_row.set_subtitle("Navn på den nye sejr (VERSALER)")
+        name_row.add_suffix(self.convert_name)
+        name_group.add(name_row)
+        content_box.append(name_group)
+
+        scroll.set_child(content_box)
+        main_box.append(scroll)
+
+        # Bottom action bar
+        action_bar = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        action_bar.set_margin_start(24)
+        action_bar.set_margin_end(24)
+        action_bar.set_margin_top(16)
+        action_bar.set_margin_bottom(16)
+        action_bar.set_halign(Gtk.Align.END)
+
+        cancel_btn = Gtk.Button(label="Annuller")
+        cancel_btn.connect("clicked", lambda b: dialog.close())
+        action_bar.append(cancel_btn)
+
+        create_btn = Gtk.Button(label="🚀 Opret Sejr")
+        create_btn.add_css_class("suggested-action")
+        create_btn.connect("clicked", lambda b: self._execute_conversion(dialog))
+        action_bar.append(create_btn)
+
+        main_box.append(action_bar)
+
+        dialog.present()
+
+    def _browse_for_input(self):
+        """Open file chooser for input selection"""
+        # Use Nautilus to let user copy path
+        subprocess.Popen(["nautilus", str(SYSTEM_PATH)])
+        send_notification("📁 File Browser", "Kopiér stien til det du vil konvertere")
+
+    def _execute_conversion(self, dialog):
+        """Execute the conversion based on dialog inputs"""
+        converter = SejrConverter(SYSTEM_PATH)
+
+        config = {
+            "name": self.convert_name.get_text().strip().upper().replace(" ", "_") or "NY_SEJR",
+            "input_path": self.convert_input_entry.get_text().strip(),
+            "input_type": self.convert_input_type.get_active_id(),
+            "mode": self.convert_mode.get_active_id(),
+            "hvad": self.convert_hvad.get_text().strip(),
+            "hvorfor": self.convert_hvorfor.get_text().strip(),
+            "hvordan": self.convert_hvordan.get_text().strip() or "3-pass system",
+            "hvornaar": self.convert_hvornaar.get_text().strip() or "Nu → Færdig",
+            "tasks": [],
+        }
+
+        # Analyze input and get suggested tasks
+        if config["input_path"]:
+            analysis = converter.analyze_input(config["input_path"], config["input_type"])
+            config["tasks"] = analysis.get("suggested_tasks", [])
+
+            # Use suggested name if not provided
+            if config["name"] == "NY_SEJR" and analysis.get("suggested_name"):
+                config["name"] = analysis["suggested_name"]
+
+        # Add default tasks if none detected
+        if not config["tasks"]:
+            config["tasks"] = [
+                "Analysér input",
+                "Planlæg struktur",
+                "Implementér løsning",
+                "Verificér resultat",
+                "Dokumentér",
+            ]
+
+        # Create the sejr
+        sejr_path = converter.create_sejr_from_input(config)
+
+        # Close dialog
+        dialog.close()
+
+        # Reload and show the new sejr
+        self._load_sejrs()
+
+        # Find and display the new sejr
+        for sejr in self.sejrs:
+            if config["name"] in sejr["name"]:
+                self.selected_sejr = sejr
+                self._build_detail_page(sejr)
+                self.content_stack.set_visible_child_name("detail")
+                self.split_view.set_show_content(True)
+
+                # Open in Nautilus
+                subprocess.Popen(["nautilus", str(sejr_path)])
+
+                # Send notification
+                send_notification(
+                    "✅ Sejr Oprettet!",
+                    f"{config['name']} er klar med 5W kontrol"
+                )
+
+                # Add to chat stream if available
+                if hasattr(self, 'chat_stream') and self.chat_stream:
+                    self.chat_stream.add_message(
+                        sender="System",
+                        content=f"Ny sejr oprettet: {config['name']}",
+                        msg_type="info",
+                        file_link=str(sejr_path / "SEJR_LISTE.md")
+                    )
+                break
+
     def _create_sejr(self, name):
         """Actually create the sejr"""
         script_path = SCRIPTS_DIR / "generate_sejr.py"
@@ -1197,17 +2218,121 @@ class MasterpieceWindow(Adw.ApplicationWindow):
                 print(f"Error: {e}")
 
     def _run_script(self, script_name):
-        """Run a DNA layer script"""
+        """Run a DNA layer script with notifications and chat updates"""
         script_path = SCRIPTS_DIR / script_name
+
+        # Script metadata for chat
+        script_info = {
+            "auto_verify.py": {
+                "sender": "Verify",
+                "start_msg": "Kører verification...",
+                "success_msg": "✅ Alle tests passed!",
+                "title": "✅ Verification",
+                "body": "Sejr verificeret!"
+            },
+            "auto_learn.py": {
+                "sender": "DNA",
+                "start_msg": "Analyserer patterns...",
+                "success_msg": "🧠 Nye patterns lært og gemt!",
+                "title": "🧠 Patterns",
+                "body": "Nye patterns lært!"
+            },
+            "auto_predict.py": {
+                "sender": "Kv1nt",
+                "start_msg": "Genererer forudsigelser...",
+                "success_msg": "🔮 Næste skridt beregnet!",
+                "title": "🔮 Predictions",
+                "body": "Forudsigelser genereret!"
+            },
+            "auto_archive.py": {
+                "sender": "Admiral",
+                "start_msg": "Arkiverer sejr...",
+                "success_msg": "🏆 SEJR ARKIVERET! Du er fantastisk!",
+                "title": "🏆 Arkiveret",
+                "body": "Sejr arkiveret med succes!"
+            },
+        }
+
+        info = script_info.get(script_name, {
+            "sender": "System",
+            "start_msg": f"Kører {script_name}...",
+            "success_msg": "Script færdig",
+            "title": "Script",
+            "body": "Færdig"
+        })
+
+        # Add starting message to chat
+        if hasattr(self, 'chat_stream') and self.chat_stream:
+            self.chat_stream.add_message(
+                sender=info["sender"],
+                content=info["start_msg"],
+                msg_type="info"
+            )
+
         if script_path.exists():
             try:
-                subprocess.run(
+                result = subprocess.run(
                     ["python3", str(script_path)],
-                    cwd=str(SYSTEM_PATH)
+                    cwd=str(SYSTEM_PATH),
+                    capture_output=True,
+                    text=True
                 )
                 self._load_sejrs()
+
+                # Add success message to chat
+                if hasattr(self, 'chat_stream') and self.chat_stream:
+                    # Check if there was output
+                    output = result.stdout.strip() if result.stdout else info["success_msg"]
+                    if len(output) > 200:
+                        output = output[:200] + "..."
+
+                    self.chat_stream.add_message(
+                        sender=info["sender"],
+                        content=output if output else info["success_msg"],
+                        msg_type="info",
+                        verification={"passed": result.returncode == 0, "message": "Verified" if result.returncode == 0 else "Fejl"}
+                    )
+
+                # Send desktop notification
+                send_notification(info["title"], info["body"])
+
+                # Special celebration for archive
+                if script_name == "auto_archive.py":
+                    self._show_celebration()
+
             except Exception as e:
+                # Add error to chat
+                if hasattr(self, 'chat_stream') and self.chat_stream:
+                    self.chat_stream.add_message(
+                        sender="Error",
+                        content=f"Script fejlede: {e}",
+                        msg_type="error",
+                        verification={"passed": False, "message": str(e)}
+                    )
+                send_notification("❌ Fejl", f"Script fejlede: {e}")
                 print(f"Error: {e}")
+
+    def _show_celebration(self):
+        """Show celebration dialog when sejr is archived"""
+        stats = get_system_stats()
+
+        dialog = Adw.MessageDialog(
+            transient_for=self,
+            heading="🏆 SEJR ARKIVERET!",
+            body=f"""Tillykke! Din sejr er nu arkiveret.
+
+📊 System Status:
+• Total sejrs: {stats['total_sejrs']}
+• Aktive: {stats['active']}
+• Arkiverede: {stats['archived']}
+• Grand Admirals: {stats['grand_admirals']} 🏅
+
+Du er på vej mod Admiral niveau!"""
+        )
+
+        dialog.add_response("ok", "Fantastisk! 🎉")
+        dialog.set_default_response("ok")
+        dialog.present()
 
     def _open_current_folder(self):
         """Open current sejr folder in Nautilus"""
