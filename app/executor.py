@@ -140,6 +140,14 @@ class ScriptExecutor:
             self._error = f"Timeout after {timeout} seconds"
             return False, f"Script timed out after {timeout}s"
 
+        except PermissionError as e:
+            self._error = f"Permission denied: {e}"
+            return False, f"Permission denied: Cannot execute {script_path}"
+
+        except FileNotFoundError as e:
+            self._error = f"File not found: {e}"
+            return False, f"Python interpreter not found or script missing"
+
         except Exception as e:
             self._error = str(e)
             return False, f"Error: {e}"
