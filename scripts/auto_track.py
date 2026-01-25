@@ -2,13 +2,44 @@
 """
 Auto-track state and update _CURRENT/
 Part of SEJR LISTE SYSTEM - DNA Layer 2 (SELF-DOCUMENTING)
+
+INGEN EXTERNAL DEPENDENCIES - Kun Python standard library
 """
 
 import json
-import yaml
 from pathlib import Path
 from datetime import datetime
 from collections import defaultdict
+
+
+# ============================================================================
+# SIMPLE YAML PARSING (No PyYAML dependency)
+# ============================================================================
+
+def parse_yaml_simple(filepath: Path) -> dict:
+    """Parse simple YAML without PyYAML."""
+    if not filepath.exists():
+        return {}
+
+    result = {}
+    try:
+        content = filepath.read_text(encoding="utf-8")
+        for line in content.split("\n"):
+            if ":" in line and not line.strip().startswith("#"):
+                parts = line.split(":", 1)
+                if len(parts) == 2:
+                    key = parts[0].strip()
+                    value = parts[1].strip().strip('"').strip("'")
+                    if value.lower() == "true":
+                        value = True
+                    elif value.lower() == "false":
+                        value = False
+                    elif value.replace(".", "").isdigit():
+                        value = float(value) if "." in value else int(value)
+                    result[key] = value
+    except:
+        pass
+    return result
 
 def scan_active_sejr(system_path: Path):
     """Scan all active sejr lister and collect current state"""
@@ -22,11 +53,10 @@ def scan_active_sejr(system_path: Path):
         if not sejr_folder.is_dir():
             continue
 
-        # Read VERIFY_STATUS.yaml
-        status_file = sejr_folder / "VERIFY_STATUS.yaml"
+        # Read STATUS.yaml
+        status_file = sejr_folder / "STATUS.yaml"
         if status_file.exists():
-            with open(status_file, 'r') as f:
-                status = yaml.safe_load(f)
+            status = parse_yaml_simple(status_file)
         else:
             status = {'status': 'unknown'}
 

@@ -2,19 +2,58 @@
 """
 Auto-predict next steps based on patterns
 Part of SEJR LISTE SYSTEM - DNA Layer 6 (PREDICTIVE)
+
+INGEN EXTERNAL DEPENDENCIES - Kun Python standard library
 """
 
-import yaml
+import json
 from pathlib import Path
 from datetime import datetime
 
-def load_patterns(system_path: Path):
-    """Load learned patterns from PATTERNS.yaml"""
-    patterns_file = system_path / "_CURRENT" / "PATTERNS.yaml"
 
-    if patterns_file.exists():
-        with open(patterns_file, 'r') as f:
-            return yaml.safe_load(f)
+# ============================================================================
+# SIMPLE YAML PARSING (No PyYAML dependency)
+# ============================================================================
+
+def parse_yaml_simple(filepath: Path) -> dict:
+    """Parse simple YAML without PyYAML."""
+    if not filepath.exists():
+        return {}
+
+    result = {}
+    try:
+        content = filepath.read_text(encoding="utf-8")
+        for line in content.split("\n"):
+            if ":" in line and not line.strip().startswith("#"):
+                parts = line.split(":", 1)
+                if len(parts) == 2:
+                    key = parts[0].strip()
+                    value = parts[1].strip().strip('"').strip("'")
+                    if value.lower() == "true":
+                        value = True
+                    elif value.lower() == "false":
+                        value = False
+                    elif value.replace(".", "").isdigit():
+                        value = float(value) if "." in value else int(value)
+                    result[key] = value
+    except:
+        pass
+    return result
+
+def load_patterns(system_path: Path):
+    """Load learned patterns from PATTERNS.json or PATTERNS.yaml"""
+    patterns_json = system_path / "_CURRENT" / "PATTERNS.json"
+    patterns_yaml = system_path / "_CURRENT" / "PATTERNS.yaml"
+
+    # Prefer JSON for complex structures
+    if patterns_json.exists():
+        with open(patterns_json, 'r') as f:
+            return json.load(f)
+
+    # Fall back to simple YAML
+    if patterns_yaml.exists():
+        data = parse_yaml_simple(patterns_yaml)
+        return {'learned_patterns': [], 'statistics': {}, **data}
 
     return {'learned_patterns': [], 'statistics': {}}
 
@@ -35,12 +74,10 @@ def scan_current_state(system_path: Path):
     needs_attention = []
 
     for sejr_folder in sejr_folders:
-        status_file = sejr_folder / "VERIFY_STATUS.yaml"
+        status_file = sejr_folder / "STATUS.yaml"
 
         if status_file.exists():
-            with open(status_file, 'r') as f:
-                status = yaml.safe_load(f)
-
+            status = parse_yaml_simple(status_file)
             status_name = status.get('status', 'unknown')
             status_counts[status_name] = status_counts.get(status_name, 0) + 1
 

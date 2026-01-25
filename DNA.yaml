@@ -1,106 +1,271 @@
 # SEJR LISTE SYSTEM - DNA
 # System selvbevidsthed og metadata
+# Version 2.1.0 - SINGLE SOURCE OF TRUTH
 
 meta:
   created: "2026-01-23T06:30:00+01:00"
   created_by: "Kv1nt (Claude Sonnet 4.5)"
-  version: "1.0.0"
-  purpose: "Automated victory list tracking system with 7 DNA layers"
+  updated: "2026-01-25T16:00:00+01:00"
+  updated_by: "Kv1nt (Claude Opus 4.5)"
+  version: "2.1.0"
+  version_name: "SINGLE SOURCE OF TRUTH"
+  purpose: "Strømlinet system UDEN redundans - 4 filer per sejr"
+
+# ═══════════════════════════════════════════════════════════
+# SINGLE SOURCE OF TRUTH PRINCIP (NYHED i v2.1.0)
+# ═══════════════════════════════════════════════════════════
+
+single_source_of_truth:
+  enabled: true
+  description: "Ingen data eksisterer to steder"
+
+  master_files:
+    AUTO_LOG.jsonl: "Alt logging (handlinger, terminal, actors)"
+    STATUS.yaml: "Alt status (pass, score, model tracking)"
+
+  eliminated_redundancy:
+    - "VERIFY_STATUS.yaml → Merged into STATUS.yaml"
+    - "ADMIRAL_SCORE.yaml → Merged into STATUS.yaml"
+    - "MODEL_HISTORY.yaml → Merged into STATUS.yaml"
+    - "TERMINAL_LOG.md → Data in AUTO_LOG.jsonl"
+
+  sejr_files_count: 4  # Ned fra 7
 
 system_identity:
   name: "Sejr Liste System"
-  type: "Template & Tracking System"
+  type: "3-Pass Konkurrence + Tracking System"
   location: "/home/rasmus/Desktop/sejrliste systemet"
-  standalone: true  # Not part of MASTER FOLDERS or INTRO
+  standalone: true
+
+# ═══════════════════════════════════════════════════════════
+# 3-PASS KONKURRENCE SYSTEM (NYHED i v2.0.0)
+# ═══════════════════════════════════════════════════════════
+
+three_pass_system:
+  enabled: true
+  description: "Hver opgave gennemgås 3 gange med tvunget forbedring"
+
+  pass_1:
+    name: "Planlægning"
+    focus: "Research, design, plan"
+    score_requirement: "Baseline"
+    phases: ["PHASE 0: Research", "PHASE 1: Planning", "PHASE 2: Verify Plan"]
+
+  pass_2:
+    name: "Eksekvering"
+    focus: "Implementer, test, git"
+    score_requirement: "> Pass 1"
+    phases: ["PHASE 2: Development", "PHASE 3: Test", "PHASE 4: Git"]
+
+  pass_3:
+    name: "7-DNA Review"
+    focus: "Find mangler, fejl, optimeringer"
+    score_requirement: "> Pass 2"
+    phases: ["7 DNA Lag Checkliste", "Final Verification", "Git & Docs"]
+
+  archive_requirements:
+    - "Alle 3 passes complete"
+    - "Pass 2 score > Pass 1 score"
+    - "Pass 3 score > Pass 2 score"
+    - "Total score >= 24/30"
+    - "5+ tests passed"
+    - "7-DNA gennemgang dokumenteret"
+
+# ═══════════════════════════════════════════════════════════
+# CLAUDE FOKUS SYSTEM (NYHED i v2.0.0)
+# ═══════════════════════════════════════════════════════════
+
+claude_focus_system:
+  enabled: true
+  description: "Dynamisk CLAUDE.md der tvinger AI fokus"
+
+  components:
+    - "SYSTEM_REGLER.md - Obligatoriske regler for AI"
+    - "CLAUDE.md - Dynamisk fokus lock per sejr"
+    - "build_claude_context.py - Dynamisk CLAUDE.md builder"
+    - "sejr-fokus-enforcer skill - Auto-aktivering"
+
+  anti_dum_checkpoints:
+    frequency: "Hver 5 handlinger"
+    action: "Genlæs CLAUDE.md og bekræft task"
+
+  forbidden_actions:
+    - "Arbejde på andet end current sejr"
+    - "Skippe passes"
+    - "Arkivere før 3-pass done"
+    - "Sige 'færdig' uden bevis"
+
+# ═══════════════════════════════════════════════════════════
+# 7 DNA LAG
+# ═══════════════════════════════════════════════════════════
 
 dna_layers:
   1_self_aware:
     enabled: true
-    description: "System knows its own state via this DNA.yaml"
-    implementation: "DNA.yaml with metadata + context"
+    description: "System kender sin egen state"
+    implementation: "DNA.yaml + VERIFY_STATUS.yaml"
 
   2_self_documenting:
     enabled: true
-    description: "Auto-logs all actions inline (not retrospective)"
-    implementation: "AUTO_LOG.jsonl in each active sejr"
+    description: "Auto-logger alle handlinger"
+    implementation: "AUTO_LOG.jsonl per sejr"
 
   3_self_verifying:
     enabled: true
-    description: "Auto-checks task completion"
+    description: "Auto-verificerer med 3-pass tracking"
     implementation: "auto_verify.py + VERIFY_STATUS.yaml"
 
   4_self_improving:
     enabled: true
-    description: "Learns patterns from completed sejr"
+    description: "Lærer patterns fra færdige sejr"
     implementation: "auto_learn.py + PATTERNS.yaml"
 
   5_self_archiving:
     enabled: true
-    description: "Auto-cleans up when done (semantic only)"
+    description: "Arkiverer semantisk (BLOKERET til 3-pass done)"
     implementation: "auto_archive.py + 90_ARCHIVE/"
 
   6_predictive:
     enabled: true
-    description: "AI-suggests optimal next steps"
-    implementation: "auto_predict.py + NEXT.md generation"
+    description: "AI-foreslår næste skridt"
+    implementation: "auto_predict.py + NEXT.md"
 
   7_self_optimizing:
     enabled: true
-    description: "MANDATORY creative search before building"
-    implementation: "External search + Internal search + 3 alternatives"
+    description: "3 alternativer før bygning"
+    implementation: "PHASE 0 i SEJR_LISTE.md"
 
-context:
-  what_before: "Manual task tracking in scattered TODO files"
-  what_now: "Automated 7-layer DNA system with semantic focus"
-  what_next: "Use for all project tracking (HYBRID deploy, etc.)"
-  why: "Prevent 'NÆSTEN' pattern, ensure 300% FÆRDIGT standard"
+# ═══════════════════════════════════════════════════════════
+# ADMIRAL KONKURRENCE SYSTEM (NYHED i v2.0.0)
+# ═══════════════════════════════════════════════════════════
+
+admiral_konkurrence:
+  enabled: true
+  description: "Score system der måler AI performance objektivt"
+
+  positive_metrics:
+    - "CHECKBOX_DONE: +1"
+    - "PASS_COMPLETE: +10"
+    - "VERIFIED_WORKING: +5"
+    - "TEST_PASSED: +3"
+    - "ADMIRAL_MOMENT: +10"
+    - "SEJR_ARCHIVED: +20"
+
+  negative_metrics:
+    - "TOKEN_WASTE: -3 (×2 = -6)"
+    - "MEMORY_LOSS: -5 (×2 = -10)"
+    - "LIE_DETECTED: -10 (×2 = -20)"
+    - "RULE_BREAK: -10 (×2 = -20)"
+
+  formula: "total = positive - (negative × 2)"
+
+  ranks:
+    STORADMIRAL: 150
+    ADMIRAL: 100
+    KAPTAJN: 50
+    LØJTNANT: 20
+    KADET: 0
+    SKIBSDRENG: -999
+
+  files:
+    - "ADMIRAL_KONKURRENCE.md - System dokumentation"
+    - "ADMIRAL_SCORE.yaml - Per-sejr score tracking"
+    - "_CURRENT/LEADERBOARD.md - Global leaderboard"
+    - "scripts/admiral_tracker.py - Score management"
+
+# ═══════════════════════════════════════════════════════════
+# SCRIPTS (9 stk)
+# ═══════════════════════════════════════════════════════════
+
+scripts:
+  count: 9
+  list:
+    - name: "generate_sejr.py"
+      purpose: "Opret ny sejr med alle 4 filer"
+    - name: "build_claude_context.py"
+      purpose: "Byg DYNAMISK CLAUDE.md fra actual state"
+    - name: "update_claude_focus.py"
+      purpose: "Opdater CLAUDE.md state"
+    - name: "auto_verify.py"
+      purpose: "3-pass verification + scoring"
+    - name: "auto_archive.py"
+      purpose: "Arkivering (blokeret til 3-pass done)"
+    - name: "auto_track.py"
+      purpose: "State tracking + STATE.md"
+    - name: "auto_learn.py"
+      purpose: "Pattern learning + PATTERNS.yaml"
+    - name: "auto_predict.py"
+      purpose: "Predictions + NEXT.md"
+    - name: "admiral_tracker.py"
+      purpose: "Konkurrence score tracking + leaderboard"
+
+# ═══════════════════════════════════════════════════════════
+# STATUS
+# ═══════════════════════════════════════════════════════════
 
 status:
   operational: true
-  last_updated: "2026-01-23T22:55:27+01:00"
-  active_sejr_count: 1  # Updated by scripts
-  archived_sejr_count: 0  # Updated by scripts
+  last_updated: "2026-01-25T00:30:00+01:00"
+  active_sejr_count: 1
+  archived_sejr_count: 2
 
-integration:
-  todowrite:
-    enabled: true
-    sync_direction: "bi-directional"
-    description: "SEJR_LISTE ↔ TodoWrite (two-way sync)"
+# ═══════════════════════════════════════════════════════════
+# FILER I SYSTEMET
+# ═══════════════════════════════════════════════════════════
 
-  git:
-    enabled: true
-    auto_commit: true
-    auto_push: true
-    trigger: "on sejr complete"
+files:
+  root:
+    - "ARBEJDSFORHOLD.md - KOMPLET MODEL VEJLEDNING (læs først!)"
+    - "SYSTEM_REGLER.md - Obligatoriske AI regler"
+    - "ADMIRAL_KONKURRENCE.md - Score system dokumentation"
+    - "LOG_FORMAT.md - Log format specifikation (ADMIRAL STANDARD)"
+    - "PLAN_STATUS.md - Plan vs implementering oversigt"
+    - "README.md - Overblik (v2.0.0)"
+    - "QUICK_START.md - 30-sekunders guide"
+    - "MANUAL.md - Komplet manual (390 linjer)"
+    - "ENFORCEMENT_RULES.md - 3-pass forklaring"
+    - "DNA.yaml - Denne fil"
+    - "view.py - Terminal viewer"
+    - "sejr_launcher.py - GUI launcher"
 
-  context_system:
-    enabled: true
-    hooks:
-      - "journal.md (auto-update on completion)"
-      - "session.md (auto-update current state)"
-      - "cleanup old context"
+  templates:
+    - "00_TEMPLATES/SEJR_TEMPLATE.md - Master template med 3-pass"
+    - "00_TEMPLATES/CLAUDE.md - Fokus lock template"
+    - "00_TEMPLATES/STATUS_TEMPLATE.yaml - Unified status template"
+    - "00_TEMPLATES/SESSION_TJEK.md - Session start tjekliste"
 
-quality_standards:
-  semantic_focus: "Max 500 lines context, always current"
-  automation_level: "90% auto, 10% human decisions"
-  token_efficiency: "<1000 tokens per session resume"
-  visual_clarity: "Progress visible in <5 seconds"
-  prevention_score: "Blocks 80% of repeat mistakes"
+  sejr_mappe:
+    - "SEJR_LISTE.md - Hovedopgave (3 passes)"
+    - "CLAUDE.md - Dynamisk fokus lock (genereret)"
+    - "STATUS.yaml - UNIFIED (pass + score + model tracking)"
+    - "AUTO_LOG.jsonl - MASTER (alt logging)"
+
+# ═══════════════════════════════════════════════════════════
+# ADMIRAL STANDARDS
+# ═══════════════════════════════════════════════════════════
 
 admiral_compliance:
-  rule_16_verification: true  # NEVER FORGET VERIFICATION + DOCUMENTATION
-  rule_28_git_complete: true  # Work complete = Git complete (all 5 steps)
-  rule_0c_300_faerdig: true   # RUNNING + PROVEN + TESTED
-  foer_under_efter: true      # Always document phases
+  rule_16_verification: true
+  rule_28_git_complete: true
+  rule_0c_300_faerdig: true
+  foer_under_efter: true
+  three_pass_konkurrence: true  # NYHED
 
-documentation:
-  master_folders: "/home/rasmus/Desktop/MASTER FOLDERS(INTRO)/I12_SEJR_LISTE_SYSTEM.md"
-  hjerneskade: "/home/rasmus/Desktop/MANUAL I TILFÆLDE AF HJERNESKADE/26_SEJR_LISTE_SYSTEM.md"
-  readme: "/home/rasmus/Desktop/sejrliste systemet/README.md"
+quality_standards:
+  semantic_focus: "Max 500 lines context"
+  automation_level: "90% auto, 10% human"
+  token_efficiency: "<1000 tokens per resume"
+  visual_clarity: "Progress visible in <5 seconds"
+  forced_improvement: "Pass scores MUST increase"  # NYHED
+
+# ═══════════════════════════════════════════════════════════
+# VERIFICATION
+# ═══════════════════════════════════════════════════════════
 
 verification:
   system_exists: "ls '/home/rasmus/Desktop/sejrliste systemet'"
-  readme_exists: "cat '/home/rasmus/Desktop/sejrliste systemet/README.md'"
-  scripts_count: "ls '/home/rasmus/Desktop/sejrliste systemet/scripts/'*.py | wc -l  # Expected: 6"
-  templates_count: "ls '/home/rasmus/Desktop/sejrliste systemet/00_TEMPLATES/'*.md | wc -l  # Expected: 2+"
-  state_exists: "cat '/home/rasmus/Desktop/sejrliste systemet/_CURRENT/STATE.md'"
+  scripts_count: "ls scripts/*.py | wc -l  # Expected: 9"
+  templates_count: "ls 00_TEMPLATES/* | wc -l  # Expected: 4"
+  view_works: "python3 view.py"
+  generate_works: "python3 scripts/generate_sejr.py --name 'Test'"
+  verify_works: "python3 scripts/auto_verify.py --all"

@@ -1,0 +1,168 @@
+# STATUS.yaml - UNIFIED STATUS (Single Source of Truth)
+# Alt status data i ÉN fil - ingen redundans
+# Genereret af: generate_sejr.py
+# Opdateret af: auto_verify.py, admiral_tracker.py
+
+# ═══════════════════════════════════════════════════════════
+# META
+# ═══════════════════════════════════════════════════════════
+
+meta:
+  sejr_name: "{SEJR_NAVN}"
+  folder: "{FOLDER_NAME}"
+  created: "{TIMESTAMP}"
+  created_by: "{CREATOR}"
+  session_id: "{SESSION_ID}"
+  last_updated: "{TIMESTAMP}"
+
+# ═══════════════════════════════════════════════════════════
+# 3-PASS TRACKING (erstatter VERIFY_STATUS.yaml)
+# ═══════════════════════════════════════════════════════════
+
+pass_tracking:
+  current_pass: 1
+  can_archive: false
+  archive_blocker: "Pass 1 ikke færdig"
+
+  pass_1:
+    name: "Planlægning"
+    status: "in_progress"
+    complete: false
+    score: 0
+    max_score: 10
+    checkboxes_done: 0
+    checkboxes_total: 0
+    percentage: 0
+    started: "{TIMESTAMP}"
+    completed: null
+    review_done: false
+
+  pass_2:
+    name: "Eksekvering"
+    status: "pending"
+    complete: false
+    score: 0
+    max_score: 10
+    checkboxes_done: 0
+    checkboxes_total: 0
+    percentage: 0
+    started: null
+    completed: null
+    review_done: false
+
+  pass_3:
+    name: "7-DNA Review"
+    status: "pending"
+    complete: false
+    score: 0
+    max_score: 10
+    checkboxes_done: 0
+    checkboxes_total: 0
+    percentage: 0
+    started: null
+    completed: null
+    final_verification: false
+
+  totals:
+    score: 0
+    max_score: 30
+    required_score: 24
+    tests_passed: 0
+    tests_required: 5
+
+# ═══════════════════════════════════════════════════════════
+# SCORE TRACKING (erstatter ADMIRAL_SCORE.yaml)
+# ═══════════════════════════════════════════════════════════
+
+score_tracking:
+  positive:
+    checkbox_done: 0        # +1 each
+    pass_complete: 0        # +10 each
+    verified_working: 0     # +5 each
+    test_passed: 0          # +3 each
+    improvement_found: 0    # +2 each
+    proactive_action: 0     # +3 each
+    good_documentation: 0   # +2 each
+    efficiency_bonus: 0     # +5 each
+    admiral_moment: 0       # +10 each
+    sejr_archived: 0        # +20 each
+
+  negative:
+    token_waste: 0          # -3 each (×2 = -6)
+    memory_loss: 0          # -5 each (×2 = -10)
+    incomplete_step: 0      # -3 each (×2 = -6)
+    skipped_step: 0         # -5 each (×2 = -10)
+    lie_detected: 0         # -10 each (×2 = -20)
+    error_made: 0           # -2 each (×2 = -4)
+    dumb_moment: 0          # -3 each (×2 = -6)
+    focus_lost: 0           # -3 each (×2 = -6)
+    rule_break: 0           # -10 each (×2 = -20)
+
+  achievements:
+    perfekt_pass: false     # +15 bonus
+    flawless_sejr: false    # +30 bonus
+    speed_demon: false      # +10 bonus
+    memory_master: false    # +20 bonus
+    doc_king: false         # +10 bonus
+
+  totals:
+    positive_points: 0
+    negative_points: 0
+    negative_multiplied: 0  # negative × 2
+    achievement_bonus: 0
+    total_score: 0          # positive - negative_multiplied + bonus
+    rank: "KADET"           # STORADMIRAL/ADMIRAL/KAPTAJN/LØJTNANT/KADET/SKIBSDRENG
+
+# ═══════════════════════════════════════════════════════════
+# MODEL TRACKING (erstatter MODEL_HISTORY.yaml)
+# ═══════════════════════════════════════════════════════════
+
+model_tracking:
+  current_model:
+    model_id: null
+    model_name: null
+    session_started: null
+
+  models_used: []
+  # Eksempel entry:
+  # - model_id: "claude-opus-4-5-20251101"
+  #   model_name: "Claude Opus 4.5"
+  #   first_seen: "2026-01-25T12:00:00+01:00"
+  #   last_seen: "2026-01-25T14:00:00+01:00"
+  #   sessions: 2
+  #   actions: 45
+  #   checkboxes_completed: 12
+  #   score_earned: 35
+
+  human_activity:
+    first_seen: null
+    last_seen: null
+    sessions: 0
+    approvals: 0
+    corrections: 0
+
+  sessions: []
+  # Eksempel entry:
+  # - id: "sess_abc123"
+  #   started: "2026-01-25T12:00:00+01:00"
+  #   ended: "2026-01-25T14:00:00+01:00"
+  #   actor_type: "ai"
+  #   actor_name: "Claude Opus 4.5"
+  #   model_id: "claude-opus-4-5-20251101"
+  #   pass: 1
+  #   actions_count: 23
+  #   checkboxes_done: 5
+
+# ═══════════════════════════════════════════════════════════
+# STATISTICS (automatisk beregnet)
+# ═══════════════════════════════════════════════════════════
+
+statistics:
+  total_sessions: 1
+  total_actions: 1
+  total_commands: 1
+  total_time_minutes: 0
+  unique_models: 0
+  human_sessions: 0
+  created_at: "{TIMESTAMP}"
+  last_activity: "{TIMESTAMP}"
