@@ -79,10 +79,19 @@ class SejrSession:
         return {}
 
     def _write_focus(self, focus: dict):
-        """Write focus lock to YAML."""
-        import yaml
+        """Write focus lock to YAML (no PyYAML dependency)."""
+        lines = []
+        for key, value in focus.items():
+            if isinstance(value, bool):
+                lines.append(f"{key}: {'true' if value else 'false'}")
+            elif isinstance(value, list):
+                lines.append(f"{key}:")
+                for item in value:
+                    lines.append(f"  - \"{item}\"")
+            else:
+                lines.append(f"{key}: \"{value}\"")
         with open(self.focus_file, 'w') as f:
-            yaml.dump(focus, f, default_flow_style=False, allow_unicode=True)
+            f.write("\n".join(lines) + "\n")
 
     def log_progress(self, action: str, details: dict = None):
         """Append to immutable progress log."""

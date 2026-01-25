@@ -6,16 +6,15 @@ SEJR LAUNCHER - Steam-Style App for Sejrliste System
 En visuel launcher til at oprette og administrere sejrliste mapper.
 Inspireret af Steam's game library interface.
 
-INGEN EXTERNAL DEPENDENCIES - Kun Python standard library (tkinter)
+KRÆVER: tkinter (python3-tk på Ubuntu/Debian)
+FALLBACK: Hvis tkinter mangler, vis instruktioner og brug view.py i stedet
 
 Brug: python sejr_launcher.py
 
 Author: Kv1nt + Rasmus
-Version: 1.0.0
+Version: 1.1.0
 """
 
-import tkinter as tk
-from tkinter import ttk, messagebox, simpledialog
 import json
 import re
 import subprocess
@@ -23,6 +22,38 @@ import sys
 from pathlib import Path
 from datetime import datetime
 from typing import Optional, Dict, List
+
+# Graceful tkinter import with fallback
+TKINTER_AVAILABLE = False
+try:
+    import tkinter as tk
+    from tkinter import ttk, messagebox, simpledialog
+    TKINTER_AVAILABLE = True
+except ImportError:
+    pass
+
+# Check tkinter availability early
+if not TKINTER_AVAILABLE:
+    print("""
+╔══════════════════════════════════════════════════════════════════╗
+║  ⚠️  TKINTER IKKE TILGÆNGELIG                                    ║
+╠══════════════════════════════════════════════════════════════════╣
+║                                                                  ║
+║  sejr_launcher.py kræver tkinter (GUI library).                 ║
+║                                                                  ║
+║  INSTALLER MED:                                                  ║
+║    Ubuntu/Debian: sudo apt install python3-tk                   ║
+║    Fedora:        sudo dnf install python3-tkinter              ║
+║    Arch:          sudo pacman -S tk                             ║
+║    macOS:         brew install python-tk                        ║
+║                                                                  ║
+║  ALTERNATIV (terminal-baseret):                                  ║
+║    python view.py           # Simpel status viewer               ║
+║    python app/sejr_app.py   # Textual TUI app                   ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+""")
+    sys.exit(1)
 
 # ============================================================================
 # CONFIGURATION
