@@ -71,12 +71,20 @@ Læs SEJR_LISTE.md og start med PHASE 0: Research
     return claude_file
 
 
-def generate_sejr(name: str, system_path: Path):
-    """Generate new sejr with ONLY 4 files (Single Source of Truth)."""
+def generate_sejr(name: str, system_path: Path, goal: str = None, tech: str = None, scope: str = None):
+    """Generate new sejr with 5 files (Single Source of Truth + PROJECT_BRIEF)."""
 
-    # Create folder
+    # Create folder - don't add date if name already contains it
     date = datetime.now().strftime("%Y-%m-%d")
-    folder_name = f"{name.replace(' ', '_').upper()}_{date}"
+    clean_name = name.replace(' ', '_').upper()
+
+    # Check if name already ends with a date pattern (YYYY-MM-DD)
+    import re
+    if re.search(r'\d{4}-\d{2}-\d{2}$', clean_name):
+        folder_name = clean_name  # Don't add date again
+    else:
+        folder_name = f"{clean_name}_{date}"
+
     sejr_path = system_path / "10_ACTIVE" / folder_name
     sejr_path.mkdir(parents=True, exist_ok=True)
     print(f"✅ Created: {sejr_path}")
@@ -258,7 +266,78 @@ statistics:
         "pass": 1
     }
     log_file.write_text(json.dumps(log_entry) + "\n", encoding="utf-8")
-    print(f"✅ File 4/4: {log_file.name}")
+    print(f"✅ File 4/5: {log_file.name}")
+
+    # ═══════════════════════════════════════════════════════════
+    # FILE 5: PROJECT_BRIEF.md (Quick Understanding - 30 seconds)
+    # ═══════════════════════════════════════════════════════════
+
+    brief_file = sejr_path / "PROJECT_BRIEF.md"
+    goal_text = goal or "Beskriv målet for denne sejr"
+    tech_text = tech or "Python, Bash, eller anden teknologi"
+    scope_text = scope or "Hvad er in-scope vs out-of-scope"
+
+    brief_content = f"""# PROJECT BRIEF: {name}
+
+> **LÆS DENNE FIL FØRST. 30 SEKUNDER. KOMPLET FORSTÅELSE.**
+
+---
+
+## HVAD BYGGER VI?
+
+**Mål:** {goal_text}
+
+**Success Criteria:**
+1. [ ] Definer success kriterium 1
+2. [ ] Definer success kriterium 2
+3. [ ] Definer success kriterium 3
+
+---
+
+## SCOPE
+
+{scope_text}
+
+| In Scope | Out of Scope |
+|----------|--------------|
+| ... | ... |
+
+---
+
+## TEKNOLOGI
+
+**Stack:** {tech_text}
+
+**Lokation:** {sejr_path}
+
+---
+
+## QUICK START
+
+```bash
+# Se status
+./sejr status
+
+# Kør verification
+python scripts/auto_verify.py --sejr "{folder_name}"
+```
+
+---
+
+## NÅR DENNE SEJR ER FÆRDIG
+
+Vi ved det virker fordi:
+1. 3-pass konkurrence gennemført med score ≥ 24/30
+2. Alle checkboxes har konkret bevis
+3. Næste skridt er klart
+
+---
+
+**Oprettet:** {datetime.now().strftime("%Y-%m-%d %H:%M")}
+**Ejer:** Kv1nt + Rasmus
+"""
+    brief_file.write_text(brief_content, encoding="utf-8")
+    print(f"✅ File 5/5: {brief_file.name}")
 
     # ═══════════════════════════════════════════════════════════
     # SUMMARY
@@ -268,11 +347,12 @@ statistics:
     print(f"🎯 SEJR OPRETTET: {name}")
     print(f"{'═' * 60}")
     print(f"\n📁 Mappe: {sejr_path}")
-    print(f"\n📋 STRØMLINET - Kun 4 filer (Single Source of Truth):")
-    print(f"   1. SEJR_LISTE.md  → Opgaver og checkboxes")
-    print(f"   2. CLAUDE.md      → Fokus lock (genereret)")
-    print(f"   3. STATUS.yaml    → ALT status (unified)")
-    print(f"   4. AUTO_LOG.jsonl → ALT logging (master)")
+    print(f"\n📋 STRØMLINET - 5 filer (Single Source of Truth + Brief):")
+    print(f"   1. PROJECT_BRIEF.md → 30-sek forståelse (LÆS FØRST!)")
+    print(f"   2. SEJR_LISTE.md    → Opgaver og checkboxes")
+    print(f"   3. CLAUDE.md        → Fokus lock (genereret)")
+    print(f"   4. STATUS.yaml      → ALT status (unified)")
+    print(f"   5. AUTO_LOG.jsonl   → ALT logging (master)")
     print(f"\n📊 Session ID: {session_id}")
     print(f"\n🚀 START:")
     print(f"   1. Åbn SEJR_LISTE.md")
@@ -286,14 +366,26 @@ statistics:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Generate new SEJR (Streamlined - 4 files only)"
+        description="Generate new SEJR (Streamlined - 5 files with PROJECT_BRIEF)"
     )
     parser.add_argument(
         "--name",
         required=True,
-        help="Name of the sejr"
+        help="Name of the sejr (don't include date - auto-added)"
+    )
+    parser.add_argument(
+        "--goal",
+        help="What are we building? (for PROJECT_BRIEF.md)"
+    )
+    parser.add_argument(
+        "--tech",
+        help="Technology stack (for PROJECT_BRIEF.md)"
+    )
+    parser.add_argument(
+        "--scope",
+        help="What's in scope vs out of scope (for PROJECT_BRIEF.md)"
     )
     args = parser.parse_args()
 
     system_path = Path(__file__).parent.parent
-    generate_sejr(args.name, system_path)
+    generate_sejr(args.name, system_path, goal=args.goal, tech=args.tech, scope=args.scope)
