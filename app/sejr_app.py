@@ -25,6 +25,30 @@ try:
 except ImportError:
     EXECUTOR_AVAILABLE = False
 
+# FASE 3: Import AI Model Handler
+try:
+    from app.models import ModelHandler, ModelResponse, ModelConfig
+    MODEL_HANDLER_AVAILABLE = True
+except ImportError:
+    MODEL_HANDLER_AVAILABLE = False
+
+# FASE 4: Import Visual Polish
+try:
+    from app.widgets.visual_polish import (
+        Colors, StatusIndicator, SessionTimer, StatisticsView,
+        ProgressAnimation, Theme, RankDisplay, VisualPolishWidget
+    )
+    VISUAL_POLISH_AVAILABLE = True
+except ImportError:
+    VISUAL_POLISH_AVAILABLE = False
+
+# FASE 5: Import Integrations
+try:
+    from app.integrations import ContextSync, GitIntegration, TodoSync
+    INTEGRATIONS_AVAILABLE = True
+except ImportError:
+    INTEGRATIONS_AVAILABLE = False
+
 try:
     from textual.app import App, ComposeResult
     from textual.containers import Container, Horizontal, Vertical, ScrollableContainer
@@ -191,16 +215,45 @@ if TEXTUAL_AVAILABLE:
             text += f"📦 Archived: {archived}\n"
             text += f"🕐 Updated: {datetime.now().strftime('%H:%M:%S')}\n"
 
+            # FASE 4: Session Timer Integration
+            try:
+                if self.app.session_timer:
+                    elapsed = self.app.session_timer.format_elapsed()
+                    text += f"⏱️ Session: {elapsed}\n"
+            except:
+                pass
+
             if sejr_list:
                 sejr = sejr_list[0]
                 text += f"\n─── Current Sejr ───\n"
                 text += f"📋 {sejr['name'][:30]}\n"
                 text += f"🔄 Pass: {sejr['current_pass']}/3\n"
                 text += f"✅ Done: {sejr['checkboxes_done']}/{sejr['checkboxes_total']}\n"
-                text += f"🎖️ Rank: {sejr['rank']}\n"
+
+                # FASE 4: Rank Display with visual indicator
+                try:
+                    if self.app.rank_display:
+                        rank_text = self.app.rank_display.render_rank(sejr['total_score'])
+                        text += f"🎖️ {rank_text}\n"
+                    else:
+                        text += f"🎖️ Rank: {sejr['rank']}\n"
+                except:
+                    text += f"🎖️ Rank: {sejr['rank']}\n"
 
                 if sejr['can_archive']:
                     text += f"\n✅ READY TO ARCHIVE"
+
+            # FASE 5: Integration status
+            try:
+                if self.app.context_sync:
+                    text += f"\n\n─── Integrations ───\n"
+                    text += f"📝 Context: ✓\n"
+                if self.app.git_integration:
+                    is_clean, msg = self.app.git_integration.verify_clean_state()
+                    status = "✓" if is_clean else "⚠"
+                    text += f"🔀 Git: {status}\n"
+            except:
+                pass
 
             return text
 
@@ -396,6 +449,23 @@ if TEXTUAL_AVAILABLE:
             self.executor = ScriptExecutor(system_path) if EXECUTOR_AVAILABLE else None
             self.dna_widget = DNAStatusWidget() if EXECUTOR_AVAILABLE else None
 
+            # FASE 3: Model Handler for AI tasks
+            self.model_handler = ModelHandler() if MODEL_HANDLER_AVAILABLE else None
+
+            # FASE 4: Visual Polish - Session Timer & Rank Display
+            self.session_timer = SessionTimer() if VISUAL_POLISH_AVAILABLE else None
+            self.rank_display = RankDisplay() if VISUAL_POLISH_AVAILABLE else None
+            self.theme = Theme.DEFAULT if VISUAL_POLISH_AVAILABLE else None
+
+            # FASE 5: Integrations - Context Sync
+            self.context_sync = ContextSync() if INTEGRATIONS_AVAILABLE else None
+            self.todo_sync = TodoSync(system_path) if INTEGRATIONS_AVAILABLE else None
+            self.git_integration = GitIntegration(system_path) if INTEGRATIONS_AVAILABLE else None
+
+            # Start session timer
+            if self.session_timer:
+                self.session_timer.start()
+
         def compose(self) -> ComposeResult:
             yield Header(show_clock=True)
             yield StatusPanel(self.data, classes="panel", id="status-panel")
@@ -474,6 +544,17 @@ if TEXTUAL_AVAILABLE:
                         self.dna_widget.set_error(5)
                 self.action_refresh()
                 if success:
+                    # FASE 5: Update context on archive
+                    if self.context_sync:
+                        try:
+                            self.context_sync.append_journal({
+                                "name": sejr['name'],
+                                "score": sejr['total_score'],
+                                "rank": sejr['rank'],
+                                "archived_at": datetime.now().isoformat()
+                            })
+                        except Exception as e:
+                            pass  # Non-blocking
                     self.notify("Archived!")
                 else:
                     self.notify(f"Error: {output[:100]}")
@@ -486,6 +567,17 @@ if TEXTUAL_AVAILABLE:
                 )
                 self.action_refresh()
                 if result.returncode == 0:
+                    # FASE 5: Update context on archive
+                    if self.context_sync:
+                        try:
+                            self.context_sync.append_journal({
+                                "name": sejr['name'],
+                                "score": sejr['total_score'],
+                                "rank": sejr['rank'],
+                                "archived_at": datetime.now().isoformat()
+                            })
+                        except Exception as e:
+                            pass  # Non-blocking
                     self.notify("Archived!")
                 else:
                     self.notify(f"Error: {result.stderr[:100]}")
@@ -563,6 +655,17 @@ def run_simple_view(system_path: Path):
 
     data = SejrData(system_path)
 
+    # FASE 4: Initialize visual polish components
+    session_timer = SessionTimer() if VISUAL_POLISH_AVAILABLE else None
+    rank_display = RankDisplay() if VISUAL_POLISH_AVAILABLE else None
+    colors = Colors if VISUAL_POLISH_AVAILABLE else None
+
+    # FASE 5: Initialize integrations
+    context_sync = ContextSync() if INTEGRATIONS_AVAILABLE else None
+
+    if session_timer:
+        session_timer.start()
+
     def clear_screen():
         print("\033[2J\033[H", end="")
 
@@ -577,10 +680,22 @@ def run_simple_view(system_path: Path):
     def show_dashboard():
         clear_screen()
 
-        print("=" * 70)
-        print("  SEJRLISTE VISUAL SYSTEM".center(70))
+        # FASE 4: Use colors if available
+        green = colors.GREEN if colors else ""
+        yellow = colors.YELLOW if colors else ""
+        blue = colors.BLUE if colors else ""
+        reset = colors.RESET if colors else ""
+
+        print(f"{green}{'=' * 70}{reset}")
+        print(f"  {green}SEJRLISTE VISUAL SYSTEM{reset}".center(70 + len(green) + len(reset)))
         print(f"  Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}".center(70))
-        print("=" * 70)
+
+        # FASE 4: Show session timer
+        if session_timer:
+            elapsed = session_timer.format_elapsed()
+            print(f"  ⏱️ Session: {elapsed}".center(70))
+
+        print(f"{green}{'=' * 70}{reset}")
         print()
 
         # Active Sejr
@@ -595,11 +710,21 @@ def run_simple_view(system_path: Path):
                 pct = (sejr['checkboxes_done'] / sejr['checkboxes_total'] * 100) if sejr['checkboxes_total'] > 0 else 0
                 bar = "█" * int(pct / 5) + "░" * (20 - int(pct / 5))
 
-                status = "✅ READY TO ARCHIVE" if sejr['can_archive'] else f"🔵 Pass {sejr['current_pass']}/3"
+                # FASE 4: Color-coded status
+                if sejr['can_archive']:
+                    status = f"{green}✅ READY TO ARCHIVE{reset}"
+                else:
+                    status = f"{blue}🔵 Pass {sejr['current_pass']}/3{reset}"
+
+                # FASE 4: Rank display with visual
+                if rank_display:
+                    rank_text = rank_display.render_rank(sejr['total_score'])
+                else:
+                    rank_text = f"Rank: {sejr['rank']}"
 
                 print(f"\n📋 {sejr['name']}")
                 print(f"   [{bar}] {pct:.0f}% ({sejr['checkboxes_done']}/{sejr['checkboxes_total']})")
-                print(f"   {status} | Rank: {sejr['rank']} | Score: {sejr['total_score']}")
+                print(f"   {status} | {rank_text} | Score: {sejr['total_score']}")
         else:
             print("\n(No active sejr)")
             print("Press 'n' to create new sejr")
@@ -612,10 +737,18 @@ def run_simple_view(system_path: Path):
         for i, name in enumerate(dna, 1):
             print(f"   [{i}] {name}")
 
+        # FASE 5: Integration status
+        if INTEGRATIONS_AVAILABLE:
+            print("\n" + "-" * 70)
+            print("🔗 INTEGRATIONS:")
+            print(f"   📝 Context Sync: {'✓' if context_sync else '✗'}")
+            print(f"   🤖 Model Handler: {'✓' if MODEL_HANDLER_AVAILABLE else '✗'}")
+            print(f"   🎨 Visual Polish: {'✓' if VISUAL_POLISH_AVAILABLE else '✗'}")
+
         # Commands
-        print("\n" + "=" * 70)
+        print("\n" + f"{green}{'=' * 70}{reset}")
         print("  [n]ew  [v]erify  [a]rchive  [p]redict  [r]efresh  [q]uit")
-        print("=" * 70)
+        print(f"{green}{'=' * 70}{reset}")
 
     def handle_command(cmd: str) -> bool:
         if cmd == 'q':
@@ -636,13 +769,26 @@ def run_simple_view(system_path: Path):
         elif cmd == 'a':
             sejr_list = data.get_active_sejr()
             if sejr_list and sejr_list[0]['can_archive']:
-                print(f"\nArchiving {sejr_list[0]['name']}...")
+                sejr = sejr_list[0]
+                print(f"\nArchiving {sejr['name']}...")
                 result = subprocess.run(
                     ["python3", str(system_path / "scripts" / "auto_archive.py"),
-                     "--sejr", sejr_list[0]['name']],
+                     "--sejr", sejr['name']],
                     capture_output=True, text=True, timeout=30
                 )
                 print(result.stdout)
+                # FASE 5: Update context on archive
+                if context_sync and result.returncode == 0:
+                    try:
+                        context_sync.append_journal({
+                            "name": sejr['name'],
+                            "score": sejr['total_score'],
+                            "rank": sejr['rank'],
+                            "archived_at": datetime.now().isoformat()
+                        })
+                        print(f"{green}✓ Journal updated{reset}")
+                    except Exception as e:
+                        pass
             else:
                 print("\nNo sejr ready to archive (3-pass not complete)")
             input("Press Enter to continue...")
