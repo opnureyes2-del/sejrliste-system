@@ -476,7 +476,7 @@ if TEXTUAL_AVAILABLE:
             # FASE 4: Visual Polish - Session Timer & Rank Display
             self.session_timer = SessionTimer() if VISUAL_POLISH_AVAILABLE else None
             self.rank_display = RankDisplay() if VISUAL_POLISH_AVAILABLE else None
-            self.theme = Theme.DEFAULT if VISUAL_POLISH_AVAILABLE else None
+            self.visual_theme = Theme(Theme.DEFAULT) if VISUAL_POLISH_AVAILABLE else None
 
             # FASE 5: Integrations - Context Sync
             self.context_sync = ContextSync() if INTEGRATIONS_AVAILABLE else None

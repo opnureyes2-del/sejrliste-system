@@ -1,18 +1,18 @@
 # NEXT - Hvad Skal Ske Nu?
 
-**AI-Genereret:** 2026-01-25 12:52
+**AI-Genereret:** 2026-01-25 13:26
 **Baseret på:** Current state + Learned patterns
 
 ---
 
 ## NÆSTE SKRIDT (Prioriteret)
 
-### 1. Generate new sejr liste (🔴 High Prioritet)
-**Hvorfor:** No active projects - start something new
+### 1. Continue with active sejr (🟡 Medium Prioritet)
+**Hvorfor:** 1 active project(s) in progress
 
 **Action:**
 ```bash
-python scripts/generate_sejr.py --name "Project Name"
+cat _CURRENT/STATE.md  # Check current state
 ```
 
 ---
@@ -27,7 +27,7 @@ python scripts/generate_sejr.py --name "Project Name"
 
 ## FORSLAG FRA SYSTEM
 
-**Fokus lige nu:** Start new project
+**Fokus lige nu:** Continue current work
 **Reasoning:** Based on current progress and learned patterns
 
 ---

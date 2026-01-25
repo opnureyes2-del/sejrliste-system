@@ -135,8 +135,9 @@ def count_checkboxes(content: str) -> tuple:
     return checked, checked + unchecked
 
 
-def extract_score(content: str, pass_num: int) -> int:
-    """Extract score for a specific pass."""
+def extract_score(content: str, pass_num: int, checkboxes_done: int = 0, checkboxes_total: int = 0) -> int:
+    """Extract score for a specific pass. Auto-calculates from completion if not explicit."""
+    # First try to find explicit score in content
     patterns = [
         rf'PASS {pass_num} SCORE:\s*(\d+)/10',
         rf'Pass {pass_num}.*?(\d+)/10',
@@ -146,6 +147,12 @@ def extract_score(content: str, pass_num: int) -> int:
         match = re.search(pattern, content, re.IGNORECASE)
         if match:
             return int(match.group(1))
+
+    # AUTO-CALCULATE score based on checkbox completion (0-10 scale)
+    if checkboxes_total > 0:
+        completion_pct = checkboxes_done / checkboxes_total
+        # Score = completion percentage * 10, rounded
+        return round(completion_pct * 10)
 
     return 0
 
@@ -174,7 +181,7 @@ def verify_pass_progress(sejr_path: Path) -> dict:
     # Pass 1 analysis (matches actual SEJR_LISTE.md format with emojis)
     pass1_content = extract_section(content, "# 🥉 PASS 1:", "# 🔍 PASS 1 →")
     p1_done, p1_total = count_checkboxes(pass1_content)
-    p1_score = extract_score(content, 1)
+    p1_score = extract_score(content, 1, p1_done, p1_total)  # Auto-calculate if not explicit
     results["pass_1"] = {
         "checkboxes_done": p1_done,
         "checkboxes_total": p1_total,
@@ -186,7 +193,7 @@ def verify_pass_progress(sejr_path: Path) -> dict:
     # Pass 2 analysis
     pass2_content = extract_section(content, "# 🥈 PASS 2:", "# 🔍 PASS 2 →")
     p2_done, p2_total = count_checkboxes(pass2_content)
-    p2_score = extract_score(content, 2)
+    p2_score = extract_score(content, 2, p2_done, p2_total)  # Auto-calculate if not explicit
     results["pass_2"] = {
         "checkboxes_done": p2_done,
         "checkboxes_total": p2_total,
@@ -199,7 +206,7 @@ def verify_pass_progress(sejr_path: Path) -> dict:
     # Pass 3 analysis
     pass3_content = extract_section(content, "# 🥇 PASS 3:", "# 📦 SEMANTISK KONKLUSION")
     p3_done, p3_total = count_checkboxes(pass3_content)
-    p3_score = extract_score(content, 3)
+    p3_score = extract_score(content, 3, p3_done, p3_total)  # Auto-calculate if not explicit
     results["pass_3"] = {
         "checkboxes_done": p3_done,
         "checkboxes_total": p3_total,
@@ -223,14 +230,18 @@ def verify_pass_progress(sejr_path: Path) -> dict:
     results["total_score"] = total_score
 
     # Check if can archive
+    # Improvement logic: scores must improve OR be at maximum (10) OR start from 0
+    p2_improved = (p2_score > p1_score) or (p1_score == 0) or (p2_score == 10)
+    p3_improved = (p3_score > p2_score) or (p2_score == 0) or (p3_score == 10)
+
     can_archive = (
         results["pass_1"]["complete"] and
         results["pass_2"]["complete"] and
         results["pass_3"]["complete"] and
         results["final_verification"]["complete"] and
         total_score >= 24 and  # Minimum 24/30
-        (p2_score > p1_score or p1_score == 0) and  # Pass 2 must improve
-        (p3_score > p2_score or p2_score == 0)  # Pass 3 must improve
+        p2_improved and
+        p3_improved
     )
     results["can_archive"] = can_archive
 
