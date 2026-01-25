@@ -4,10 +4,18 @@ Unified Model Handler for Sejrliste Visual System.
 
 Provides a single interface for interacting with all Claude models.
 Integrates with model_router.py for automatic model selection.
+
+Features:
+- Automatic model selection via ModelRouter (DNA lag based)
+- Sync and async request methods
+- Request/response logging to AUTO_LOG.jsonl
+- Mock implementation for testing (production: use AnthropicClient)
+- Edge case handling (empty prompts, invalid lags)
 """
 
 import os
 import json
+import asyncio
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -24,6 +32,85 @@ from app.model_router import Model, ModelRouter, get_model_for_script
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+# ============================================================================
+# API Client Skeleton (for future production use)
+# ============================================================================
+
+class AnthropicClient:
+    """
+    Skeleton for Anthropic API client.
+
+    In production, replace mock methods with actual anthropic SDK calls:
+        from anthropic import Anthropic, AsyncAnthropic
+
+    This skeleton provides the interface for:
+    - Sync message creation
+    - Async message creation
+    - Streaming responses (placeholder)
+    """
+
+    def __init__(self, api_key: Optional[str] = None):
+        """
+        Initialize the client.
+
+        Args:
+            api_key: Anthropic API key. If None, reads from ANTHROPIC_API_KEY env var.
+        """
+        self.api_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
+        self._is_mock = True  # Set to False when using real API
+
+    def create_message(self,
+                       model: str,
+                       messages: List[Dict[str, str]],
+                       max_tokens: int = 4096,
+                       system: Optional[str] = None) -> Dict[str, Any]:
+        """
+        Create a message (sync).
+
+        In production:
+            client = Anthropic(api_key=self.api_key)
+            return client.messages.create(
+                model=model,
+                messages=messages,
+                max_tokens=max_tokens,
+                system=system
+            )
+        """
+        # Mock response
+        return {
+            "content": [{"text": f"[MOCK] Response from {model}"}],
+            "usage": {"input_tokens": 100, "output_tokens": 50},
+            "model": model,
+        }
+
+    async def create_message_async(self,
+                                   model: str,
+                                   messages: List[Dict[str, str]],
+                                   max_tokens: int = 4096,
+                                   system: Optional[str] = None) -> Dict[str, Any]:
+        """
+        Create a message (async).
+
+        In production:
+            client = AsyncAnthropic(api_key=self.api_key)
+            return await client.messages.create(
+                model=model,
+                messages=messages,
+                max_tokens=max_tokens,
+                system=system
+            )
+        """
+        # Simulate async delay
+        await asyncio.sleep(0.01)
+
+        # Mock response
+        return {
+            "content": [{"text": f"[MOCK ASYNC] Response from {model}"}],
+            "usage": {"input_tokens": 100, "output_tokens": 50},
+            "model": model,
+        }
 
 
 @dataclass
@@ -164,10 +251,10 @@ class ModelHandler:
         Send a request to an AI model.
 
         Note: This is a mock implementation. In production, this would
-        call the actual Anthropic API.
+        call the actual Anthropic API via AnthropicClient.
 
         Args:
-            prompt: The prompt to send
+            prompt: The prompt to send (empty prompts handled gracefully)
             model: Optional specific model to use
             dna_lag: Optional DNA lag for automatic model selection
             config: Optional config override
@@ -177,6 +264,11 @@ class ModelHandler:
         """
         import time
         start_time = time.time()
+
+        # Handle empty prompt edge case
+        if not prompt or not prompt.strip():
+            prompt = "[EMPTY PROMPT]"
+            logger.warning("Empty prompt received, using placeholder")
 
         # Determine which model to use
         if model:
@@ -291,6 +383,79 @@ class ModelHandler:
     def get_usage_stats(self) -> Dict[str, int]:
         """Get model usage statistics."""
         return self.router.get_usage_stats()
+
+    async def send_request_async(self,
+                                  prompt: str,
+                                  model: Optional[Model] = None,
+                                  dna_lag: Optional[int] = None,
+                                  config: Optional[ModelConfig] = None) -> ModelResponse:
+        """
+        Send a request to an AI model asynchronously.
+
+        Args:
+            prompt: The prompt to send
+            model: Optional specific model to use
+            dna_lag: Optional DNA lag for automatic model selection
+            config: Optional config override
+
+        Returns:
+            ModelResponse with results
+        """
+        import time
+        start_time = time.time()
+
+        # Handle empty prompt edge case
+        if not prompt or not prompt.strip():
+            prompt = "[EMPTY PROMPT]"
+            logger.warning("Empty prompt received, using placeholder")
+
+        # Determine which model to use
+        if model:
+            selected_model = model
+        elif dna_lag:
+            selected_model = self.router.get_model_for_dna_lag(dna_lag)
+        else:
+            selected_model = Model.SONNET  # Default
+
+        # Track usage
+        self.router.track_usage(selected_model)
+
+        # Use provided config or default
+        cfg = config or self.config
+
+        try:
+            # Simulate async operation
+            await asyncio.sleep(0.01)
+
+            # MOCK ASYNC IMPLEMENTATION
+            response_content = f"[ASYNC {selected_model.name}] {self._mock_response(prompt, selected_model)}"
+
+            duration_ms = int((time.time() - start_time) * 1000)
+
+            response = ModelResponse(
+                content=response_content,
+                model=selected_model.value,
+                tokens_used=len(prompt.split()) + len(response_content.split()),
+                duration_ms=duration_ms,
+                success=True,
+            )
+
+        except Exception as e:
+            duration_ms = int((time.time() - start_time) * 1000)
+            response = ModelResponse(
+                content="",
+                model=selected_model.value,
+                tokens_used=0,
+                duration_ms=duration_ms,
+                success=False,
+                error=f"Async request failed: {str(e)}",
+            )
+            logger.error(f"Async model request failed: {e}")
+
+        # Log the request
+        self._log_request(prompt, response)
+
+        return response
 
     def render_status(self, width: int = 50) -> str:
         """

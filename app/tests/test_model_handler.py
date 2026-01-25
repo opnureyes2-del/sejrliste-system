@@ -177,6 +177,97 @@ class TestModelResponse(unittest.TestCase):
         self.assertIn("...", d["content"])
 
 
+class TestAsyncSupport(unittest.TestCase):
+    """Test cases for async functionality (PASS 2)."""
+
+    def setUp(self):
+        """Set up test fixtures."""
+        self.handler = ModelHandler()
+
+    def test_async_request(self):
+        """Test async send_request_async method."""
+        import asyncio
+
+        async def run_async():
+            return await self.handler.send_request_async("Test prompt", dna_lag=3)
+
+        response = asyncio.run(run_async())
+        self.assertIsInstance(response, ModelResponse)
+        self.assertTrue(response.success)
+        self.assertIn("ASYNC", response.content)
+
+
+class TestEdgeCases(unittest.TestCase):
+    """Test cases for edge case handling (PASS 3)."""
+
+    def setUp(self):
+        """Set up test fixtures."""
+        self.handler = ModelHandler()
+
+    def test_empty_prompt(self):
+        """Test handling of empty prompt."""
+        response = self.handler.send_request("")
+        self.assertTrue(response.success)  # Should not crash
+
+    def test_whitespace_prompt(self):
+        """Test handling of whitespace-only prompt."""
+        response = self.handler.send_request("   ")
+        self.assertTrue(response.success)  # Should not crash
+
+    def test_invalid_dna_lag_high(self):
+        """Test handling of invalid DNA lag (too high)."""
+        model = self.handler.get_model_for_dna_lag(99)
+        self.assertEqual(model, "haiku")  # Should default to haiku
+
+    def test_invalid_dna_lag_zero(self):
+        """Test handling of invalid DNA lag (zero)."""
+        model = self.handler.get_model_for_dna_lag(0)
+        self.assertEqual(model, "haiku")  # Should default to haiku
+
+
+class TestAnthropicClient(unittest.TestCase):
+    """Test cases for AnthropicClient skeleton (PASS 2)."""
+
+    def test_client_import(self):
+        """Test that AnthropicClient can be imported."""
+        from app.models.model_handler import AnthropicClient
+        client = AnthropicClient()
+        self.assertIsNotNone(client)
+
+    def test_client_mock_mode(self):
+        """Test that client is in mock mode."""
+        from app.models.model_handler import AnthropicClient
+        client = AnthropicClient()
+        self.assertTrue(client._is_mock)
+
+    def test_sync_message_creation(self):
+        """Test sync message creation."""
+        from app.models.model_handler import AnthropicClient
+        client = AnthropicClient()
+        response = client.create_message(
+            model="claude-haiku",
+            messages=[{"role": "user", "content": "Hello"}]
+        )
+        self.assertIn("content", response)
+        self.assertIn("MOCK", response["content"][0]["text"])
+
+    def test_async_message_creation(self):
+        """Test async message creation."""
+        import asyncio
+        from app.models.model_handler import AnthropicClient
+
+        async def run_async():
+            client = AnthropicClient()
+            return await client.create_message_async(
+                model="claude-haiku",
+                messages=[{"role": "user", "content": "Hello"}]
+            )
+
+        response = asyncio.run(run_async())
+        self.assertIn("content", response)
+        self.assertIn("MOCK ASYNC", response["content"][0]["text"])
+
+
 if __name__ == "__main__":
     # Run with verbosity
     unittest.main(verbosity=2)
