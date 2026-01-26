@@ -1381,13 +1381,22 @@ elif st.session_state.view == 'settings':
     st.subheader("Scripts Status")
     scripts = list(SCRIPTS_DIR.glob("*.py"))
     for script in scripts:
-        col1, col2 = st.columns([3, 1])
+        col1, col2, col3 = st.columns([3, 1, 1])
         with col1:
             st.text(script.name)
         with col2:
             if st.button("Test", key=f"test_{script.name}"):
-                success, output = run_script(script.name, ["--help"])
-                st.success("OK") if success else st.error("FEJL")
+                with st.spinner(f"Tester {script.name}..."):
+                    success, output = run_script(script.name)
+                    st.success("OK") if success else st.error("FEJL")
+        with col3:
+            if st.button("Kor", key=f"run_{script.name}"):
+                with st.spinner(f"Korer {script.name}..."):
+                    success, output = run_script(script.name)
+                    if success:
+                        st.success("Udfort!")
+                    else:
+                        st.error(f"Fejl: {output}")
 
 elif st.session_state.view == 'create':
     # ═══════════════════════════════════════════════════════════════════════════════
@@ -1405,18 +1414,24 @@ elif st.session_state.view == 'create':
         tech = st.text_input("Teknologi", placeholder="Python, Streamlit, etc.")
         submitted = st.form_submit_button("Opret Sejr")
         if submitted and name:
-            cmd = f'python3 {SCRIPTS_DIR}/generate_sejr.py --name "{name}"'
-            if goal:
-                cmd += f' --goal "{goal}"'
-            if tech:
-                cmd += f' --tech "{tech}"'
-            result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=SYSTEM_PATH)
-            if result.returncode == 0:
-                st.success(f"Sejr '{name}' oprettet!")
-                st.session_state.view = 'library'
-                st.rerun()
-            else:
-                st.error(f"Fejl: {result.stderr}")
+            try:
+                with st.spinner(f"Opretter sejr '{name}'..."):
+                    cmd = f'python3 {SCRIPTS_DIR}/generate_sejr.py --name "{name}"'
+                    if goal:
+                        cmd += f' --goal "{goal}"'
+                    if tech:
+                        cmd += f' --tech "{tech}"'
+                    result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=SYSTEM_PATH, timeout=30)
+                    if result.returncode == 0:
+                        st.success(f"Sejr '{name}' oprettet!")
+                        st.session_state.view = 'library'
+                        st.rerun()
+                    else:
+                        st.error(f"Script fejl: {result.stderr}")
+            except subprocess.TimeoutExpired:
+                st.error("Timeout: Script tog for lang tid (>30s)")
+            except Exception as e:
+                st.error(f"Uventet fejl: {str(e)}")
 
 elif st.session_state.view == 'library' or st.session_state.selected_sejr is None:
     # ═══════════════════════════════════════════════════════════════════════════════
