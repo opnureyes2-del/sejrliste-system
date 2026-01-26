@@ -48,6 +48,9 @@ python3 scripts/auto_archive.py --sejr "MIN_OPGAVE_2026-01-25"
 sejrliste systemet/
 │
 ├── README.md                 ← Du læser denne (inkl. Quick Start)
+├── MODEL_ONBOARDING.md       ← 🆕 AI ONBOARDING (læs først som ny model!)
+├── SCRIPT_REFERENCE.md       ← 🆕 Alle 11 scripts dokumenteret
+├── EKSEMPLER.md              ← 🆕 10+ konkrete eksempler
 ├── ARBEJDSFORHOLD.md         ← KOMPLET VEJLEDNING (AI regler inkluderet)
 ├── MANUAL.md                 ← Fuld dokumentation (3-pass + score system)
 ├── LOG_FORMAT.md             ← Log format specifikation

@@ -356,5 +356,41 @@ python3 scripts/auto_learn.py
 
 ---
 
+---
+
+## ⚠️ COMMON ERRORS & SOLUTIONS
+
+### Error 1: "Sejr folder not found"
+```
+❌ Error: No active sejr found in 10_ACTIVE/
+```
+**Løsning:** Opret ny sejr først: `python3 scripts/generate_sejr.py --name "Min Opgave"`
+
+### Error 2: "Archive blocked"
+```
+❌ ARCHIVE BLOCKED - Total score 23 < 24 required
+```
+**Løsning:** Forbedre Pass scores. Se review sektioner i SEJR_LISTE.md for hvad der kan forbedres.
+
+### Error 3: "CLAUDE.md outdated"
+```
+⚠️ Warning: CLAUDE.md does not reflect current STATUS.yaml
+```
+**Løsning:** Rebuild: `python3 scripts/build_claude_context.py --all`
+
+### Error 4: "Permission denied"
+```
+❌ Permission denied: scripts/generate_sejr.py
+```
+**Løsning:** Gør script executable: `chmod +x scripts/generate_sejr.py`
+
+### Error 5: "Missing dependency"
+```
+❌ ModuleNotFoundError: No module named 'yaml'
+```
+**Løsning:** Scripts bruger ikke PyYAML - de har simple YAML parser indbygget. Check fil paths.
+
+---
+
 **Sidst opdateret:** 2026-01-26
-**Version:** 1.0.0
+**Version:** 1.1.0 (PASS 2 - tilføjet Common Errors)

@@ -333,5 +333,66 @@ python3 scripts/admiral_tracker.py --leaderboard
 
 ---
 
+---
+
+## ⛔ ANTI-PATTERNS (Hvad Du ALDRIG Skal Gøre)
+
+### Anti-Pattern 1: Skip Research
+```markdown
+❌ FORKERT:
+## PHASE 0: Research
+- [x] GitHub search: "..."
+  - Fundet: Skippet, jeg ved hvad jeg laver
+```
+**Problem:** Du VED ikke bedre. Research finder altid noget nyt.
+
+### Anti-Pattern 2: Fake Checkboxes
+```markdown
+❌ FORKERT:
+- [x] Test passed
+  - (ingen verify command, ingen output)
+```
+**Problem:** Checkboxes uden bevis = LIE_DETECTED (-20 points)
+
+### Anti-Pattern 3: Skip Review
+```markdown
+❌ FORKERT:
+Pass 1: Done!
+Pass 2: Starting immediately...
+```
+**Problem:** Review er OBLIGATORISK. Du finder ALTID noget at forbedre.
+
+### Anti-Pattern 4: Same Score
+```markdown
+❌ FORKERT:
+Pass 1: 7/10
+Pass 2: 7/10  ← UACCEPTABELT
+```
+**Problem:** Pass 2 SKAL være > Pass 1. Ingen undtagelser.
+
+### Anti-Pattern 5: Archive Without 3-Pass
+```markdown
+❌ FORKERT:
+"Færdig! Arkiverer nu..."
+(men Pass 2 og 3 aldrig gjort)
+```
+**Problem:** Arkivering er BLOKERET indtil alle 3 passes er done med stigende scores.
+
+### Anti-Pattern 6: Robotic Response
+```markdown
+❌ FORKERT:
+"Done. What's next?"
+```
+**Problem:** REPORT/REFLECT/EDUCATE er påkrævet. Robotic responses = TOKEN_WASTE.
+
+### Anti-Pattern 7: Context Loss
+```markdown
+❌ FORKERT:
+"Hvad arbejdede vi på?"
+```
+**Problem:** LÆS CLAUDE.md! Den fortæller præcis hvad du arbejder på.
+
+---
+
 **Sidst opdateret:** 2026-01-26
-**Version:** 1.0.0
+**Version:** 1.1.0 (PASS 2 - tilføjet Anti-Patterns)
