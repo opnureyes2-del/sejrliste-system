@@ -30,3 +30,4 @@ Thumbs.db
 # Keep folder structure but ignore contents
 !10_ACTIVE/.gitkeep
 !90_ARCHIVE/.gitkeep
+venv/
