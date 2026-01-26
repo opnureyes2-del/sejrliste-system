@@ -597,10 +597,44 @@ class SejrlisteApp(App):
     selected_sejr: Optional[Sejr] = None
     sejrs: List[Sejr] = []
     show_archived = reactive(False)
-    
+    session_start: datetime = None
+
     def __init__(self):
         super().__init__()
+        self.session_start = datetime.now()
         self.load_sejrs()
+        # Start session timer
+        self.set_interval(1.0, self.update_session_timer)
+
+    def get_session_duration(self) -> str:
+        """Get formatted session duration"""
+        if self.session_start:
+            delta = datetime.now() - self.session_start
+            hours, remainder = divmod(int(delta.total_seconds()), 3600)
+            minutes, seconds = divmod(remainder, 60)
+            if hours > 0:
+                return f"{hours}t {minutes}m {seconds}s"
+            elif minutes > 0:
+                return f"{minutes}m {seconds}s"
+            else:
+                return f"{seconds}s"
+        return "0s"
+
+    def update_session_timer(self) -> None:
+        """Update the session timer display"""
+        self.sub_title = f"Admiral Command Center | Session: {self.get_session_duration()}"
+
+    def play_sound(self, sound_type: str = "success") -> None:
+        """Play notification sound (optional - can be disabled)"""
+        try:
+            if sound_type == "success":
+                # Terminal bell for success
+                print('\a', end='', flush=True)
+            elif sound_type == "error":
+                # Double bell for error
+                print('\a\a', end='', flush=True)
+        except Exception:
+            pass  # Sound is optional, don't fail if it doesn't work
     
     def load_sejrs(self):
         """Load all sejr from 10_ACTIVE and 90_ARCHIVE"""
@@ -683,8 +717,10 @@ class SejrlisteApp(App):
             )
             if result.returncode == 0:
                 self.notify("✅ Verification complete!", severity="information")
+                self.play_sound("success")
             else:
                 self.notify(f"❌ Verification failed: {result.stderr[:100]}", severity="error")
+                self.play_sound("error")
             self.load_sejrs()
             self.refresh()
     
@@ -702,8 +738,10 @@ class SejrlisteApp(App):
             )
             if result.returncode == 0:
                 self.notify("🏆 Archive complete!", severity="information")
+                self.play_sound("success")
             else:
                 self.notify(f"❌ Archive failed: {result.stderr[:100]}", severity="error")
+                self.play_sound("error")
             self.load_sejrs()
             self.refresh()
     
@@ -721,8 +759,10 @@ class SejrlisteApp(App):
             )
             if result.returncode == 0:
                 self.notify("🔮 Predictions generated!", severity="information")
+                self.play_sound("success")
             else:
                 self.notify(f"❌ Predict failed: {result.stderr[:100]}", severity="error")
+                self.play_sound("error")
     
     @work(exclusive=True)
     async def action_new_sejr(self):
@@ -739,8 +779,10 @@ class SejrlisteApp(App):
             )
             if result.returncode == 0:
                 self.notify("✨ New sejr created!", severity="information")
+                self.play_sound("success")
             else:
                 self.notify(f"❌ Create failed: {result.stderr[:100]}", severity="error")
+                self.play_sound("error")
             self.load_sejrs()
             self.refresh()
     
