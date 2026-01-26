@@ -1,6 +1,4 @@
-"""
-SEJRLISTE APP - Admiral Design
-Complete visual system for tracking victories
-"""
-__version__ = "2.0.0"
+# Sejrliste Visual App - Steam-Style TUI
+# LIBRARY + PRODUCTION ROOM
+__version__ = "2026.1.0"
 __author__ = "Kv1nt"

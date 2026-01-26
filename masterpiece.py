@@ -22,6 +22,7 @@ import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Gtk, Adw, GLib, Gio, Pango, Gdk
+import cairo  # For konfetti drawing
 from pathlib import Path
 import re
 import json
@@ -31,59 +32,107 @@ import shutil
 from typing import Dict, List, Any, Optional, Tuple
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# PREMIUM DESIGN SYSTEM - 400 TIMER DESIGNER STANDARD
+# CIRKELLINE KV1NT ADMIRAL DESIGN SYSTEM - VF STANDARD
 # ═══════════════════════════════════════════════════════════════════════════════
+
+# VF Logo ASCII Art (for terminal/text display)
+VF_LOGO_ASCII = """
+██╗   ██╗███████╗
+██║   ██║██╔════╝
+██║   ██║█████╗
+╚██╗ ██╔╝██╔══╝
+ ╚████╔╝ ██║
+  ╚═══╝  ╚═╝
+  ADMIRAL
+"""
 
 MODERN_CSS = """
 /* =============================================================================
-   SEJRLISTE MESTERVÆRK - PREMIUM DESIGN SYSTEM
+   SEJRLISTE MESTERVÆRK - CIRKELLINE KV1NT ADMIRAL STANDARD
+
+   ██╗   ██╗███████╗   VF = VICTORY FLEET
+   ██║   ██║██╔════╝   Admiral Rasmus's Command Center
+   ██║   ██║█████╗
+   ╚██╗ ██╔╝██╔══╝     Cirkelline Chakra-Aligned Color System:
+    ╚████╔╝ ██║        Divine → Wisdom → Heart → Intuition → Sacred
+     ╚═══╝  ╚═╝
 
    Design Principper:
+   - Cirkelline Chakra-Farver (spirituelt alignment)
    - 8px grid system for perfekt spacing
-   - 60-30-10 farveregel
-   - Lagdelt dybde med korrekte skygger
-   - Typografi hierarki med Inter/system-ui
-   - Mikro-interaktioner der føles naturlige
-   - Tilgængelighed: WCAG AA kontrast ratio
+   - Ivory warmth med deep navy kontrast
+   - Vindertavle: Visualiser hele rejsen
+   - VF Logo: Admiral Standard
 
-   Skabt til en 400-timers trænet designers standarder.
+   Skabt til Kv1nt Admiral Standard.
    ============================================================================= */
 
-/* === DESIGN TOKENS === */
-@define-color surface_0 #0a0a0f;
-@define-color surface_1 #12121a;
-@define-color surface_2 #1a1a26;
-@define-color surface_3 #242433;
-@define-color surface_elevated #2a2a3d;
+/* === CIRKELLINE CHAKRA DESIGN TOKENS === */
 
-@define-color primary_50 #eef2ff;
-@define-color primary_100 #e0e7ff;
-@define-color primary_400 #818cf8;
-@define-color primary_500 #6366f1;
-@define-color primary_600 #4f46e5;
+/* Deep Navy Base (from Cirkelline Agents) */
+@define-color surface_0 #0A0E27;
+@define-color surface_1 #1A1F3A;
+@define-color surface_2 #252B4D;
+@define-color surface_3 #303860;
+@define-color surface_elevated #3A4273;
 
-@define-color accent_400 #c084fc;
-@define-color accent_500 #a855f7;
+/* Primary Orange - Main Brand (Cirkelline) */
+@define-color primary_400 #fb923c;
+@define-color primary_500 #F97316;
+@define-color primary_600 #ea580c;
 
+/* Divine Violet - Crown Chakra */
+@define-color divine_400 #c084fc;
+@define-color divine_500 #a855f7;
+
+/* Wisdom Gold - Solar Plexus */
+@define-color wisdom_400 #fcd34d;
+@define-color wisdom_500 #f59e0b;
+
+/* Heart Emerald - Heart Chakra */
+@define-color heart_400 #34d399;
+@define-color heart_500 #10b981;
+
+/* Intuition Indigo - Third Eye */
+@define-color intuition_400 #818cf8;
+@define-color intuition_500 #6366f1;
+
+/* Sacred Magenta - Divine Feminine */
+@define-color sacred_400 #e879f9;
+@define-color sacred_500 #d946ef;
+
+/* Cyan (Chat/Action) */
+@define-color cyan_400 #22d3ee;
+@define-color cyan_500 #00D9FF;
+
+/* Electric Pink (Important) */
+@define-color pink_400 #fb7185;
+@define-color pink_500 #FF006E;
+
+/* Success/Error/Warning */
 @define-color success_400 #4ade80;
-@define-color success_500 #22c55e;
-
+@define-color success_500 #00FF88;
 @define-color warning_400 #fbbf24;
-@define-color warning_500 #f59e0b;
-
+@define-color warning_500 #FFB800;
 @define-color error_400 #f87171;
-@define-color error_500 #ef4444;
+@define-color error_500 #FF3366;
 
+/* Text Colors */
 @define-color text_primary rgba(255, 255, 255, 0.95);
-@define-color text_secondary rgba(255, 255, 255, 0.65);
+@define-color text_secondary #B4C6E7;
 @define-color text_tertiary rgba(255, 255, 255, 0.40);
 
-/* === BASE CANVAS === */
+/* Ivory (Warm Light Theme Elements) */
+@define-color ivory_100 #FFF8F0;
+@define-color ivory_200 #FFF5EB;
+
+/* === BASE CANVAS - DEEP NAVY WITH CHAKRA GLOW === */
 window.background {
     background:
-        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(249, 115, 22, 0.12) 0%, transparent 50%),
         radial-gradient(ellipse 60% 40% at 100% 100%, rgba(168, 85, 247, 0.08) 0%, transparent 40%),
-        linear-gradient(180deg, #0a0a0f 0%, #0f0f18 100%);
+        radial-gradient(ellipse 40% 30% at 0% 50%, rgba(0, 217, 255, 0.06) 0%, transparent 30%),
+        linear-gradient(180deg, #0A0E27 0%, #0f1229 100%);
 }
 
 /* === HEADERBAR - SLEEK PREMIUM GLASS === */
@@ -672,6 +721,714 @@ separator {
 .chat-verification.failed {
     background: rgba(248, 113, 113, 0.08);
     border-color: rgba(248, 113, 113, 0.15);
+}
+
+/* === DRAG & DROP ACTIVE STATE === */
+window.drop-active {
+    background: rgba(99, 102, 241, 0.08);
+    border: 3px dashed @primary_500;
+    box-shadow: inset 0 0 80px rgba(99, 102, 241, 0.15);
+}
+
+window.drop-active * {
+    opacity: 0.7;
+}
+
+/* === ZOOM SLIDER === */
+.zoom-slider {
+    min-width: 100px;
+    margin: 0 8px;
+}
+
+.zoom-slider trough {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    min-height: 4px;
+}
+
+.zoom-slider highlight {
+    background: @primary_500;
+    border-radius: 4px;
+}
+
+.zoom-slider slider {
+    background: @primary_400;
+    border-radius: 50%;
+    min-width: 14px;
+    min-height: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.zoom-label {
+    font-size: 11px;
+    color: @text_secondary;
+    min-width: 35px;
+    text-align: center;
+}
+
+/* === DNA LAYER ROWS === */
+.dna-layer-row {
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: transparent;
+    transition: all 200ms ease;
+}
+
+.dna-layer-row:hover {
+    background: rgba(99, 102, 241, 0.08);
+}
+
+.dna-layer-active {
+    background: rgba(74, 222, 128, 0.1);
+    border-left: 3px solid @success_400;
+}
+
+.dna-layer-running {
+    background: rgba(99, 102, 241, 0.15);
+    border-left: 3px solid @primary_400;
+    box-shadow: inset 0 0 20px rgba(99, 102, 241, 0.1);
+}
+
+.dna-badge {
+    background: @surface_3;
+    border-radius: 50%;
+    padding: 2px;
+}
+
+.dna-badge-active {
+    background: @success_500;
+    box-shadow: 0 0 12px rgba(74, 222, 128, 0.4);
+}
+
+.dna-progress {
+    min-height: 3px;
+    border-radius: 2px;
+}
+
+.dna-progress trough {
+    background: rgba(255, 255, 255, 0.1);
+    min-height: 3px;
+}
+
+.dna-progress progress {
+    background: linear-gradient(90deg, @primary_500, @accent_400);
+    border-radius: 2px;
+}
+
+/* === KEYBOARD HINTS === */
+.keyboard-hint {
+    font-size: 10px;
+    color: @text_tertiary;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+}
+
+/* === COPY BUTTON === */
+.copy-btn {
+    opacity: 0;
+    transition: opacity 150ms ease;
+}
+
+*:hover > .copy-btn {
+    opacity: 1;
+}
+
+.copy-btn:active {
+    background: @success_500;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   VF LOGO - KV1NT ADMIRAL STANDARD
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.vf-logo {
+    padding: 8px;
+}
+
+.vf-logo-frame {
+    background: linear-gradient(135deg,
+        @divine_500 0%,
+        @wisdom_500 25%,
+        @heart_500 50%,
+        @intuition_500 75%,
+        @sacred_500 100%);
+    border-radius: 16px;
+    padding: 3px;
+    box-shadow:
+        0 0 30px rgba(168, 85, 247, 0.4),
+        0 0 60px rgba(249, 115, 22, 0.2),
+        0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.vf-logo-frame > * {
+    background: @surface_0;
+    border-radius: 13px;
+    padding: 12px 20px;
+}
+
+.vf-logo-text {
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    background: linear-gradient(135deg,
+        @cyan_500 0%,
+        @primary_500 50%,
+        @pink_500 100%);
+    -gtk-icon-filter: none;
+    color: @cyan_500;
+}
+
+.vf-logo-subtitle {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    color: @text_secondary;
+    margin-top: 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   VINDERTAVLE - VICTORY JOURNEY BOARD
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.vindertavle {
+    background: linear-gradient(180deg,
+        rgba(26, 31, 58, 0.95) 0%,
+        rgba(10, 14, 39, 0.98) 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(99, 102, 241, 0.15);
+    box-shadow:
+        0 0 60px rgba(168, 85, 247, 0.08),
+        0 20px 60px rgba(0, 0, 0, 0.4);
+    margin: 16px;
+}
+
+.vindertavle-header {
+    background: linear-gradient(90deg,
+        rgba(249, 115, 22, 0.1) 0%,
+        rgba(168, 85, 247, 0.1) 100%);
+    border-radius: 20px 20px 0 0;
+    padding: 20px;
+}
+
+.vindertavle-title {
+    color: @ivory_100;
+    letter-spacing: 4px;
+    font-weight: 800;
+}
+
+.vindertavle-stats {
+    background: @divine_500;
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.vindertavle-timeline {
+    padding: 8px 0;
+}
+
+/* Victory Cards */
+.victory-card {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+    padding: 12px;
+    transition: all 200ms ease;
+    border-left: 3px solid transparent;
+}
+
+.victory-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateX(4px);
+}
+
+/* Chakra Colors for Victory Cards */
+.chakra-divine {
+    border-left-color: @divine_500;
+}
+.chakra-divine .victory-node {
+    background: @divine_500;
+    box-shadow: 0 0 12px @divine_500;
+}
+.chakra-divine-text {
+    color: @divine_400;
+}
+
+.chakra-wisdom {
+    border-left-color: @wisdom_500;
+}
+.chakra-wisdom .victory-node {
+    background: @wisdom_500;
+    box-shadow: 0 0 12px @wisdom_500;
+}
+.chakra-wisdom-text {
+    color: @wisdom_400;
+}
+
+.chakra-heart {
+    border-left-color: @heart_500;
+}
+.chakra-heart .victory-node {
+    background: @heart_500;
+    box-shadow: 0 0 12px @heart_500;
+}
+.chakra-heart-text {
+    color: @heart_400;
+}
+
+.chakra-intuition {
+    border-left-color: @intuition_500;
+}
+.chakra-intuition .victory-node {
+    background: @intuition_500;
+    box-shadow: 0 0 12px @intuition_500;
+}
+.chakra-intuition-text {
+    color: @intuition_400;
+}
+
+.chakra-sacred {
+    border-left-color: @sacred_500;
+}
+.chakra-sacred .victory-node {
+    background: @sacred_500;
+    box-shadow: 0 0 12px @sacred_500;
+}
+.chakra-sacred-text {
+    color: @sacred_400;
+}
+
+.chakra-primary {
+    border-left-color: @primary_500;
+}
+.chakra-primary .victory-node {
+    background: @primary_500;
+    box-shadow: 0 0 12px @primary_500;
+}
+.chakra-primary-text {
+    color: @primary_400;
+}
+
+/* Victory Node (Timeline circles) */
+.victory-node {
+    border-radius: 50%;
+    min-width: 12px;
+    min-height: 12px;
+}
+
+/* Timeline Line */
+.timeline-line {
+    background: rgba(99, 102, 241, 0.3);
+    min-width: 2px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+/* NOW Marker */
+.now-marker {
+    background: linear-gradient(90deg,
+        rgba(0, 217, 255, 0.15) 0%,
+        rgba(0, 255, 136, 0.10) 100%);
+    border-radius: 12px;
+    padding: 12px 16px;
+    border: 1px solid rgba(0, 217, 255, 0.3);
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
+}
+
+.now-marker-text {
+    color: @cyan_500;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+/* === WELCOME HEADER === */
+.welcome-header {
+    background: linear-gradient(180deg,
+        rgba(249, 115, 22, 0.08) 0%,
+        transparent 100%);
+    padding: 32px;
+    border-radius: 0 0 32px 32px;
+}
+
+/* === STAT BADGES === */
+.stat-badge {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 12px 20px;
+    min-width: 70px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 200ms ease;
+}
+
+.stat-badge:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+}
+
+/* Give each stat badge a subtle chakra glow on hover */
+.stat-badge.chakra-divine:hover {
+    box-shadow: 0 4px 20px rgba(168, 85, 247, 0.2);
+    border-color: rgba(168, 85, 247, 0.3);
+}
+
+.stat-badge.chakra-wisdom:hover {
+    box-shadow: 0 4px 20px rgba(245, 158, 11, 0.2);
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+.stat-badge.chakra-heart:hover {
+    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.2);
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.stat-badge.chakra-intuition:hover {
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   5W KONTROL PANEL - HVAD/HVOR/HVORFOR/HVORDAN/HVORNÅR
+   Ordblind-venlig: Store ikoner, klar farvekodning, minimal tekst
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* Basis for alle 5W rows */
+.w5-hvad, .w5-hvor, .w5-hvorfor, .w5-hvordan, .w5-hvornaar {
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin: 4px 0;
+    border-left: 4px solid transparent;
+    transition: all 200ms ease;
+}
+
+.w5-hvad:hover, .w5-hvor:hover, .w5-hvorfor:hover,
+.w5-hvordan:hover, .w5-hvornaar:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* HVAD - Divine Violet */
+.w5-hvad {
+    border-left-color: @divine_500;
+    background: rgba(168, 85, 247, 0.05);
+}
+
+/* HVOR - Wisdom Gold */
+.w5-hvor {
+    border-left-color: @wisdom_500;
+    background: rgba(245, 158, 11, 0.05);
+}
+.w5-hvor:hover {
+    background: rgba(245, 158, 11, 0.1);
+}
+
+/* HVORFOR - Heart Emerald */
+.w5-hvorfor {
+    border-left-color: @heart_500;
+    background: rgba(16, 185, 129, 0.05);
+}
+
+/* HVORDAN - Intuition Indigo */
+.w5-hvordan {
+    border-left-color: @intuition_500;
+    background: rgba(99, 102, 241, 0.05);
+}
+
+/* HVORNÅR - Sacred Magenta */
+.w5-hvornaar {
+    border-left-color: @sacred_500;
+    background: rgba(217, 70, 239, 0.05);
+}
+
+/* Pass Badges (1, 2, 3) */
+.pass-badge {
+    min-width: 28px;
+    min-height: 28px;
+    border-radius: 50%;
+    background: @surface_3;
+    color: @text_tertiary;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 4px;
+}
+
+.pass-badge.pass-complete {
+    background: @heart_500;
+    color: white;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+}
+
+.pass-badge.pass-active {
+    background: @primary_500;
+    color: white;
+    box-shadow: 0 0 12px rgba(249, 115, 22, 0.5);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   ORDBLIND-VENLIG NAVIGATION
+   Store ikoner, klar farvekodning, synlige keyboard hints
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* Store knapper med synlige hints */
+button.large-action {
+    min-height: 48px;
+    min-width: 48px;
+    border-radius: 12px;
+}
+
+button.large-action image {
+    -gtk-icon-size: 32px;
+}
+
+/* Keyboard shortcut hints synlige på hover */
+.keyboard-shortcut {
+    font-size: 10px;
+    font-weight: 700;
+    color: @text_tertiary;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+    opacity: 0;
+    transition: opacity 150ms ease;
+}
+
+*:hover > .keyboard-shortcut {
+    opacity: 1;
+}
+
+/* Altid synlige shortcuts i toolbar */
+.shortcut-always-visible {
+    opacity: 1;
+}
+
+/* Handlings-farver for knapper */
+button.action-verify {
+    background: rgba(16, 185, 129, 0.2);
+    border: 1px solid @heart_500;
+}
+
+button.action-archive {
+    background: rgba(168, 85, 247, 0.2);
+    border: 1px solid @divine_500;
+}
+
+button.action-predict {
+    background: rgba(99, 102, 241, 0.2);
+    border: 1px solid @intuition_500;
+}
+
+button.action-new {
+    background: rgba(249, 115, 22, 0.2);
+    border: 1px solid @primary_500;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   ACHIEVEMENT BADGES
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.achievement-panel {
+    background: linear-gradient(180deg,
+        rgba(26, 31, 58, 0.8) 0%,
+        rgba(10, 14, 39, 0.9) 100%);
+    border-radius: 16px;
+    border: 1px solid rgba(99, 102, 241, 0.1);
+    margin: 12px;
+}
+
+.achievement-badge {
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid transparent;
+    min-width: 70px;
+    transition: all 200ms ease;
+}
+
+.achievement-badge.unlocked {
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.achievement-badge.unlocked:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.achievement-badge.locked {
+    opacity: 0.4;
+}
+
+.achievement-icon {
+    font-size: 24px;
+}
+
+/* Chakra glow for unlocked achievements */
+.achievement-badge.unlocked.chakra-divine {
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+}
+
+.achievement-badge.unlocked.chakra-wisdom {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+}
+
+.achievement-badge.unlocked.chakra-heart {
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+.achievement-badge.unlocked.chakra-sacred {
+    box-shadow: 0 0 20px rgba(217, 70, 239, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   FILTRE & SORTERING
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.filter-bar {
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.filter-chip {
+    padding: 4px 12px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    font-size: 12px;
+    transition: all 150ms ease;
+}
+
+.filter-chip:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.filter-chip.active {
+    background: @primary_500;
+    color: white;
+}
+
+.filter-chip.chakra-divine.active {
+    background: @divine_500;
+}
+
+.filter-chip.chakra-wisdom.active {
+    background: @wisdom_500;
+}
+
+.filter-chip.chakra-heart.active {
+    background: @heart_500;
+}
+
+/* Sort dropdown */
+.sort-dropdown {
+    min-width: 120px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   LIVE AKTIVITETS MONITOR - WORLD CLASS REAL-TIME
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.live-activity-monitor {
+    background: linear-gradient(180deg,
+        rgba(10, 14, 39, 0.95) 0%,
+        rgba(15, 18, 41, 0.90) 100%);
+    border-top: 1px solid rgba(99, 102, 241, 0.15);
+    border-radius: 16px 16px 0 0;
+    margin-top: 8px;
+    box-shadow:
+        0 -8px 32px -8px rgba(0, 0, 0, 0.5),
+        0 0 60px -20px rgba(99, 102, 241, 0.15) inset;
+}
+
+.activity-header {
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 16px 16px 0 0;
+}
+
+.pulse-indicator {
+    font-size: 12px;
+    color: @success_400;
+    opacity: 0.6;
+    transition: all 300ms ease;
+}
+
+.pulse-indicator.pulse-on {
+    color: @success_500;
+    opacity: 1.0;
+}
+
+.activity-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.status-badge-active {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.1));
+    color: @success_400;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.activity-list {
+    background: transparent;
+}
+
+.activity-row {
+    background: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    transition: all 150ms ease;
+}
+
+.activity-row:hover {
+    background: rgba(99, 102, 241, 0.05);
+}
+
+.activity-icon {
+    font-size: 14px;
+    min-width: 24px;
+}
+
+.activity-timestamp {
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    min-width: 70px;
+}
+
+.activity-source {
+    font-size: 11px;
+    font-weight: 600;
+    color: @intuition_400;
+    min-width: 100px;
+}
+
+.activity-message {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.five-w-bar {
+    padding: 8px 16px;
+    background: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.five-w-item {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 4px 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
 }
 """
 
@@ -1441,7 +2198,7 @@ class ChatStream(Gtk.Box):
         chat_icon = Gtk.Image.new_from_icon_name("chat-symbolic")
         header_box.append(chat_icon)
 
-        header_label = Gtk.Label(label="Activity Stream")
+        header_label = Gtk.Label(label="Aktivitetsstrøm")
         header_label.add_css_class("heading")
         header_box.append(header_label)
 
@@ -1585,39 +2342,1063 @@ class ChatStream(Gtk.Box):
         )
 
 
-class DNALayerRow(Gtk.Box):
-    """A row showing a DNA layer status"""
+# ═══════════════════════════════════════════════════════════════════════════════
+# KONFETTI ANIMATION - CELEBRATION WIDGET
+# ═══════════════════════════════════════════════════════════════════════════════
 
-    def __init__(self, layer_num, name, description, icon_name, active=False):
+class KonfettiOverlay(Gtk.Overlay):
+    """
+    Konfetti animation overlay for celebrations.
+
+    Triggers when:
+    - A sejr reaches 100% completion
+    - A Pass is completed (Pass 1→2→3)
+    - Admiral status is achieved (30/30)
+
+    Note: Uses GTK4 Snapshot API instead of cairo for compatibility.
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.particles = []
+        self.animation_active = False
+        self.drawing_area = None
+
+    def _ensure_drawing_area(self):
+        """Create drawing area on demand"""
+        if self.drawing_area is None:
+            self.drawing_area = Gtk.DrawingArea()
+            self.drawing_area.set_draw_func(self._draw_konfetti)
+            self.drawing_area.set_can_target(False)  # Click-through
+            self.add_overlay(self.drawing_area)
+
+    def celebrate(self, level: str = "normal"):
+        """Trigger celebration animation"""
+        import random
+
+        if self.animation_active:
+            return
+
+        # Create drawing area on first celebration
+        try:
+            self._ensure_drawing_area()
+        except Exception as e:
+            print(f"🎉 Fejring! (konfetti fejlede: {e})")
+            return
+
+        self.animation_active = True
+
+        # Generate particles
+        colors = [
+            (168/255, 85/255, 247/255),   # Divine violet
+            (249/255, 115/255, 22/255),   # Primary orange
+            (16/255, 185/255, 129/255),   # Heart emerald
+            (99/255, 102/255, 241/255),   # Intuition indigo
+            (245/255, 158/255, 11/255),   # Wisdom gold
+        ]
+
+        num_particles = 50 if level == "normal" else 100 if level == "admiral" else 30
+
+        for _ in range(num_particles):
+            self.particles.append({
+                'x': random.uniform(0, 1),
+                'y': -0.1,
+                'vx': random.uniform(-0.02, 0.02),
+                'vy': random.uniform(0.01, 0.03),
+                'color': random.choice(colors),
+                'size': random.uniform(4, 12),
+                'rotation': random.uniform(0, 360),
+            })
+
+        # Start animation
+        GLib.timeout_add(16, self._animate)  # ~60 FPS
+
+        # Auto-stop after 3 seconds
+        GLib.timeout_add(3000, self._stop_animation)
+
+    def _animate(self):
+        """Update particle positions"""
+        if not self.animation_active:
+            return False
+
+        for p in self.particles:
+            p['x'] += p['vx']
+            p['y'] += p['vy']
+            p['vy'] += 0.001  # Gravity
+            p['rotation'] += 5
+
+        # Remove off-screen particles
+        self.particles = [p for p in self.particles if p['y'] < 1.2]
+
+        self.drawing_area.queue_draw()
+        return self.animation_active and len(self.particles) > 0
+
+    def _draw_konfetti(self, area, cr, width, height):
+        """Draw konfetti particles"""
+        try:
+            for p in self.particles:
+                cr.save()
+                x = p['x'] * width
+                y = p['y'] * height
+
+                cr.translate(x, y)
+                cr.rotate(p['rotation'] * 3.14159 / 180)
+
+                # Set color with alpha
+                cr.set_source_rgba(*p['color'], 0.9)
+
+                # Draw square konfetti
+                size = p['size']
+                cr.rectangle(-size/2, -size/2, size, size)
+                cr.fill()
+
+                cr.restore()
+        except Exception as e:
+            # Cairo drawing failed - disable for future
+            self.cairo_available = False
+            self.animation_active = False
+            self.particles = []
+
+    def _stop_animation(self):
+        """Stop the animation"""
+        self.animation_active = False
+        self.particles = []
+        self.drawing_area.queue_draw()
+        return False
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ACHIEVEMENT BADGES SYSTEM
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Achievement definitions
+ACHIEVEMENTS = {
+    "first_sejr": {
+        "name": "Første Sejr",
+        "icon": "🏆",
+        "description": "Færdiggjorde din første sejr",
+        "color": "wisdom"
+    },
+    "admiral": {
+        "name": "Admiral",
+        "icon": "🎖️",
+        "description": "Opnåede 30/30 score",
+        "color": "divine"
+    },
+    "grand_admiral": {
+        "name": "Grand Admiral",
+        "icon": "👑",
+        "description": "5+ sejre med Admiral status",
+        "color": "sacred"
+    },
+    "speed_runner": {
+        "name": "Hurtig Løber",
+        "icon": "⚡",
+        "description": "Færdiggjorde en sejr på under 1 time",
+        "color": "cyan"
+    },
+    "perfectionist": {
+        "name": "Perfektionist",
+        "icon": "💯",
+        "description": "100% completion på alle 3 passes",
+        "color": "heart"
+    },
+    "streak_3": {
+        "name": "På Stribe",
+        "icon": "🔥",
+        "description": "3 sejre i træk uden pause",
+        "color": "primary"
+    },
+    "streak_7": {
+        "name": "Ustoppelig",
+        "icon": "💫",
+        "description": "7 sejre i træk - du er på ild!",
+        "color": "intuition"
+    }
+}
+
+
+class AchievementBadge(Gtk.Box):
+    """A single achievement badge"""
+
+    def __init__(self, achievement_id: str, unlocked: bool = False):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        self.achievement_id = achievement_id
+        self.unlocked = unlocked
+
+        ach = ACHIEVEMENTS.get(achievement_id, {})
+
+        self.add_css_class("achievement-badge")
+        if unlocked:
+            self.add_css_class(f"chakra-{ach.get('color', 'primary')}")
+            self.add_css_class("unlocked")
+        else:
+            self.add_css_class("locked")
+
+        # Icon
+        icon_label = Gtk.Label(label=ach.get("icon", "❓"))
+        icon_label.add_css_class("achievement-icon")
+        if not unlocked:
+            icon_label.add_css_class("dim-label")
+        self.append(icon_label)
+
+        # Name
+        name_label = Gtk.Label(label=ach.get("name", "Unknown"))
+        name_label.add_css_class("caption")
+        if not unlocked:
+            name_label.add_css_class("dim-label")
+        self.append(name_label)
+
+        # Tooltip with description
+        self.set_tooltip_text(ach.get("description", ""))
+
+
+class AchievementPanel(Gtk.Box):
+    """Panel showing all achievements"""
+
+    def __init__(self):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        self.add_css_class("achievement-panel")
+
+        # Header
+        header = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        header.set_margin_start(16)
+        header.set_margin_end(16)
+        header.set_margin_top(12)
+
+        trophy = Gtk.Label(label="🏆")
+        trophy.set_markup('<span size="large">🏆</span>')
+        header.append(trophy)
+
+        title = Gtk.Label(label="Achievements")
+        title.add_css_class("heading")
+        header.append(title)
+
+        # Count
+        self.count_label = Gtk.Label(label="0/7")
+        self.count_label.add_css_class("caption")
+        self.count_label.add_css_class("dim-label")
+        self.count_label.set_hexpand(True)
+        self.count_label.set_halign(Gtk.Align.END)
+        header.append(self.count_label)
+
+        self.append(header)
+
+        # Badge grid
+        self.badge_grid = Gtk.FlowBox()
+        self.badge_grid.set_selection_mode(Gtk.SelectionMode.NONE)
+        self.badge_grid.set_max_children_per_line(4)
+        self.badge_grid.set_column_spacing(8)
+        self.badge_grid.set_row_spacing(8)
+        self.badge_grid.set_margin_start(16)
+        self.badge_grid.set_margin_end(16)
+        self.badge_grid.set_margin_bottom(12)
+
+        self.append(self.badge_grid)
+
+        # Load achievements
+        self._load_achievements()
+
+    def _load_achievements(self):
+        """Load and display achievements based on system stats"""
+        stats = get_system_stats()
+
+        unlocked_count = 0
+
+        for ach_id in ACHIEVEMENTS:
+            unlocked = self._check_achievement(ach_id, stats)
+            if unlocked:
+                unlocked_count += 1
+
+            badge = AchievementBadge(ach_id, unlocked)
+            self.badge_grid.append(badge)
+
+        self.count_label.set_text(f"{unlocked_count}/{len(ACHIEVEMENTS)}")
+
+    def _check_achievement(self, ach_id: str, stats: dict) -> bool:
+        """Check if achievement is unlocked"""
+        if ach_id == "first_sejr":
+            return stats["archived"] >= 1
+        elif ach_id == "admiral":
+            return stats["grand_admirals"] >= 1
+        elif ach_id == "grand_admiral":
+            return stats["grand_admirals"] >= 5
+        elif ach_id == "streak_3":
+            return stats["archived"] >= 3
+        elif ach_id == "streak_7":
+            return stats["archived"] >= 7
+        elif ach_id == "perfectionist":
+            return stats["grand_admirals"] >= 3
+        return False
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# VF LOGO WIDGET - KV1NT ADMIRAL STANDARD
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ANIMATED BACKGROUND - LIVING GRADIENT CANVAS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+class AnimatedBackground(Gtk.DrawingArea):
+    """
+    🌊 LEVENDE ANIMERET BAGGRUND
+
+    Premium animated gradient background with:
+    - Smoothly shifting chakra colors
+    - Floating orbs of light
+    - Ambient glow effects
+    - 60 FPS smooth animation
+
+    Makes the app feel alive and premium.
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.set_hexpand(True)
+        self.set_vexpand(True)
+
+        # Animation state
+        self.time = 0.0
+        self.orbs = []
+
+        # Initialize floating orbs
+        import random
+        for _ in range(5):
+            self.orbs.append({
+                'x': random.random(),
+                'y': random.random(),
+                'size': random.uniform(0.1, 0.3),
+                'speed_x': random.uniform(-0.0005, 0.0005),
+                'speed_y': random.uniform(-0.0005, 0.0005),
+                'color': random.choice([
+                    (0.976, 0.451, 0.086, 0.15),  # Orange
+                    (0.659, 0.333, 0.969, 0.12),  # Purple
+                    (0.133, 0.827, 1.0, 0.10),    # Cyan
+                    (0.384, 0.388, 0.945, 0.12),  # Indigo
+                    (0.204, 0.827, 0.506, 0.10),  # Emerald
+                ])
+            })
+
+        # Connect draw function
+        self.set_draw_func(self._on_draw)
+
+        # Start animation loop (30 FPS for efficiency)
+        GLib.timeout_add(33, self._animate)
+
+    def _animate(self) -> bool:
+        """Update animation state"""
+        self.time += 0.02
+
+        # Move orbs
+        for orb in self.orbs:
+            orb['x'] += orb['speed_x']
+            orb['y'] += orb['speed_y']
+
+            # Bounce off edges
+            if orb['x'] < 0 or orb['x'] > 1:
+                orb['speed_x'] *= -1
+            if orb['y'] < 0 or orb['y'] > 1:
+                orb['speed_y'] *= -1
+
+        # Request redraw
+        self.queue_draw()
+        return True  # Continue animation
+
+    def _on_draw(self, area, cr, width, height):
+        """Draw the animated background"""
+        import math
+
+        # Base gradient - deep space navy
+        pattern = cairo.LinearGradient(0, 0, width, height)
+        pattern.add_color_stop_rgba(0, 0.039, 0.055, 0.153, 1)  # #0A0E27
+        pattern.add_color_stop_rgba(1, 0.059, 0.071, 0.161, 1)  # #0f1229
+        cr.set_source(pattern)
+        cr.paint()
+
+        # Animated wave gradients
+        wave_offset = math.sin(self.time) * 0.1
+
+        # Top glow (orange/amber)
+        cr.save()
+        pattern = cairo.RadialGradient(
+            width * (0.5 + wave_offset), -height * 0.2,
+            0,
+            width * (0.5 + wave_offset), -height * 0.2,
+            width * 0.8
+        )
+        alpha = 0.08 + math.sin(self.time * 0.5) * 0.04
+        pattern.add_color_stop_rgba(0, 0.976, 0.451, 0.086, alpha)
+        pattern.add_color_stop_rgba(1, 0, 0, 0, 0)
+        cr.set_source(pattern)
+        cr.paint()
+        cr.restore()
+
+        # Bottom right glow (purple)
+        cr.save()
+        pattern = cairo.RadialGradient(
+            width * (1.1 - wave_offset * 0.5), height * (1.1 + wave_offset * 0.3),
+            0,
+            width * (1.1 - wave_offset * 0.5), height * (1.1 + wave_offset * 0.3),
+            width * 0.6
+        )
+        alpha = 0.06 + math.sin(self.time * 0.7 + 1) * 0.03
+        pattern.add_color_stop_rgba(0, 0.659, 0.333, 0.969, alpha)
+        pattern.add_color_stop_rgba(1, 0, 0, 0, 0)
+        cr.set_source(pattern)
+        cr.paint()
+        cr.restore()
+
+        # Left glow (cyan)
+        cr.save()
+        pattern = cairo.RadialGradient(
+            width * (-0.1 + wave_offset * 0.3), height * (0.5 - wave_offset * 0.2),
+            0,
+            width * (-0.1 + wave_offset * 0.3), height * (0.5 - wave_offset * 0.2),
+            width * 0.4
+        )
+        alpha = 0.05 + math.sin(self.time * 0.6 + 2) * 0.025
+        pattern.add_color_stop_rgba(0, 0.133, 0.827, 1.0, alpha)
+        pattern.add_color_stop_rgba(1, 0, 0, 0, 0)
+        cr.set_source(pattern)
+        cr.paint()
+        cr.restore()
+
+        # Draw floating orbs
+        for orb in self.orbs:
+            cr.save()
+            x = orb['x'] * width
+            y = orb['y'] * height
+            size = orb['size'] * min(width, height)
+            r, g, b, a = orb['color']
+
+            # Pulsing alpha
+            pulse = math.sin(self.time * 2 + orb['x'] * 10) * 0.3 + 0.7
+            a *= pulse
+
+            pattern = cairo.RadialGradient(x, y, 0, x, y, size)
+            pattern.add_color_stop_rgba(0, r, g, b, a)
+            pattern.add_color_stop_rgba(0.5, r, g, b, a * 0.5)
+            pattern.add_color_stop_rgba(1, r, g, b, 0)
+            cr.set_source(pattern)
+            cr.paint()
+            cr.restore()
+
+        # Subtle noise/grain overlay for texture
+        cr.save()
+        cr.set_source_rgba(1, 1, 1, 0.01)
+        for i in range(0, width, 4):
+            for j in range(0, height, 4):
+                if (i + j + int(self.time * 10)) % 7 == 0:
+                    cr.rectangle(i, j, 1, 1)
+        cr.fill()
+        cr.restore()
+
+
+class VFLogoWidget(Gtk.Box):
+    """
+    VF Logo - Victory Fleet Admiral Standard
+
+    Animated logo representing Kv1nt's Admiral command.
+    Uses Cirkelline Chakra colors with living glow effects.
+    """
+
+    def __init__(self, size: int = 64):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        self.set_halign(Gtk.Align.CENTER)
+        self.add_css_class("vf-logo")
+
+        # Logo container with chakra glow
+        logo_frame = Gtk.Frame()
+        logo_frame.add_css_class("vf-logo-frame")
+
+        # VF Text as large stylized label
+        vf_label = Gtk.Label(label="VF")
+        vf_label.add_css_class("vf-logo-text")
+        logo_frame.set_child(vf_label)
+
+        self.append(logo_frame)
+
+        # "ADMIRAL" subtitle
+        subtitle = Gtk.Label(label="ADMIRAL")
+        subtitle.add_css_class("vf-logo-subtitle")
+        self.append(subtitle)
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# LIVE AKTIVITETS MONITOR - REAL-TIME COMMAND CENTER
+# ═══════════════════════════════════════════════════════════════════════════════
+
+class LiveActivityMonitor(Gtk.Box):
+    """
+    🚀 VERDENSKLASSE LIVE AKTIVITETS MONITOR
+
+    Viser real-time hvad der sker i systemet:
+    - Fil ændringer
+    - Script kørsler
+    - DNA lag aktivering
+    - Sejr fremskridt
+
+    Enterprise niveau med animeret status.
+    """
+
+    MAX_ENTRIES = 50  # Behold kun de seneste 50 entries
+
+    def __init__(self):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        self.add_css_class("live-activity-monitor")
+        self.activities = []
+        self._build_ui()
+        self._start_monitoring()
+
+    def _build_ui(self):
+        """Byg brugergrænsefladen"""
+        # Header med pulserende status
+        header = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        header.add_css_class("activity-header")
+        header.set_margin_start(16)
+        header.set_margin_end(16)
+        header.set_margin_top(12)
+        header.set_margin_bottom(8)
+
+        # Live puls indikator
+        self.pulse_dot = Gtk.Label(label="●")
+        self.pulse_dot.add_css_class("pulse-indicator")
+        header.append(self.pulse_dot)
+
+        # Titel
+        title = Gtk.Label(label="LIVE AKTIVITET")
+        title.add_css_class("activity-title")
+        title.set_hexpand(True)
+        title.set_halign(Gtk.Align.START)
+        header.append(title)
+
+        # Status badge
+        self.status_badge = Gtk.Label(label="● AKTIV")
+        self.status_badge.add_css_class("status-badge-active")
+        header.append(self.status_badge)
+
+        # Ryd knap
+        clear_btn = Gtk.Button(icon_name="edit-clear-symbolic")
+        clear_btn.add_css_class("flat")
+        clear_btn.set_tooltip_text("Ryd aktivitetslog")
+        clear_btn.connect("clicked", lambda b: self._clear_activities())
+        header.append(clear_btn)
+
+        self.append(header)
+
+        # Separator
+        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        self.append(sep)
+
+        # Scrollbar aktivitets liste
+        scroll = Gtk.ScrolledWindow()
+        scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        scroll.set_vexpand(True)
+        scroll.set_min_content_height(120)
+        scroll.set_max_content_height(200)
+
+        self.activity_list = Gtk.ListBox()
+        self.activity_list.add_css_class("activity-list")
+        self.activity_list.set_selection_mode(Gtk.SelectionMode.NONE)
+        scroll.set_child(self.activity_list)
+
+        self.append(scroll)
+
+        # 5W Status linje i bunden
+        self.five_w_bar = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=16)
+        self.five_w_bar.add_css_class("five-w-bar")
+        self.five_w_bar.set_margin_start(16)
+        self.five_w_bar.set_margin_end(16)
+        self.five_w_bar.set_margin_top(8)
+        self.five_w_bar.set_margin_bottom(12)
+
+        # HVAD
+        self.hvad_label = Gtk.Label(label="📋 HVAD: Venter...")
+        self.hvad_label.add_css_class("five-w-item")
+        self.five_w_bar.append(self.hvad_label)
+
+        # HVOR
+        self.hvor_label = Gtk.Label(label="📍 HVOR: -")
+        self.hvor_label.add_css_class("five-w-item")
+        self.five_w_bar.append(self.hvor_label)
+
+        # HVORNÅR
+        self.hvornaar_label = Gtk.Label(label="⏰ HVORNÅR: Nu")
+        self.hvornaar_label.add_css_class("five-w-item")
+        self.five_w_bar.append(self.hvornaar_label)
+
+        self.append(self.five_w_bar)
+
+        # Tilføj initial besked
+        self._add_activity("system", "Live aktivitetsmonitor startet", "🚀")
+
+    def _start_monitoring(self):
+        """Start fil overvågning"""
+        # Opdater puls animation hvert sekund
+        GLib.timeout_add_seconds(1, self._pulse_animation)
+
+        # Tjek for nye aktiviteter hvert 2. sekund
+        GLib.timeout_add_seconds(2, self._check_for_activities)
+
+    def _pulse_animation(self):
+        """Animér puls indikatoren"""
+        current = self.pulse_dot.get_css_classes()
+        if "pulse-on" in current:
+            self.pulse_dot.remove_css_class("pulse-on")
+        else:
+            self.pulse_dot.add_css_class("pulse-on")
+        return True  # Fortsæt
+
+    def _check_for_activities(self):
+        """Tjek for nye aktiviteter fra AUTO_LOG.jsonl"""
+        try:
+            # Tjek aktive sejrs for nye log entries
+            if ACTIVE_DIR.exists():
+                for sejr_folder in ACTIVE_DIR.iterdir():
+                    if sejr_folder.is_dir():
+                        log_file = sejr_folder / "AUTO_LOG.jsonl"
+                        if log_file.exists():
+                            self._read_new_log_entries(log_file, sejr_folder.name)
+        except Exception:
+            pass
+        return True  # Fortsæt overvågning
+
+    def _read_new_log_entries(self, log_file: Path, sejr_name: str):
+        """Læs nye log entries fra en AUTO_LOG.jsonl fil"""
+        try:
+            with open(log_file, 'r') as f:
+                lines = f.readlines()[-5:]  # Kun de seneste 5 linjer
+
+            for line in lines:
+                try:
+                    entry = json.loads(line.strip())
+                    entry_id = f"{log_file}:{entry.get('timestamp', '')}"
+
+                    # Tjek om vi allerede har set denne entry
+                    if not hasattr(self, '_seen_entries'):
+                        self._seen_entries = set()
+
+                    if entry_id not in self._seen_entries:
+                        self._seen_entries.add(entry_id)
+
+                        # Begræns set størrelse
+                        if len(self._seen_entries) > 100:
+                            self._seen_entries = set(list(self._seen_entries)[-50:])
+
+                        # Tilføj aktivitet
+                        action = entry.get('action', 'handling')
+                        self._add_activity(
+                            sejr_name[:20],
+                            f"{action}: {entry.get('details', '')[:50]}",
+                            self._get_icon_for_action(action)
+                        )
+
+                        # Opdater 5W
+                        self._update_five_w(sejr_name, action)
+                except json.JSONDecodeError:
+                    pass
+        except Exception:
+            pass
+
+    def _get_icon_for_action(self, action: str) -> str:
+        """Hent ikon baseret på handling"""
+        icons = {
+            "create": "✨",
+            "update": "📝",
+            "verify": "✅",
+            "archive": "📦",
+            "complete": "🏆",
+            "error": "❌",
+            "start": "🚀",
+            "progress": "⏳",
+            "git": "🔀",
+            "test": "🧪",
+        }
+        for key, icon in icons.items():
+            if key in action.lower():
+                return icon
+        return "📌"
+
+    def _update_five_w(self, sejr_name: str, action: str):
+        """Opdater 5W statuslinje"""
+        now = datetime.now().strftime("%H:%M:%S")
+        self.hvad_label.set_text(f"📋 {action[:30]}")
+        self.hvor_label.set_text(f"📍 {sejr_name[:20]}")
+        self.hvornaar_label.set_text(f"⏰ {now}")
+
+    def _add_activity(self, source: str, message: str, icon: str = "📌"):
+        """Tilføj en ny aktivitet til listen"""
+        timestamp = datetime.now().strftime("%H:%M:%S")
+
+        row = Gtk.ListBoxRow()
+        row.add_css_class("activity-row")
+
+        box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        box.set_margin_start(12)
+        box.set_margin_end(12)
+        box.set_margin_top(6)
+        box.set_margin_bottom(6)
+
+        # Ikon
+        icon_label = Gtk.Label(label=icon)
+        icon_label.add_css_class("activity-icon")
+        box.append(icon_label)
+
+        # Tidsstempel
+        time_label = Gtk.Label(label=timestamp)
+        time_label.add_css_class("activity-timestamp")
+        box.append(time_label)
+
+        # Kilde
+        source_label = Gtk.Label(label=f"[{source}]")
+        source_label.add_css_class("activity-source")
+        box.append(source_label)
+
+        # Besked
+        msg_label = Gtk.Label(label=message)
+        msg_label.add_css_class("activity-message")
+        msg_label.set_hexpand(True)
+        msg_label.set_halign(Gtk.Align.START)
+        msg_label.set_ellipsize(Pango.EllipsizeMode.END)
+        box.append(msg_label)
+
+        row.set_child(box)
+
+        # Tilføj øverst
+        self.activity_list.prepend(row)
+
+        # Begræns antal entries
+        children = []
+        child = self.activity_list.get_first_child()
+        while child:
+            children.append(child)
+            child = child.get_next_sibling()
+
+        while len(children) > self.MAX_ENTRIES:
+            old_row = children.pop()
+            self.activity_list.remove(old_row)
+
+        self.activities.append({
+            "timestamp": timestamp,
+            "source": source,
+            "message": message,
+            "icon": icon
+        })
+
+    def _clear_activities(self):
+        """Ryd alle aktiviteter"""
+        while True:
+            row = self.activity_list.get_first_child()
+            if row:
+                self.activity_list.remove(row)
+            else:
+                break
+        self.activities = []
+        self._add_activity("system", "Aktivitetslog ryddet", "🧹")
+
+    def log_event(self, source: str, message: str, icon: str = "📌"):
+        """Public metode til at logge events fra andre dele af appen"""
+        GLib.idle_add(lambda: self._add_activity(source, message, icon))
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# VINDERTAVLE - VICTORY JOURNEY BOARD
+# ═══════════════════════════════════════════════════════════════════════════════
+
+class Vindertavle(Gtk.Box):
+    """
+    Vindertavle - Victory Board showing the entire journey
+
+    Displays all archived victories as a visual timeline,
+    showing how each victory led to the current state.
+    Cirkelline Chakra colors indicate victory type.
+    """
+
+    def __init__(self):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        self.add_css_class("vindertavle")
+
+        # Header with VF Logo
+        header = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=16)
+        header.add_css_class("vindertavle-header")
+        header.set_margin_start(20)
+        header.set_margin_end(20)
+        header.set_margin_top(16)
+        header.set_margin_bottom(8)
+
+        # VF Logo (small version)
+        logo = VFLogoWidget(size=48)
+        header.append(logo)
+
+        # Title section
+        title_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        title_box.set_hexpand(True)
+
+        title = Gtk.Label(label="VINDERTAVLE")
+        title.set_halign(Gtk.Align.START)
+        title.add_css_class("title-2")
+        title.add_css_class("vindertavle-title")
+        title_box.append(title)
+
+        subtitle = Gtk.Label(label="Din rejse til Admiral niveau")
+        subtitle.set_halign(Gtk.Align.START)
+        subtitle.add_css_class("caption")
+        subtitle.add_css_class("dim-label")
+        title_box.append(subtitle)
+
+        header.append(title_box)
+
+        # Stats badge
+        self.stats_label = Gtk.Label(label="0 Sejre")
+        self.stats_label.add_css_class("vindertavle-stats")
+        header.append(self.stats_label)
+
+        self.append(header)
+
+        # Separator
+        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        sep.set_margin_start(20)
+        sep.set_margin_end(20)
+        self.append(sep)
+
+        # Scrollable victory timeline
+        scroll = Gtk.ScrolledWindow()
+        scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        scroll.set_vexpand(True)
+        scroll.set_min_content_height(300)
+
+        self.timeline_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        self.timeline_box.add_css_class("vindertavle-timeline")
+        scroll.set_child(self.timeline_box)
+
+        self.append(scroll)
+
+        # Load victories
+        self._load_victories()
+
+    def _load_victories(self):
+        """Load all archived victories"""
+        victories = []
+
+        # Scan archive folder
+        if ARCHIVE_DIR.exists():
+            for folder in sorted(ARCHIVE_DIR.iterdir(), key=lambda x: x.name):
+                if folder.is_dir() and not folder.name.startswith('.'):
+                    sejr_liste = folder / "SEJR_LISTE.md"
+                    verify_status = folder / "VERIFY_STATUS.yaml"
+
+                    victory_data = {
+                        "name": folder.name.split("_2026")[0].replace("_", " "),
+                        "path": folder,
+                        "date": self._extract_date(folder.name),
+                        "score": 0,
+                        "pass_level": 0,
+                        "chakra": self._determine_chakra(folder.name)
+                    }
+
+                    # Try to get score from VERIFY_STATUS.yaml
+                    if verify_status.exists():
+                        try:
+                            import yaml
+                            with open(verify_status) as f:
+                                data = yaml.safe_load(f) or {}
+                                victory_data["score"] = data.get("current_score", 0)
+                                victory_data["pass_level"] = data.get("current_pass", 1)
+                        except:
+                            pass
+
+                    victories.append(victory_data)
+
+        # Update stats
+        self.stats_label.set_text(f"{len(victories)} Sejre")
+
+        # Add victory cards
+        for i, victory in enumerate(victories):
+            card = self._create_victory_card(victory, i, len(victories))
+            self.timeline_box.append(card)
+
+        # Add "Now" marker at top
+        now_marker = self._create_now_marker()
+        self.timeline_box.prepend(now_marker)
+
+    def _extract_date(self, folder_name: str) -> str:
+        """Extract date from folder name"""
+        import re
+        match = re.search(r'(\d{4}-\d{2}-\d{2})', folder_name)
+        if match:
+            return match.group(1)
+        return "Ukendt"
+
+    def _determine_chakra(self, name: str) -> str:
+        """Determine chakra color based on victory type"""
+        name_lower = name.lower()
+        if "admiral" in name_lower or "final" in name_lower:
+            return "divine"  # Violet - Crown Chakra
+        elif "wisdom" in name_lower or "learn" in name_lower:
+            return "wisdom"  # Gold - Solar Plexus
+        elif "verify" in name_lower or "test" in name_lower:
+            return "heart"  # Emerald - Heart Chakra
+        elif "integration" in name_lower or "fase" in name_lower:
+            return "intuition"  # Indigo - Third Eye
+        elif "fix" in name_lower or "bevis" in name_lower:
+            return "sacred"  # Magenta - Divine Feminine
+        else:
+            return "primary"  # Orange - Brand color
+
+    def _create_victory_card(self, victory: dict, index: int, total: int) -> Gtk.Box:
+        """Create a victory card for the timeline"""
+        card = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        card.add_css_class("victory-card")
+        card.add_css_class(f"chakra-{victory['chakra']}")
+        card.set_margin_start(20)
+        card.set_margin_end(20)
+        card.set_margin_top(8)
+        card.set_margin_bottom(8)
+
+        # Timeline connector line
+        line_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        line_box.set_size_request(24, -1)
+
+        # Victory node (circle)
+        node = Gtk.DrawingArea()
+        node.set_size_request(16, 16)
+        node.add_css_class("victory-node")
+        node.add_css_class(f"chakra-{victory['chakra']}")
+        line_box.append(node)
+
+        # Connector line (except for last item)
+        if index < total - 1:
+            line = Gtk.Separator(orientation=Gtk.Orientation.VERTICAL)
+            line.set_vexpand(True)
+            line.add_css_class("timeline-line")
+            line_box.append(line)
+
+        card.append(line_box)
+
+        # Victory info
+        info_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        info_box.set_hexpand(True)
+
+        # Name
+        name_label = Gtk.Label(label=victory["name"])
+        name_label.set_halign(Gtk.Align.START)
+        name_label.add_css_class("heading")
+        info_box.append(name_label)
+
+        # Date and score
+        meta_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+
+        date_label = Gtk.Label(label=victory["date"])
+        date_label.add_css_class("caption")
+        date_label.add_css_class("dim-label")
+        meta_box.append(date_label)
+
+        if victory["score"] > 0:
+            score_label = Gtk.Label(label=f"⭐ {victory['score']}/30")
+            score_label.add_css_class("caption")
+            score_label.add_css_class(f"chakra-{victory['chakra']}-text")
+            meta_box.append(score_label)
+
+        info_box.append(meta_box)
+
+        card.append(info_box)
+
+        # Open folder button
+        open_btn = Gtk.Button(icon_name="folder-open-symbolic")
+        open_btn.add_css_class("flat")
+        open_btn.set_valign(Gtk.Align.CENTER)
+        open_btn.set_tooltip_text("Åbn mappe")
+        open_btn.connect("clicked", lambda b, p=victory["path"]: subprocess.Popen(["nautilus", str(p)]))
+        card.append(open_btn)
+
+        return card
+
+    def _create_now_marker(self) -> Gtk.Box:
+        """Create the 'NOW' marker at top of timeline"""
+        marker = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        marker.add_css_class("now-marker")
+        marker.set_margin_start(20)
+        marker.set_margin_end(20)
+        marker.set_margin_top(16)
+        marker.set_margin_bottom(8)
+
+        # Pulsing indicator
+        pulse = Gtk.Spinner()
+        pulse.start()
+        pulse.set_size_request(20, 20)
+        marker.append(pulse)
+
+        # NOW label
+        now_label = Gtk.Label(label="NU - DU ER HER")
+        now_label.add_css_class("title-4")
+        now_label.add_css_class("now-marker-text")
+        marker.append(now_label)
+
+        return marker
+
+
+class DNALayerRow(Gtk.Box):
+    """A row showing a DNA layer status - interactive and animated"""
+
+    def __init__(self, layer_num, name, description, icon_name, active=False, progress=0.0, running=False):
         super().__init__(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        self.layer_num = layer_num
+        self.name = name
+        self.active = active
+        self.running = running
+
         self.set_margin_start(12)
         self.set_margin_end(12)
         self.set_margin_top(8)
         self.set_margin_bottom(8)
 
-        # Status indicator
-        status_icon = Gtk.Image.new_from_icon_name(
-            "emblem-ok-symbolic" if active else "content-loading-symbolic"
-        )
-        if active:
-            status_icon.add_css_class("success")
-        else:
-            status_icon.add_css_class("dim-label")
-        self.append(status_icon)
+        # Make row clickable
+        self.add_css_class("dna-layer-row")
+        if running:
+            self.add_css_class("dna-layer-running")
+        elif active:
+            self.add_css_class("dna-layer-active")
 
-        # Layer number badge
+        # Click gesture for interaction
+        click = Gtk.GestureClick.new()
+        click.connect("released", self._on_clicked)
+        self.add_controller(click)
+
+        # Status indicator with animation support
+        if running:
+            self.status_icon = Gtk.Spinner()
+            self.status_icon.start()
+            self.status_icon.set_size_request(16, 16)
+        else:
+            self.status_icon = Gtk.Image.new_from_icon_name(
+                "emblem-ok-symbolic" if active else "radio-symbolic-disabled"
+            )
+            if active:
+                self.status_icon.add_css_class("success")
+            else:
+                self.status_icon.add_css_class("dim-label")
+        self.append(self.status_icon)
+
+        # Layer number badge with glow effect when active
+        badge_box = Gtk.Box()
+        badge_box.add_css_class("dna-badge")
+        if active:
+            badge_box.add_css_class("dna-badge-active")
         badge = Gtk.Label(label=layer_num)
         badge.add_css_class("caption")
         badge.add_css_class("accent")
         badge.set_size_request(24, 24)
-        self.append(badge)
+        badge_box.append(badge)
+        self.append(badge_box)
 
         # Layer icon
         icon = Gtk.Image.new_from_icon_name(icon_name)
+        icon.set_pixel_size(20)
         self.append(icon)
 
-        # Name and description
-        text_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        # Name and description with progress
+        text_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
         text_box.set_hexpand(True)
 
         name_label = Gtk.Label(label=name)
@@ -1631,7 +3412,50 @@ class DNALayerRow(Gtk.Box):
         desc_label.add_css_class("dim-label")
         text_box.append(desc_label)
 
+        # Mini progress bar for this layer
+        if progress > 0:
+            prog_bar = Gtk.ProgressBar()
+            prog_bar.set_fraction(progress)
+            prog_bar.add_css_class("dna-progress")
+            prog_bar.set_margin_top(4)
+            text_box.append(prog_bar)
+
         self.append(text_box)
+
+        # Action button (trigger script)
+        if not active:
+            action_btn = Gtk.Button(icon_name="media-playback-start-symbolic")
+            action_btn.add_css_class("flat")
+            action_btn.add_css_class("circular")
+            action_btn.set_tooltip_text(f"Kør {name}")
+            action_btn.connect("clicked", self._on_action_clicked)
+            self.append(action_btn)
+
+    def _on_clicked(self, gesture, n_press, x, y):
+        """Handle click - show layer details"""
+        # Could expand to show more info or trigger action
+        pass
+
+    def _on_action_clicked(self, button):
+        """Trigger the DNA layer script"""
+        # Map layer to script
+        scripts = {
+            "1": "auto_track.py",
+            "2": "auto_track.py",
+            "3": "auto_verify.py",
+            "4": "auto_learn.py",
+            "5": "auto_archive.py",
+            "6": "auto_predict.py",
+            "7": None  # Generate is separate
+        }
+        script = scripts.get(self.layer_num)
+        if script:
+            script_path = SYSTEM_PATH / "scripts" / script
+            if script_path.exists():
+                try:
+                    subprocess.Popen(["python3", str(script_path)])
+                except Exception as e:
+                    print(f"Kunne ikke køre script: {e}")
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -2154,18 +3978,28 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         self.sejrs = []
         self.search_engine = IntelligentSearch(SYSTEM_PATH)
         self.search_mode = False
+        self.zoom_level = 1.0  # For zoom functionality
+        self.file_monitors = []  # Real-time file monitoring
 
         self._build_ui()
         self._load_sejrs()
+        self._setup_file_monitoring()
+        self._setup_drag_drop()
 
-        # Auto-refresh every 5 seconds
+        # Auto-refresh every 5 seconds (backup to file monitoring)
         GLib.timeout_add_seconds(5, self._auto_refresh)
 
     def _build_ui(self):
         """Build the user interface"""
+        # Konfetti overlay for celebrations
+        self.konfetti = KonfettiOverlay()
+
         # Main container
         main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        self.set_content(main_box)
+
+        # Wrap in konfetti overlay
+        self.konfetti.set_child(main_box)
+        self.set_content(self.konfetti)
 
         # Header bar
         header = Adw.HeaderBar()
@@ -2178,7 +4012,7 @@ class MasterpieceWindow(Adw.ApplicationWindow):
 
         # Refresh button
         refresh_btn = Gtk.Button(icon_name="view-refresh-symbolic")
-        refresh_btn.set_tooltip_text("Refresh")
+        refresh_btn.set_tooltip_text("Genindlæs (Ctrl+R)")
         refresh_btn.connect("clicked", lambda b: self._load_sejrs())
         header.pack_start(refresh_btn)
 
@@ -2194,6 +4028,41 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         convert_btn.set_tooltip_text("Konverter til Sejr (fra mappe/fil/tekst)")
         convert_btn.connect("clicked", self._on_convert_to_sejr)
         header.pack_start(convert_btn)
+
+        # === ZOOM CONTROLS ===
+        zoom_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=4)
+        zoom_box.set_valign(Gtk.Align.CENTER)
+
+        zoom_out_btn = Gtk.Button(icon_name="zoom-out-symbolic")
+        zoom_out_btn.add_css_class("flat")
+        zoom_out_btn.set_tooltip_text("Zoom ud (Ctrl+-)")
+        zoom_out_btn.connect("clicked", lambda b: self._zoom_step(-0.1))
+        zoom_box.append(zoom_out_btn)
+
+        self.zoom_scale = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL, 0.5, 2.0, 0.1)
+        self.zoom_scale.set_value(1.0)
+        self.zoom_scale.add_css_class("zoom-slider")
+        self.zoom_scale.set_draw_value(False)
+        self.zoom_scale.connect("value-changed", lambda s: self._on_zoom_changed(s))
+        zoom_box.append(self.zoom_scale)
+
+        self.zoom_label = Gtk.Label(label="100%")
+        self.zoom_label.add_css_class("zoom-label")
+        zoom_box.append(self.zoom_label)
+
+        zoom_in_btn = Gtk.Button(icon_name="zoom-in-symbolic")
+        zoom_in_btn.add_css_class("flat")
+        zoom_in_btn.set_tooltip_text("Zoom ind (Ctrl++)")
+        zoom_in_btn.connect("clicked", lambda b: self._zoom_step(0.1))
+        zoom_box.append(zoom_in_btn)
+
+        zoom_reset_btn = Gtk.Button(icon_name="zoom-fit-best-symbolic")
+        zoom_reset_btn.add_css_class("flat")
+        zoom_reset_btn.set_tooltip_text("Nulstil zoom (Ctrl+0)")
+        zoom_reset_btn.connect("clicked", lambda b: self._zoom_reset())
+        zoom_box.append(zoom_reset_btn)
+
+        header.pack_end(zoom_box)
 
         # Search toggle button
         self.search_btn = Gtk.ToggleButton(icon_name="system-search-symbolic")
@@ -2212,9 +4081,13 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         self.split_view.set_vexpand(True)
         main_box.append(self.split_view)
 
+        # === LIVE AKTIVITETS MONITOR (Bund panel) ===
+        self.activity_monitor = LiveActivityMonitor()
+        main_box.append(self.activity_monitor)
+
         # === SIDEBAR ===
         sidebar_page = Adw.NavigationPage()
-        sidebar_page.set_title("Library")
+        sidebar_page.set_title("Bibliotek")
 
         sidebar_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
@@ -2254,6 +4127,40 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         self.search_results_scroll.set_child(self.search_results_list)
         sidebar_box.append(self.search_results_scroll)
 
+        # === FILTER BAR ===
+        self.filter_bar = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        self.filter_bar.add_css_class("filter-bar")
+        self.filter_bar.set_margin_start(8)
+        self.filter_bar.set_margin_end(8)
+
+        # Filter chips
+        self.filter_all = Gtk.ToggleButton(label="Alle")
+        self.filter_all.add_css_class("filter-chip")
+        self.filter_all.set_active(True)
+        self.filter_all.connect("toggled", lambda b: self._apply_filter("all"))
+        self.filter_bar.append(self.filter_all)
+
+        self.filter_active = Gtk.ToggleButton(label="🔵 Aktiv")
+        self.filter_active.add_css_class("filter-chip")
+        self.filter_active.connect("toggled", lambda b: self._apply_filter("active"))
+        self.filter_bar.append(self.filter_active)
+
+        self.filter_archived = Gtk.ToggleButton(label="✅ Arkiv")
+        self.filter_archived.add_css_class("filter-chip")
+        self.filter_archived.connect("toggled", lambda b: self._apply_filter("archived"))
+        self.filter_bar.append(self.filter_archived)
+
+        # Sort dropdown
+        sort_model = Gtk.StringList.new(["📅 Dato", "📊 Score", "🔤 Navn"])
+        self.sort_dropdown = Gtk.DropDown(model=sort_model)
+        self.sort_dropdown.add_css_class("sort-dropdown")
+        self.sort_dropdown.set_tooltip_text("Sortér efter")
+        self.sort_dropdown.connect("notify::selected", lambda d, p: self._apply_sort())
+        self.filter_bar.append(self.sort_dropdown)
+
+        sidebar_box.append(self.filter_bar)
+        self.current_filter = "all"
+
         # Scrollable list (regular sejr list)
         scroll = Gtk.ScrolledWindow()
         scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
@@ -2275,14 +4182,14 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         self.stats_box.set_margin_bottom(20)
         self.stats_box.set_halign(Gtk.Align.CENTER)
 
-        self.active_label = Gtk.Label(label="0 Active")
+        self.active_label = Gtk.Label(label="0 Aktiv")
         self.active_label.add_css_class("caption")
         self.stats_box.append(self.active_label)
 
         sep = Gtk.Separator(orientation=Gtk.Orientation.VERTICAL)
         self.stats_box.append(sep)
 
-        self.archived_label = Gtk.Label(label="0 Archived")
+        self.archived_label = Gtk.Label(label="0 Arkiveret")
         self.archived_label.add_css_class("caption")
         self.stats_box.append(self.archived_label)
 
@@ -2293,7 +4200,7 @@ class MasterpieceWindow(Adw.ApplicationWindow):
 
         # === CONTENT AREA ===
         content_page = Adw.NavigationPage()
-        content_page.set_title("Details")
+        content_page.set_title("Detaljer")
 
         self.content_stack = Gtk.Stack()
         self.content_stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
@@ -2320,102 +4227,115 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         self.content_stack.set_visible_child_name("welcome")
 
     def _build_welcome_page(self):
-        """Build the welcome/empty state page with live stats"""
-        # Main container
-        main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=24)
-        main_box.set_valign(Gtk.Align.CENTER)
-        main_box.set_halign(Gtk.Align.CENTER)
-        main_box.set_margin_top(48)
-        main_box.set_margin_bottom(48)
+        """Build the welcome page with VF Logo and Vindertavle"""
+        # Main scrollable container
+        scroll = Gtk.ScrolledWindow()
+        scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
 
-        # Header
-        header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
-        header_box.set_halign(Gtk.Align.CENTER)
+        main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
 
-        icon = Gtk.Image.new_from_icon_name("starred-symbolic")
-        icon.set_pixel_size(64)
-        icon.add_css_class("accent")
-        header_box.append(icon)
+        # === TOP HEADER WITH VF LOGO ===
+        header_area = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
+        header_area.add_css_class("welcome-header")
+        header_area.set_margin_top(32)
+        header_area.set_margin_bottom(24)
+        header_area.set_halign(Gtk.Align.CENTER)
 
-        title = Gtk.Label(label="Sejrliste Mesterværk")
+        # VF Logo (centered, prominent)
+        vf_logo = VFLogoWidget(size=80)
+        header_area.append(vf_logo)
+
+        # Title
+        title = Gtk.Label(label="SEJRLISTE MESTERVÆRK")
         title.add_css_class("title-1")
-        header_box.append(title)
+        title.add_css_class("vindertavle-title")
+        header_area.append(title)
 
-        subtitle = Gtk.Label(label="Din vej til Admiral niveau")
+        # Subtitle
+        subtitle = Gtk.Label(label="Kv1nt Admiral Standard • Cirkelline")
+        subtitle.add_css_class("caption")
         subtitle.add_css_class("dim-label")
-        header_box.append(subtitle)
+        header_area.append(subtitle)
 
-        main_box.append(header_box)
+        main_box.append(header_area)
 
-        # Stats cards
+        # === QUICK STATS ROW ===
         stats = get_system_stats()
-        stats_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=16)
-        stats_box.set_halign(Gtk.Align.CENTER)
+        stats_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=24)
+        stats_row.set_halign(Gtk.Align.CENTER)
+        stats_row.set_margin_bottom(16)
 
-        stat_items = [
-            ("🎯", str(stats["total_sejrs"]), "Total Sejrs"),
-            ("✅", str(stats["archived"]), "Arkiveret"),
-            ("🏅", str(stats["grand_admirals"]), "Grand Admirals"),
-            ("📊", f"{stats['completed_checkboxes']}/{stats['total_checkboxes']}", "Checkboxes"),
+        # Opret chakra-farvede statistik badges
+        stat_configs = [
+            (str(stats["total_sejrs"]), "Alle", "divine"),
+            (str(stats["archived"]), "Arkiveret", "wisdom"),
+            (str(stats["grand_admirals"]), "Admiraler", "heart"),
+            (f"{stats['completed_checkboxes']}", "✓ Færdig", "intuition"),
         ]
 
-        for emoji, value, label in stat_items:
-            card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
-            card.add_css_class("card")
-            card.set_size_request(100, 80)
+        for value, label, chakra in stat_configs:
+            stat_badge = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+            stat_badge.add_css_class("stat-badge")
+            stat_badge.add_css_class(f"chakra-{chakra}")
 
-            emoji_label = Gtk.Label(label=emoji)
-            emoji_label.set_markup(f'<span size="x-large">{emoji}</span>')
-            card.append(emoji_label)
+            val_label = Gtk.Label(label=value)
+            val_label.add_css_class("title-2")
+            val_label.add_css_class(f"chakra-{chakra}-text")
+            stat_badge.append(val_label)
 
-            value_label = Gtk.Label(label=value)
-            value_label.add_css_class("title-2")
-            card.append(value_label)
+            name_label = Gtk.Label(label=label)
+            name_label.add_css_class("caption")
+            name_label.add_css_class("dim-label")
+            stat_badge.append(name_label)
 
-            desc_label = Gtk.Label(label=label)
-            desc_label.add_css_class("caption")
-            desc_label.add_css_class("dim-label")
-            card.append(desc_label)
+            stats_row.append(stat_badge)
 
-            stats_box.append(card)
+        main_box.append(stats_row)
 
-        main_box.append(stats_box)
-
-        # Progress to Grand Admiral
-        if stats["total_sejrs"] > 0:
-            progress_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
-            progress_box.set_halign(Gtk.Align.CENTER)
-
-            admiral_pct = (stats["grand_admirals"] / max(stats["archived"], 1)) * 100
-            progress_label = Gtk.Label(label=f"Admiral Rate: {admiral_pct:.0f}%")
-            progress_label.add_css_class("caption")
-            progress_box.append(progress_label)
-
-            progress = Gtk.ProgressBar()
-            progress.set_fraction(admiral_pct / 100)
-            progress.set_size_request(300, -1)
-            if admiral_pct >= 80:
-                progress.add_css_class("success")
-            progress_box.append(progress)
-
-            main_box.append(progress_box)
-
-        # Action buttons
+        # === ACTION BUTTONS ===
         buttons_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
         buttons_box.set_halign(Gtk.Align.CENTER)
+        buttons_box.set_margin_bottom(24)
 
-        new_btn = Gtk.Button(label="🚀 Opret Ny Sejr")
+        new_btn = Gtk.Button()
+        new_btn_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        new_btn_icon = Gtk.Image.new_from_icon_name("list-add-symbolic")
+        new_btn_box.append(new_btn_icon)
+        new_btn_label = Gtk.Label(label="Ny Sejr")
+        new_btn_box.append(new_btn_label)
+        new_btn.set_child(new_btn_box)
         new_btn.add_css_class("suggested-action")
         new_btn.add_css_class("pill")
         new_btn.connect("clicked", self._on_new_sejr)
         buttons_box.append(new_btn)
 
-        open_btn = Gtk.Button(label="📁 Åbn Mappe")
+        open_btn = Gtk.Button()
+        open_btn_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        open_btn_icon = Gtk.Image.new_from_icon_name("folder-open-symbolic")
+        open_btn_box.append(open_btn_icon)
+        open_btn_label = Gtk.Label(label="Åbn System")
+        open_btn_box.append(open_btn_label)
+        open_btn.set_child(open_btn_box)
         open_btn.add_css_class("pill")
         open_btn.connect("clicked", lambda b: subprocess.Popen(["nautilus", str(SYSTEM_PATH)]))
         buttons_box.append(open_btn)
 
         main_box.append(buttons_box)
+
+        # === ACHIEVEMENT PANEL - GAMIFICATION ===
+        self.achievement_panel = AchievementPanel()
+        self.achievement_panel.set_margin_start(24)
+        self.achievement_panel.set_margin_end(24)
+        self.achievement_panel.set_margin_bottom(24)
+        main_box.append(self.achievement_panel)
+
+        # === VINDERTAVLE (Victory Board) - THE MAIN ATTRACTION ===
+        vindertavle = Vindertavle()
+        vindertavle.set_vexpand(True)
+        main_box.append(vindertavle)
+
+        scroll.set_child(main_box)
+        return scroll
 
         # Tip
         tip_label = Gtk.Label(label="💡 Tip: Brug Ctrl+N for hurtig ny sejr")
@@ -2466,14 +4386,88 @@ class MasterpieceWindow(Adw.ApplicationWindow):
 
         self.detail_box.append(header_box)
 
-        # Progress section
-        progress_group = Adw.PreferencesGroup()
-        progress_group.set_title("Progress")
+        # ═══════════════════════════════════════════════════════════════════════════
+        # 5W KONTROL PANEL - HVAD/HVOR/HVORFOR/HVORDAN/HVORNÅR
+        # ═══════════════════════════════════════════════════════════════════════════
+        w5_group = Adw.PreferencesGroup()
+        w5_group.set_title("📋 5W KONTROL")
+        w5_group.set_description("Alt du behøver at vide om denne sejr")
 
-        # Main progress bar
+        # HVAD - Formål/beskrivelse (Divine violet)
+        hvad_row = Adw.ActionRow()
+        hvad_row.set_title("❓ HVAD")
+        hvad_row.set_subtitle(sejr.get("hvad", sejr["display_name"]))
+        hvad_icon = Gtk.Image.new_from_icon_name("help-about-symbolic")
+        hvad_icon.set_pixel_size(32)
+        hvad_row.add_prefix(hvad_icon)
+        hvad_row.add_css_class("w5-hvad")
+        w5_group.add(hvad_row)
+
+        # HVOR - Lokation (Wisdom gold)
+        hvor_row = Adw.ActionRow()
+        hvor_row.set_title("📍 HVOR")
+        hvor_row.set_subtitle(sejr["path"])
+        hvor_icon = Gtk.Image.new_from_icon_name("folder-symbolic")
+        hvor_icon.set_pixel_size(32)
+        hvor_row.add_prefix(hvor_icon)
+        hvor_row.add_css_class("w5-hvor")
+        # Klik for at åbne
+        hvor_row.set_activatable(True)
+        hvor_row.connect("activated", lambda r: subprocess.Popen(["nautilus", sejr["path"]]))
+        w5_group.add(hvor_row)
+
+        # HVORFOR - Mål/grund (Heart emerald)
+        hvorfor_row = Adw.ActionRow()
+        hvorfor_row.set_title("🎯 HVORFOR")
+        hvorfor_row.set_subtitle(sejr.get("hvorfor", "Nå Admiral niveau med 30/30 score"))
+        hvorfor_icon = Gtk.Image.new_from_icon_name("starred-symbolic")
+        hvorfor_icon.set_pixel_size(32)
+        hvorfor_row.add_prefix(hvorfor_icon)
+        hvorfor_row.add_css_class("w5-hvorfor")
+        w5_group.add(hvorfor_row)
+
+        # HVORDAN - Metode (Intuition indigo)
+        hvordan_row = Adw.ActionRow()
+        hvordan_row.set_title("⚙️ HVORDAN")
+        pass_status = f"Pass {sejr['current_pass']}/3 • {sejr['progress']}% færdig"
+        hvordan_row.set_subtitle(pass_status)
+        hvordan_icon = Gtk.Image.new_from_icon_name("emblem-system-symbolic")
+        hvordan_icon.set_pixel_size(32)
+        hvordan_row.add_prefix(hvordan_icon)
+        hvordan_row.add_css_class("w5-hvordan")
+        # Pass indikator badges
+        pass_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=4)
+        for i in range(1, 4):
+            pass_badge = Gtk.Label(label=str(i))
+            pass_badge.add_css_class("pass-badge")
+            if i < sejr["current_pass"]:
+                pass_badge.add_css_class("pass-complete")
+            elif i == sejr["current_pass"]:
+                pass_badge.add_css_class("pass-active")
+            pass_box.append(pass_badge)
+        hvordan_row.add_suffix(pass_box)
+        w5_group.add(hvordan_row)
+
+        # HVORNÅR - Tidslinje (Sacred magenta)
+        hvornaar_row = Adw.ActionRow()
+        hvornaar_row.set_title("⏰ HVORNÅR")
+        hvornaar_row.set_subtitle(f"Oprettet: {sejr['date']} → Mål: Færdig i dag")
+        hvornaar_icon = Gtk.Image.new_from_icon_name("alarm-symbolic")
+        hvornaar_icon.set_pixel_size(32)
+        hvornaar_row.add_prefix(hvornaar_icon)
+        hvornaar_row.add_css_class("w5-hvornaar")
+        w5_group.add(hvornaar_row)
+
+        self.detail_box.append(w5_group)
+
+        # Fremgang sektion
+        progress_group = Adw.PreferencesGroup()
+        progress_group.set_title("📊 Fremgang")
+
+        # Hovedfremgangsbar
         progress_row = Adw.ActionRow()
         progress_row.set_title(f"Samlet fremdrift: {sejr['progress']}%")
-        progress_row.set_subtitle(f"{sejr['done']}/{sejr['total']} checkboxes afkrydset")
+        progress_row.set_subtitle(f"{sejr['done']}/{sejr['total']} opgaver afkrydset")
 
         progress_bar = Gtk.ProgressBar()
         progress_bar.set_fraction(sejr["progress"] / 100)
@@ -2620,9 +4614,9 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         actions_group.add(actions_box)
         self.detail_box.append(actions_group)
 
-        # Chat Stream section - MESSENGER STYLE!
+        # Chat Stream sektion - MESSENGER STYLE!
         chat_group = Adw.PreferencesGroup()
-        chat_group.set_title("💬 Activity Stream")
+        chat_group.set_title("💬 Aktivitetsstrøm")
         chat_group.set_description("Live samtale om hvad der sker")
 
         chat_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -2637,6 +4631,10 @@ class MasterpieceWindow(Adw.ApplicationWindow):
     def _load_sejrs(self):
         """Load all sejrs into the sidebar"""
         self.sejrs = get_all_sejrs()
+
+        # Log til aktivitetsmonitor
+        if hasattr(self, 'activity_monitor'):
+            self.activity_monitor.log_event("system", f"Indlæste {len(self.sejrs)} sejrs", "🔄")
 
         # Clear list
         while row := self.sejr_list.get_first_child():
@@ -2692,10 +4690,115 @@ class MasterpieceWindow(Adw.ApplicationWindow):
             self.sejr_list.append(empty)
 
         # Update stats
-        self.active_label.set_label(f"{active_count} Active")
-        self.archived_label.set_label(f"{archived_count} Archived")
+        self.active_label.set_label(f"{active_count} Aktiv")
+        self.archived_label.set_label(f"{archived_count} Arkiveret")
 
         return True  # For timeout
+
+    def _apply_filter(self, filter_type: str):
+        """Apply filter to sejr list"""
+        self.current_filter = filter_type
+
+        # Update toggle button states
+        self.filter_all.set_active(filter_type == "all")
+        self.filter_active.set_active(filter_type == "active")
+        self.filter_archived.set_active(filter_type == "archived")
+
+        # Reload with filter
+        self._load_sejrs_filtered()
+
+    def _apply_sort(self):
+        """Apply sort to sejr list"""
+        self._load_sejrs_filtered()
+
+    def _load_sejrs_filtered(self):
+        """Load sejrs with current filter and sort applied"""
+        self.sejrs = get_all_sejrs()
+
+        # Apply filter
+        if self.current_filter == "active":
+            filtered_sejrs = [s for s in self.sejrs if not s["is_archived"]]
+        elif self.current_filter == "archived":
+            filtered_sejrs = [s for s in self.sejrs if s["is_archived"]]
+        else:
+            filtered_sejrs = self.sejrs
+
+        # Apply sort
+        sort_idx = self.sort_dropdown.get_selected()
+        if sort_idx == 0:  # Dato
+            filtered_sejrs.sort(key=lambda s: s.get("created", ""), reverse=True)
+        elif sort_idx == 1:  # Score
+            filtered_sejrs.sort(key=lambda s: s.get("score", 0), reverse=True)
+        elif sort_idx == 2:  # Navn
+            filtered_sejrs.sort(key=lambda s: s.get("display_name", ""))
+
+        # Clear list
+        while row := self.sejr_list.get_first_child():
+            self.sejr_list.remove(row)
+
+        active_count = len([s for s in self.sejrs if not s["is_archived"]])
+        archived_count = len([s for s in self.sejrs if s["is_archived"]])
+
+        # Show appropriate header based on filter
+        if self.current_filter == "all":
+            # Active section header
+            if any(not s["is_archived"] for s in filtered_sejrs):
+                active_header = Gtk.Label(label="🔵 AKTIVE")
+                active_header.add_css_class("caption")
+                active_header.add_css_class("dim-label")
+                active_header.set_halign(Gtk.Align.START)
+                active_header.set_margin_start(12)
+                active_header.set_margin_top(12)
+                active_header.set_margin_bottom(6)
+                self.sejr_list.append(active_header)
+
+                for sejr in filtered_sejrs:
+                    if not sejr["is_archived"]:
+                        row = SejrRow(sejr)
+                        self.sejr_list.append(row)
+
+            # Archived section header
+            if any(s["is_archived"] for s in filtered_sejrs):
+                archive_header = Gtk.Label(label="✅ ARKIVEREDE")
+                archive_header.add_css_class("caption")
+                archive_header.add_css_class("dim-label")
+                archive_header.set_halign(Gtk.Align.START)
+                archive_header.set_margin_start(12)
+                archive_header.set_margin_top(18)
+                archive_header.set_margin_bottom(6)
+                self.sejr_list.append(archive_header)
+
+                for sejr in filtered_sejrs:
+                    if sejr["is_archived"]:
+                        row = SejrRow(sejr)
+                        self.sejr_list.append(row)
+        else:
+            # Single section (filtered view)
+            header_text = "🔵 AKTIVE" if self.current_filter == "active" else "✅ ARKIVEREDE"
+            header = Gtk.Label(label=header_text)
+            header.add_css_class("caption")
+            header.add_css_class("dim-label")
+            header.set_halign(Gtk.Align.START)
+            header.set_margin_start(12)
+            header.set_margin_top(12)
+            header.set_margin_bottom(6)
+            self.sejr_list.append(header)
+
+            for sejr in filtered_sejrs:
+                row = SejrRow(sejr)
+                self.sejr_list.append(row)
+
+            if not filtered_sejrs:
+                empty_text = "Ingen aktive sejrs" if self.current_filter == "active" else "Ingen arkiverede sejrs"
+                empty = Gtk.Label(label=empty_text)
+                empty.add_css_class("dim-label")
+                empty.set_margin_start(12)
+                empty.set_margin_bottom(12)
+                self.sejr_list.append(empty)
+
+        # Update stats
+        self.active_label.set_label(f"{active_count} Aktiv")
+        self.archived_label.set_label(f"{archived_count} Arkiveret")
 
     def _on_sejr_selected(self, listbox, row):
         """Handle sejr selection"""
@@ -3106,6 +5209,14 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         """Show celebration dialog when sejr is archived"""
         stats = get_system_stats()
 
+        # Trigger konfetti animation!
+        if hasattr(self, 'konfetti'):
+            # More konfetti for Grand Admirals!
+            if stats['grand_admirals'] > 10:
+                self.konfetti.celebrate("epic")
+            else:
+                self.konfetti.celebrate("normal")
+
         dialog = Adw.MessageDialog(
             transient_for=self,
             heading="🏆 SEJR ARKIVERET!",
@@ -3124,6 +5235,10 @@ Du er på vej mod Admiral niveau!"""
         dialog.set_default_response("ok")
         dialog.present()
 
+        # Update achievements panel
+        if hasattr(self, 'achievement_panel'):
+            self.achievement_panel._check_achievements()
+
     def _open_current_folder(self):
         """Open current sejr folder in Nautilus"""
         if self.selected_sejr:
@@ -3141,6 +5256,291 @@ Du er på vej mod Admiral niveau!"""
                     self._build_detail_page(sejr)
                     break
         return True
+
+    # ═══════════════════════════════════════════════════════════════════════════
+    # REAL-TIME FILE MONITORING
+    # ═══════════════════════════════════════════════════════════════════════════
+
+    def _setup_file_monitoring(self):
+        """Setup Gio.FileMonitor for real-time updates"""
+        # Monitor active folder
+        active_gfile = Gio.File.new_for_path(str(ACTIVE_DIR))
+        if active_gfile.query_exists():
+            try:
+                monitor = active_gfile.monitor_directory(Gio.FileMonitorFlags.WATCH_MOVES, None)
+                monitor.connect("changed", self._on_file_changed)
+                self.file_monitors.append(monitor)
+            except Exception as e:
+                print(f"Could not setup file monitoring: {e}")
+
+        # Monitor archive folder
+        archive_gfile = Gio.File.new_for_path(str(ARCHIVE_DIR))
+        if archive_gfile.query_exists():
+            try:
+                monitor = archive_gfile.monitor_directory(Gio.FileMonitorFlags.WATCH_MOVES, None)
+                monitor.connect("changed", self._on_file_changed)
+                self.file_monitors.append(monitor)
+            except Exception as e:
+                print(f"Could not setup archive monitoring: {e}")
+
+    def _on_file_changed(self, monitor, file, other_file, event_type):
+        """Handle file system changes - real-time refresh"""
+        if event_type in [Gio.FileMonitorEvent.CREATED, Gio.FileMonitorEvent.DELETED,
+                         Gio.FileMonitorEvent.CHANGED, Gio.FileMonitorEvent.MOVED_IN,
+                         Gio.FileMonitorEvent.MOVED_OUT]:
+
+            # Log til aktivitetsmonitor
+            if hasattr(self, 'activity_monitor'):
+                file_path = file.get_path() if file else "ukendt"
+                file_name = Path(file_path).name if file_path else "fil"
+
+                event_icons = {
+                    Gio.FileMonitorEvent.CREATED: ("✨", "Oprettet"),
+                    Gio.FileMonitorEvent.DELETED: ("🗑️", "Slettet"),
+                    Gio.FileMonitorEvent.CHANGED: ("📝", "Ændret"),
+                    Gio.FileMonitorEvent.MOVED_IN: ("📥", "Flyttet ind"),
+                    Gio.FileMonitorEvent.MOVED_OUT: ("📤", "Flyttet ud"),
+                }
+                icon, action = event_icons.get(event_type, ("📌", "Handling"))
+                self.activity_monitor.log_event("fil", f"{action}: {file_name[:40]}", icon)
+
+            # Debounce rapid changes - refresh after 500ms
+            GLib.timeout_add(500, self._debounced_refresh)
+
+    def _debounced_refresh(self):
+        """Debounced refresh to avoid rapid-fire updates"""
+        self._load_sejrs()
+        return False  # Don't repeat
+
+    # ═══════════════════════════════════════════════════════════════════════════
+    # DRAG & DROP SUPPORT
+    # ═══════════════════════════════════════════════════════════════════════════
+
+    def _setup_drag_drop(self):
+        """Setup drag and drop for importing files/folders to create sejrs"""
+        # Create drop target for the main window
+        drop_target = Gtk.DropTarget.new(Gio.File, Gdk.DragAction.COPY)
+        drop_target.connect("drop", self._on_drop)
+        drop_target.connect("enter", self._on_drag_enter)
+        drop_target.connect("leave", self._on_drag_leave)
+        self.add_controller(drop_target)
+
+    def _on_drag_enter(self, drop_target, x, y):
+        """Visual feedback when dragging over window"""
+        self.add_css_class("drop-active")
+        return Gdk.DragAction.COPY
+
+    def _on_drag_leave(self, drop_target):
+        """Remove visual feedback"""
+        self.remove_css_class("drop-active")
+
+    def _on_drop(self, drop_target, value, x, y):
+        """Handle dropped files/folders - create new sejr"""
+        self.remove_css_class("drop-active")
+
+        if isinstance(value, Gio.File):
+            path = value.get_path()
+            if path:
+                # Log til aktivitetsmonitor
+                if hasattr(self, 'activity_monitor'):
+                    self.activity_monitor.log_event("drag-drop", f"Fil droppet: {Path(path).name[:40]}", "📂")
+                # Show conversion dialog with the dropped path
+                self._show_conversion_dialog(Path(path))
+                return True
+        return False
+
+    def _show_conversion_dialog(self, dropped_path: Path):
+        """Show dialog to convert dropped file/folder to Sejr"""
+        dialog = Adw.AlertDialog()
+        dialog.set_heading("Konverter til Sejr")
+        dialog.set_body(f"Vil du oprette en ny Sejr fra:\n{dropped_path.name}?")
+        dialog.add_response("cancel", "Annuller")
+        dialog.add_response("convert", "Konverter")
+        dialog.set_response_appearance("convert", Adw.ResponseAppearance.SUGGESTED)
+
+        def on_response(dlg, response):
+            if response == "convert":
+                # Use the converter
+                self._convert_path_to_sejr(dropped_path)
+
+        dialog.connect("response", on_response)
+        dialog.present(self)
+
+    def _convert_path_to_sejr(self, path: Path):
+        """Actually convert a path to a new Sejr"""
+        try:
+            converter = SejrConverter()
+
+            if path.is_file():
+                sejr_path = converter.from_file(path)
+            elif path.is_dir():
+                sejr_path = converter.from_folder(path)
+            else:
+                return
+
+            # Refresh and select the new sejr
+            self._load_sejrs()
+
+            # Find and select the new sejr
+            for sejr in self.sejrs:
+                if sejr["path"] == sejr_path:
+                    self._build_detail_page(sejr)
+                    self.content_stack.set_visible_child_name("detail")
+                    break
+
+            # Notification
+            toast = Adw.Toast(title=f"Ny Sejr oprettet: {path.name}")
+            toast.set_timeout(3)
+            self.add_toast(toast) if hasattr(self, 'add_toast') else None
+
+        except Exception as e:
+            print(f"Konvertering fejlede: {e}")
+
+    # ═══════════════════════════════════════════════════════════════════════════
+    # ZOOM FUNCTIONALITY
+    # ═══════════════════════════════════════════════════════════════════════════
+
+    def _on_zoom_changed(self, scale):
+        """Handle zoom level changes using font scaling (GTK4 compatible)"""
+        self.zoom_level = scale.get_value()
+        # Update zoom label
+        self.zoom_label.set_text(f"{int(self.zoom_level * 100)}%")
+
+        # Apply zoom via font scaling (GTK4 doesn't support CSS transform)
+        base_sizes = {'title': 28, 'heading': 20, 'body': 14, 'caption': 11}
+
+        css = f"""
+        .detail-content label {{
+            font-size: {int(base_sizes['body'] * self.zoom_level)}px;
+        }}
+        .detail-content .title-1 {{
+            font-size: {int(base_sizes['title'] * self.zoom_level)}px;
+        }}
+        .detail-content .title-2 {{
+            font-size: {int(base_sizes['heading'] * self.zoom_level)}px;
+        }}
+        .detail-content .heading {{
+            font-size: {int(base_sizes['heading'] * self.zoom_level)}px;
+        }}
+        .detail-content .caption {{
+            font-size: {int(base_sizes['caption'] * self.zoom_level)}px;
+        }}
+        """
+        self._apply_dynamic_css(css)
+
+    def _zoom_step(self, delta):
+        """Step zoom in or out"""
+        new_value = max(0.5, min(2.0, self.zoom_scale.get_value() + delta))
+        self.zoom_scale.set_value(new_value)
+
+    def _zoom_reset(self):
+        """Reset zoom to 100%"""
+        self.zoom_scale.set_value(1.0)
+
+    def _apply_dynamic_css(self, css_text):
+        """Apply dynamic CSS"""
+        provider = Gtk.CssProvider()
+        provider.load_from_string(css_text)
+        Gtk.StyleContext.add_provider_for_display(
+            Gdk.Display.get_default(),
+            provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 1
+        )
+
+    # ═══════════════════════════════════════════════════════════════════════════
+    # DNA SCRIPT RUNNERS (Keyboard Shortcuts)
+    # ═══════════════════════════════════════════════════════════════════════════
+
+    def _run_verify_script(self):
+        """Run auto_verify.py script (V key)"""
+        script_path = SYSTEM_PATH / "scripts" / "auto_verify.py"
+        if script_path.exists():
+            try:
+                subprocess.Popen(["python3", str(script_path)])
+                self._show_toast("Kører verifikation...")
+            except Exception as e:
+                self._show_toast(f"Fejl: {e}")
+
+    def _run_archive_script(self):
+        """Run auto_archive.py script (A key)"""
+        if not self.selected_sejr:
+            self._show_toast("Vælg en sejr først")
+            return
+
+        script_path = SYSTEM_PATH / "scripts" / "auto_archive.py"
+        if script_path.exists():
+            try:
+                subprocess.Popen(["python3", str(script_path), str(self.selected_sejr["path"])])
+                self._show_toast("Arkiverer sejr...")
+            except Exception as e:
+                self._show_toast(f"Fejl: {e}")
+
+    def _run_predict_script(self):
+        """Run auto_predict.py script (P key)"""
+        script_path = SYSTEM_PATH / "scripts" / "auto_predict.py"
+        if script_path.exists():
+            try:
+                subprocess.Popen(["python3", str(script_path)])
+                self._show_toast("Genererer forudsigelser...")
+            except Exception as e:
+                self._show_toast(f"Fejl: {e}")
+
+    def _show_toast(self, message):
+        """Show a toast notification"""
+        # Use Adw.Toast overlay if available
+        toast = Adw.Toast(title=message)
+        toast.set_timeout(2)
+        # Try to show via toast overlay
+        try:
+            overlay = self.get_content()
+            if hasattr(overlay, 'add_toast'):
+                overlay.add_toast(toast)
+        except:
+            print(f"Toast: {message}")
+
+    # ═══════════════════════════════════════════════════════════════════════════
+    # HELP DIALOG
+    # ═══════════════════════════════════════════════════════════════════════════
+
+    def _show_help_dialog(self):
+        """Show keyboard shortcuts help dialog (? or F1)"""
+        dialog = Adw.AlertDialog()
+        dialog.set_heading("Keyboard Genveje")
+
+        help_text = """
+<b>Navigation</b>
+Ctrl+F    Søg
+Escape    Luk søgning
+Ctrl+R    Refresh
+
+<b>Handlinger</b>
+Ctrl+N    Ny Sejr
+Ctrl+O    Åbn mappe
+V         Kør verifikation
+A         Arkivér sejr
+P         Generer forudsigelser
+
+<b>Zoom</b>
+Ctrl++    Zoom ind
+Ctrl+-    Zoom ud
+Ctrl+0    Reset zoom
+
+<b>System</b>
+Ctrl+Q    Afslut
+?/F1      Denne hjælp
+"""
+
+        body_label = Gtk.Label()
+        body_label.set_markup(help_text)
+        body_label.set_halign(Gtk.Align.START)
+        body_label.set_margin_top(12)
+        body_label.set_margin_bottom(12)
+        body_label.set_margin_start(12)
+        body_label.set_margin_end(12)
+
+        dialog.set_extra_child(body_label)
+        dialog.add_response("close", "Luk")
+        dialog.present(self)
 
     # ═══════════════════════════════════════════════════════════════════════════
     # INTELLIGENT SEARCH HANDLERS
@@ -3365,6 +5765,52 @@ class MasterpieceApp(Adw.Application):
         new_action.connect("activate", lambda a, p: win._on_new_sejr(None))
         self.add_action(new_action)
         self.set_accels_for_action("app.new-sejr", ["<Control>n"])
+
+        # Ctrl+Q for quit
+        quit_action = Gio.SimpleAction.new("quit", None)
+        quit_action.connect("activate", lambda a, p: self.quit())
+        self.add_action(quit_action)
+        self.set_accels_for_action("app.quit", ["<Control>q"])
+
+        # V for verification
+        verify_action = Gio.SimpleAction.new("verify", None)
+        verify_action.connect("activate", lambda a, p: win._run_verify_script())
+        self.add_action(verify_action)
+        self.set_accels_for_action("app.verify", ["v"])
+
+        # A for archive
+        archive_action = Gio.SimpleAction.new("archive", None)
+        archive_action.connect("activate", lambda a, p: win._run_archive_script())
+        self.add_action(archive_action)
+        self.set_accels_for_action("app.archive", ["a"])
+
+        # P for predictions
+        predict_action = Gio.SimpleAction.new("predict", None)
+        predict_action.connect("activate", lambda a, p: win._run_predict_script())
+        self.add_action(predict_action)
+        self.set_accels_for_action("app.predict", ["p"])
+
+        # Zoom shortcuts
+        zoom_in_action = Gio.SimpleAction.new("zoom-in", None)
+        zoom_in_action.connect("activate", lambda a, p: win._zoom_step(0.1))
+        self.add_action(zoom_in_action)
+        self.set_accels_for_action("app.zoom-in", ["<Control>plus", "<Control>equal"])
+
+        zoom_out_action = Gio.SimpleAction.new("zoom-out", None)
+        zoom_out_action.connect("activate", lambda a, p: win._zoom_step(-0.1))
+        self.add_action(zoom_out_action)
+        self.set_accels_for_action("app.zoom-out", ["<Control>minus"])
+
+        zoom_reset_action = Gio.SimpleAction.new("zoom-reset", None)
+        zoom_reset_action.connect("activate", lambda a, p: win._zoom_reset())
+        self.add_action(zoom_reset_action)
+        self.set_accels_for_action("app.zoom-reset", ["<Control>0"])
+
+        # ? for help
+        help_action = Gio.SimpleAction.new("help", None)
+        help_action.connect("activate", lambda a, p: win._show_help_dialog())
+        self.add_action(help_action)
+        self.set_accels_for_action("app.help", ["question", "F1"])
 
 
 # ═══════════════════════════════════════════════════════════════════════════════

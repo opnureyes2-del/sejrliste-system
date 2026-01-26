@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Sejrliste System
+GenericName=Victory Tracking
+Comment=Track victories systematically with 3-pass verification
+Icon=/home/rasmus/Desktop/sejrliste systemet/assets/sejrliste-icon.svg
+Exec=bash -c "cd '/home/rasmus/Desktop/sejrliste systemet' && source venv/bin/activate && streamlit run web_app.py --server.port 8501"
+Terminal=false
+Categories=Development;ProjectManagement;
+StartupWMClass=streamlit
+Keywords=sejr;victory;tracking;project;

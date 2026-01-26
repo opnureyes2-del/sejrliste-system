@@ -84,7 +84,7 @@ CURRENT_DIR = SYSTEM_PATH / "_CURRENT"
 TEMPLATES_DIR = SYSTEM_PATH / "00_TEMPLATES"
 
 st.set_page_config(
-    page_title="Sejrliste Enterprise",
+    page_title="Victory List Enterprise",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -107,8 +107,8 @@ ENTERPRISE_CSS = """
     --bg-elevated: #1a2236;
     --border-color: rgba(99, 102, 241, 0.15);
     --border-glow: rgba(139, 92, 246, 0.3);
-    --text-primary: #ff6b35;      /* ORANGE-RODLIG - mere rod-orange som Rasmus vil have */
-    --text-secondary: #ff8c42;    /* ORANGE - sekundaer tekst */
+    --text-primary: #ff9f43;      /* ORANGE-MANGO - visible on dark background */
+    --text-secondary: #feca57;    /* MORNING-SUN-YELLOW - secondary text */
     --text-muted: #64748b;
     --accent-violet: #8b5cf6;
     --accent-indigo: #6366f1;
@@ -1041,9 +1041,9 @@ def get_all_sejrs() -> List[dict]:
             if folder.is_dir() and not folder.name.startswith("."):
                 sejrs.append(get_sejr_status(folder))
 
-    # Archived (ALLE - ikke begrænset!)
+    # Archived (last 10)
     if ARCHIVE_DIR.exists():
-        for folder in sorted(ARCHIVE_DIR.iterdir(), key=lambda x: x.stat().st_mtime, reverse=True):
+        for folder in sorted(ARCHIVE_DIR.iterdir(), key=lambda x: x.stat().st_mtime, reverse=True)[:10]:
             if folder.is_dir() and not folder.name.startswith("."):
                 sejrs.append(get_sejr_status(folder))
 
@@ -1187,7 +1187,7 @@ st.markdown("""
 
 st.markdown("""
 <div class="premium-header">
-    <h1>✨ Sejrliste Enterprise ✨</h1>
+    <h1>✨ Victory List Enterprise ✨</h1>
     <div style="color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
         🕐 Session: """ + get_session_duration() + """ | 🧬 DNA: 7 Layers Active | 🚀 Premium Edition
     </div>
@@ -1202,7 +1202,7 @@ with st.sidebar:
     st.markdown("""
     <div style="text-align: center; padding: 1rem 0; border-bottom: 1px solid var(--border-color);">
         <span style="font-family: 'Inter', sans-serif; font-size: 1.25rem; font-weight: 600; color: var(--text-primary);">
-            📚 PROJEKTER
+            📚 PROJECTS
         </span>
     </div>
     """, unsafe_allow_html=True)
@@ -1210,11 +1210,11 @@ with st.sidebar:
     # Navigation buttons
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("Aktive", use_container_width=True):
+        if st.button("Active", use_container_width=True):
             st.session_state.view = 'library'
             st.session_state.filter = 'active'
     with col2:
-        if st.button("🏆 Arkiv", use_container_width=True):
+        if st.button("🏆 Archive", use_container_width=True):
             st.session_state.view = 'library'
             st.session_state.filter = 'archived'
 
@@ -1225,7 +1225,7 @@ with st.sidebar:
     active_sejrs = [s for s in sejrs if not s['is_archived']]
     archived_sejrs = [s for s in sejrs if s['is_archived']]
 
-    st.markdown(f"**Aktive ({len(active_sejrs)})**")
+    st.markdown(f"**Active ({len(active_sejrs)})**")
     for sejr in active_sejrs:
         progress_bar = f"{'█' * (sejr['progress'] // 10)}{'░' * (10 - sejr['progress'] // 10)}"
         if st.button(
@@ -1238,7 +1238,7 @@ with st.sidebar:
             st.rerun()
 
     if archived_sejrs:
-        st.markdown(f"**🏆 Arkiverede ({len(archived_sejrs)})**")
+        st.markdown(f"**🏆 Archived ({len(archived_sejrs)})**")
         for sejr in archived_sejrs[:5]:
             if st.button(f"🏆 {sejr['name'][:20]}", key=f"arch_{sejr['name']}", use_container_width=True):
                 st.session_state.selected_sejr = sejr
@@ -1249,48 +1249,15 @@ with st.sidebar:
 
     # Quick actions
     st.markdown("**⚡ Quick Actions**")
-    if st.button("✨ Ny Sejr", use_container_width=True):
+    if st.button("✨ New Victory", use_container_width=True):
         success, output = run_script("generate_sejr.py")
         if success:
-            st.success("Ny sejr oprettet!")
+            st.success("New victory created!")
             st.rerun()
         else:
             st.error(output)
 
     if st.button("🔄 Refresh", use_container_width=True):
-        st.rerun()
-
-    st.markdown("---")
-
-    # MENU ITEMS - Orange-rod tekst
-    st.markdown("""
-    <style>
-    .menu-item { color: #ff6b35 !important; font-weight: 600; font-size: 1.1rem; }
-    </style>
-    """, unsafe_allow_html=True)
-
-    st.markdown("**📋 MENU**")
-
-    if st.button("📋 Aktiv Sejr", use_container_width=True, key="menu_aktiv"):
-        st.session_state.view = 'library'
-        st.session_state.filter = 'active'
-        st.rerun()
-
-    if st.button("📦 Arkiv", use_container_width=True, key="menu_arkiv"):
-        st.session_state.view = 'library'
-        st.session_state.filter = 'archived'
-        st.rerun()
-
-    if st.button("➕ Ny Sejr", use_container_width=True, key="menu_ny"):
-        st.session_state.view = 'create'
-        st.rerun()
-
-    if st.button("📊 Statistik", use_container_width=True, key="menu_statistik"):
-        st.session_state.view = 'statistics'
-        st.rerun()
-
-    if st.button("⚙️ Indstillinger", use_container_width=True, key="menu_indstillinger"):
-        st.session_state.view = 'settings'
         st.rerun()
 
     # 7 Days Ahead - KLARSYN
@@ -1332,301 +1299,72 @@ with st.sidebar:
 # MAIN CONTENT
 # ═══════════════════════════════════════════════════════════════════════════════
 
-if st.session_state.view == 'statistics':
-    # ═══════════════════════════════════════════════════════════════════════════════
-    # 📊 STATISTIK VIEW
-    # ═══════════════════════════════════════════════════════════════════════════════
+if st.session_state.view == 'library' or st.session_state.selected_sejr is None:
+    # LIBRARY VIEW - Grid of sejr cards
     st.markdown("""
-    <h1 style="color: var(--text-primary); font-family: 'Space Grotesk', sans-serif;">
-        📊 STATISTIK
-    </h1>
-    """, unsafe_allow_html=True)
-
-    total_sejrs = len(sejrs)
-    total_archived = len(archived_sejrs)
-    total_active = len(active_sejrs)
-    total_checkboxes_done = sum(s['checkboxes_done'] for s in sejrs)
-    total_checkboxes = sum(s['checkboxes_total'] for s in sejrs)
-    avg_score = sum(int(s['score'].split('/')[0]) for s in archived_sejrs) / len(archived_sejrs) if archived_sejrs else 0
-
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric("Total Sejrs", total_sejrs)
-        st.metric("Aktive", total_active)
-        st.metric("Arkiverede", total_archived)
-    with col2:
-        st.metric("Checkboxes Udfort", total_checkboxes_done)
-        st.metric("Total Checkboxes", total_checkboxes)
-        completion = int(total_checkboxes_done / total_checkboxes * 100) if total_checkboxes > 0 else 0
-        st.metric("Completion Rate", f"{completion}%")
-    with col3:
-        st.metric("Gennemsnit Score", f"{avg_score:.1f}/30")
-        grand_admirals = len([s for s in archived_sejrs if int(s['score'].split('/')[0]) >= 27])
-        st.metric("Grand Admirals", grand_admirals)
-        st.metric("Admiral Rate", f"{int(grand_admirals/len(archived_sejrs)*100) if archived_sejrs else 0}%")
-
-elif st.session_state.view == 'settings':
-    # ═══════════════════════════════════════════════════════════════════════════════
-    # ⚙️ INDSTILLINGER VIEW
-    # ═══════════════════════════════════════════════════════════════════════════════
-    st.markdown("""
-    <h1 style="color: var(--text-primary); font-family: 'Space Grotesk', sans-serif;">
-        ⚙️ INDSTILLINGER
-    </h1>
-    """, unsafe_allow_html=True)
-
-    st.subheader("System Paths")
-    st.code(f"SYSTEM_PATH: {SYSTEM_PATH}\nACTIVE_DIR: {ACTIVE_DIR}\nARCHIVE_DIR: {ARCHIVE_DIR}")
-
-    st.subheader("Scripts Status")
-    scripts = list(SCRIPTS_DIR.glob("*.py"))
-    for script in scripts:
-        col1, col2 = st.columns([3, 1])
-        with col1:
-            st.text(script.name)
-        with col2:
-            if st.button("Test", key=f"test_{script.name}"):
-                success, output = run_script(script.name, ["--help"])
-                st.success("OK") if success else st.error("FEJL")
-
-elif st.session_state.view == 'create':
-    # ═══════════════════════════════════════════════════════════════════════════════
-    # ➕ NY SEJR VIEW
-    # ═══════════════════════════════════════════════════════════════════════════════
-    st.markdown("""
-    <h1 style="color: var(--text-primary); font-family: 'Space Grotesk', sans-serif;">
-        ➕ OPRET NY SEJR
-    </h1>
-    """, unsafe_allow_html=True)
-
-    with st.form("new_sejr_form"):
-        name = st.text_input("Sejr Navn", placeholder="F.eks. FIX_BUG_AUTHENTICATION")
-        goal = st.text_area("Mal", placeholder="Hvad skal opnas?")
-        tech = st.text_input("Teknologi", placeholder="Python, Streamlit, etc.")
-        submitted = st.form_submit_button("Opret Sejr")
-        if submitted and name:
-            cmd = f'python3 {SCRIPTS_DIR}/generate_sejr.py --name "{name}"'
-            if goal:
-                cmd += f' --goal "{goal}"'
-            if tech:
-                cmd += f' --tech "{tech}"'
-            result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=SYSTEM_PATH)
-            if result.returncode == 0:
-                st.success(f"Sejr '{name}' oprettet!")
-                st.session_state.view = 'library'
-                st.rerun()
-            else:
-                st.error(f"Fejl: {result.stderr}")
-
-elif st.session_state.view == 'library' or st.session_state.selected_sejr is None:
-    # ═══════════════════════════════════════════════════════════════════════════════
-    # 🎯 KOMPLET OVERBLIK DASHBOARD - DU SER ALT!
-    # ═══════════════════════════════════════════════════════════════════════════════
-
-    # Beregn totaler
-    total_active_checkboxes = sum(s['checkboxes_total'] - s['checkboxes_done'] for s in active_sejrs)
-    total_done_checkboxes = sum(s['checkboxes_done'] for s in active_sejrs)
-    total_archived_score = sum(int(s['score'].split('/')[0]) for s in archived_sejrs)
-    max_possible_score = len(archived_sejrs) * 30
-
-    # ═══════════════════════════════════════════════════════════════════════════════
-    # 📊 SCORE TAVLE - TOTAL STATUS PÅ ÉT BLIK
-    # ═══════════════════════════════════════════════════════════════════════════════
-    st.markdown("""
-    <div style="
-        background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(99, 102, 241, 0.1) 100%);
-        border: 1px solid var(--glass-border);
-        border-radius: 20px;
-        padding: 1.5rem 2rem;
-        margin-bottom: 1.5rem;
-    ">
-        <h2 style="
-            color: var(--text-primary);
-            font-family: 'Space Grotesk', sans-serif;
-            margin: 0 0 1rem 0;
-            font-size: 1.5rem;
-        ">📊 SCORE TAVLE - KOMPLET OVERBLIK</h2>
+    <div class="production-room">
+        <div class="production-header">Select Project</div>
     </div>
     """, unsafe_allow_html=True)
 
-    # STORE TAL - 6 kolonner
-    col1, col2, col3, col4, col5, col6 = st.columns(6)
-
+    # Stats row
+    col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.markdown(f"""
-        <div style="text-align: center; padding: 1rem; background: var(--glass-bg); border-radius: 12px; border: 1px solid var(--glass-border);">
-            <div style="font-size: 2.5rem; font-weight: bold; color: var(--accent-orange);">{len(active_sejrs)}</div>
-            <div style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">AKTIVE</div>
+        <div class="stat-card">
+            <div class="stat-value">{len(active_sejrs)}</div>
+            <div class="stat-label">Active</div>
         </div>
         """, unsafe_allow_html=True)
-
     with col2:
         st.markdown(f"""
-        <div style="text-align: center; padding: 1rem; background: var(--glass-bg); border-radius: 12px; border: 1px solid var(--glass-border);">
-            <div style="font-size: 2.5rem; font-weight: bold; color: var(--accent-emerald);">{len(archived_sejrs)}</div>
-            <div style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">ARKIVEREDE</div>
+        <div class="stat-card">
+            <div class="stat-value">{len(archived_sejrs)}</div>
+            <div class="stat-label">Archived</div>
         </div>
         """, unsafe_allow_html=True)
-
     with col3:
+        avg_progress = sum(s['progress'] for s in active_sejrs) // len(active_sejrs) if active_sejrs else 0
         st.markdown(f"""
-        <div style="text-align: center; padding: 1rem; background: var(--glass-bg); border-radius: 12px; border: 1px solid var(--accent-red); border-width: 2px;">
-            <div style="font-size: 2.5rem; font-weight: bold; color: var(--accent-red);">{total_active_checkboxes}</div>
-            <div style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">MANGLER</div>
+        <div class="stat-card">
+            <div class="stat-value">{avg_progress}%</div>
+            <div class="stat-label">Avg Progress</div>
         </div>
         """, unsafe_allow_html=True)
-
     with col4:
         st.markdown(f"""
-        <div style="text-align: center; padding: 1rem; background: var(--glass-bg); border-radius: 12px; border: 1px solid var(--glass-border);">
-            <div style="font-size: 2.5rem; font-weight: bold; color: var(--accent-cyan);">{total_done_checkboxes}</div>
-            <div style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">UDFØRT</div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col5:
-        st.markdown(f"""
-        <div style="text-align: center; padding: 1rem; background: var(--glass-bg); border-radius: 12px; border: 1px solid var(--glass-border);">
-            <div style="font-size: 2.5rem; font-weight: bold; color: var(--accent-gold);">{total_archived_score}</div>
-            <div style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">TOTAL SCORE</div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col6:
-        score_percent = int(total_archived_score / max_possible_score * 100) if max_possible_score > 0 else 0
-        st.markdown(f"""
-        <div style="text-align: center; padding: 1rem; background: var(--glass-bg); border-radius: 12px; border: 1px solid var(--glass-border);">
-            <div style="font-size: 2.5rem; font-weight: bold; color: var(--accent-violet);">{score_percent}%</div>
-            <div style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">KVALITET</div>
+        <div class="stat-card">
+            <div class="stat-value">{get_session_duration()}</div>
+            <div class="stat-label">Session</div>
         </div>
         """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ═══════════════════════════════════════════════════════════════════════════════
-    # 🔥 KOMMENDE SEJR - HVAD DER SKAL SKE
-    # ═══════════════════════════════════════════════════════════════════════════════
-    st.markdown("""
-    <div style="
-        background: linear-gradient(135deg, rgba(249, 115, 22, 0.15) 0%, rgba(239, 68, 68, 0.1) 100%);
-        border: 2px solid var(--accent-orange);
-        border-radius: 16px;
-        padding: 1.25rem 1.5rem;
-        margin-bottom: 1rem;
-    ">
-        <h3 style="color: var(--accent-orange); margin: 0;">🔥 KOMMENDE SEJR - DIT ARBEJDE NU</h3>
-    </div>
-    """, unsafe_allow_html=True)
+    # Sejr grid
+    cols = st.columns(3)
+    for i, sejr in enumerate(active_sejrs):
+        with cols[i % 3]:
+            progress_bar = f"{'█' * (sejr['progress'] // 10)}{'░' * (10 - sejr['progress'] // 10)}"
+            status_color = "#5ba32b" if sejr['progress'] >= 80 else "#f7b93e" if sejr['progress'] >= 50 else "#c23b23"
 
-    for sejr in active_sejrs:
-        remaining = sejr['checkboxes_total'] - sejr['checkboxes_done']
-        progress_color = "var(--accent-emerald)" if sejr['progress'] >= 80 else "var(--accent-orange)" if sejr['progress'] >= 50 else "var(--accent-red)"
-
-        st.markdown(f"""
-        <div style="
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-left: 4px solid {progress_color};
-            border-radius: 12px;
-            padding: 1rem 1.5rem;
-            margin: 0.75rem 0;
-        ">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-                <div>
-                    <div style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary);">
-                        📁 {sejr['name']}
-                    </div>
-                    <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">
-                        Phase: {sejr['phase']} | Score: {sejr['score']}
-                    </div>
+            st.markdown(f"""
+            <div class="sejr-card" onclick="selectSejr('{sejr['name']}')">
+                <div class="sejr-title">{sejr['name']}</div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-container-bar" style="width: {sejr['progress']}%"></div>
                 </div>
-                <div style="display: flex; gap: 1.5rem; align-items: center;">
-                    <div style="text-align: center;">
-                        <div style="font-size: 1.5rem; font-weight: bold; color: {progress_color};">{sejr['progress']}%</div>
-                        <div style="font-size: 0.7rem; color: var(--text-muted);">PROGRESS</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 1.5rem; font-weight: bold; color: var(--accent-cyan);">{sejr['checkboxes_done']}</div>
-                        <div style="font-size: 0.7rem; color: var(--text-muted);">UDFØRT</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 1.5rem; font-weight: bold; color: var(--accent-red);">{remaining}</div>
-                        <div style="font-size: 0.7rem; color: var(--text-muted);">MANGLER</div>
-                    </div>
+                <div class="sejr-meta">
+                    <span style="color: {status_color}">■</span> {sejr['progress']}% | Score: {sejr['score']}
                 </div>
+                <div class="sejr-meta">Phase: {sejr['phase']} | Tasks: {sejr['checkboxes_done']}/{sejr['checkboxes_total']}</div>
             </div>
-            <div style="margin-top: 0.75rem;">
-                <div style="
-                    background: rgba(15, 20, 36, 0.8);
-                    border-radius: 8px;
-                    height: 8px;
-                    overflow: hidden;
-                ">
-                    <div style="
-                        width: {sejr['progress']}%;
-                        height: 100%;
-                        background: linear-gradient(90deg, {progress_color} 0%, var(--accent-cyan) 100%);
-                        border-radius: 8px;
-                    "></div>
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
 
-        if st.button(f"▶️ Åbn {sejr['name'][:25]}", key=f"open_{sejr['name']}", use_container_width=True):
-            st.session_state.selected_sejr = sejr
-            st.session_state.view = 'production'
-            st.rerun()
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    # ═══════════════════════════════════════════════════════════════════════════════
-    # 🏆 ARKIV KOMPLET - ALLE FÆRDIGE SEJR
-    # ═══════════════════════════════════════════════════════════════════════════════
-    st.markdown(f"""
-    <div style="
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(34, 211, 238, 0.1) 100%);
-        border: 2px solid var(--accent-emerald);
-        border-radius: 16px;
-        padding: 1.25rem 1.5rem;
-        margin-bottom: 1rem;
-    ">
-        <h3 style="color: var(--accent-emerald); margin: 0;">🏆 ARKIV KOMPLET - {len(archived_sejrs)} FÆRDIGE SEJR</h3>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # Arkiv som tabel
-    if archived_sejrs:
-        # 3 kolonner for kompakt visning
-        cols = st.columns(3)
-        for i, sejr in enumerate(archived_sejrs):
-            with cols[i % 3]:
-                score_val = int(sejr['score'].split('/')[0])
-                score_color = "var(--accent-emerald)" if score_val >= 27 else "var(--accent-orange)" if score_val >= 20 else "var(--accent-red)"
-
-                st.markdown(f"""
-                <div style="
-                    background: var(--glass-bg);
-                    border: 1px solid var(--glass-border);
-                    border-radius: 10px;
-                    padding: 0.75rem 1rem;
-                    margin: 0.4rem 0;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                ">
-                    <div style="font-size: 0.85rem; color: var(--text-primary); max-width: 70%;">
-                        ✅ {sejr['name'][:25]}{'...' if len(sejr['name']) > 25 else ''}
-                    </div>
-                    <div style="
-                        font-weight: bold;
-                        color: {score_color};
-                        font-family: 'JetBrains Mono', monospace;
-                    ">{sejr['score']}</div>
-                </div>
-                """, unsafe_allow_html=True)
-    else:
-        st.info("Ingen arkiverede sejr endnu.")
+            if st.button(f"▶️ Open", key=f"open_{sejr['name']}", use_container_width=True):
+                st.session_state.selected_sejr = sejr
+                st.session_state.view = 'production'
+                st.rerun()
 
 else:
     # PRODUCTION ROOM - Active workspace
@@ -1644,7 +1382,7 @@ else:
     """, unsafe_allow_html=True)
 
     # ═══════════════════════════════════════════════════════════════════════════
-    # 🔒 ENFORCEMENT PANEL - UMULIG AT FEJLE
+    # 🔒 ENFORCEMENT PANEL - IMPOSSIBLE TO FAIL
     # ═══════════════════════════════════════════════════════════════════════════
     if ENFORCEMENT_AVAILABLE:
         enforcement = get_enforcement_for_sejr(sejr_path)
@@ -1663,7 +1401,7 @@ else:
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
                 <div>
                     <span style="font-size: 1.5rem; font-weight: bold; color: var(--text-primary);">
-                        🎯 DU ER HER:
+                        🎯 YOU ARE HERE:
                     </span>
                     <span style="font-size: 1.2rem; color: var(--accent-cyan); margin-left: 0.5rem;">
                         {pos['current_checkpoint']['name'][:40]}{'...' if len(pos['current_checkpoint']['name']) > 40 else ''}
@@ -1689,15 +1427,15 @@ else:
         # SKIPPED CHECKPOINT WARNING - CANNOT BE IGNORED
         if pos['skipped_must_return'] > 0:
             st.error(f"""
-            🚫 **BLOKERET!** Du har {pos['skipped_must_return']} opgave(r) du SKAL vende tilbage til!
+            🚫 **BLOCKED!** You have {pos['skipped_must_return']} task(s) you MUST return to!
 
-            Disse opgaver SKAL færdiggøres før du kan fortsætte:
+            These tasks MUST be completed before you can continue:
             """)
             for cp_id in enforcement.skipped_checkpoints:
                 cp = enforcement.checkpoints.get(cp_id)
                 if cp:
                     st.warning(f"⏸️ **{cp.name}**")
-                    if st.button(f"🔙 Gå tilbage til {cp_id}", key=f"return_{cp_id}"):
+                    if st.button(f"🔙 Return to {cp_id}", key=f"return_{cp_id}"):
                         enforcement.start_checkpoint(cp_id)
                         st.rerun()
 
@@ -1710,11 +1448,11 @@ else:
                 with col_verify:
                     if current_cp.verification_type == "manual":
                         proof = st.text_input(
-                            f"📝 Bevis for: {current_cp.name[:40]}",
+                            f"📝 Proof for: {current_cp.name[:40]}",
                             key=f"proof_{current_cp.id}",
-                            placeholder="Hvad er dit bevis? (f.eks. 'Testet lokalt, output: OK')"
+                            placeholder="What's your proof? (e.g., 'Tested locally, output: OK')"
                         )
-                        if st.button("✅ Bekræft & Verificer", key=f"verify_{current_cp.id}", type="primary"):
+                        if st.button("✅ Confirm & Verify", key=f"verify_{current_cp.id}", type="primary"):
                             if proof:
                                 success, msg = enforcement.verify_checkpoint(current_cp.id, proof)
                                 if success:
@@ -1723,9 +1461,9 @@ else:
                                 else:
                                     st.error(msg)
                             else:
-                                st.error("🚫 DU SKAL LEVERE BEVIS!")
+                                st.error("🚫 YOU MUST PROVIDE PROOF!")
                     else:
-                        if st.button("✅ Kør Verifikation", key=f"verify_{current_cp.id}", type="primary"):
+                        if st.button("✅ Run Verification", key=f"verify_{current_cp.id}", type="primary"):
                             success, msg = enforcement.verify_checkpoint(current_cp.id)
                             if success:
                                 st.success(msg)
@@ -1734,15 +1472,15 @@ else:
                                 st.error(msg)
 
                 with col_skip:
-                    with st.expander("⏸️ Spring midlertidigt over"):
-                        skip_reason = st.text_input("Hvorfor springer du over?", key=f"skip_reason_{current_cp.id}")
-                        if st.button("⏸️ Spring over (du SKAL tilbage!)", key=f"skip_{current_cp.id}"):
+                    with st.expander("⏸️ Skip temporarily"):
+                        skip_reason = st.text_input("Why are you skipping?", key=f"skip_reason_{current_cp.id}")
+                        if st.button("⏸️ Skip (you MUST return!)", key=f"skip_{current_cp.id}"):
                             if skip_reason:
                                 success, msg = enforcement.skip_checkpoint(current_cp.id, skip_reason)
                                 st.warning(msg)
                                 st.rerun()
                             else:
-                                st.error("Du SKAL angive en grund!")
+                                st.error("You MUST provide a reason!")
 
         # ARCHIVE BLOCKING
         can_archive, archive_msg = enforcement.can_archive()
@@ -1756,7 +1494,7 @@ else:
                 margin: 0.5rem 0;
             ">
                 <span style="font-weight: bold; color: var(--accent-red);">
-                    🚫 ARKIVERING BLOKERET
+                    🚫 ARCHIVING BLOCKED
                 </span>
                 <p style="color: var(--text-secondary); margin-top: 0.5rem;">
                     {archive_msg.replace(chr(10), '<br>')}
@@ -1797,12 +1535,12 @@ else:
 
     with col2:
         if st.button("📦 Archive (a)", use_container_width=True):
-            # ENFORCEMENT CHECK - BLOKERER HVIS IKKE FÆRDIG
+            # ENFORCEMENT CHECK - BLOCKS IF NOT COMPLETE
             if ENFORCEMENT_AVAILABLE:
                 enforcement = get_enforcement_for_sejr(sejr_path)
                 can_archive, block_reason = enforcement.can_archive()
                 if not can_archive:
-                    st.error(f"🚫 **ARKIVERING BLOKERET!**\n\n{block_reason}")
+                    st.error(f"🚫 **ARCHIVING BLOCKED!**\n\n{block_reason}")
                     st.stop()
 
             with st.spinner("Archiving..."):
@@ -1986,7 +1724,7 @@ else:
             st.markdown(f"**{timeline.progress_percentage}%**")
 
         # Timeline steps in expander
-        with st.expander("📊 Se alle 20 skridt", expanded=False):
+        with st.expander("📊 See all 20 steps", expanded=False):
             for step in timeline.steps:
                 if step.status.value == "✅":
                     icon = "✅"
@@ -1998,7 +1736,7 @@ else:
                     icon = "⏳"
                     style = "color: #64748b;"
 
-                current_marker = " ← DU ER HER" if step.status.value == "🔵" else ""
+                current_marker = " ← YOU ARE HERE" if step.status.value == "🔵" else ""
                 st.markdown(f"""
                 <div style="{style}">
                     {icon} [{step.number:02d}] {step.name}{current_marker}
@@ -2009,17 +1747,17 @@ else:
         try:
             from datetime import datetime
             est = datetime.fromisoformat(timeline.estimated_completion)
-            st.info(f"⏱️ Estimeret færdig: **{est.strftime('%Y-%m-%d %H:%M')}**")
+            st.info(f"⏱️ Estimated completion: **{est.strftime('%Y-%m-%d %H:%M')}**")
         except:
             pass
 
         # Final outcome
-        st.success(f"🎯 Forventet resultat: {timeline.final_outcome}")
+        st.success(f"🎯 Expected result: {timeline.final_outcome}")
 
     except ImportError as e:
-        st.warning(f"Tidslinje ikke tilgængelig: {e}")
+        st.warning(f"Timeline not available: {e}")
     except Exception as e:
-        st.error(f"Tidslinje fejl: {e}")
+        st.error(f"Timeline error: {e}")
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # 🔴 REAL-TIME MISSION CONTROL PANEL
@@ -2077,11 +1815,11 @@ with col_realtime1:
 
         st.markdown("</div>", unsafe_allow_html=True)
     else:
-        st.info("Ingen live aktivitet endnu...")
+        st.info("No live activity yet...")
 
 # 🎯 UPCOMING VICTORIES
 with col_realtime2:
-    st.markdown("#### 🎯 Kommende Sejre")
+    st.markdown("#### 🎯 Upcoming Victories")
 
     all_sejrs = get_all_sejrs()
     pending_sejrs = [s for s in all_sejrs if not s['is_archived'] and s['progress'] < 100]
@@ -2109,7 +1847,7 @@ with col_realtime2:
 
 # 💻 LIVE CODE VIEWER
 with col_realtime3:
-    st.markdown("#### 💻 Live Kode Viewer")
+    st.markdown("#### 💻 Live Code Viewer")
 
     # Check for recent file changes
     st.markdown("""
@@ -2146,20 +1884,20 @@ with col_realtime3:
     if recent_files:
         st.markdown("---")
         selected_file = st.selectbox(
-            "📄 Se fil indhold:",
+            "📄 View file content:",
             options=[rf['path'] for rf in recent_files[:10]],
             format_func=lambda x: x.name,
             key="code_viewer_select"
         )
 
-        if selected_file and st.button("👁️ Vis Kode", key="show_code_btn"):
+        if selected_file and st.button("👁️ View Code", key="show_code_btn"):
             with st.expander(f"📄 {selected_file.name}", expanded=True):
                 try:
                     content = selected_file.read_text()[:3000]
                     lang = "python" if selected_file.suffix == ".py" else "yaml" if selected_file.suffix == ".yaml" else "markdown"
                     st.code(content, language=lang)
                 except Exception as e:
-                    st.error(f"Kunne ikke læse fil: {e}")
+                    st.error(f"Could not read file: {e}")
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # 🔄 AUTO-REFRESH OPTION
@@ -2170,7 +1908,7 @@ col_refresh1, col_refresh2 = st.columns([3, 1])
 with col_refresh1:
     st.markdown("""
     <div style="color: var(--text-muted); font-size: 0.85rem;">
-        💡 Tip: Brug knappen til at opdatere live data eller aktiver auto-refresh
+        💡 Tip: Use the button to refresh live data or enable auto-refresh
     </div>
     """, unsafe_allow_html=True)
 with col_refresh2:
@@ -2186,7 +1924,7 @@ st.markdown("""
 <div style="text-align: center; padding: 1.5rem;">
     <div style="font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem;">
         <span style="background: linear-gradient(135deg, var(--accent-violet) 0%, var(--accent-cyan) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-            ✨ Sejrliste Enterprise ✨
+            ✨ Victory List Enterprise ✨
         </span>
     </div>
     <div style="color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; margin-top: 0.5rem;">

@@ -1,8 +1,8 @@
 {
   "system": {
     "version": "1.0.0",
-    "last_learned": "2026-01-25 14:18",
-    "total_patterns": 20
+    "last_learned": "2026-01-26 14:01",
+    "total_patterns": 39
   },
   "learned_patterns": [
     {
@@ -203,6 +203,196 @@
       "time_saved_total": "0 min",
       "confidence": 0.7000000000000001,
       "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "SUCCESS RATE: 11/11 sejr opnår GRAND ADMIRAL (100%)",
+      "prevention": "Bevar 3-pass system med obligatorisk review",
+      "optimization": "Fokusér på Pass 1 kvalitet for at reducere Pass 2-3 arbejde",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.98,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "REUSABLE TEMPLATE: 10 identificeret",
+      "prevention": "Check eksisterende Template før oprettelse af ny",
+      "optimization": "Katalogisér Template i 00_TEMPLATES/",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.85,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "REUSABLE SCRIPT: 10 identificeret",
+      "prevention": "Check eksisterende Script før oprettelse af ny",
+      "optimization": "Katalogisér Script i 00_TEMPLATES/",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.85,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "REUSABLE PATTERN: 10 identificeret",
+      "prevention": "Check eksisterende Pattern før oprettelse af ny",
+      "optimization": "Katalogisér Pattern i 00_TEMPLATES/",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.85,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "SUCCESS RATE: 12/12 sejr opnår GRAND ADMIRAL (100%)",
+      "prevention": "Bevar 3-pass system med obligatorisk review",
+      "optimization": "Fokusér på Pass 1 kvalitet for at reducere Pass 2-3 arbejde",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.98,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "WORKFLOW: 1. 3-pass systemet TVINGER forbedring - score SKAL stige mellem passes.",
+      "prevention": "Follow this rule in similar situations",
+      "optimization": "Automate enforcement if possible",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.9,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "IMPROVEMENT FOCUS: tests forbedres i 9 sejr",
+      "prevention": "Inkludér tests fra Pass 1",
+      "optimization": "Brug tests checklist i template",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.8,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "FREQUENT ACTION: sejr_created (12x across sejr)",
+      "prevention": "Consider automating sejr_created",
+      "optimization": "Create script/hotkey for sejr_created",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.6000000000000001,
+      "first_seen": "2026-01-25",
+      "last_applied": null
+    },
+    {
+      "pattern": "SUCCESS RATE: 18/19 sejr opnår GRAND ADMIRAL (94%)",
+      "prevention": "Bevar 3-pass system med obligatorisk review",
+      "optimization": "Fokusér på Pass 1 kvalitet for at reducere Pass 2-3 arbejde",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.98,
+      "first_seen": "2026-01-26",
+      "last_applied": null
+    },
+    {
+      "pattern": "WORKFLOW: 2. **Cross-references kræver opmærksomhed** - Når man henviser til filer i engelsk dokumentation, SK",
+      "prevention": "Follow this rule in similar situations",
+      "optimization": "Automate enforcement if possible",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.9,
+      "first_seen": "2026-01-26",
+      "last_applied": null
+    },
+    {
+      "pattern": "WORKFLOW: 3. **Terminologi skal besluttes fra start** - \"Sejr\" = brand/filnavn, \"Victory\" = oversættelse - kon",
+      "prevention": "Follow this rule in similar situations",
+      "optimization": "Automate enforcement if possible",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.9,
+      "first_seen": "2026-01-26",
+      "last_applied": null
+    },
+    {
+      "pattern": "WORKFLOW: 4. **7-DNA Review finder altid noget** - Selv \"perfekt\" dokumentation kan forbedres (automatisk link",
+      "prevention": "Follow this rule in similar situations",
+      "optimization": "Automate enforcement if possible",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.9,
+      "first_seen": "2026-01-26",
+      "last_applied": null
+    },
+    {
+      "pattern": "REUSABLE TEMPLATE: 16 identificeret",
+      "prevention": "Check eksisterende Template før oprettelse af ny",
+      "optimization": "Katalogisér Template i 00_TEMPLATES/",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.85,
+      "first_seen": "2026-01-26",
+      "last_applied": null
+    },
+    {
+      "pattern": "REUSABLE SCRIPT: 16 identificeret",
+      "prevention": "Check eksisterende Script før oprettelse af ny",
+      "optimization": "Katalogisér Script i 00_TEMPLATES/",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.85,
+      "first_seen": "2026-01-26",
+      "last_applied": null
+    },
+    {
+      "pattern": "REUSABLE PATTERN: 18 identificeret",
+      "prevention": "Check eksisterende Pattern før oprettelse af ny",
+      "optimization": "Katalogisér Pattern i 00_TEMPLATES/",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.85,
+      "first_seen": "2026-01-26",
+      "last_applied": null
+    },
+    {
+      "pattern": "IMPROVEMENT FOCUS: tests forbedres i 13 sejr",
+      "prevention": "Inkludér tests fra Pass 1",
+      "optimization": "Brug tests checklist i template",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.8,
+      "first_seen": "2026-01-26",
+      "last_applied": null
+    },
+    {
+      "pattern": "IMPROVEMENT FOCUS: error_handling forbedres i 8 sejr",
+      "prevention": "Inkludér error_handling fra Pass 1",
+      "optimization": "Brug error_handling checklist i template",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.8,
+      "first_seen": "2026-01-26",
+      "last_applied": null
+    },
+    {
+      "pattern": "IMPROVEMENT FOCUS: documentation forbedres i 4 sejr",
+      "prevention": "Inkludér documentation fra Pass 1",
+      "optimization": "Brug documentation checklist i template",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.8,
+      "first_seen": "2026-01-26",
+      "last_applied": null
+    },
+    {
+      "pattern": "FREQUENT ACTION: sejr_created (19x across sejr)",
+      "prevention": "Consider automating sejr_created",
+      "optimization": "Create script/hotkey for sejr_created",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.9,
+      "first_seen": "2026-01-26",
       "last_applied": null
     }
   ]

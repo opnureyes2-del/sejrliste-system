@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Background circle with orange gradient -->
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff9f43"/>
+      <stop offset="50%" style="stop-color:#f97316"/>
+      <stop offset="100%" style="stop-color:#ef4444"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#feca57"/>
+      <stop offset="100%" style="stop-color:#fbbf24"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Main circle -->
+  <circle cx="64" cy="64" r="60" fill="url(#bgGrad)" stroke="#1e1e2e" stroke-width="4"/>
+
+  <!-- Trophy/Victory symbol -->
+  <path d="M44 45 L84 45 L80 65 Q75 85 64 90 Q53 85 48 65 Z"
+        fill="url(#goldGrad)" stroke="#1e1e2e" stroke-width="2"/>
+
+  <!-- Trophy handles -->
+  <path d="M44 50 Q30 50 30 60 Q30 70 44 70"
+        fill="none" stroke="url(#goldGrad)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M84 50 Q98 50 98 60 Q98 70 84 70"
+        fill="none" stroke="url(#goldGrad)" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Trophy base -->
+  <rect x="54" y="90" width="20" height="8" rx="2" fill="url(#goldGrad)" stroke="#1e1e2e" stroke-width="1"/>
+  <rect x="48" y="98" width="32" height="6" rx="2" fill="url(#goldGrad)" stroke="#1e1e2e" stroke-width="1"/>
+
+  <!-- Star on trophy -->
+  <polygon points="64,52 67,60 76,60 69,66 72,75 64,70 56,75 59,66 52,60 61,60"
+           fill="#1e1e2e"/>
+
+  <!-- Checkmark overlay -->
+  <path d="M50 38 L58 46 L78 26"
+        fill="none" stroke="#10b981" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

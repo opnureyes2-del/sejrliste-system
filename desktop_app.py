@@ -8,7 +8,7 @@ REAL desktop app - NOT a web app. Runs NATIVELY on your Ubuntu desktop.
 Shows LIVE updates as files change.
 
 FEATURES:
-  📚 LIBRARY sidebar - all sejrs like Steam
+  📚 LIBRARY sidebar - alle sejrs med progress
   🏭 PRODUCTION ROOM - real-time file viewer
   📁 FILE MANAGER - drag and drop
   🧬 DNA LAYERS - live status
@@ -36,7 +36,7 @@ ACTIVE_DIR = SYSTEM_PATH / "10_ACTIVE"
 ARCHIVE_DIR = SYSTEM_PATH / "90_ARCHIVE"
 SCRIPTS_DIR = SYSTEM_PATH / "scripts"
 
-# Steam-like colors
+# Modern dark theme colors
 COLORS = {
     "bg_dark": "#1b2838",
     "bg_darker": "#171a21",
