@@ -181,7 +181,7 @@ You CANNOT archive until:
 
 ### For AI Models
 When Claude opens a victory folder:
-1. **READ** `ARBEJDSFORHOLD.md` (mandatory)
+1. **READ** `ARBEJDSFORHOLD.md` or `WORKING_CONDITIONS_EN.md` (mandatory)
 2. **READ** `CLAUDE.md` in the victory folder
 3. **CONFIRM** understanding to user
 4. **WORK** ONLY on current task
