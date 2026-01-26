@@ -86,82 +86,103 @@ window.background {
         linear-gradient(180deg, #0a0a0f 0%, #0f0f18 100%);
 }
 
-/* === HEADERBAR - PREMIUM GLASS === */
+/* === HEADERBAR - SLEEK PREMIUM GLASS === */
 headerbar {
     background: linear-gradient(180deg,
-        rgba(26, 26, 38, 0.98) 0%,
-        rgba(18, 18, 26, 0.95) 100%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        rgba(20, 20, 32, 0.95) 0%,
+        rgba(15, 15, 24, 0.90) 100%);
+    border-bottom: 1px solid rgba(99, 102, 241, 0.08);
     box-shadow:
-        0 1px 0 0 rgba(255, 255, 255, 0.03) inset,
-        0 4px 24px -4px rgba(0, 0, 0, 0.5);
-    min-height: 48px;
+        0 1px 0 0 rgba(255, 255, 255, 0.02) inset,
+        0 8px 32px -8px rgba(0, 0, 0, 0.6),
+        0 0 80px -20px rgba(99, 102, 241, 0.10);
+    min-height: 56px;
+    padding: 0 8px;
 }
 
 headerbar title {
-    font-weight: 600;
-    font-size: 14px;
-    letter-spacing: -0.01em;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -0.02em;
     color: rgba(255, 255, 255, 0.95);
 }
 
 headerbar button {
-    min-height: 32px;
-    min-width: 32px;
-    border-radius: 8px;
-    margin: 4px 2px;
+    min-height: 36px;
+    min-width: 36px;
+    border-radius: 10px;
+    margin: 6px 4px;
 }
 
-/* === NAVIGATION SIDEBAR - LAYERED DEPTH === */
+/* === NAVIGATION SIDEBAR - LAYERED DEPTH + BREATHING ROOM === */
 .navigation-sidebar {
-    background: linear-gradient(180deg, #0f0f17 0%, #0a0a0f 100%);
-    border-right: 1px solid rgba(255, 255, 255, 0.04);
-    padding: 8px;
+    background: linear-gradient(180deg,
+        rgba(15, 15, 23, 0.98) 0%,
+        rgba(10, 10, 15, 0.95) 100%);
+    border-right: 1px solid rgba(255, 255, 255, 0.03);
+    padding: 16px 12px;
 }
 
 .navigation-sidebar row {
-    margin: 2px 4px;
-    padding: 10px 12px;
-    border-radius: 10px;
-    background: transparent;
-    border: 1px solid transparent;
-    transition: all 180ms cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 8px 4px;
+    padding: 16px 20px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    transition: all 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .navigation-sidebar row:hover {
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(255, 255, 255, 0.06);
+    background: rgba(99, 102, 241, 0.08);
+    border-color: rgba(99, 102, 241, 0.15);
+    transform: translateX(6px) scale(1.01);
+    box-shadow:
+        0 4px 20px -4px rgba(99, 102, 241, 0.25),
+        0 0 0 1px rgba(99, 102, 241, 0.1) inset;
 }
 
 .navigation-sidebar row:selected {
     background: linear-gradient(135deg,
-        rgba(99, 102, 241, 0.20) 0%,
-        rgba(139, 92, 246, 0.15) 100%);
-    border-color: rgba(99, 102, 241, 0.25);
+        rgba(99, 102, 241, 0.18) 0%,
+        rgba(139, 92, 246, 0.12) 100%);
+    border-color: rgba(99, 102, 241, 0.30);
+    transform: translateX(4px);
     box-shadow:
-        0 0 0 1px rgba(99, 102, 241, 0.1) inset,
-        0 2px 8px -2px rgba(99, 102, 241, 0.25);
+        0 0 0 1px rgba(99, 102, 241, 0.15) inset,
+        0 8px 24px -8px rgba(99, 102, 241, 0.35),
+        0 0 40px -10px rgba(139, 92, 246, 0.20);
 }
 
 .navigation-sidebar row:selected:hover {
     background: linear-gradient(135deg,
         rgba(99, 102, 241, 0.25) 0%,
-        rgba(139, 92, 246, 0.20) 100%);
+        rgba(139, 92, 246, 0.18) 100%);
+    transform: translateX(8px) scale(1.01);
 }
 
-/* === CARDS - ELEVATED SURFACES === */
+/* === CARDS - ELEVATED SURFACES WITH SMOOTH ANIMATIONS === */
 .card, preferencesgroup {
     background: linear-gradient(180deg,
-        rgba(36, 36, 51, 0.95) 0%,
-        rgba(26, 26, 38, 0.90) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 16px;
+        rgba(36, 36, 51, 0.90) 0%,
+        rgba(26, 26, 38, 0.85) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
     box-shadow:
-        0 0 0 1px rgba(0, 0, 0, 0.5),
-        0 2px 4px -1px rgba(0, 0, 0, 0.3),
-        0 8px 16px -4px rgba(0, 0, 0, 0.25);
-    padding: 20px;
-    margin: 12px 0;
+        0 0 0 1px rgba(0, 0, 0, 0.4),
+        0 4px 8px -2px rgba(0, 0, 0, 0.25),
+        0 12px 32px -8px rgba(0, 0, 0, 0.30);
+    padding: 24px;
+    margin: 16px 0;
+    transition: all 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.card:hover, preferencesgroup:hover {
+    transform: translateY(-4px) scale(1.005);
+    border-color: rgba(99, 102, 241, 0.12);
+    box-shadow:
+        0 0 0 1px rgba(99, 102, 241, 0.08),
+        0 8px 16px -4px rgba(0, 0, 0, 0.30),
+        0 20px 48px -12px rgba(99, 102, 241, 0.15);
 }
 
 preferencesgroup > box > label {
@@ -173,39 +194,48 @@ preferencesgroup > box > label {
     margin-bottom: 12px;
 }
 
-/* === ACTION ROWS - INTERACTIVE === */
+/* === ACTION ROWS - SMOOTH INTERACTIVE === */
 row.activatable {
-    border-radius: 12px;
-    margin: 4px 0;
-    padding: 12px 16px;
-    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    background: transparent;
+    border-radius: 14px;
+    margin: 8px 0;
+    padding: 16px 20px;
+    transition: all 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid transparent;
 }
 
 row.activatable:hover {
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(99, 102, 241, 0.06);
+    border-color: rgba(99, 102, 241, 0.10);
+    transform: translateX(4px);
+    box-shadow: 0 4px 16px -6px rgba(99, 102, 241, 0.20);
 }
 
 row.activatable:active {
-    background: rgba(255, 255, 255, 0.06);
-    transform: scale(0.99);
+    background: rgba(99, 102, 241, 0.10);
+    transform: scale(0.98) translateX(4px);
+    transition: all 80ms ease-out;
 }
 
-/* === PROGRESS BARS - PRECISION INDICATORS === */
+/* === PROGRESS BARS - SMOOTH ANIMATED INDICATORS === */
 progressbar trough {
-    background: rgba(255, 255, 255, 0.06);
-    border-radius: 6px;
-    min-height: 6px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    min-height: 8px;
     border: none;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 progressbar progress {
     background: linear-gradient(90deg,
         #6366f1 0%,
-        #818cf8 100%);
-    border-radius: 6px;
-    box-shadow: 0 0 12px -2px rgba(99, 102, 241, 0.6);
-    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        #8b5cf6 50%,
+        #a78bfa 100%);
+    border-radius: 10px;
+    box-shadow:
+        0 0 20px -4px rgba(99, 102, 241, 0.7),
+        0 0 8px -2px rgba(139, 92, 246, 0.5);
+    transition: all 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 progressbar.success progress {
@@ -259,26 +289,30 @@ progressbar.error progress {
     text-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
 }
 
-/* === BUTTONS - PREMIUM INTERACTIONS === */
+/* === BUTTONS - SMOOTH PREMIUM INTERACTIONS === */
 button {
-    border-radius: 8px;
-    padding: 8px 14px;
-    min-height: 36px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    padding: 12px 18px;
+    min-height: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.03);
     font-weight: 500;
     font-size: 13px;
-    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.01em;
+    transition: all 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 button:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.07);
     border-color: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.3);
 }
 
 button:active {
-    background: rgba(255, 255, 255, 0.06);
-    transform: scale(0.98);
+    background: rgba(255, 255, 255, 0.05);
+    transform: scale(0.97) translateY(0);
+    transition: all 80ms ease-out;
 }
 
 button.flat {
@@ -287,37 +321,41 @@ button.flat {
 }
 
 button.flat:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(99, 102, 241, 0.08);
+    transform: scale(1.05);
 }
 
 button.suggested-action {
-    background: linear-gradient(180deg,
+    background: linear-gradient(135deg,
         #6366f1 0%,
-        #5558e3 100%);
+        #7c3aed 100%);
     border: none;
     color: white;
     font-weight: 600;
     box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.3),
-        0 4px 12px -2px rgba(99, 102, 241, 0.4),
-        0 0 0 1px rgba(99, 102, 241, 0.2) inset;
-}
-
-button.suggested-action:hover {
-    background: linear-gradient(180deg,
-        #7577f5 0%,
-        #6366f1 100%);
-    box-shadow:
-        0 2px 4px rgba(0, 0, 0, 0.3),
-        0 8px 20px -4px rgba(99, 102, 241, 0.5),
+        0 2px 4px rgba(0, 0, 0, 0.25),
+        0 8px 20px -6px rgba(99, 102, 241, 0.50),
         0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
 
+button.suggested-action:hover {
+    background: linear-gradient(135deg,
+        #818cf8 0%,
+        #8b5cf6 100%);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow:
+        0 4px 8px rgba(0, 0, 0, 0.25),
+        0 16px 32px -8px rgba(99, 102, 241, 0.55),
+        0 0 40px -10px rgba(139, 92, 246, 0.40),
+        0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+}
+
 button.suggested-action:active {
-    transform: scale(0.98);
+    transform: scale(0.96) translateY(0);
     box-shadow:
         0 1px 2px rgba(0, 0, 0, 0.4),
-        0 2px 8px -2px rgba(99, 102, 241, 0.4);
+        0 4px 12px -4px rgba(99, 102, 241, 0.4);
+    transition: all 80ms ease-out;
 }
 
 button.destructive-action {
@@ -2229,12 +2267,12 @@ class MasterpieceWindow(Adw.ApplicationWindow):
 
         sidebar_box.append(scroll)
 
-        # Stats at bottom of sidebar
-        self.stats_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
-        self.stats_box.set_margin_start(12)
-        self.stats_box.set_margin_end(12)
-        self.stats_box.set_margin_top(12)
-        self.stats_box.set_margin_bottom(12)
+        # Stats at bottom of sidebar - GENEROUS SPACING
+        self.stats_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=16)
+        self.stats_box.set_margin_start(20)
+        self.stats_box.set_margin_end(20)
+        self.stats_box.set_margin_top(20)
+        self.stats_box.set_margin_bottom(20)
         self.stats_box.set_halign(Gtk.Align.CENTER)
 
         self.active_label = Gtk.Label(label="0 Active")
@@ -2258,20 +2296,21 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         content_page.set_title("Details")
 
         self.content_stack = Gtk.Stack()
-        self.content_stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
+        self.content_stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
+        self.content_stack.set_transition_duration(350)
 
         # Welcome page (when no sejr selected)
         welcome = self._build_welcome_page()
         self.content_stack.add_named(welcome, "welcome")
 
-        # Detail page (when sejr selected)
+        # Detail page (when sejr selected) - GENEROUS SPACING
         self.detail_scroll = Gtk.ScrolledWindow()
         self.detail_scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-        self.detail_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=24)
-        self.detail_box.set_margin_start(24)
-        self.detail_box.set_margin_end(24)
-        self.detail_box.set_margin_top(24)
-        self.detail_box.set_margin_bottom(24)
+        self.detail_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=32)
+        self.detail_box.set_margin_start(40)
+        self.detail_box.set_margin_end(40)
+        self.detail_box.set_margin_top(32)
+        self.detail_box.set_margin_bottom(40)
         self.detail_scroll.set_child(self.detail_box)
         self.content_stack.add_named(self.detail_scroll, "detail")
 
