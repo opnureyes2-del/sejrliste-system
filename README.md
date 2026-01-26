@@ -48,6 +48,7 @@ python3 scripts/auto_archive.py --sejr "MIN_OPGAVE_2026-01-25"
 sejrliste systemet/
 │
 ├── README.md                 ← Du læser denne (inkl. Quick Start)
+├── ADMIRAL.md                ← 🆕 HVAD ER EN ADMIRAL? (5 kvaliteter)
 ├── MODEL_ONBOARDING.md       ← 🆕 AI ONBOARDING (læs først som ny model!)
 ├── SCRIPT_REFERENCE.md       ← 🆕 Alle 11 scripts dokumenteret
 ├── EKSEMPLER.md              ← 🆕 10+ konkrete eksempler

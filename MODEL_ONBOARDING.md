@@ -9,13 +9,14 @@
 | # | Fil | Formål | Hvornår |
 |---|-----|--------|---------|
 | 1 | **MODEL_ONBOARDING.md** | Denne fil - overblik | Læs først |
-| 2 | **ARBEJDSFORHOLD.md** | Detaljeret AI vejledning | Derefter |
-| 3 | **SCRIPT_REFERENCE.md** | Alle scripts dokumenteret | Ved script brug |
-| 4 | **EKSEMPLER.md** | Konkrete eksempler | Ved tvivl |
-| 5 | **MANUAL.md** | Fuld dokumentation | Ved dyb forståelse |
-| 6 | **README.md** | Quick start | Hurtig reference |
+| 2 | **ADMIRAL.md** | 🆕 HVAD ER EN ADMIRAL? | Forstå kvalitets-standarden |
+| 3 | **ARBEJDSFORHOLD.md** | Detaljeret AI vejledning | Derefter |
+| 4 | **SCRIPT_REFERENCE.md** | Alle scripts dokumenteret | Ved script brug |
+| 5 | **EKSEMPLER.md** | Konkrete eksempler | Ved tvivl |
+| 6 | **MANUAL.md** | Fuld dokumentation | Ved dyb forståelse |
+| 7 | **README.md** | Quick start | Hurtig reference |
 
-> **TIP:** Denne fil giver overblik. `ARBEJDSFORHOLD.md` giver alle detaljer.
+> **TIP:** Læs ADMIRAL.md for at forstå de 5 kvaliteter (FOKUS, OVERBLIK, NØJE ØJE, UDVIKLING, SAMMENHÆNG).
 
 ---
 

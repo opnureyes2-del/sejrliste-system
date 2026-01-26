@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background Gradient - Deep Navy (Cirkelline) -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0A0E27"/>
+      <stop offset="100%" style="stop-color:#1A1F3A"/>
+    </linearGradient>
+
+    <!-- Gold Gradient for Excellence -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fcd34d"/>
+      <stop offset="50%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
+    </linearGradient>
+
+    <!-- 5 Quality Colors -->
+    <linearGradient id="fokusGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ef4444"/>
+      <stop offset="100%" style="stop-color:#dc2626"/>
+    </linearGradient>
+    <linearGradient id="overblikGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#2563eb"/>
+    </linearGradient>
+    <linearGradient id="noejeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+    <linearGradient id="udviklingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a855f7"/>
+      <stop offset="100%" style="stop-color:#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="sammenhaengGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
+    </linearGradient>
+
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background Circle -->
+  <circle cx="256" cy="256" r="250" fill="url(#bgGrad)" stroke="url(#goldGrad)" stroke-width="4"/>
+
+  <!-- Pentagon for 5 Qualities - Central Symbol -->
+  <g transform="translate(256, 200)">
+    <!-- Outer Pentagon (Connection/Sammenhæng) -->
+    <polygon points="0,-100 95,-31 59,81 -59,81 -95,-31"
+             fill="none" stroke="url(#goldGrad)" stroke-width="4" filter="url(#glow)"/>
+
+    <!-- Inner Pentagon Fill -->
+    <polygon points="0,-80 76,-25 47,65 -47,65 -76,-25"
+             fill="url(#bgGrad)" stroke="url(#goldGrad)" stroke-width="2"/>
+
+    <!-- 5 Quality Points as Stars -->
+    <!-- Top - FOKUS (Red) -->
+    <g transform="translate(0, -100)">
+      <polygon points="0,-15 4,-5 15,-5 7,2 10,13 0,6 -10,13 -7,2 -15,-5 -4,-5"
+               fill="url(#fokusGrad)" filter="url(#glow)"/>
+    </g>
+
+    <!-- Top Right - OVERBLIK (Blue) -->
+    <g transform="translate(95, -31)">
+      <polygon points="0,-15 4,-5 15,-5 7,2 10,13 0,6 -10,13 -7,2 -15,-5 -4,-5"
+               fill="url(#overblikGrad)" filter="url(#glow)"/>
+    </g>
+
+    <!-- Bottom Right - NØJE ØJE (Green) -->
+    <g transform="translate(59, 81)">
+      <polygon points="0,-15 4,-5 15,-5 7,2 10,13 0,6 -10,13 -7,2 -15,-5 -4,-5"
+               fill="url(#noejeGrad)" filter="url(#glow)"/>
+    </g>
+
+    <!-- Bottom Left - UDVIKLING (Purple) -->
+    <g transform="translate(-59, 81)">
+      <polygon points="0,-15 4,-5 15,-5 7,2 10,13 0,6 -10,13 -7,2 -15,-5 -4,-5"
+               fill="url(#udviklingGrad)" filter="url(#glow)"/>
+    </g>
+
+    <!-- Top Left - SAMMENHÆNG (Gold) -->
+    <g transform="translate(-95, -31)">
+      <polygon points="0,-15 4,-5 15,-5 7,2 10,13 0,6 -10,13 -7,2 -15,-5 -4,-5"
+               fill="url(#sammenhaengGrad)" filter="url(#glow)"/>
+    </g>
+
+    <!-- Center Star - Admiral Excellence -->
+    <polygon points="0,-35 9,-12 34,-12 15,3 22,27 0,12 -22,27 -15,3 -34,-12 -9,-12"
+             fill="url(#goldGrad)" filter="url(#glow)"/>
+  </g>
+
+  <!-- 5 Quality Labels around Pentagon -->
+  <g font-family="Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle">
+    <!-- FOKUS - Top -->
+    <text x="256" y="85" fill="url(#fokusGrad)">FOKUS</text>
+
+    <!-- OVERBLIK - Top Right -->
+    <text x="375" y="155" fill="url(#overblikGrad)">OVERBLIK</text>
+
+    <!-- NØJE ØJE - Bottom Right -->
+    <text x="340" y="310" fill="url(#noejeGrad)">NØJE ØJE</text>
+
+    <!-- UDVIKLING - Bottom Left -->
+    <text x="172" y="310" fill="url(#udviklingGrad)">UDVIKLING</text>
+
+    <!-- SAMMENHÆNG - Top Left -->
+    <text x="137" y="155" fill="url(#sammenhaengGrad)">SAMMENHÆNG</text>
+  </g>
+
+  <!-- 3 Admiral Stars (3 Passes) -->
+  <g filter="url(#glow)">
+    <!-- Left Star - Pass 1 -->
+    <polygon points="110,50 115,62 128,62 118,70 122,83 110,74 98,83 102,70 92,62 105,62"
+             fill="url(#goldGrad)"/>
+
+    <!-- Center Star - Pass 2 -->
+    <polygon points="256,35 263,52 281,52 267,63 273,80 256,68 239,80 245,63 231,52 249,52"
+             fill="url(#goldGrad)"/>
+
+    <!-- Right Star - Pass 3 -->
+    <polygon points="402,50 407,62 420,62 410,70 414,83 402,74 390,83 394,70 384,62 397,62"
+             fill="url(#goldGrad)"/>
+  </g>
+
+  <!-- ADMIRAL Text -->
+  <text x="256" y="395" text-anchor="middle"
+        font-family="Arial Black, sans-serif" font-size="48" font-weight="900"
+        fill="url(#goldGrad)" letter-spacing="6" filter="url(#shadow)">ADMIRAL</text>
+
+  <!-- 5 KVALITETER Subtitle -->
+  <text x="256" y="420" text-anchor="middle"
+        font-family="Arial, sans-serif" font-size="12"
+        fill="#B4C6E7" letter-spacing="3">5 KVALITETER • 7 DNA LAG • 3 PASSES</text>
+
+  <!-- Cirkelline / Kv1nt -->
+  <text x="256" y="445" text-anchor="middle"
+        font-family="Arial, sans-serif" font-size="14"
+        fill="#6366f1" letter-spacing="4">CIRKELLINE • KV1NT</text>
+
+  <!-- DNA Ring (7 segments for 7 DNA layers) -->
+  <g transform="translate(256, 256)" stroke-width="3" fill="none">
+    <path d="M 0,-230 A 230,230 0 0,1 163,-163" stroke="#ef4444" opacity="0.7"/>
+    <path d="M 163,-163 A 230,230 0 0,1 230,0" stroke="#f59e0b" opacity="0.7"/>
+    <path d="M 230,0 A 230,230 0 0,1 163,163" stroke="#fcd34d" opacity="0.7"/>
+    <path d="M 163,163 A 230,230 0 0,1 0,230" stroke="#10b981" opacity="0.7"/>
+    <path d="M 0,230 A 230,230 0 0,1 -163,163" stroke="#3b82f6" opacity="0.7"/>
+    <path d="M -163,163 A 230,230 0 0,1 -230,0" stroke="#6366f1" opacity="0.7"/>
+    <path d="M -230,0 A 230,230 0 0,1 0,-230" stroke="#a855f7" opacity="0.7"/>
+  </g>
+</svg>
