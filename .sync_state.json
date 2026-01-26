@@ -1,0 +1,32 @@
+[
+  {
+    "event_type": "created",
+    "sejr_name": "TEST_DROP_FILE_2026-01-26",
+    "timestamp": "2026-01-26T02:28:30.459484",
+    "source": "test",
+    "path": "",
+    "data": {
+      "success": false,
+      "error": "usage: generate_sejr.py [-h] --name NAME [--goal GOAL] [--tech TECH]\n                        [--scope SCOPE]\ngenerate_sejr.py: error: unrecognized arguments: --type file --input /tmp/TEST_DROP_FILE.txt\n"
+    }
+  },
+  {
+    "event_type": "created",
+    "sejr_name": "DRAG_DROP_TEST_2026-01-26",
+    "timestamp": "2026-01-26T02:29:15.230505",
+    "source": "test",
+    "path": "/home/rasmus/Desktop/sejrliste systemet/10_ACTIVE/DRAG_DROP_TEST_2026-01-26",
+    "data": {
+      "success": true,
+      "sejr_path": "/home/rasmus/Desktop/sejrliste systemet/10_ACTIVE/DRAG_DROP_TEST_2026-01-26",
+      "message": "Sejr 'DRAG_DROP_TEST_2026-01-26' oprettet fra DRAG_DROP_TEST.txt",
+      "next_steps": [
+        "1. Færdiggør Pass 1 planlægning",
+        "2. Start Pass 2 eksekvering",
+        "3. Kør tests efter implementation",
+        "4. Pass 3: 7-DNA review",
+        "5. Arkiver med CONCLUSION.md"
+      ]
+    }
+  }
+]
