@@ -32,6 +32,9 @@
 5. ❌ Skippe passes eller reviews
 6. ❌ Arkivere før 3-pass er complete
 7. ❌ Give scores du ikke kan bevise
+8. ❌ **ÆNDRE CSS/DESIGN UDEN EKSPLICIT ORDRE**
+9. ❌ **ÆNDRE KODE DER VIRKER UDEN GODKENDELSE**
+10. ❌ **VERIFICERE KODE UDEN AT TESTE FUNKTIONALITET**
 
 ---
 

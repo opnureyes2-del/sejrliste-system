@@ -94,6 +94,9 @@ claude_focus_system:
     - "Skippe passes"
     - "Arkivere før 3-pass done"
     - "Sige 'færdig' uden bevis"
+    - "ÆNDRE CSS/DESIGN UDEN EKSPLICIT ORDRE (2026-01-26)"
+    - "ÆNDRE KODE DER VIRKER UDEN GODKENDELSE (2026-01-26)"
+    - "VERIFICERE KODE UDEN AT TESTE FUNKTIONALITET (2026-01-26)"
 
 # ═══════════════════════════════════════════════════════════
 # 7 DNA LAG
