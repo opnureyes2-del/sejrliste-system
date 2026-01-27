@@ -21,7 +21,7 @@
 import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Gtk, Adw, GLib, Gio, Pango, Gdk
+from gi.repository import Gtk, Adw, GLib, Gio, Pango, Gdk, GObject
 import cairo  # For konfetti drawing
 from pathlib import Path
 import re
@@ -1682,7 +1682,7 @@ PASS 3: OPTIMERET      → "Make it best"        → FINAL VERIFICATION
         for task in config.get('tasks', []):
             if not task.startswith("- [ ]"):
                 task = f"- [ ] {task}"
-            sejr_content += f"{task}\n"
+            victory_content += f"{task}\n"
 
         victory_content += """
 ---
@@ -1707,7 +1707,7 @@ PASS 3: OPTIMERET      → "Make it best"        → FINAL VERIFICATION
 """
 
         # Write SEJR_LISTE.md
-        (sejr_path / "SEJR_LISTE.md").write_text(sejr_content)
+        (sejr_path / "SEJR_LISTE.md").write_text(victory_content)
 
         # Create CLAUDE.md focus lock
         claude_content = f"""# CLAUDE FOKUS LOCK - LÆS DETTE FØRST
@@ -2827,7 +2827,7 @@ class ChatStream(Gtk.Box):
             # Add welcome message
             self.add_message(
                 sender="Kv1nt",
-                content=f"Welcome to {victory_path.name.split('_2026')[0].replace('_', ' ')}! I am watching everything that happens here.",
+                content=f"Welcome to {sejr_path.name.split('_2026')[0].replace('_', ' ')}! I am watching everything that happens here.",
                 msg_type="info"
             )
             return
@@ -3607,7 +3607,7 @@ class LiveActivityMonitor(Gtk.Box):
         """Update 5W statuslinje"""
         now = datetime.now().strftime("%H:%M:%S")
         self.hvad_label.set_text(f"📋 {action[:30]}")
-        self.hvor_label.set_text(f"📍 {victory_name[:20]}")
+        self.hvor_label.set_text(f"📍 {sejr_name[:20]}")
         self.hvornaar_label.set_text(f"⏰ {now}")
 
     def _add_activity(self, source: str, message: str, icon: str = "📌"):
@@ -4415,7 +4415,7 @@ class PrioritetsOverblik(Gtk.Box):
 
                         if progress < 30:
                             priorities["akut"].append({
-                                "title": f"Victory gået i stå: {victory_dir.name}",
+                                "title": f"Victory gået i stå: {sejr_dir.name}",
                                 "subtitle": f"Kun {progress:.0f}% færdig ({done}/{total})",
                                 "action": "Open Victory",
                                 "path": str(sejr_dir),
@@ -4423,7 +4423,7 @@ class PrioritetsOverblik(Gtk.Box):
                             })
                         elif progress < 80:
                             priorities["opmaerksomhed"].append({
-                                "title": f"Continue: {victory_dir.name}",
+                                "title": f"Continue: {sejr_dir.name}",
                                 "subtitle": f"{progress:.0f}% færdig - push til mål!",
                                 "action": "Genoptag",
                                 "path": str(sejr_dir),
@@ -4439,7 +4439,7 @@ class PrioritetsOverblik(Gtk.Box):
                 verify_file = sejr_dir / "VERIFY_STATUS.yaml"
                 if not verify_file.exists():
                     priorities["opmaerksomhed"].append({
-                        "title": f"Mangler verifikation: {victory_dir.name}",
+                        "title": f"Mangler verifikation: {sejr_dir.name}",
                         "subtitle": "Run verifikation for at spore fremskridt",
                         "action": "Verificér Nu",
                         "path": str(sejr_dir),
@@ -5838,7 +5838,7 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         title.add_css_class("title-1")
         title_box.append(title)
 
-        subtitle = Gtk.Label(label=f"Pass {victory['current_pass']}/3 • {victory['date']}")
+        subtitle = Gtk.Label(label=f"Pass {sejr['current_pass']}/3 • {sejr['date']}")
         subtitle.set_halign(Gtk.Align.START)
         subtitle.add_css_class("dim-label")
         title_box.append(subtitle)
@@ -5897,7 +5897,7 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         # HOW - Metode (Intuition indigo)
         hvordan_row = Adw.ActionRow()
         hvordan_row.set_title("⚙️ HOW")
-        pass_status = f"Pass {victory['current_pass']}/3 • {victory['progress']}% færdig"
+        pass_status = f"Pass {sejr['current_pass']}/3 • {sejr['progress']}% færdig"
         hvordan_row.set_subtitle(pass_status)
         hvordan_icon = Gtk.Image.new_from_icon_name("emblem-system-symbolic")
         hvordan_icon.set_pixel_size(32)
@@ -5919,7 +5919,7 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         # WHEN - Tidslinje (Sacred magenta)
         hvornaar_row = Adw.ActionRow()
         hvornaar_row.set_title("⏰ WHEN")
-        hvornaar_row.set_subtitle(f"Oprettet: {victory['date']} → Mål: Complete i dag")
+        hvornaar_row.set_subtitle(f"Oprettet: {sejr['date']} → Mål: Complete i dag")
         hvornaar_icon = Gtk.Image.new_from_icon_name("alarm-symbolic")
         hvornaar_icon.set_pixel_size(32)
         hvornaar_row.add_prefix(hvornaar_icon)
@@ -5934,8 +5934,8 @@ class MasterpieceWindow(Adw.ApplicationWindow):
 
         # Hovedfremgangsbar
         progress_row = Adw.ActionRow()
-        progress_row.set_title(f"Samlet fremdrift: {victory['progress']}%")
-        progress_row.set_subtitle(f"{victory['done']}/{victory['total']} opgaver afkrydset")
+        progress_row.set_title(f"Samlet fremdrift: {sejr['progress']}%")
+        progress_row.set_subtitle(f"{sejr['done']}/{sejr['total']} opgaver afkrydset")
 
         progress_bar = Gtk.ProgressBar()
         progress_bar.set_fraction(sejr["progress"] / 100)
@@ -6015,7 +6015,7 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         term_btn = Gtk.Button(label="💻 Terminal")
         term_btn.add_css_class("pill")
         term_btn.connect("clicked", lambda b: subprocess.Popen(
-            ["gnome-terminal", f"--working-directory={victory['path']}"]
+            ["gnome-terminal", f"--working-directory={sejr['path']}"]
         ))
         quick_box.append(term_btn)
 
@@ -6025,7 +6025,7 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         # Files section
         files_group = Adw.PreferencesGroup()
         files_group.set_title("Files")
-        files_group.set_description(f"{len(victory['files'])} files - klik for at åbne")
+        files_group.set_description(f"{len(sejr['files'])} files - klik for at åbne")
 
         for filename in sejr["files"][:10]:
             icon_name = "text-x-generic-symbolic"
@@ -7377,12 +7377,46 @@ class MasterpieceApp(Adw.Application):
         # Load modern 2026 CSS styling
         load_custom_css()
 
+        # Set window icon from SVG
+        icon_path = Path("/home/rasmus/Desktop/sejrliste systemet/assets/sejrliste-icon.svg")
+        if icon_path.exists():
+            try:
+                icon_theme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default())
+                icon_theme.add_search_path(str(icon_path.parent))
+            except Exception:
+                pass
+
         win = MasterpieceWindow(self)
 
         # Add keyboard shortcuts
         self._setup_shortcuts(win)
 
+        # Add About action
+        about_action = Gio.SimpleAction.new("about", None)
+        about_action.connect("activate", lambda a, p: self._show_about(win))
+        self.add_action(about_action)
+
         win.present()
+
+    def _show_about(self, win):
+        """Show About dialog with app branding"""
+        about = Adw.AboutDialog()
+        about.set_application_name("Victory List")
+        about.set_version("1.0.0")
+        about.set_developer_name("Rasmus — Cirkelline")
+        about.set_application_icon("dk.cirkelline.victoryliste.masterpiece")
+        about.set_website("https://cirkelline.com")
+        about.set_issue_url("")
+        about.set_copyright("© 2026 Cirkelline")
+        about.set_license_type(Gtk.License.CUSTOM)
+        about.set_license("Proprietary — All rights reserved")
+        about.set_developers(["Rasmus (CEO/Founder)", "Kv1nt (AI Admiral)"])
+        about.set_comments(
+            "Sejrliste Systemet — En GTK4/Libadwaita desktop app til systematisk "
+            "eksekvering af opgaver via 3-Pass Victory Lists.\n\n"
+            "Bygget med: Python, GTK4, Libadwaita, Ollama, ChromaDB"
+        )
+        about.present(win)
 
     def _setup_shortcuts(self, win):
         """Setup keyboard shortcuts"""
