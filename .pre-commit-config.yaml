@@ -1,0 +1,38 @@
+# Pre-commit hooks for sejrliste systemet
+# Kører automatisk FØR hvert git commit
+# Installation: cd "sejrliste systemet" && pre-commit install
+repos:
+  - repo: local
+    hooks:
+      # 1. Syntax check — fanger syntax errors INDEN commit
+      - id: py-compile
+        name: Python Syntax Check
+        entry: python3 -m py_compile
+        language: system
+        files: '\.py$'
+        pass_filenames: true
+
+      # 2. Flake8 — kode-stil (kun errors, ikke style warnings)
+      - id: flake8-errors
+        name: Flake8 Errors Only
+        entry: flake8 --select=E9,F63,F7,F82 --show-source
+        language: system
+        files: '\.py$'
+        pass_filenames: true
+
+      # 3. Bandit — sikkerhedscheck (kun High/Medium)
+      - id: bandit-security
+        name: Security Check (Bandit)
+        entry: bandit -ll -q
+        language: system
+        files: '\.py$'
+        pass_filenames: true
+
+      # 4. Automation Pipeline — fuld kvalitetskontrol
+      - id: automation-pipeline
+        name: Quality Pipeline
+        entry: python3 scripts/automation_pipeline.py
+        language: system
+        files: 'masterpiece_en\.py$'
+        pass_filenames: true
+        verbose: true
