@@ -735,6 +735,17 @@ window.drop-active * {
     opacity: 0.7;
 }
 
+/* === DRAG REORDER INDICATORS === */
+row.drop-above {
+    border-top: 3px solid @primary_500;
+    background: rgba(99, 102, 241, 0.12);
+}
+
+.drop-zone-active {
+    background: rgba(16, 185, 129, 0.1);
+    border: 2px dashed #10b981;
+}
+
 /* === ZOOM SLIDER === */
 .zoom-slider {
     min-width: 100px;
@@ -2538,6 +2549,85 @@ class SejrRow(Adw.ActionRow):
 
         # Make it activatable
         self.set_activatable(True)
+
+        # === DRAG SOURCE (for reorder + folder-to-folder) ===
+        drag_source = Gtk.DragSource()
+        drag_source.set_actions(Gdk.DragAction.MOVE)
+        drag_source.connect("prepare", self._on_drag_prepare)
+        drag_source.connect("drag-begin", self._on_drag_begin)
+        drag_source.connect("drag-end", self._on_drag_end)
+        self.add_controller(drag_source)
+
+        # === DROP TARGET (for reorder — accept drops on this row) ===
+        drop_target = Gtk.DropTarget.new(GObject.TYPE_STRING, Gdk.DragAction.MOVE)
+        drop_target.connect("drop", self._on_reorder_drop)
+        drop_target.connect("enter", self._on_reorder_enter)
+        drop_target.connect("leave", self._on_reorder_leave)
+        self.add_controller(drop_target)
+
+    def _on_drag_prepare(self, source, x, y):
+        """Provide the sejr path as drag data"""
+        path_str = str(self.sejr_info.get("path", ""))
+        if not path_str:
+            return None
+        value = GObject.Value(GObject.TYPE_STRING, path_str)
+        return Gdk.ContentProvider.new_for_value(value)
+
+    def _on_drag_begin(self, source, drag):
+        """Visual feedback: dim the row being dragged"""
+        self.set_opacity(0.4)
+
+    def _on_drag_end(self, source, drag, delete_data):
+        """Restore opacity after drag"""
+        self.set_opacity(1.0)
+        self.remove_css_class("drop-above")
+
+    def _on_reorder_enter(self, target, x, y):
+        """Show drop indicator"""
+        self.add_css_class("drop-above")
+        return Gdk.DragAction.MOVE
+
+    def _on_reorder_leave(self, target):
+        """Remove drop indicator"""
+        self.remove_css_class("drop-above")
+
+    def _on_reorder_drop(self, target, value, x, y):
+        """Handle a sejr being dropped onto this row (reorder or move)"""
+        self.remove_css_class("drop-above")
+        source_path = str(value)
+        dest_info = self.sejr_info
+
+        if not source_path or source_path == str(dest_info.get("path", "")):
+            return False  # Dropped on itself
+
+        source = Path(source_path)
+        dest = Path(str(dest_info.get("path", "")))
+
+        if not source.exists() or not dest.exists():
+            return False
+
+        # Determine if this is a category move (Active ↔ Archive)
+        source_parent = source.parent.name  # e.g. "10_ACTIVE" or "90_ARCHIVE"
+        dest_parent = dest.parent.name
+
+        if source_parent != dest_parent:
+            # Cross-category move: move source folder to dest's category
+            target_dir = dest.parent / source.name
+            try:
+                import shutil
+                shutil.move(str(source), str(target_dir))
+                # Refresh sidebar
+                window = self.get_root()
+                if hasattr(window, '_load_sejrs'):
+                    window._load_sejrs()
+                return True
+            except Exception:
+                return False
+        else:
+            # Same category: this is a reorder (just visual, no filesystem change needed)
+            # GTK ListBox doesn't have persistent order — it's loaded from filesystem
+            # For now, just accept the drop silently
+            return True
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -6761,12 +6851,19 @@ Du er på vej mod Admiral niveau!"""
 
     def _setup_drag_drop(self):
         """Setup drag and drop for importing files/folders to create victorys"""
-        # Create drop target for the main window
+        # === External file drop on main window (create new victory) ===
         drop_target = Gtk.DropTarget.new(Gio.File, Gdk.DragAction.COPY)
         drop_target.connect("drop", self._on_drop)
         drop_target.connect("enter", self._on_drag_enter)
         drop_target.connect("leave", self._on_drag_leave)
         self.add_controller(drop_target)
+
+        # === File drop on detail view (add file to current victory) ===
+        detail_drop = Gtk.DropTarget.new(Gio.File, Gdk.DragAction.COPY)
+        detail_drop.connect("drop", self._on_detail_file_drop)
+        detail_drop.connect("enter", self._on_detail_drop_enter)
+        detail_drop.connect("leave", self._on_detail_drop_leave)
+        self.detail_box.add_controller(detail_drop)
 
     def _on_drag_enter(self, drop_target, x, y):
         """Visual feedback when dragging over window"""
@@ -6792,6 +6889,73 @@ Du er på vej mod Admiral niveau!"""
                 return True
         return False
 
+    # === FILE-TO-FOLDER DROP (add file to current victory) ===
+
+    def _on_detail_drop_enter(self, target, x, y):
+        """Visual feedback when dragging file over detail view"""
+        self.detail_box.add_css_class("drop-zone-active")
+        return Gdk.DragAction.COPY
+
+    def _on_detail_drop_leave(self, target):
+        """Remove visual feedback"""
+        self.detail_box.remove_css_class("drop-zone-active")
+
+    def _on_detail_file_drop(self, target, value, x, y):
+        """Handle file dropped onto detail view — copy to current victory folder"""
+        self.detail_box.remove_css_class("drop-zone-active")
+
+        if not isinstance(value, Gio.File):
+            return False
+
+        source_path = value.get_path()
+        if not source_path:
+            return False
+
+        source = Path(source_path)
+
+        # Get current victory path
+        if not hasattr(self, 'selected_sejr') or not self.selected_sejr:
+            return False
+
+        sejr_path = Path(self.selected_sejr.get("path", ""))
+        if not sejr_path.exists() or not sejr_path.is_dir():
+            return False
+
+        # Validate file type
+        allowed_ext = {".md", ".yaml", ".yml", ".jsonl", ".json", ".py", ".sh", ".txt", ".csv"}
+        if source.suffix.lower() not in allowed_ext:
+            # Show error toast
+            toast = Adw.Toast.new(f"Filtype {source.suffix} ikke tilladt")
+            toast.set_timeout(3)
+            if hasattr(self, '_toast_overlay'):
+                self._toast_overlay.add_toast(toast)
+            return False
+
+        # Copy file to victory folder
+        import shutil
+        dest = sejr_path / source.name
+        try:
+            if source.is_file():
+                shutil.copy2(str(source), str(dest))
+            elif source.is_dir():
+                shutil.copytree(str(source), str(dest))
+
+            # Show success toast
+            toast = Adw.Toast.new(f"Fil tilføjet: {source.name}")
+            toast.set_timeout(3)
+            if hasattr(self, '_toast_overlay'):
+                self._toast_overlay.add_toast(toast)
+
+            # Refresh detail view
+            self._build_detail_page(self.selected_sejr)
+            return True
+        except Exception as e:
+            toast = Adw.Toast.new(f"Fejl: {str(e)[:50]}")
+            toast.set_timeout(3)
+            if hasattr(self, '_toast_overlay'):
+                self._toast_overlay.add_toast(toast)
+            return False
+
     def _show_conversion_dialog(self, dropped_path: Path):
         """Show dialog to convert dropped file/folder to Victory"""
         dialog = Adw.AlertDialog()
@@ -6810,34 +6974,77 @@ Du er på vej mod Admiral niveau!"""
         dialog.present(self)
 
     def _convert_path_to_sejr(self, path: Path):
-        """Actually convert a path to a new Victory"""
+        """Actually convert a path to a new Victory using SejrConverter API"""
         try:
-            converter = SejrConverter()
+            import shutil
+            system_path = Path("/home/rasmus/Desktop/sejrliste systemet")
+            converter = SejrConverter(system_path)
 
+            # Determine input type
             if path.is_file():
-                sejr_path = converter.from_file(path)
+                input_type = "file"
             elif path.is_dir():
-                sejr_path = converter.from_folder(path)
+                input_type = "folder"
             else:
                 return
+
+            # Analyze input
+            analysis = converter.analyze_input(str(path), input_type)
+            name = analysis.get("suggested_name", path.stem.upper().replace(" ", "_"))
+
+            # Check if dropped folder already IS a victory (has SEJR_LISTE.md)
+            if path.is_dir() and (path / "SEJR_LISTE.md").exists():
+                # Direct import — copy entire folder to 10_ACTIVE
+                dest = system_path / "10_ACTIVE" / path.name
+                if not dest.exists():
+                    shutil.copytree(str(path), str(dest))
+                sejr_path = dest
+            else:
+                # Create new victory via converter
+                config = {
+                    "name": name,
+                    "input_path": str(path),
+                    "input_type": input_type,
+                    "mode": "kv1nt",
+                    "hvad": f"Konvertering af {path.name}",
+                    "tasks": analysis.get("suggested_tasks", []),
+                }
+                sejr_path = converter.create_sejr_from_input(config)
+
+                # Copy source files into the new victory folder
+                if path.is_file():
+                    shutil.copy2(str(path), str(sejr_path / path.name))
+                elif path.is_dir():
+                    for item in path.iterdir():
+                        dest_item = sejr_path / item.name
+                        if not dest_item.exists():
+                            if item.is_file():
+                                shutil.copy2(str(item), str(dest_item))
+                            elif item.is_dir():
+                                shutil.copytree(str(item), str(dest_item))
 
             # Refresh and select the new victory
             self._load_sejrs()
 
             # Find and select the new victory
             for sejr in self.sejrs:
-                if sejr["path"] == sejr_path:
+                if str(sejr.get("path", "")) == str(sejr_path):
                     self._build_detail_page(sejr)
                     self.content_stack.set_visible_child_name("detail")
                     break
 
             # Notification
-            toast = Adw.Toast(title=f"New Victory oprettet: {path.name}")
+            toast = Adw.Toast.new(f"Victory oprettet: {name}")
             toast.set_timeout(3)
-            self.add_toast(toast) if hasattr(self, 'add_toast') else None
+            if hasattr(self, '_toast_overlay'):
+                self._toast_overlay.add_toast(toast)
 
         except Exception as e:
             print(f"Konvertering fejlede: {e}")
+            toast = Adw.Toast.new(f"Fejl ved konvertering: {str(e)[:50]}")
+            toast.set_timeout(3)
+            if hasattr(self, '_toast_overlay'):
+                self._toast_overlay.add_toast(toast)
 
     # ═══════════════════════════════════════════════════════════════════════════
     # ZOOM FUNCTIONALITY
