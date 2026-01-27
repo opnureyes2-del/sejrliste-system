@@ -67,5 +67,5 @@ Hver arkiveret sejr indeholder:
 
 ---
 
-**Sidst opdateret:** 2026-01-26 17:48
+**Sidst opdateret:** 2026-01-26 19:47
 **Genereret af:** auto_archive.py

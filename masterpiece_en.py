@@ -30,6 +30,7 @@ from datetime import datetime
 import subprocess
 import shutil
 from typing import Dict, List, Any, Optional, Tuple
+from dataclasses import dataclass, field
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # CIRKELLINE KV1NT ADMIRAL DESIGN SYSTEM - VF STANDARD
@@ -1925,6 +1926,123 @@ DNA_LAYERS = [
     ("7", "SELF-OPTIMIZING", "3 alternativer", "applications-engineering-symbolic"),
 ]
 
+# LINEN Framework — 5 pillars of INTRO folder organization
+INTRO_PATH = Path("/home/rasmus/Desktop/MASTER FOLDERS(INTRO)")
+
+LINEN_COMPONENTS = [
+    ("L", "LOGGING", "ÆNDRINGSLOG i alle filer", "document-edit-symbolic"),
+    ("I", "INDEKSERING", "Numerisk hierarki 00-99", "view-list-ordered-symbolic"),
+    ("N", "NESTING", "_TODO_VERIFIKATION i mapper", "folder-symbolic"),
+    ("E", "EFTERPRØVNING", "STATUS.md metrics", "emblem-ok-symbolic"),
+    ("N2", "NAVIGATION", "INDEX filer i sektioner", "compass-symbolic"),
+]
+
+# LINEN color scheme (chakra-inspired, used in Pass 3 polish)
+LINEN_COLORS = {
+    "L": "#00D9FF",   # Cyan — Logging
+    "I": "#f59e0b",   # Gold — Indeksering
+    "N": "#6366f1",   # Indigo — Nesting
+    "E": "#00FF88",   # Green — Efterprøvning
+    "N2": "#10b981",  # Emerald — Navigation
+}
+
+
+@dataclass
+class LinenScore:
+    """Score for a single LINEN component"""
+    component: str       # L, I, N, E, N2
+    name: str            # Full name (LOGGING, INDEKSERING, etc.)
+    total_items: int     # Total files/folders checked
+    passing_items: int   # Items that pass validation
+    percentage: float    # 0.0 - 100.0
+    details: list = field(default_factory=list)  # List of (path, passed: bool) tuples
+    last_checked: str = ""
+
+
+# 3-Lags Arkitektur — INTRO system architecture model
+ARCHITECTURE_LAYERS = [
+    ("1", "PRESENTATIONS LAG", "Markdown filer — human readable, git versionable", "text-x-generic-symbolic"),
+    ("2", "STRUKTURELT LAG", "Numerisk hierarki, mappestruktur, navngivning", "view-grid-symbolic"),
+    ("3", "VERIFIKATIONS LAG", "LINEN system, STATUS.md, validation scripts", "emblem-ok-symbolic"),
+]
+
+ARCHITECTURE_PRINCIPLES = [
+    ("Flat File Structure", "Markdown i mapper, ingen database"),
+    ("Self-Contained", "Hver sektion er standalone"),
+    ("Hierarchical", "Numerisk 00-99 sortering"),
+    ("Versioned", "Semantic versioning i filer"),
+    ("Validated", "LINEN + validation scripts"),
+    ("Redundant", "Vigtig info flere steder"),
+]
+
+DESIGN_PATTERNS = [
+    ("Sektion Container", "XX_SEKTION/ med hovedfil + undermapper + _TODO_VERIFIKATION/",
+     "Self-contained, Konsistent, Verificerbar"),
+    ("Document Sandwich", "Header (metadata) → Content (##) → Footer (ÆNDRINGSLOG)",
+     "Metadata same sted, flexible content, historik i bunden"),
+    ("Meta-Data Nesting", "_TODO_VERIFIKATION/STATUS.md i alle content mapper",
+     "Separation of concerns, underscore prefix, consistent naming"),
+]
+
+NUMERISK_HIERARKI = [
+    ("00-05", "Root dokumenter", "#9ca3af"),
+    ("06-09", "Templates/system", "#60a5fa"),
+    ("10-19", "Arkitektur og infrastruktur", "#6366f1"),
+    ("20-29", "Projekter", "#10b981"),
+    ("30-39", "TODOs og opgaver", "#f59e0b"),
+    ("40-49", "Baselines", "#14b8a6"),
+    ("50-59", "Roadmaps og planer", "#a855f7"),
+    ("60-69", "CLAUDE.md og instruktioner", "#00D9FF"),
+    ("70-79", "Guides og tutorials", "#eab308"),
+    ("80-89", "Kritisk dokumentation", "#ef4444"),
+    ("90-99", "Analyser og rapporter", "#ec4899"),
+]
+
+LAYER_COLORS = {
+    "1": "#a855f7",  # Violet — Presentation
+    "2": "#f59e0b",  # Gold — Structure
+    "3": "#00FF88",  # Green — Verification
+}
+
+
+@dataclass
+class ArchitectureStats:
+    """Stats for a single architecture layer"""
+    layer: int
+    name: str
+    total_items: int
+    description: str
+
+
+# Sync Functions — DEL 21 sync components
+SYNC_COMPONENTS = [
+    ("SYNC-1", "Git Pull/Push", "Automatisk sync med GitHub", "network-transmit-symbolic", "P1"),
+    ("SYNC-2", "Ændringslog Tracking", "Log alle ændringer med dato/tid", "document-edit-symbolic", "P1"),
+    ("SYNC-3", "VERSION.md", "Versionering i alle mapper", "emblem-default-symbolic", "P2"),
+    ("SYNC-4", "Cross-Reference", "Opdater alle krydsreferencer", "emblem-shared-symbolic", "P2"),
+    ("SYNC-5", "STATUS.md Auto", "Automatisk statusopdatering", "view-refresh-symbolic", "P2"),
+    ("SYNC-6", "Notifikation", "Advarsler ved remote ændringer", "dialog-warning-symbolic", "P3"),
+]
+
+SYNC_PRIORITY_COLORS = {
+    "P1": "#ef4444",  # Red — critical
+    "P2": "#f59e0b",  # Orange — important
+    "P3": "#9ca3af",  # Grey — nice to have
+}
+
+
+@dataclass
+class SyncStatus:
+    """Status for a single sync component"""
+    component_id: str   # SYNC-1 through SYNC-6
+    name: str
+    priority: str       # P1, P2, P3
+    status: str         # "ok", "warning", "error", "unknown"
+    detail: str         # Human-readable detail string
+    count_ok: int = 0
+    count_total: int = 0
+
+
 # ═══════════════════════════════════════════════════════════════════════════════
 # HELPERS
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -1996,6 +2114,381 @@ def get_all_sejrs() -> list:
                 sejrs.append(get_sejr_info(folder))
 
     return sejrs
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# LINEN SCANNING FUNCTIONS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def _scan_logging(intro_path: Path) -> LinenScore:
+    """L — Check which .md files contain ÆNDRINGSLOG section"""
+    details = []
+    if not intro_path.exists():
+        return LinenScore("L", "LOGGING", 0, 0, 0.0, details,
+                          datetime.now().strftime("%H:%M:%S"))
+
+    md_files = list(intro_path.rglob("*.md"))
+    for f in md_files:
+        try:
+            content = f.read_text(encoding="utf-8", errors="ignore")
+            has_log = "ÆNDRINGSLOG" in content or "ÆNDRINGS LOG" in content
+            details.append((str(f.relative_to(intro_path)), has_log))
+        except (PermissionError, OSError):
+            details.append((str(f.relative_to(intro_path)), False))
+
+    passing = sum(1 for _, ok in details if ok)
+    total = len(details)
+    pct = (passing / total * 100) if total > 0 else 0.0
+    return LinenScore("L", "LOGGING", total, passing, pct, details,
+                      datetime.now().strftime("%H:%M:%S"))
+
+
+def _scan_indeksering(intro_path: Path) -> LinenScore:
+    """I — Check which files/folders use numeric prefix (00-99)"""
+    details = []
+    if not intro_path.exists():
+        return LinenScore("I", "INDEKSERING", 0, 0, 0.0, details,
+                          datetime.now().strftime("%H:%M:%S"))
+
+    # Check top-level items (folders and files directly in INTRO)
+    items = [p for p in intro_path.iterdir() if not p.name.startswith(".")]
+    for item in items:
+        has_prefix = bool(re.match(r'^\d{2}_', item.name))
+        details.append((item.name, has_prefix))
+
+    passing = sum(1 for _, ok in details if ok)
+    total = len(details)
+    pct = (passing / total * 100) if total > 0 else 0.0
+    return LinenScore("I", "INDEKSERING", total, passing, pct, details,
+                      datetime.now().strftime("%H:%M:%S"))
+
+
+def _scan_nesting(intro_path: Path) -> LinenScore:
+    """N — Check which directories have _TODO_VERIFIKATION subfolder"""
+    details = []
+    if not intro_path.exists():
+        return LinenScore("N", "NESTING", 0, 0, 0.0, details,
+                          datetime.now().strftime("%H:%M:%S"))
+
+    # Check all directories (top-level and one level deep)
+    dirs = [d for d in intro_path.iterdir()
+            if d.is_dir() and not d.name.startswith(".")]
+    for d in dirs:
+        has_todo = (d / "_TODO_VERIFIKATION").is_dir()
+        details.append((d.name, has_todo))
+
+    passing = sum(1 for _, ok in details if ok)
+    total = len(details)
+    pct = (passing / total * 100) if total > 0 else 0.0
+    return LinenScore("N", "NESTING", total, passing, pct, details,
+                      datetime.now().strftime("%H:%M:%S"))
+
+
+def _scan_efterproevning(intro_path: Path) -> LinenScore:
+    """E — Check which directories have STATUS.md files"""
+    details = []
+    if not intro_path.exists():
+        return LinenScore("E", "EFTERPRØVNING", 0, 0, 0.0, details,
+                          datetime.now().strftime("%H:%M:%S"))
+
+    dirs = [d for d in intro_path.iterdir()
+            if d.is_dir() and not d.name.startswith(".")]
+    for d in dirs:
+        status_files = list(d.glob("*STATUS*")) + list(d.glob("*status*"))
+        has_status = len(status_files) > 0
+        details.append((d.name, has_status))
+
+    passing = sum(1 for _, ok in details if ok)
+    total = len(details)
+    pct = (passing / total * 100) if total > 0 else 0.0
+    return LinenScore("E", "EFTERPRØVNING", total, passing, pct, details,
+                      datetime.now().strftime("%H:%M:%S"))
+
+
+def _scan_navigation(intro_path: Path) -> LinenScore:
+    """N2 — Check which sections have INDEX files"""
+    details = []
+    if not intro_path.exists():
+        return LinenScore("N2", "NAVIGATION", 0, 0, 0.0, details,
+                          datetime.now().strftime("%H:%M:%S"))
+
+    dirs = [d for d in intro_path.iterdir()
+            if d.is_dir() and not d.name.startswith(".")]
+    for d in dirs:
+        index_files = list(d.glob("*INDEX*")) + list(d.glob("*index*"))
+        has_index = len(index_files) > 0
+        details.append((d.name, has_index))
+
+    passing = sum(1 for _, ok in details if ok)
+    total = len(details)
+    pct = (passing / total * 100) if total > 0 else 0.0
+    return LinenScore("N2", "NAVIGATION", total, passing, pct, details,
+                      datetime.now().strftime("%H:%M:%S"))
+
+
+def get_linen_status(intro_path: Path = None) -> List[LinenScore]:
+    """Scan INTRO folder and return scores for all 5 LINEN components"""
+    if intro_path is None:
+        intro_path = INTRO_PATH
+
+    return [
+        _scan_logging(intro_path),
+        _scan_indeksering(intro_path),
+        _scan_nesting(intro_path),
+        _scan_efterproevning(intro_path),
+        _scan_navigation(intro_path),
+    ]
+
+
+def get_linen_health(intro_path: Path = None) -> float:
+    """Return overall LINEN health as 0-100% (average of 5 components)"""
+    scores = get_linen_status(intro_path)
+    if not scores:
+        return 0.0
+    return sum(s.percentage for s in scores) / len(scores)
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 3-LAGS ARKITEKTUR SCANNING
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def get_layer_stats(intro_path: Path = None) -> List[ArchitectureStats]:
+    """Get statistics for each of the 3 architecture layers"""
+    if intro_path is None:
+        intro_path = INTRO_PATH
+
+    stats = []
+
+    if not intro_path.exists():
+        for i, (num, name, desc, _icon) in enumerate(ARCHITECTURE_LAYERS, 1):
+            stats.append(ArchitectureStats(i, name, 0, desc))
+        return stats
+
+    # Layer 1: Presentation — count .md files
+    md_count = len(list(intro_path.rglob("*.md")))
+    stats.append(ArchitectureStats(1, "PRESENTATIONS LAG", md_count,
+                                   f"{md_count} Markdown filer"))
+
+    # Layer 2: Structure — count items with numeric prefix
+    all_items = [p for p in intro_path.iterdir() if not p.name.startswith(".")]
+    numeric_items = [p for p in all_items if re.match(r'^\d{2}_', p.name)]
+    stats.append(ArchitectureStats(2, "STRUKTURELT LAG", len(numeric_items),
+                                   f"{len(numeric_items)}/{len(all_items)} numerisk"))
+
+    # Layer 3: Verification — count _TODO_VERIFIKATION + STATUS.md
+    dirs = [d for d in intro_path.iterdir() if d.is_dir() and not d.name.startswith(".")]
+    todo_dirs = sum(1 for d in dirs if (d / "_TODO_VERIFIKATION").is_dir())
+    status_files = sum(1 for d in dirs if list(d.glob("*STATUS*")))
+    stats.append(ArchitectureStats(3, "VERIFIKATIONS LAG", todo_dirs + status_files,
+                                   f"{todo_dirs} _TODO + {status_files} STATUS"))
+
+    return stats
+
+
+def get_numerisk_distribution(intro_path: Path = None) -> Dict[str, int]:
+    """Count files per numeric range (00-09, 10-19, etc.)"""
+    if intro_path is None:
+        intro_path = INTRO_PATH
+
+    distribution = {}
+    for range_str, label, _color in NUMERISK_HIERARKI:
+        distribution[range_str] = 0
+
+    if not intro_path.exists():
+        return distribution
+
+    for item in intro_path.iterdir():
+        if item.name.startswith("."):
+            continue
+        match = re.match(r'^(\d{2})', item.name)
+        if match:
+            num = int(match.group(1))
+            for range_str, _label, _color in NUMERISK_HIERARKI:
+                low, high = range_str.split("-")
+                if int(low) <= num <= int(high):
+                    distribution[range_str] += 1
+                    break
+
+    return distribution
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SYNC SCANNING FUNCTIONS (DEL 21)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def _sync_git_status(intro_path: Path) -> SyncStatus:
+    """SYNC-1: Check git ahead/behind status"""
+    try:
+        result = subprocess.run(
+            ["git", "status", "--porcelain", "-b"],
+            cwd=str(intro_path), capture_output=True, text=True, timeout=10
+        )
+        output = result.stdout.strip()
+        if result.returncode != 0:
+            return SyncStatus("SYNC-1", "Git Pull/Push", "P1", "error",
+                              "Git not available", 0, 1)
+
+        # Check ahead/behind from branch line
+        ahead = 0
+        behind = 0
+        for line in output.split("\n"):
+            if line.startswith("##"):
+                import re as _re
+                m_ahead = _re.search(r'ahead (\d+)', line)
+                m_behind = _re.search(r'behind (\d+)', line)
+                if m_ahead:
+                    ahead = int(m_ahead.group(1))
+                if m_behind:
+                    behind = int(m_behind.group(1))
+                break
+
+        # Count dirty files
+        dirty = len([l for l in output.split("\n") if l and not l.startswith("##")])
+
+        if behind > 0:
+            return SyncStatus("SYNC-1", "Git Pull/Push", "P1", "warning",
+                              f"{behind} behind, {ahead} ahead, {dirty} dirty", 0, 1)
+        elif dirty > 0:
+            return SyncStatus("SYNC-1", "Git Pull/Push", "P1", "warning",
+                              f"Synced but {dirty} uncommitted changes", 0, 1)
+        elif ahead > 0:
+            return SyncStatus("SYNC-1", "Git Pull/Push", "P1", "warning",
+                              f"{ahead} unpushed commits", 0, 1)
+        else:
+            return SyncStatus("SYNC-1", "Git Pull/Push", "P1", "ok",
+                              "Fully synced", 1, 1)
+    except Exception as e:
+        return SyncStatus("SYNC-1", "Git Pull/Push", "P1", "error",
+                          f"Git error: {str(e)[:60]}", 0, 1)
+
+
+def _sync_aendringslog(intro_path: Path) -> SyncStatus:
+    """SYNC-2: Count files with ÆNDRINGSLOG section"""
+    md_files = list(intro_path.rglob("*.md"))
+    has_log = 0
+    for f in md_files:
+        try:
+            content = f.read_text(encoding="utf-8", errors="ignore")
+            if "ÆNDRINGSLOG" in content or "CHANGELOG" in content:
+                has_log += 1
+        except Exception:
+            pass
+    total = len(md_files) if md_files else 1
+    pct = (has_log / total * 100) if total > 0 else 0
+    status = "ok" if pct >= 80 else ("warning" if pct >= 50 else "error")
+    return SyncStatus("SYNC-2", "Ændringslog Tracking", "P1", status,
+                      f"{has_log}/{total} filer ({pct:.0f}%)", has_log, total)
+
+
+def _sync_version_md(intro_path: Path) -> SyncStatus:
+    """SYNC-3: Count directories with VERSION.md"""
+    dirs = [d for d in intro_path.iterdir()
+            if d.is_dir() and not d.name.startswith(".") and not d.name.startswith("_")]
+    has_version = 0
+    for d in dirs:
+        if list(d.glob("*VERSION*")) or list(d.glob("*version*")):
+            has_version += 1
+    total = len(dirs) if dirs else 1
+    pct = (has_version / total * 100) if total > 0 else 0
+    status = "ok" if pct >= 60 else ("warning" if pct >= 30 else "error")
+    return SyncStatus("SYNC-3", "VERSION.md", "P2", status,
+                      f"{has_version}/{total} mapper ({pct:.0f}%)", has_version, total)
+
+
+def _sync_cross_references(intro_path: Path) -> SyncStatus:
+    """SYNC-4: Check for broken markdown links"""
+    md_files = list(intro_path.rglob("*.md"))
+    total_links = 0
+    broken_links = 0
+    for f in md_files:
+        try:
+            content = f.read_text(encoding="utf-8", errors="ignore")
+            # Find [text](path) links — only local, not http
+            links = re.findall(r'\[([^\]]*)\]\(([^)]+)\)', content)
+            for _text, href in links:
+                if href.startswith("http") or href.startswith("#") or href.startswith("mailto"):
+                    continue
+                total_links += 1
+                # Resolve relative path
+                target = f.parent / href
+                if not target.exists():
+                    broken_links += 1
+        except Exception:
+            pass
+
+    ok_links = total_links - broken_links
+    if total_links == 0:
+        return SyncStatus("SYNC-4", "Cross-Reference", "P2", "ok",
+                          "Ingen lokale links fundet", 0, 0)
+    status = "ok" if broken_links == 0 else ("warning" if broken_links <= 3 else "error")
+    return SyncStatus("SYNC-4", "Cross-Reference", "P2", status,
+                      f"{ok_links} OK / {broken_links} broken", ok_links, total_links)
+
+
+def _sync_status_md(intro_path: Path) -> SyncStatus:
+    """SYNC-5: Count STATUS.md files that are up-to-date"""
+    dirs = [d for d in intro_path.iterdir()
+            if d.is_dir() and not d.name.startswith(".") and not d.name.startswith("_")]
+    has_status = 0
+    for d in dirs:
+        if list(d.glob("*STATUS*")):
+            has_status += 1
+    total = len(dirs) if dirs else 1
+    pct = (has_status / total * 100) if total > 0 else 0
+    status = "ok" if pct >= 60 else ("warning" if pct >= 30 else "error")
+    return SyncStatus("SYNC-5", "STATUS.md Auto", "P2", status,
+                      f"{has_status}/{total} mapper ({pct:.0f}%)", has_status, total)
+
+
+def _sync_remote_check(intro_path: Path) -> SyncStatus:
+    """SYNC-6: Check if remote has new commits (without fetching)"""
+    try:
+        # Use git log to compare local vs remote tracking branch
+        result = subprocess.run(
+            ["git", "rev-list", "--count", "HEAD..@{upstream}"],
+            cwd=str(intro_path), capture_output=True, text=True, timeout=10
+        )
+        if result.returncode != 0:
+            return SyncStatus("SYNC-6", "Notifikation", "P3", "unknown",
+                              "Kan ikke tjekke remote (kør git fetch)", 0, 1)
+        count = int(result.stdout.strip()) if result.stdout.strip() else 0
+        if count > 0:
+            return SyncStatus("SYNC-6", "Notifikation", "P3", "warning",
+                              f"{count} nye commits på remote", 0, 1)
+        else:
+            return SyncStatus("SYNC-6", "Notifikation", "P3", "ok",
+                              "Remote op to date", 1, 1)
+    except Exception:
+        return SyncStatus("SYNC-6", "Notifikation", "P3", "unknown",
+                          "Remote check fejlede", 0, 1)
+
+
+def get_sync_status(intro_path: Path = None) -> list:
+    """Get status for all 6 sync components"""
+    if intro_path is None:
+        intro_path = INTRO_PATH
+    if not intro_path.exists():
+        return [SyncStatus(cid, name, pri, "error", "INTRO path not found", 0, 1)
+                for cid, name, _desc, _icon, pri in SYNC_COMPONENTS]
+
+    return [
+        _sync_git_status(intro_path),
+        _sync_aendringslog(intro_path),
+        _sync_version_md(intro_path),
+        _sync_cross_references(intro_path),
+        _sync_status_md(intro_path),
+        _sync_remote_check(intro_path),
+    ]
+
+
+def get_sync_health(intro_path: Path = None) -> float:
+    """Get overall sync health as 0-100%"""
+    statuses = get_sync_status(intro_path)
+    if not statuses:
+        return 0.0
+    ok_count = sum(1 for s in statuses if s.status == "ok")
+    return (ok_count / len(statuses)) * 100
+
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # CUSTOM WIDGETS
@@ -3963,6 +4456,780 @@ class PrioritetsOverblik(Gtk.Box):
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
+# LINEN HEALTH VIEW
+# ═══════════════════════════════════════════════════════════════════════════════
+
+class LinenComponentRow(Gtk.Box):
+    """A single row showing one LINEN component with progress bar"""
+
+    def __init__(self, score: LinenScore):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        self.score = score
+        self.add_css_class("card")
+        self.set_margin_start(4)
+        self.set_margin_end(4)
+        self.set_margin_top(4)
+        self.set_margin_bottom(4)
+
+        inner = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        inner.set_margin_start(16)
+        inner.set_margin_end(16)
+        inner.set_margin_top(12)
+        inner.set_margin_bottom(12)
+
+        # Top row: Letter + Name + Percentage
+        top_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+
+        # Letter badge
+        letter_label = Gtk.Label(label=score.component[0])  # Just first char (L, I, N, E, N)
+        letter_label.add_css_class("title-1")
+        letter_label.set_size_request(40, 40)
+        letter_label.set_valign(Gtk.Align.CENTER)
+        top_row.append(letter_label)
+
+        # Name + description
+        name_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        name_box.set_hexpand(True)
+
+        name_label = Gtk.Label(label=score.name)
+        name_label.set_halign(Gtk.Align.START)
+        name_label.add_css_class("heading")
+        name_box.append(name_label)
+
+        # Find description from LINEN_COMPONENTS
+        desc = ""
+        for comp in LINEN_COMPONENTS:
+            if comp[0] == score.component:
+                desc = comp[2]
+                break
+        desc_label = Gtk.Label(label=desc)
+        desc_label.set_halign(Gtk.Align.START)
+        desc_label.add_css_class("caption")
+        desc_label.add_css_class("dim-label")
+        name_box.append(desc_label)
+
+        top_row.append(name_box)
+
+        # Percentage
+        pct_label = Gtk.Label(label=f"{score.percentage:.0f}%")
+        pct_label.add_css_class("title-2")
+        if score.percentage >= 80:
+            pct_label.add_css_class("success")
+        elif score.percentage >= 50:
+            pct_label.add_css_class("warning")
+        else:
+            pct_label.add_css_class("error")
+        pct_label.set_valign(Gtk.Align.CENTER)
+        top_row.append(pct_label)
+
+        inner.append(top_row)
+
+        # Progress bar
+        progress = Gtk.ProgressBar()
+        progress.set_fraction(score.percentage / 100.0)
+        progress.set_size_request(-1, 8)
+        if score.percentage >= 80:
+            progress.add_css_class("success")
+        elif score.percentage >= 50:
+            progress.add_css_class("warning")
+        inner.append(progress)
+
+        # Stats line: "32/40 files passing • Last check: 23:50"
+        stats_label = Gtk.Label(
+            label=f"{score.passing_items}/{score.total_items} items passing"
+            + (f" • Checked: {score.last_checked}" if score.last_checked else "")
+        )
+        stats_label.set_halign(Gtk.Align.START)
+        stats_label.add_css_class("caption")
+        stats_label.add_css_class("dim-label")
+        inner.append(stats_label)
+
+        self.append(inner)
+
+        # === EXPANDABLE DETAIL SECTION ===
+        self.detail_revealer = Gtk.Revealer()
+        self.detail_revealer.set_transition_type(Gtk.RevealerTransitionType.SLIDE_DOWN)
+        self.detail_revealer.set_transition_duration(250)
+
+        detail_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        detail_box.set_margin_start(16)
+        detail_box.set_margin_end(16)
+        detail_box.set_margin_bottom(12)
+
+        # Show max 20 items (avoid gigantic lists)
+        shown = 0
+        max_show = 20
+        # Show failing first, then passing
+        failing = [(p, ok) for p, ok in score.details if not ok]
+        passing = [(p, ok) for p, ok in score.details if ok]
+        sorted_details = failing + passing
+
+        for path_str, passed in sorted_details:
+            if shown >= max_show:
+                remaining = len(sorted_details) - max_show
+                more_label = Gtk.Label(label=f"... og {remaining} mere")
+                more_label.add_css_class("caption")
+                more_label.add_css_class("dim-label")
+                more_label.set_halign(Gtk.Align.START)
+                detail_box.append(more_label)
+                break
+
+            item_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+            status_icon = Gtk.Label(label="PASS" if passed else "FAIL")
+            status_icon.add_css_class("caption")
+            if passed:
+                status_icon.add_css_class("success")
+            else:
+                status_icon.add_css_class("error")
+            status_icon.set_size_request(36, -1)
+            item_row.append(status_icon)
+
+            path_label = Gtk.Label(label=path_str)
+            path_label.set_halign(Gtk.Align.START)
+            path_label.add_css_class("caption")
+            path_label.add_css_class("monospace")
+            path_label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
+            path_label.set_hexpand(True)
+            item_row.append(path_label)
+
+            detail_box.append(item_row)
+            shown += 1
+
+        self.detail_revealer.set_child(detail_box)
+        self.append(self.detail_revealer)
+
+        # Make clickable to expand/collapse
+        click = Gtk.GestureClick()
+        click.connect("released", self._on_clicked)
+        self.add_controller(click)
+        self.set_cursor_from_name("pointer")
+
+    def _on_clicked(self, gesture, n_press, x, y):
+        """Toggle detail view"""
+        revealed = self.detail_revealer.get_child_revealed()
+        self.detail_revealer.set_reveal_child(not revealed)
+
+
+class LinenHealthView(Gtk.Box):
+    """
+    LINEN System Health Dashboard.
+
+    Shows the 5 LINEN pillars (Logging, Indeksering, Nesting,
+    Efterprøvning, Navigation) with real-time progress bars
+    from scanning the MASTER FOLDERS(INTRO) directory.
+    """
+
+    def __init__(self):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=16)
+        self.set_margin_start(32)
+        self.set_margin_end(32)
+        self.set_margin_top(24)
+        self.set_margin_bottom(24)
+
+        self.scores = []
+        self._build_ui()
+        self._refresh_scores()
+
+    def _build_ui(self):
+        """Build the LINEN health dashboard"""
+        # === HEADER ===
+        header = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+
+        icon = Gtk.Image.new_from_icon_name("applications-science-symbolic")
+        icon.set_pixel_size(32)
+        header.append(icon)
+
+        title_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+
+        title = Gtk.Label(label="LINEN System Health")
+        title.set_halign(Gtk.Align.START)
+        title.add_css_class("title-1")
+        title_box.append(title)
+
+        subtitle = Gtk.Label(label="Logging • Indeksering • Nesting • Efterprøvning • Navigation")
+        subtitle.set_halign(Gtk.Align.START)
+        subtitle.add_css_class("caption")
+        subtitle.add_css_class("dim-label")
+        title_box.append(subtitle)
+
+        title_box.set_hexpand(True)
+        header.append(title_box)
+
+        # Overall score badge
+        self.overall_label = Gtk.Label(label="...")
+        self.overall_label.add_css_class("title-1")
+        header.append(self.overall_label)
+
+        self.append(header)
+
+        # Separator
+        self.append(Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL))
+
+        # === OVERALL PROGRESS ===
+        self.overall_bar = Gtk.ProgressBar()
+        self.overall_bar.set_size_request(-1, 12)
+        self.overall_bar.add_css_class("linen-overall")
+        self.append(self.overall_bar)
+
+        # === COMPONENT ROWS ===
+        self.components_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        self.append(self.components_box)
+
+        # === ACTIONS ===
+        action_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        action_box.set_margin_top(16)
+        action_box.set_halign(Gtk.Align.CENTER)
+
+        refresh_btn = Gtk.Button(label="Scan Again")
+        refresh_btn.set_icon_name("view-refresh-symbolic")
+        refresh_btn.add_css_class("suggested-action")
+        refresh_btn.add_css_class("pill")
+        refresh_btn.connect("clicked", lambda b: self._refresh_scores())
+        action_box.append(refresh_btn)
+
+        # Info about scan path
+        path_label = Gtk.Label(label=f"Scanning: {INTRO_PATH}")
+        path_label.add_css_class("caption")
+        path_label.add_css_class("dim-label")
+        action_box.append(path_label)
+
+        self.append(action_box)
+
+    def _refresh_scores(self):
+        """Scan INTRO folder and update all components"""
+        self.scores = get_linen_status()
+        overall = sum(s.percentage for s in self.scores) / len(self.scores) if self.scores else 0
+
+        # Update overall
+        self.overall_label.set_label(f"{overall:.0f}%")
+        self.overall_bar.set_fraction(overall / 100.0)
+
+        # Color the overall score
+        for cls in ["success", "warning", "error"]:
+            self.overall_label.remove_css_class(cls)
+        if overall >= 80:
+            self.overall_label.add_css_class("success")
+        elif overall >= 50:
+            self.overall_label.add_css_class("warning")
+        else:
+            self.overall_label.add_css_class("error")
+
+        # Rebuild component rows
+        while True:
+            child = self.components_box.get_first_child()
+            if child is None:
+                break
+            self.components_box.remove(child)
+
+        for score in self.scores:
+            row = LinenComponentRow(score)
+            self.components_box.append(row)
+
+    def get_scores(self) -> List[LinenScore]:
+        """Return current scores for use by other widgets"""
+        return self.scores
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ARCHITECTURE OVERVIEW VIEW
+# ═══════════════════════════════════════════════════════════════════════════════
+
+class ArchitectureOverviewView(Gtk.Box):
+    """
+    3-Lags Arkitektur Dashboard.
+
+    Shows the INTRO system's three architectural layers (Presentation,
+    Structure, Verification), the 6 design principles, 3 design patterns,
+    and the 00-99 numeric hierarchy allocation.
+    """
+
+    def __init__(self):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=20)
+        self.set_margin_start(32)
+        self.set_margin_end(32)
+        self.set_margin_top(24)
+        self.set_margin_bottom(24)
+
+        self._build_ui()
+
+    def _build_ui(self):
+        """Build the complete architecture overview"""
+        # === HEADER ===
+        header = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+
+        icon = Gtk.Image.new_from_icon_name("view-grid-symbolic")
+        icon.set_pixel_size(32)
+        header.append(icon)
+
+        title_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+
+        title = Gtk.Label(label="3-Lags Arkitektur")
+        title.set_halign(Gtk.Align.START)
+        title.add_css_class("title-1")
+        title_box.append(title)
+
+        subtitle = Gtk.Label(label="Presentation → Struktur → Verifikation")
+        subtitle.set_halign(Gtk.Align.START)
+        subtitle.add_css_class("caption")
+        subtitle.add_css_class("dim-label")
+        title_box.append(subtitle)
+
+        header.append(title_box)
+        self.append(header)
+
+        self.append(Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL))
+
+        # === SECTION 1: THREE LAYERS FLOW DIAGRAM ===
+        self._build_layers_section()
+
+        # === SECTION 2: 6 PRINCIPLES ===
+        self._build_principles_section()
+
+        # === SECTION 3: DESIGN PATTERNS ===
+        self._build_patterns_section()
+
+        # === SECTION 4: NUMERIC HIERARCHY ===
+        self._build_hierarchy_section()
+
+    def _build_layers_section(self):
+        """Build the 3-layer flow diagram with real stats"""
+        section_label = Gtk.Label(label="Systemets 3 Lag")
+        section_label.set_halign(Gtk.Align.START)
+        section_label.add_css_class("title-3")
+        section_label.set_margin_top(8)
+        self.append(section_label)
+
+        stats = get_layer_stats()
+        flow_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+
+        for i, stat in enumerate(stats):
+            # Layer card
+            card = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            card.add_css_class("card")
+            card.set_margin_start(4)
+            card.set_margin_end(4)
+
+            inner = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            inner.set_margin_start(16)
+            inner.set_margin_end(16)
+            inner.set_margin_top(12)
+            inner.set_margin_bottom(12)
+            inner.set_hexpand(True)
+
+            # Layer number
+            num_label = Gtk.Label(label=str(stat.layer))
+            num_label.add_css_class("title-1")
+            num_label.set_size_request(40, 40)
+            num_label.set_valign(Gtk.Align.CENTER)
+            inner.append(num_label)
+
+            # Layer info
+            info_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+            info_box.set_hexpand(True)
+
+            name_label = Gtk.Label(label=stat.name)
+            name_label.set_halign(Gtk.Align.START)
+            name_label.add_css_class("heading")
+            info_box.append(name_label)
+
+            desc_label = Gtk.Label(label=stat.description)
+            desc_label.set_halign(Gtk.Align.START)
+            desc_label.add_css_class("caption")
+            desc_label.add_css_class("dim-label")
+            info_box.append(desc_label)
+
+            inner.append(info_box)
+
+            # Item count badge
+            count_label = Gtk.Label(label=str(stat.total_items))
+            count_label.add_css_class("title-2")
+            count_label.set_valign(Gtk.Align.CENTER)
+            inner.append(count_label)
+
+            card.append(inner)
+            flow_box.append(card)
+
+            # Arrow between layers (except after last)
+            if i < len(stats) - 1:
+                arrow = Gtk.Label(label="↓")
+                arrow.add_css_class("title-3")
+                arrow.add_css_class("dim-label")
+                arrow.set_halign(Gtk.Align.CENTER)
+                arrow.set_margin_top(4)
+                arrow.set_margin_bottom(4)
+                flow_box.append(arrow)
+
+        self.append(flow_box)
+
+    def _build_principles_section(self):
+        """Build the 6 architecture principles as a grid"""
+        section_label = Gtk.Label(label="6 Arkitektur Principper")
+        section_label.set_halign(Gtk.Align.START)
+        section_label.add_css_class("title-3")
+        section_label.set_margin_top(16)
+        self.append(section_label)
+
+        grid = Gtk.FlowBox()
+        grid.set_max_children_per_line(3)
+        grid.set_min_children_per_line(2)
+        grid.set_selection_mode(Gtk.SelectionMode.NONE)
+        grid.set_row_spacing(8)
+        grid.set_column_spacing(8)
+
+        for name, impl in ARCHITECTURE_PRINCIPLES:
+            card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+            card.add_css_class("card")
+            card.set_size_request(180, -1)
+
+            inner = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+            inner.set_margin_start(12)
+            inner.set_margin_end(12)
+            inner.set_margin_top(10)
+            inner.set_margin_bottom(10)
+
+            n_label = Gtk.Label(label=name)
+            n_label.set_halign(Gtk.Align.START)
+            n_label.add_css_class("heading")
+            inner.append(n_label)
+
+            i_label = Gtk.Label(label=impl)
+            i_label.set_halign(Gtk.Align.START)
+            i_label.add_css_class("caption")
+            i_label.add_css_class("dim-label")
+            i_label.set_wrap(True)
+            i_label.set_wrap_mode(Pango.WrapMode.WORD)
+            inner.append(i_label)
+
+            card.append(inner)
+            grid.insert(card, -1)
+
+        self.append(grid)
+
+    def _build_patterns_section(self):
+        """Build the 3 design patterns as expandable cards"""
+        section_label = Gtk.Label(label="3 Design Patterns")
+        section_label.set_halign(Gtk.Align.START)
+        section_label.add_css_class("title-3")
+        section_label.set_margin_top(16)
+        self.append(section_label)
+
+        patterns_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+
+        for name, description, rationale in DESIGN_PATTERNS:
+            card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+            card.add_css_class("card")
+            card.set_margin_start(4)
+            card.set_margin_end(4)
+
+            inner = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+            inner.set_margin_start(16)
+            inner.set_margin_end(16)
+            inner.set_margin_top(12)
+            inner.set_margin_bottom(12)
+
+            # Pattern name
+            n_label = Gtk.Label(label=name)
+            n_label.set_halign(Gtk.Align.START)
+            n_label.add_css_class("heading")
+            inner.append(n_label)
+
+            # Description (monospace for structure)
+            d_label = Gtk.Label(label=description)
+            d_label.set_halign(Gtk.Align.START)
+            d_label.add_css_class("caption")
+            d_label.add_css_class("monospace")
+            d_label.set_wrap(True)
+            d_label.set_wrap_mode(Pango.WrapMode.WORD)
+            inner.append(d_label)
+
+            # Rationale
+            r_label = Gtk.Label(label=f"Rationale: {rationale}")
+            r_label.set_halign(Gtk.Align.START)
+            r_label.add_css_class("caption")
+            r_label.add_css_class("dim-label")
+            r_label.set_wrap(True)
+            r_label.set_wrap_mode(Pango.WrapMode.WORD)
+            inner.append(r_label)
+
+            card.append(inner)
+            patterns_box.append(card)
+
+        self.append(patterns_box)
+
+    def _build_hierarchy_section(self):
+        """Build the 00-99 numeric hierarchy table"""
+        section_label = Gtk.Label(label="Numerisk Hierarki (00-99)")
+        section_label.set_halign(Gtk.Align.START)
+        section_label.add_css_class("title-3")
+        section_label.set_margin_top(16)
+        self.append(section_label)
+
+        distribution = get_numerisk_distribution()
+
+        hierarchy_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+
+        for range_str, label, _color in NUMERISK_HIERARKI:
+            count = distribution.get(range_str, 0)
+
+            row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            row.add_css_class("card")
+            row.set_margin_start(4)
+            row.set_margin_end(4)
+
+            inner = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            inner.set_margin_start(12)
+            inner.set_margin_end(12)
+            inner.set_margin_top(8)
+            inner.set_margin_bottom(8)
+            inner.set_hexpand(True)
+
+            # Range badge
+            range_label = Gtk.Label(label=range_str)
+            range_label.add_css_class("heading")
+            range_label.add_css_class("monospace")
+            range_label.set_size_request(60, -1)
+            inner.append(range_label)
+
+            # Label
+            label_widget = Gtk.Label(label=label)
+            label_widget.set_halign(Gtk.Align.START)
+            label_widget.set_hexpand(True)
+            inner.append(label_widget)
+
+            # Count
+            count_label = Gtk.Label(label=str(count) if count > 0 else "—")
+            count_label.add_css_class("caption")
+            if count > 0:
+                count_label.add_css_class("success")
+            else:
+                count_label.add_css_class("dim-label")
+            inner.append(count_label)
+
+            row.append(inner)
+            hierarchy_box.append(row)
+
+        self.append(hierarchy_box)
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SYNC DASHBOARD VIEW (DEL 21)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+class SyncComponentCard(Gtk.Box):
+    """A card showing status for one sync component"""
+
+    def __init__(self, sync_status: SyncStatus):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        self.set_margin_top(8)
+        self.set_margin_bottom(8)
+        self.set_margin_start(12)
+        self.set_margin_end(12)
+        self.sync_status = sync_status
+
+        # Priority border color
+        pri_color = SYNC_PRIORITY_COLORS.get(sync_status.priority, "#9ca3af")
+
+        # Card frame
+        frame = Gtk.Frame()
+        frame_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        frame_box.set_margin_top(12)
+        frame_box.set_margin_bottom(12)
+        frame_box.set_margin_start(12)
+        frame_box.set_margin_end(12)
+
+        # Header row: icon + name + status badge
+        header = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+
+        # Find icon from SYNC_COMPONENTS
+        icon_name = "emblem-system-symbolic"
+        for cid, _name, _desc, ico, _pri in SYNC_COMPONENTS:
+            if cid == sync_status.component_id:
+                icon_name = ico
+                break
+        icon = Gtk.Image.new_from_icon_name(icon_name)
+        icon.set_pixel_size(24)
+        header.append(icon)
+
+        # Component name
+        name_label = Gtk.Label(label=f"{sync_status.component_id}: {sync_status.name}")
+        name_label.set_xalign(0)
+        name_label.set_hexpand(True)
+        name_label.add_css_class("heading")
+        header.append(name_label)
+
+        # Status badge
+        status_map = {
+            "ok": ("✅", "#10b981"),
+            "warning": ("⚠️", "#f59e0b"),
+            "error": ("❌", "#ef4444"),
+            "unknown": ("❓", "#9ca3af"),
+        }
+        badge_text, badge_color = status_map.get(sync_status.status, ("?", "#9ca3af"))
+        badge = Gtk.Label(label=badge_text)
+        header.append(badge)
+
+        frame_box.append(header)
+
+        # Priority tag
+        pri_label = Gtk.Label(label=f"Priority: {sync_status.priority}")
+        pri_label.set_xalign(0)
+        pri_label.add_css_class("dim-label")
+        frame_box.append(pri_label)
+
+        # Detail text
+        detail_label = Gtk.Label(label=sync_status.detail)
+        detail_label.set_xalign(0)
+        detail_label.set_wrap(True)
+        frame_box.append(detail_label)
+
+        # Progress bar (if counts available)
+        if sync_status.count_total > 0:
+            bar = Gtk.ProgressBar()
+            fraction = sync_status.count_ok / sync_status.count_total
+            bar.set_fraction(fraction)
+            bar.set_text(f"{sync_status.count_ok}/{sync_status.count_total}")
+            bar.set_show_text(True)
+            bar.set_margin_top(4)
+            frame_box.append(bar)
+
+        frame.set_child(frame_box)
+        self.append(frame)
+
+
+class SyncDashboardView(Gtk.Box):
+    """Dashboard showing all 6 sync components from DEL 21"""
+
+    def __init__(self):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        self.set_margin_top(16)
+        self.set_margin_bottom(16)
+        self.set_margin_start(16)
+        self.set_margin_end(16)
+
+        self._build_ui()
+
+    def _build_ui(self):
+        # Header
+        header_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        header_box.set_margin_bottom(8)
+
+        title = Gtk.Label(label="Sync Functions (DEL 21)")
+        title.add_css_class("title-1")
+        title.set_xalign(0)
+        title.set_hexpand(True)
+        header_box.append(title)
+
+        # Overall health
+        health = get_sync_health()
+        self.health_label = Gtk.Label(label=f"Sync Health: {health:.0f}%")
+        self.health_label.add_css_class("title-2")
+        if health >= 60:
+            pass  # Green implied
+        elif health >= 30:
+            self.health_label.add_css_class("warning")
+        header_box.append(self.health_label)
+
+        self.append(header_box)
+
+        # Overall progress bar
+        self.health_bar = Gtk.ProgressBar()
+        self.health_bar.set_fraction(health / 100)
+        self.health_bar.set_text(f"{health:.0f}%")
+        self.health_bar.set_show_text(True)
+        self.health_bar.set_margin_bottom(12)
+        self.append(self.health_bar)
+
+        # Sync component cards in a FlowBox (2 per row)
+        self.cards_box = Gtk.FlowBox()
+        self.cards_box.set_max_children_per_line(2)
+        self.cards_box.set_min_children_per_line(1)
+        self.cards_box.set_selection_mode(Gtk.SelectionMode.NONE)
+        self.cards_box.set_homogeneous(True)
+
+        self._populate_cards()
+        self.append(self.cards_box)
+
+        # Action buttons section
+        actions_label = Gtk.Label(label="Quick Actions")
+        actions_label.add_css_class("title-3")
+        actions_label.set_xalign(0)
+        actions_label.set_margin_top(16)
+        self.append(actions_label)
+
+        actions_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        actions_box.set_margin_top(8)
+
+        # Git Pull button
+        pull_btn = Gtk.Button(label="Git Pull")
+        pull_btn.set_icon_name("network-receive-symbolic")
+        pull_btn.connect("clicked", self._on_git_pull)
+        pull_btn.add_css_class("suggested-action")
+        actions_box.append(pull_btn)
+
+        # Check Links button
+        links_btn = Gtk.Button(label="Check Links")
+        links_btn.set_icon_name("emblem-shared-symbolic")
+        links_btn.connect("clicked", self._on_check_links)
+        actions_box.append(links_btn)
+
+        # Refresh button
+        refresh_btn = Gtk.Button(label="Scan Again")
+        refresh_btn.set_icon_name("view-refresh-symbolic")
+        refresh_btn.connect("clicked", self._on_refresh)
+        actions_box.append(refresh_btn)
+
+        self.append(actions_box)
+
+        # Output log area
+        self.log_label = Gtk.Label(label="")
+        self.log_label.set_xalign(0)
+        self.log_label.set_wrap(True)
+        self.log_label.set_margin_top(12)
+        self.log_label.set_selectable(True)
+        self.append(self.log_label)
+
+    def _populate_cards(self):
+        # Clear existing
+        child = self.cards_box.get_first_child()
+        while child:
+            next_child = child.get_next_sibling()
+            self.cards_box.remove(child)
+            child = next_child
+
+        statuses = get_sync_status()
+        for s in statuses:
+            card = SyncComponentCard(s)
+            self.cards_box.append(card)
+
+    def _on_git_pull(self, button):
+        """Run git pull in MASTER FOLDERS"""
+        try:
+            result = subprocess.run(
+                ["git", "pull", "origin", "main"],
+                cwd=str(INTRO_PATH), capture_output=True, text=True, timeout=30
+            )
+            output = result.stdout.strip() or result.stderr.strip()
+            self.log_label.set_label(f"Git Pull:\n{output}")
+            self._on_refresh(button)
+        except Exception as e:
+            self.log_label.set_label(f"Git Pull Error: {str(e)}")
+
+    def _on_check_links(self, button):
+        """Scan for broken cross-references"""
+        status = _sync_cross_references(INTRO_PATH)
+        self.log_label.set_label(f"Link Check: {status.detail}")
+        self._on_refresh(button)
+
+    def _on_refresh(self, button):
+        """Refresh all sync status"""
+        self._populate_cards()
+        health = get_sync_health()
+        self.health_label.set_label(f"Sync Health: {health:.0f}%")
+        self.health_bar.set_fraction(health / 100)
+        self.health_bar.set_text(f"{health:.0f}%")
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
 # MAIN WINDOW
 # ═══════════════════════════════════════════════════════════════════════════════
 
@@ -4174,6 +5441,96 @@ class MasterpieceWindow(Adw.ApplicationWindow):
 
         sidebar_box.append(scroll)
 
+        # === LINEN HEALTH BUTTON (INTRO System) ===
+        linen_sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        linen_sep.set_margin_top(8)
+        sidebar_box.append(linen_sep)
+
+        linen_btn_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        linen_btn_box.set_margin_start(12)
+        linen_btn_box.set_margin_end(12)
+        linen_btn_box.set_margin_top(8)
+        linen_btn_box.set_margin_bottom(8)
+
+        linen_btn = Gtk.Button()
+        linen_btn.set_hexpand(True)
+        linen_btn.add_css_class("flat")
+
+        linen_btn_content = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+
+        linen_icon = Gtk.Image.new_from_icon_name("applications-science-symbolic")
+        linen_btn_content.append(linen_icon)
+
+        linen_text = Gtk.Label(label="LINEN Health")
+        linen_text.set_hexpand(True)
+        linen_text.set_halign(Gtk.Align.START)
+        linen_btn_content.append(linen_text)
+
+        self.linen_score_label = Gtk.Label(label="...")
+        self.linen_score_label.add_css_class("caption")
+        linen_btn_content.append(self.linen_score_label)
+
+        linen_btn.set_child(linen_btn_content)
+        linen_btn.connect("clicked", self._on_linen_clicked)
+        linen_btn_box.append(linen_btn)
+
+        sidebar_box.append(linen_btn_box)
+
+        # === ARCHITECTURE BUTTON (INTRO System) ===
+        arch_btn_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        arch_btn_box.set_margin_start(12)
+        arch_btn_box.set_margin_end(12)
+        arch_btn_box.set_margin_bottom(8)
+
+        arch_btn = Gtk.Button()
+        arch_btn.set_hexpand(True)
+        arch_btn.add_css_class("flat")
+
+        arch_btn_content = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+
+        arch_icon = Gtk.Image.new_from_icon_name("view-grid-symbolic")
+        arch_btn_content.append(arch_icon)
+
+        arch_text = Gtk.Label(label="3-Lags Arkitektur")
+        arch_text.set_hexpand(True)
+        arch_text.set_halign(Gtk.Align.START)
+        arch_btn_content.append(arch_text)
+
+        arch_btn.set_child(arch_btn_content)
+        arch_btn.connect("clicked", self._on_architecture_clicked)
+        arch_btn_box.append(arch_btn)
+
+        sidebar_box.append(arch_btn_box)
+
+        # Sync Functions button
+        sync_btn_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        sync_btn_box.set_margin_start(12)
+        sync_btn_box.set_margin_end(12)
+        sync_btn_box.set_margin_bottom(8)
+
+        sync_btn = Gtk.Button()
+        sync_btn.set_hexpand(True)
+        sync_btn.add_css_class("flat")
+
+        sync_btn_content = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        sync_icon = Gtk.Image.new_from_icon_name("network-transmit-symbolic")
+        sync_btn_content.append(sync_icon)
+
+        sync_text = Gtk.Label(label="Sync Functions")
+        sync_text.set_xalign(0)
+        sync_text.set_hexpand(True)
+        sync_btn_content.append(sync_text)
+
+        self.sync_score_label = Gtk.Label(label="...")
+        self.sync_score_label.add_css_class("caption")
+        sync_btn_content.append(self.sync_score_label)
+
+        sync_btn.set_child(sync_btn_content)
+        sync_btn.connect("clicked", self._on_sync_clicked)
+        sync_btn_box.append(sync_btn)
+
+        sidebar_box.append(sync_btn_box)
+
         # Stats at bottom of sidebar - GENEROUS SPACING
         self.stats_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=16)
         self.stats_box.set_margin_start(20)
@@ -4220,6 +5577,27 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         self.detail_box.set_margin_bottom(40)
         self.detail_scroll.set_child(self.detail_box)
         self.content_stack.add_named(self.detail_scroll, "detail")
+
+        # LINEN Health page (system health dashboard)
+        linen_scroll = Gtk.ScrolledWindow()
+        linen_scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        self.linen_view = LinenHealthView()
+        linen_scroll.set_child(self.linen_view)
+        self.content_stack.add_named(linen_scroll, "linen")
+
+        # Architecture Overview page (3-layer architecture dashboard)
+        arch_scroll = Gtk.ScrolledWindow()
+        arch_scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        self.architecture_view = ArchitectureOverviewView()
+        arch_scroll.set_child(self.architecture_view)
+        self.content_stack.add_named(arch_scroll, "architecture")
+
+        # Sync Functions page (DEL 21 sync dashboard)
+        sync_scroll = Gtk.ScrolledWindow()
+        sync_scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        self.sync_view = SyncDashboardView()
+        sync_scroll.set_child(self.sync_view)
+        self.content_stack.add_named(sync_scroll, "sync")
 
         content_page.set_child(self.content_stack)
         self.split_view.set_content(content_page)
@@ -4693,6 +6071,14 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         self.active_label.set_label(f"{active_count} Active")
         self.archived_label.set_label(f"{archived_count} Archived")
 
+        # Update LINEN sidebar score
+        if hasattr(self, 'linen_score_label'):
+            self._update_linen_sidebar_label()
+
+        # Update Sync sidebar score
+        if hasattr(self, 'sync_score_label'):
+            self._update_sync_sidebar_label()
+
         return True  # For timeout
 
     def _apply_filter(self, filter_type: str):
@@ -4807,6 +6193,63 @@ class MasterpieceWindow(Adw.ApplicationWindow):
             self._build_detail_page(row.sejr_info)
             self.content_stack.set_visible_child_name("detail")
             self.split_view.set_show_content(True)
+
+    def _on_linen_clicked(self, button):
+        """Navigate to LINEN Health view"""
+        # Deselect any selected victory in sidebar
+        self.sejr_list.unselect_all()
+        # Refresh scores and show LINEN view
+        self.linen_view._refresh_scores()
+        self.content_stack.set_visible_child_name("linen")
+        self.split_view.set_show_content(True)
+        # Update sidebar label
+        self._update_linen_sidebar_label()
+
+    def _update_linen_sidebar_label(self):
+        """Update the LINEN score shown in the sidebar"""
+        try:
+            overall = get_linen_health()
+            self.linen_score_label.set_label(f"{overall:.0f}%")
+            for cls in ["success", "warning", "error"]:
+                self.linen_score_label.remove_css_class(cls)
+            if overall >= 80:
+                self.linen_score_label.add_css_class("success")
+            elif overall >= 50:
+                self.linen_score_label.add_css_class("warning")
+            else:
+                self.linen_score_label.add_css_class("error")
+        except Exception:
+            self.linen_score_label.set_label("?")
+
+    def _on_architecture_clicked(self, button):
+        """Navigate to Architecture Overview view"""
+        self.sejr_list.unselect_all()
+        self.content_stack.set_visible_child_name("architecture")
+        self.split_view.set_show_content(True)
+
+    def _on_sync_clicked(self, button):
+        """Navigate to Sync Functions dashboard"""
+        self.sejr_list.unselect_all()
+        self.sync_view._on_refresh(button)
+        self.content_stack.set_visible_child_name("sync")
+        self.split_view.set_show_content(True)
+        self._update_sync_sidebar_label()
+
+    def _update_sync_sidebar_label(self):
+        """Update the Sync score shown in the sidebar"""
+        try:
+            health = get_sync_health()
+            self.sync_score_label.set_label(f"{health:.0f}%")
+            for cls in ["success", "warning", "error"]:
+                self.sync_score_label.remove_css_class(cls)
+            if health >= 60:
+                self.sync_score_label.add_css_class("success")
+            elif health >= 30:
+                self.sync_score_label.add_css_class("warning")
+            else:
+                self.sync_score_label.add_css_class("error")
+        except Exception:
+            self.sync_score_label.set_label("?")
 
     def _on_new_sejr(self, button):
         """Create a new victory with dialog for name input"""

@@ -183,6 +183,126 @@ def get_rank_from_score(total_score: int) -> tuple[str, str]:
         return "KADET", "🔰"
 
 
+def count_checkboxes_per_pass(content: str) -> dict:
+    """Count completed checkboxes [x] for each pass section."""
+    result = {'pass_1': 0, 'pass_2': 0, 'pass_3': 0}
+
+    # Find PASS 1 section (from "PASS 1:" to "PASS 1 → PASS 2 REVIEW" or "PASS 2:")
+    p1_match = re.search(r'# 🥉 PASS 1.*?(?=# 🔍 PASS 1|# 🥈 PASS 2|\Z)', content, re.DOTALL | re.IGNORECASE)
+    if p1_match:
+        p1_section = p1_match.group(0)
+        result['pass_1'] = len(re.findall(r'\[x\]', p1_section, re.IGNORECASE))
+
+    # Find PASS 2 section
+    p2_match = re.search(r'# 🥈 PASS 2.*?(?=# 🔍 PASS 2|# 🥇 PASS 3|\Z)', content, re.DOTALL | re.IGNORECASE)
+    if p2_match:
+        p2_section = p2_match.group(0)
+        result['pass_2'] = len(re.findall(r'\[x\]', p2_section, re.IGNORECASE))
+
+    # Find PASS 3 section
+    p3_match = re.search(r'# 🥇 PASS 3.*?(?=# ✅ FINAL|# 📊 3-PASS|\Z)', content, re.DOTALL | re.IGNORECASE)
+    if p3_match:
+        p3_section = p3_match.group(0)
+        result['pass_3'] = len(re.findall(r'\[x\]', p3_section, re.IGNORECASE))
+
+    return result
+
+
+def extract_what_was_built(content: str) -> str:
+    """Extract actual achievements from PHASE 2: DEVELOPMENT and reviews."""
+    achievements = []
+
+    # 1. Extract from PHASE 2: DEVELOPMENT section (Components built)
+    phase2_match = re.search(r'## PHASE 2: DEVELOPMENT\s*(.*?)(?=---|\Z)', content, re.DOTALL)
+    if phase2_match:
+        phase2 = phase2_match.group(1)
+        # Find completed components
+        component_matches = re.findall(r'### Component \d+: ([^\n]+)', phase2)
+        for comp in component_matches:
+            if comp.strip() and not comp.startswith('{'):
+                achievements.append(f"• {comp.strip()}")
+
+    # 2. Extract from "Hvad Virker? (Bevar)" section
+    works_match = re.search(r'## Hvad Virker\? \(Bevar\)\s*(.*?)(?=##|\Z)', content, re.DOTALL)
+    if works_match:
+        works_section = works_match.group(1)
+        items = re.findall(r'\d+\.\s+([^\n]+)', works_section)
+        for item in items:
+            if item.strip() and not item.startswith('_'):
+                achievements.append(f"• {item.strip()}")
+
+    # 3. Extract from "Nye Features Tilføjet" section
+    features_match = re.search(r'## Nye Features Tilføjet\s*(.*?)(?=---|\Z)', content, re.DOTALL)
+    if features_match:
+        features = features_match.group(1)
+        feature_items = re.findall(r'- \[x\] Feature \d+: ([^\n]+)', features, re.IGNORECASE)
+        for feat in feature_items:
+            if feat.strip() and not feat.startswith('_'):
+                achievements.append(f"• {feat.strip()}")
+
+    # 4. Try to get from SEJR header line
+    sejr_match = re.search(r'# SEJR: ([^\n]+)', content)
+    if sejr_match and not achievements:
+        sejr_name = sejr_match.group(1).strip()
+        if not sejr_name.startswith('{'):
+            achievements.append(f"• Sejr: {sejr_name}")
+
+    # Remove duplicates and return
+    unique = list(dict.fromkeys(achievements))
+    if unique:
+        return '\n'.join(unique[:10])  # Max 10 items
+    return '_Ikke dokumenteret_'
+
+
+def extract_pass_approaches(content: str) -> dict:
+    """Extract what was done in each pass from review sections."""
+    result = {
+        'p1_approach': '_Ikke dokumenteret_',
+        'p2_approach': '_Ikke dokumenteret_',
+        'p3_approach': '_Ikke dokumenteret_'
+    }
+
+    # Pass 1 approach - from "PASS 1 COMPLETION CHECKLIST" or completion section
+    p1_complete = re.search(r'## 📋 PASS 1 COMPLETION CHECKLIST.*?### PASS 1 SCORE: (\d+)/10.*?Tid brugt.*?: ([^\n]+)', content, re.DOTALL)
+    if p1_complete:
+        score = p1_complete.group(1)
+        tid = p1_complete.group(2).strip()
+        result['p1_approach'] = f"Score {score}/10 på {tid} - baseline funktionalitet"
+
+    # Pass 1 → Pass 2 review "Hvad Virker?"
+    p1_review = re.search(r'# 🔍 PASS 1 → PASS 2 REVIEW.*?## Hvad Virker\?.*?\n(1\.[^\n]+(?:\n2\.[^\n]+)?(?:\n3\.[^\n]+)?)', content, re.DOTALL)
+    if p1_review:
+        approach = p1_review.group(1).strip().replace('\n', ' ')
+        if approach and len(approach) > 5:
+            result['p1_approach'] = approach[:300]
+
+    # Pass 2 approach - from "Forbedring fra Pass 1:"
+    p2_improve = re.search(r'\*\*Forbedring fra Pass 1:\*\*\s*([^\n]+)', content)
+    if p2_improve:
+        result['p2_approach'] = p2_improve.group(1).strip()[:300]
+    else:
+        # Try "Pass 1 → Pass 2 Forbedring" section
+        p2_section = re.search(r'### Pass 1 → Pass 2 Forbedring\s*([^\n]+(?:\n[^\n#]+)*)', content)
+        if p2_section:
+            text = p2_section.group(1).strip()
+            if text and not text.startswith('_'):
+                result['p2_approach'] = text[:300]
+
+    # Pass 3 approach - from "Pass 2 → Pass 3 Forbedring" or performance section
+    p3_section = re.search(r'### Pass 2 → Pass 3 Forbedring\s*([^\n]+(?:\n[^\n#]+)*)', content)
+    if p3_section:
+        text = p3_section.group(1).strip()
+        if text and not text.startswith('_'):
+            result['p3_approach'] = text[:300]
+    else:
+        # Try performance optimizations
+        perf_match = re.search(r'## Performance Optimeringer\s*.*?- \[x\] Optimering 1: ([^\n]+)', content, re.DOTALL)
+        if perf_match:
+            result['p3_approach'] = perf_match.group(1).strip()[:300]
+
+    return result
+
+
 def extract_learnings_and_patterns(sejr_path: Path) -> dict:
     """Extract learnings, patterns, and tips from SEJR_LISTE.md"""
     sejr_file = sejr_path / "SEJR_LISTE.md"
@@ -195,6 +315,9 @@ def extract_learnings_and_patterns(sejr_path: Path) -> dict:
         'p2_approach': '_Ikke dokumenteret_',
         'p3_approach': '_Ikke dokumenteret_',
         'achievement_summary': '_Ikke dokumenteret_',
+        'pass_1_checkboxes': 0,
+        'pass_2_checkboxes': 0,
+        'pass_3_checkboxes': 0,
     }
 
     if not sejr_file.exists():
@@ -202,8 +325,22 @@ def extract_learnings_and_patterns(sejr_path: Path) -> dict:
 
     content = sejr_file.read_text(encoding="utf-8")
 
+    # Count checkboxes per pass
+    checkbox_counts = count_checkboxes_per_pass(content)
+    result['pass_1_checkboxes'] = checkbox_counts['pass_1']
+    result['pass_2_checkboxes'] = checkbox_counts['pass_2']
+    result['pass_3_checkboxes'] = checkbox_counts['pass_3']
+
+    # Extract what was actually built
+    result['achievement_summary'] = extract_what_was_built(content)
+
+    # Extract pass approaches
+    approaches = extract_pass_approaches(content)
+    result['p1_approach'] = approaches['p1_approach']
+    result['p2_approach'] = approaches['p2_approach']
+    result['p3_approach'] = approaches['p3_approach']
+
     # Extract from SEMANTISK KONKLUSION section
-    # Look for "SEMANTISK KONKLUSION" with or without emoji
     conclusion_start = content.find("SEMANTISK KONKLUSION")
     if conclusion_start == -1:
         conclusion_start = content.find("🏆 SEMANTISK")
@@ -226,29 +363,19 @@ def extract_learnings_and_patterns(sejr_path: Path) -> dict:
             if reusable and not reusable.startswith('_'):
                 result['reusable'] = reusable
 
-    # Extract improvement descriptions as approach summaries
-    p1_match = re.search(r'Pass 1[^:]*→[^:]*Forbedring\s*\n(.*?)(?=###|Pass \d|\n---|\Z)', content, re.DOTALL)
-    if p1_match:
-        approach = p1_match.group(1).strip()
-        if approach and len(approach) > 10:
-            result['p1_approach'] = approach[:200]
+    # Extract tips from "Bevis For Forbedring" or review sections
+    tips_match = re.search(r'## Bevis For Forbedring.*?### Pass 2 → Pass 3 Forbedring\s*([^\n]+(?:\n[^\n#]+)*)', content, re.DOTALL)
+    if tips_match:
+        tips = tips_match.group(1).strip()
+        if tips and not tips.startswith('_'):
+            result['tips'] = f"Fra denne sejr: {tips[:200]}"
 
-    p2_match = re.search(r'Pass 2[^:]*→[^:]*Forbedring\s*\n(.*?)(?=###|Pass \d|\n---|\Z)', content, re.DOTALL)
-    if p2_match:
-        approach = p2_match.group(1).strip()
-        if approach and len(approach) > 10:
-            result['p2_approach'] = approach[:200]
-
-    # Try to extract achievement from project brief
-    brief_file = sejr_path / "PROJECT_BRIEF.md"
-    if brief_file.exists():
-        try:
-            brief = brief_file.read_text(encoding="utf-8")
-            goal_match = re.search(r'\*\*MÅL:\*\*\s*(.*?)(?=\n\*\*|\n---|\n\n|\Z)', brief, re.DOTALL)
-            if goal_match:
-                result['achievement_summary'] = goal_match.group(1).strip()
-        except:
-            pass
+    # Extract patterns from 3-alternativer table if present
+    alt_match = re.search(r'### 3 Alternativer.*?\| 1 \| ([^|]+) \|', content, re.DOTALL)
+    if alt_match:
+        chosen = alt_match.group(1).strip()
+        if chosen and not chosen.startswith('{'):
+            result['patterns'] = f"Valgt tilgang: {chosen}"
 
     return result
 
@@ -271,14 +398,21 @@ def generate_sejr_diplom(sejr_path: Path, archive_path: Path, status: dict) -> P
     p3_improvement = f"+{p3_score - p2_score}" if p3_score > p2_score else "0"
     total_improvement = f"+{(p2_score - p1_score) + (p3_score - p2_score)}"
 
-    # Get checkbox counts from STATUS.yaml
-    p1_checkboxes = status.get('pass_1_checkboxes', 'N/A')
-    p2_checkboxes = status.get('pass_2_checkboxes', 'N/A')
-    p3_checkboxes = status.get('pass_3_checkboxes', 'N/A')
-    total_checkboxes = f"{p1_checkboxes}+{p2_checkboxes}+{p3_checkboxes}"
-
-    # Get learnings and patterns
+    # Get learnings and patterns (includes checkbox counts)
     learnings = extract_learnings_and_patterns(sejr_path)
+
+    # Get checkbox counts from learnings (parsed from SEJR_LISTE.md)
+    p1_checkboxes = learnings.get('pass_1_checkboxes', 0)
+    p2_checkboxes = learnings.get('pass_2_checkboxes', 0)
+    p3_checkboxes = learnings.get('pass_3_checkboxes', 0)
+    # Fall back to STATUS.yaml if SEJR_LISTE.md parsing failed
+    if p1_checkboxes == 0:
+        p1_checkboxes = status.get('pass_1_checkboxes', 'N/A')
+    if p2_checkboxes == 0:
+        p2_checkboxes = status.get('pass_2_checkboxes', 'N/A')
+    if p3_checkboxes == 0:
+        p3_checkboxes = status.get('pass_3_checkboxes', 'N/A')
+    total_checkboxes = f"{p1_checkboxes}+{p2_checkboxes}+{p3_checkboxes}"
 
     # Build diplom content
     sejr_name = sejr_path.name
@@ -503,8 +637,8 @@ def archive_sejr(sejr_name: str, system_path: Path, force: bool = False):
         print(f"   Archive continues without SEJR_DIPLOM.md")
         rank_name, rank_emoji = get_rank_from_score(status.get('total_score', 0))
 
-    # Copy important files
-    for file_name in ["STATUS.yaml", "AUTO_LOG.jsonl"]:
+    # Copy important files (including SEJR_LISTE.md for reference)
+    for file_name in ["STATUS.yaml", "AUTO_LOG.jsonl", "SEJR_LISTE.md"]:
         src = sejr_path / file_name
         if src.exists():
             dst = archive_path / file_name
