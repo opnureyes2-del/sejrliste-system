@@ -1,0 +1,22 @@
+{"timestamp": "2026-01-27T21:15:00", "action": "created", "detail": "SEJR_LISTE.md oprettet med Claude Usage Mastery opgaver"}
+{"timestamp": "2026-01-27T21:15:00", "action": "documented", "detail": "84K rå guide filtreret til 10 dokumenter i HOW TO USE A CLAUDE OPUS"}
+{"timestamp": "2026-01-27T21:15:00", "action": "filtered", "detail": "Fjernet: VSCode extensions, GitHub Copilot alts, redundante tools. Beholdt: Ollama, Redis, ChromaDB, quality gates, token optimization"}
+{"timestamp": "2026-01-27T21:15:00", "action": "scope", "detail": "3 passes: FUNGERENDE (install+test) → FORBEDRET (integrér i workflow) → OPTIMERET (fuld integration)"}
+{"timestamp": "2026-01-27T21:15:00", "action": "phase_complete", "detail": "FASE 0 KOMPLET: Alle 10 dokumenter oprettet, filtreret og organiseret"}
+{"timestamp": "2026-01-27T21:30:00", "action": "extended", "detail": "Runde 2: 83K nyt indhold (ULTIMATE UBUNTU + CLAUDE SECRETS + ULTIMATE CLAUDE CAPABILITIES) filtreret"}
+{"timestamp": "2026-01-27T21:30:00", "action": "created", "detail": "4 NYE filer: 10_ADVANCED_TERMINAL.md (337 linjer), 11_SYSTEM_SECURITY.md (286 linjer), 12_PERFORMANCE_OPTIMIZATION.md (219 linjer), 13_FULL_CAPABILITIES_REFERENCE.md (256 linjer)"}
+{"timestamp": "2026-01-27T21:30:00", "action": "updated", "detail": "00_OVERVIEW.md opdateret (10→14 filer), 08_QUICK_REFERENCE.md udvidet med tmux, fzf, parallel, monitoring, security kommandoer"}
+{"timestamp": "2026-01-27T21:30:00", "action": "filtered", "detail": "Fjernet fra ULTIMATE: OS/kernel building, 3D engines, blockchain/Web3, trading bots, GPU/CUDA, Spark/Dask, kernel modules, eBPF, FUSE, Ansible, RabbitMQ"}
+{"timestamp": "2026-01-27T21:30:00", "action": "review", "detail": "MIN ADMIRAL: ✅ KOMPLET (16 filer). victorylist.desktop: ✅ KORREKT. MANUAL udvidet med 27_NYE_RESSOURCER_2026-01.md"}
+{"timestamp": "2026-01-27T21:30:00", "action": "rule_added", "detail": "Rule -37: SPØRG ALTID OM DER ER MERE - altid spørg om der er mere content før du erklærer komplet"}
+{"timestamp": "2026-01-27T21:30:00", "action": "phase_extended", "detail": "FASE 0 UDVIDET: Nu 14 dokumenter, ~2.726 linjer, ~64KB total"}
+{"timestamp": "2026-01-27T21:45:00", "action": "fase1_complete", "detail": "Ollama v0.13.3 kører, llama3.2 (2GB) + codellama (3.8GB) downloaded og testet, Python integration OK (ollama v0.6.1)"}
+{"timestamp": "2026-01-27T21:45:00", "action": "fase2_blocked", "detail": "Redis kræver sudo apt install — Python client (v7.1.0) allerede installeret"}
+{"timestamp": "2026-01-27T21:45:00", "action": "fase3_complete", "detail": "Quality gates installeret: flake8 7.3.0 (53 issues på masterpiece_en.py), bandit 1.9.3 (0 high/medium), pre-commit 4.5.1, pytest 9.0.2, mypy 1.19.1"}
+{"timestamp": "2026-01-27T21:45:00", "action": "fase4_complete", "detail": "tiktoken v0.12.0 installeret og testet — 12 tokens i test-sætning"}
+{"timestamp": "2026-01-27T21:45:00", "action": "pass1_review", "detail": "Score 7/10 — Ollama ✅, Quality Gates ✅, Token Counting ✅, Redis KRÆVER SUDO, pre-commit hooks ikke sat op endnu"}
+{"timestamp": "2026-01-27T22:45:00", "action": "pass2_fase0", "detail": "ChromaDB knowledge base bygget: 76 docs indekseret (admiral:13, claude_guide:14, intro:4, sejrliste:45), cosine similarity, persistent i ~/.project_db/, ONNX model downloaded (79MB)"}
+{"timestamp": "2026-01-27T22:50:00", "action": "pass2_fase1", "detail": "Model router oprettet: scripts/model_router.py — 12/12 test cases korrekt (100%), 4 tiers (Opus/Sonnet/Haiku/Ollama), DNA lag mapping, live Ollama test OK"}
+{"timestamp": "2026-01-27T22:55:00", "action": "pass2_fase2", "detail": "Automation pipeline oprettet: scripts/automation_pipeline.py — testet på masterpiece_en.py (Score 7.5/10: syntax OK, 236 lint issues, 0 security high/medium, 117 functions/17 classes)"}
+{"timestamp": "2026-01-27T23:00:00", "action": "pass2_fase3", "detail": "Token tools oprettet: scripts/token_tools.py — count, cost estimation, lokal fil-cache (alternativ til Redis). masterpiece_en.py = 50.258 tokens ($0.44 Opus, $0.09 Sonnet, $0 Ollama)"}
+{"timestamp": "2026-01-27T23:05:00", "action": "pass2_review", "detail": "Score 9/10 — ChromaDB ✅, Model Routing 100% ✅, Pipeline ✅, Token Tools ✅. 4 nye scripts oprettet. LangGraph skippet (unødvendig), API caching N/A for CLI."}

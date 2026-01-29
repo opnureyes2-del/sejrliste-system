@@ -30,8 +30,9 @@ ROUTES = {
             "arkitektur", "architecture", "design", "planlæg", "plan",
             "strategi", "strategy", "beslut", "decision", "analysér",
             "analyze", "pattern", "mønster", "complex", "kompleks",
-            "predict", "forudsig", "optimer", "optimize", "research",
-            "alternativ", "sammenlign", "compare", "evaluate", "evaluér",
+            "predict", "forudsig", "optimer", "optimér", "optimize",
+            "research", "alternativ", "sammenlign", "compare",
+            "evaluate", "evaluér", "database query",
             "phase 0", "phase 1", "dna lag 4", "dna lag 6", "dna lag 7",
             "self-improving", "self-optimizing", "predictive",
         ],
@@ -43,13 +44,14 @@ ROUTES = {
     "sonnet": {
         "keywords": [
             "skriv kode", "write code", "implement", "implementér",
-            "refactor", "redigér", "edit", "byg", "build", "opret",
-            "create", "fix", "fiks", "commit", "push", "git",
+            "implementer", "refactor", "redigér", "edit", "byg", "build",
+            "opret", "create", "fix", "fiks", "commit", "push", "git",
             "component", "komponent", "funktion", "function", "class",
             "klasse", "modul", "module", "migration",
             "phase 2", "phase 4", "dna lag 5", "self-archiving",
             "review", "bug", "fejl", "ændring", "change", "update",
             "opdater", "tilføj", "add", "slet", "delete", "remove",
+            "skriv konklusion", "arkivering",
         ],
         "model_id": "claude-sonnet-4-20250514",
         "cost": "$$",
@@ -58,10 +60,14 @@ ROUTES = {
     },
     "haiku": {
         "keywords": [
-            "verificér", "verify", "check", "tjek", "status",
-            "format", "lint", "test result", "test", "log", "simple",
+            "verificér", "verificer", "verify", "check", "tjek", "status",
+            "format", "lint", "test result", "test om", "log", "simple",
             "simpel", "ja/nej", "yes/no", "count", "tæl",
-            "list", "find", "søg inden i", "short",
+            "find", "søg inden i", "short",
+            "dokumenter", "dokumentér", "session notes", "journal",
+            "opdater session", "session",
+            "filer eksisterer", "eksisterer",
+            "test om", "virker",
             "phase 3", "dna lag 2", "dna lag 3",
             "self-documenting", "self-verifying",
         ],
@@ -174,6 +180,10 @@ def test_routing():
         ("Refactor denne funktion", "sonnet"),
         ("Hvad er LINEN Framework?", "ollama"),
         ("Format denne markdown fil", "haiku"),
+        ("Dokumenter hvad der lige skete", "haiku"),
+        ("Verificer at alle filer eksisterer", "haiku"),
+        ("Optimér denne database query", "opus"),
+        ("Skriv konklusion for denne sejrliste", "sonnet"),
     ]
 
     print("[TEST] Model Routing Test")

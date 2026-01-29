@@ -1,0 +1,37 @@
+name: "Claude Usage Mastery"
+created: "2026-01-27"
+status: "IN_PROGRESS"
+
+current_pass: 1
+current_phase: "FASE_0"
+
+scores:
+  pass_1: 0
+  pass_2: 0
+  pass_3: 0
+  total: 0
+
+verification:
+  documentation_complete: true
+  ollama_installed: false
+  redis_active: false
+  quality_gates_installed: false
+  token_counting_works: false
+  chromadb_active: false
+  model_routing_active: false
+  pipeline_tested: false
+
+source: "/home/rasmus/Desktop/HOW TO USE A CLAUDE OPUS/"
+target: "/home/rasmus/Desktop/sejrliste systemet/"
+
+files_created:
+  - "00_OVERVIEW.md"
+  - "01_DECISION_MATRIX.md"
+  - "02_TOKEN_OPTIMIZATION.md"
+  - "03_LOCAL_AI_SETUP.md"
+  - "04_QUALITY_ASSURANCE.md"
+  - "05_VECTOR_DB_AND_RAG.md"
+  - "06_AUTOMATION_PIPELINE.md"
+  - "07_CLAUDE_SKILLS.md"
+  - "08_QUICK_REFERENCE.md"
+  - "09_TROUBLESHOOTING.md"
