@@ -1,168 +1,106 @@
-# SEJR: Design, Logo & Desktop Folder Branding
+# SEJR: Design, Logo & Desktop Branding
 
 **Dato:** 2026-01-27
-**Mål:** Giv alle Desktop mapper visuelt udtryk med icons, farver og .directory filer
-**Scope:** INTRO FOLDER SYSTEM + sejrliste systemet + MIN ADMIRAL Desktop mapper
-**Mapper:** Alle 3 projekt-mapper på Desktop
+**Mål:** Custom icons, .directory og .desktop filer for alle 3 Desktop mapper
+**Scope:** sejrliste systemet + INTRO FOLDER SYSTEM + MIN ADMIRAL
 
 ---
 
-## OVERBLIK: HVAD SKAL DESIGNES?
+## OVERBLIK
 
-| Mappe | Icon | .directory | .desktop | Status |
-|-------|------|-----------|----------|--------|
-| sejrliste systemet | ✅ sejrliste-icon.svg | ✅ BYGGET | ✅ 3 launchers | DELVIST |
-| INTRO FOLDER SYSTEM | ✅ intro-system-icon.svg | ✅ BYGGET | ✅ intro-system.desktop | DELVIST |
-| MIN ADMIRAL | ✅ admiral-logo.svg | ✅ BYGGET | MANGLER | DELVIST |
+| Mappe | Icon | .directory | .desktop | Verificeret |
+|-------|------|-----------|----------|-------------|
+| sejrliste systemet | ✅ sejrliste-icon.svg (1.7K) | ✅ | ✅ 4 launchers | ❌ IKKE TESTET |
+| INTRO FOLDER SYSTEM | ✅ intro-system-icon.svg (1.6K) | ✅ | ✅ intro-system.desktop | ❌ IKKE TESTET |
+| MIN ADMIRAL | ✅ admiral-logo.svg (6.7K) | ✅ | ✅ admiral.desktop | ❌ IKKE TESTET |
 
-**Allerede bygget i denne session:**
-- `intro-system-icon.svg` — Indigo/lilla cirkel med folder + LINEN linjer
-- `intro-system.desktop` — Desktop launcher
-- 3x `.directory` filer — Custom folder icons for GNOME
+**Filer oprettet:** 3 SVG + 5 .desktop + 3 .directory = 11 filer total
 
 ---
 
-## PASS 1: FUNGERENDE (Få det til at virke)
+## PASS 1: FUNGERENDE
 
-### FASE 0: ICON DESIGN KOMPLET
+### A. ICONS (3/3 oprettet, 0/3 verificeret)
 
-- [x] `sejrliste-icon.svg` eksisterer (1.7K) ✅
-- [x] `admiral-logo.svg` eksisterer (6.7K) ✅
-- [x] `intro-system-icon.svg` oprettet (ny) ✅
-- [ ] Verificér at alle 3 icons renderer korrekt i GNOME
-- [ ] Verificér at .directory filer virker (mapper viser custom icon)
-- [ ] Test: Højreklik på mappe → Properties → viser korrekt icon?
+- [x] `assets/sejrliste-icon.svg` (1.7K SVG)
+- [x] `assets/admiral-logo.svg` (6.7K SVG)
+- [x] `assets/intro-system-icon.svg` (1.6K SVG)
+- [ ] **TEST:** Alle 3 renderer korrekt i GNOME (åbn Nautilus, se mapper)
+- [ ] **TEST:** Højreklik → Properties → viser korrekt icon?
 
-### FASE 1: .DESKTOP FILER KOMPLET
+### B. DESKTOP LAUNCHERS (5/5 oprettet, 0/5 verificeret)
 
-- [x] `victorylist.desktop` eksisterer ✅
-- [x] `sejrliste.desktop` eksisterer ✅
-- [x] `sejrliste-terminal.desktop` eksisterer ✅
-- [x] `intro-system.desktop` oprettet ✅
-- [ ] Opret `admiral.desktop` for MIN ADMIRAL:
-  - [ ] Exec: xdg-open "/home/rasmus/Desktop/MIN ADMIRAL/"
-  - [ ] Icon: admiral-logo.svg
-  - [ ] Name: MIN ADMIRAL
-- [ ] Verificér alle 5 .desktop filer virker (dobbeltklik)
-- [ ] Verificér alle 5 viser korrekte icons
+| Fil | Exec | Virker? |
+|-----|------|---------|
+| `victorylist.desktop` | `python3 masterpiece_en.py` | ❌ IKKE TESTET |
+| `sejrliste.desktop` | `streamlit run web_app.py` | ❌ IKKE TESTET |
+| `sejrliste-terminal.desktop` | `sejr-terminal.sh` | ❌ IKKE TESTET |
+| `intro-system.desktop` | `python3 masterpiece_en.py` | ❌ IKKE TESTET |
+| `admiral.desktop` | `xdg-open "MIN ADMIRAL/"` | ❌ IKKE TESTET |
 
-### FASE 2: FOLDER VISUELT DESIGN
+- [ ] **TEST:** Dobbeltklik på alle 5 → åbner korrekt?
+- [ ] **TEST:** Alle 5 viser korrekte icons?
+- [ ] **FIX:** intro-system.desktop Path peger på INTRO mappe men Exec åbner sejrliste app
 
-- [ ] Verificér .directory filer virker i Nautilus/Files:
-  - [ ] INTRO FOLDER SYSTEM viser intro-system-icon
-  - [ ] sejrliste systemet viser sejrliste-icon
-  - [ ] MIN ADMIRAL viser admiral-logo
-- [ ] Hvis .directory ikke virker: brug `gio set` kommando:
-  ```bash
-  gio set "/home/rasmus/Desktop/INTRO FOLDER SYSTEM" metadata::custom-icon \
-    "file:///home/rasmus/Desktop/sejrliste systemet/assets/intro-system-icon.svg"
-  ```
-- [ ] Test i GNOME Files: Mapper har custom icons
+### C. FOLDER ICONS (3/3 .directory oprettet, 0/3 verificeret)
 
-### FASE 3: APP WINDOW BRANDING
+- [ ] **TEST:** Nautilus viser custom icon for sejrliste systemet?
+- [ ] **TEST:** Nautilus viser custom icon for INTRO FOLDER SYSTEM?
+- [ ] **TEST:** Nautilus viser custom icon for MIN ADMIRAL?
+- [ ] Hvis .directory ikke virker → brug `gio set` metadata
 
-- [ ] Victory List app: Verificér window icon er sejrliste-icon.svg
-- [ ] Tilføj window icon til masterpiece_en.py hvis mangler:
-  ```python
-  self.set_icon_name("dk.cirkelline.victorylist")
-  ```
-- [ ] Verificér .desktop `StartupWMClass` matcher app's WM_CLASS
+### D. APP WINDOW BRANDING
+
+- [ ] Victory List app window icon = sejrliste-icon.svg?
+- [ ] StartupWMClass matcher i .desktop vs. app?
 
 ---
 
 ## PASS 1 REVIEW
 
-- [ ] Alle mapper har custom icons i GNOME Files
-- [ ] Alle .desktop filer virker med korrekte icons
-- [ ] App vinduer har korrekte icons i taskbar
+- [ ] Alle 3 mapper viser custom icons i Nautilus
+- [ ] Alle 5 .desktop launchers virker ved dobbeltklik
+- [ ] App window har korrekt icon i taskbar
 - [ ] Score: ___/10
 
 ---
 
-## PASS 2: FORBEDRET (Gør det bedre)
+## PASS 2: FORBEDRET
 
-### FASE 0: ICON DESIGN FORBEDRING
+### A. ICON ENSRETNING
+- [ ] Ensret stil: alle 3 icons i same design language
+- [ ] intro-system-icon: tilføj LINEN bogstaver + 3-lags hint
+- [ ] Opret størrelsevarianter (16/32/48/128/256px)
 
-- [ ] Redesign intro-system-icon.svg med mere detalje:
-  - [ ] LINEN bogstaver synlige
-  - [ ] 3-lags arkitektur hint
-  - [ ] Cirkelline brand farver
-- [ ] Ensret alle 3 icons i stil (same design language)
-- [ ] Opret 16x16, 32x32, 48x48, 128x128, 256x256 størrelse varianter
-
-### FASE 1: GNOME DESKTOP INTEGRATION
-
-- [ ] Tilføj apps til GNOME Applications menu (ikke kun Desktop):
-  ```bash
-  cp *.desktop ~/.local/share/applications/
-  ```
-- [ ] Verificér: Tryk Super → søg "Victory" → app vises
-- [ ] Verificér: Tryk Super → søg "INTRO" → app vises
+### B. GNOME MENU INTEGRATION
+- [ ] Kopiér .desktop til `~/.local/share/applications/`
+- [ ] **TEST:** Super → søg "Victory" → app vises?
 - [ ] Pin til taskbar/dock
 
-### FASE 2: ABOUT DIALOG I APP
-
-- [ ] Tilføj Adw.AboutWindow til masterpiece_en.py:
-  - [ ] App name: Victory List / Sejrliste
-  - [ ] Version: 1.0.0
-  - [ ] Developer: Rasmus (Cirkelline)
-  - [ ] Website: cirkelline.com
-  - [ ] Icon: sejrliste-icon.svg
-  - [ ] License: Proprietary
+### C. ABOUT DIALOG
+- [ ] Adw.AboutWindow i masterpiece_en.py (navn, version, developer, website, icon)
 
 ---
 
-## PASS 2 REVIEW
+## PASS 3: OPTIMERET
 
-- [ ] Icons er professionelle og ensrettede
-- [ ] Apps i GNOME menu + søgbare
-- [ ] About dialog viser korrekt info
-- [ ] Score: ___/10 (SKAL være > Pass 1)
+### A. ADAPTIVE ICONS
+- [ ] Symbolic variants for dark/light theme
+- [ ] HiDPI support
 
----
-
-## PASS 3: OPTIMERET (Gør det bedst)
-
-### FASE 0: ADAPTIVE ICONS
-
-- [ ] Opret symbolic variants for GNOME dark/light theme
-- [ ] Icons tilpasser sig system theme automatisk
-- [ ] HiDPI support (retina/4K skærme)
-
-### FASE 1: SPLASH SCREEN
-
-- [ ] Tilføj splash screen ved app start (0.5 sek):
-  - [ ] Logo + app navn + loading bar
-  - [ ] Fade in animation
-
----
-
-## PASS 3 REVIEW
-
-- [ ] Adaptive icons virker i dark/light mode
-- [ ] Splash screen er elegant
-- [ ] Score: ___/10 (SKAL være > Pass 2)
+### B. SPLASH SCREEN
+- [ ] Logo + app navn + loading bar ved start (0.5 sek)
 
 ---
 
 ## VERIFIKATION
 
 ```bash
-# Test 1: Folder icons
-ls -la "/home/rasmus/Desktop/INTRO FOLDER SYSTEM/.directory"
-ls -la "/home/rasmus/Desktop/sejrliste systemet/.directory"
-ls -la "/home/rasmus/Desktop/MIN ADMIRAL/.directory"
-# Expected: Alle 3 eksisterer
+# Filer eksisterer
+ls "/home/rasmus/Desktop/sejrliste systemet/assets/"*.svg  # 3 SVG
+ls /home/rasmus/Desktop/*.desktop  # 5 launchers
+ls "/home/rasmus/Desktop/MIN ADMIRAL/.directory"  # .directory
 
-# Test 2: .desktop filer
-ls -la /home/rasmus/Desktop/*.desktop
-# Expected: 5 .desktop filer (victory, sejrliste, terminal, intro, admiral)
-
-# Test 3: Icons eksisterer
-ls -la "/home/rasmus/Desktop/sejrliste systemet/assets/"*.svg
-# Expected: 3 SVG filer (sejrliste-icon, admiral-logo, intro-system-icon)
-
-# Test 4: GNOME integration
+# GNOME integration
 gio info "/home/rasmus/Desktop/INTRO FOLDER SYSTEM" | grep custom-icon
-# Expected: Viser custom icon sti
 ```

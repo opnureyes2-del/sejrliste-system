@@ -1,24 +1,29 @@
-# 📜 SCRIPT REFERENCE - Alle 11 Scripts Dokumenteret
+# 📜 SCRIPT REFERENCE - Alle 15 Scripts Dokumenteret
 
 > **LÆS DETTE** for at forstå hvad hvert script gør og hvornår du bruger det.
+> **Sidst verificeret:** 2026-01-28 (alle 15 testet og virker)
 
 ---
 
 ## OVERSIGT
 
-| Script | Formål | Hvornår Bruges |
-|--------|--------|----------------|
-| `generate_sejr.py` | Opret ny sejr | Når du starter ny opgave |
-| `auto_verify.py` | Verificer progress | Efter HVER ændring |
-| `auto_archive.py` | Arkiver færdig sejr | Når 3-pass er done |
-| `build_claude_context.py` | Byg CLAUDE.md | Efter checkbox changes |
-| `update_claude_focus.py` | Opdater fokus state | Når task skifter |
-| `auto_track.py` | Opdater STATE.md | Ved state changes |
-| `auto_learn.py` | Lær patterns | Ved sejr completion |
-| `auto_predict.py` | Generér predictions | Ved phase completion |
-| `admiral_tracker.py` | Track scores | Ved events |
-| `auto_live_status.py` | Live status display | For real-time view |
-| `auto_optimize.py` | Auto-optimering | Ved PHASE 0 |
+| Script | Formål | Hvornår Bruges | Status |
+|--------|--------|----------------|--------|
+| `generate_sejr.py` | Opret ny sejr | Når du starter ny opgave | ✅ |
+| `auto_verify.py` | Verificer progress | Efter HVER ændring | ✅ |
+| `auto_archive.py` | Arkiver færdig sejr | Når 3-pass er done | ✅ |
+| `build_claude_context.py` | Byg CLAUDE.md | Efter checkbox changes | ✅ |
+| `update_claude_focus.py` | Opdater fokus state | Når task skifter | ✅ |
+| `auto_track.py` | Opdater STATE.md | Ved state changes | ✅ |
+| `auto_learn.py` | Lær patterns | Ved sejr completion | ✅ |
+| `auto_predict.py` | Generér predictions | Ved phase completion | ✅ |
+| `admiral_tracker.py` | Track scores + leaderboard | Ved events | ✅ |
+| `auto_live_status.py` | Live status display | For real-time view | ✅ |
+| `auto_optimize.py` | Auto-optimering | Ved PHASE 0 | ✅ |
+| `model_router.py` | Vælg AI model per opgave | Ved model-valg | ✅ |
+| `token_tools.py` | Tæl tokens + estimer pris | Før API kald | ✅ |
+| `build_knowledge_base.py` | Byg ChromaDB søge-index | Ved ny dokumentation | ✅ |
+| `automation_pipeline.py` | Pre-commit kvalitets-check | Ved git commit | ✅ |
 
 ---
 
@@ -392,5 +397,112 @@ python3 scripts/auto_learn.py
 
 ---
 
-**Sidst opdateret:** 2026-01-26
-**Version:** 1.1.0 (PASS 2 - tilføjet Common Errors)
+---
+
+## 12. model_router.py
+
+### Formål
+Vælger den rigtige AI model baseret på opgavetype (Opus/Sonnet/Haiku/Ollama).
+
+### Brug
+```bash
+# Klassificér en opgave
+python3 scripts/model_router.py --classify "Design arkitekturen for login"
+
+# Test routing med alle eksempler
+python3 scripts/model_router.py --test
+
+# Kør lokalt med Ollama (GRATIS)
+python3 scripts/model_router.py --local "Forklar hvad en variabel er"
+```
+
+### Routing Regler
+| Model | Opgavetype | Pris |
+|-------|-----------|------|
+| Opus | Arkitektur, strategi, patterns, komplekse beslutninger | $$$ |
+| Sonnet | Kode, refactoring, git, implementation | $$ |
+| Haiku | Verification, checks, logging, simple spørgsmål | $ |
+| Ollama | Forklaringer, brainstorm, simple formatting | GRATIS |
+
+---
+
+## 13. token_tools.py
+
+### Formål
+Tæller tokens, estimerer pris, og cacher Ollama-svar.
+
+### Brug
+```bash
+# Tæl tokens i tekst ELLER fil (auto-detect)
+python3 scripts/token_tools.py count "Din tekst her"
+python3 scripts/token_tools.py count masterpiece_en.py
+
+# Tæl tokens i fil (eksplicit)
+python3 scripts/token_tools.py count-file masterpiece_en.py
+
+# Estimér pris
+python3 scripts/token_tools.py cost "Din tekst" --model opus --max-tokens 2000
+
+# Se cache statistik
+python3 scripts/token_tools.py cache-stats
+```
+
+### Cost Oversigt
+| Model | Input/1M tokens | Output/1M tokens |
+|-------|-----------------|------------------|
+| Opus | $15.00 | $75.00 |
+| Sonnet | $3.00 | $15.00 |
+| Haiku | $0.25 | $1.25 |
+| Ollama | GRATIS | GRATIS |
+
+---
+
+## 14. build_knowledge_base.py
+
+### Formål
+Bygger en ChromaDB-baseret søge-index over al dokumentation.
+
+### Brug
+```bash
+# Byg/rebuild knowledge base
+python3 scripts/build_knowledge_base.py
+
+# Søg i knowledge base
+python3 scripts/build_knowledge_base.py --query "Hvad er DNA lag systemet?"
+
+# Se statistik
+python3 scripts/build_knowledge_base.py --stats
+```
+
+### Output
+- 82+ dokumenter indekseret
+- Semantisk søgning med relevance-scores
+- Token-estimat for context
+
+---
+
+## 15. automation_pipeline.py
+
+### Formål
+Pre-commit kvalitets-pipeline. Kører syntax, flake8, og bandit checks.
+
+### Brug
+```bash
+# Hurtig check (kun syntax + kritiske fejl)
+python3 scripts/automation_pipeline.py --quick
+
+# Fuld pipeline med rapportering
+python3 scripts/automation_pipeline.py masterpiece_en.py
+```
+
+### Output
+Rapporterer:
+- Syntax errors (BLOKERENDE)
+- Flake8 kritiske fejl (BLOKERENDE)
+- Style warnings (INFORMATIONELLE)
+- Bandit security issues (INFORMATIONELLE)
+
+---
+
+**Sidst opdateret:** 2026-01-28
+**Version:** 2.0.0 (Komplet - alle 15 scripts dokumenteret + verificeret)

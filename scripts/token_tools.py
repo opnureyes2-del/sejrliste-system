@@ -104,7 +104,7 @@ def _ensure_cache_dir():
 def cache_get(key: str) -> str | None:
     """Hent fra lokal fil-cache."""
     _ensure_cache_dir()
-    cache_file = os.path.join(CACHE_DIR, hashlib.md5(key.encode()).hexdigest())
+    cache_file = os.path.join(CACHE_DIR, hashlib.md5(key.encode(), usedforsecurity=False).hexdigest())
     if os.path.isfile(cache_file):
         with open(cache_file, 'r') as f:
             data = json.load(f)
@@ -122,7 +122,7 @@ def cache_get(key: str) -> str | None:
 def cache_set(key: str, value: str, ttl: int = 3600):
     """Gem i lokal fil-cache."""
     _ensure_cache_dir()
-    cache_file = os.path.join(CACHE_DIR, hashlib.md5(key.encode()).hexdigest())
+    cache_file = os.path.join(CACHE_DIR, hashlib.md5(key.encode(), usedforsecurity=False).hexdigest())
     data = {
         "key": key[:200],  # Truncated for readability
         "value": value,
@@ -180,13 +180,28 @@ def main():
     if cmd == "count":
         if len(sys.argv) < 3:
             print("Brug: python3 token_tools.py count \"din tekst\"")
+            print("      python3 token_tools.py count <fil>  (auto-detect)")
             return
-        text = " ".join(sys.argv[2:])
-        tokens = count_tokens(text)
-        print(f"📊 Tekst: \"{text[:80]}{'...' if len(text) > 80 else ''}\"")
-        print(f"📊 Tokens: {tokens:,}")
-        print(f"📊 Tegn: {len(text):,}")
-        print(f"📊 Tegn/token: {len(text)/tokens:.1f}" if tokens > 0 else "")
+        arg = " ".join(sys.argv[2:])
+        # Auto-detect: if argument is a file path, read and count file
+        if os.path.isfile(arg):
+            result = count_file_tokens(arg)
+            print(f"📁 Fil: {result['file']}")
+            print(f"📊 Tokens: {result['tokens']:,}")
+            print(f"📏 Linjer: {result['lines']:,}")
+            print(f"📝 Tegn: {result['chars']:,}")
+            print(f"📊 Tegn/token: {result['chars_per_token']:.1f}")
+            for model in ["opus", "sonnet", "haiku", "ollama"]:
+                cost = estimate_cost("x" * result['chars'], 1024, model)
+                print(f"  💰 {model}: ${cost['estimated_cost_usd']:.4f}"
+                      f" (input: {result['tokens']:,} tokens)")
+        else:
+            text = arg
+            tokens = count_tokens(text)
+            print(f"📊 Tekst: \"{text[:80]}{'...' if len(text) > 80 else ''}\"")
+            print(f"📊 Tokens: {tokens:,}")
+            print(f"📊 Tegn: {len(text):,}")
+            print(f"📊 Tegn/token: {len(text)/tokens:.1f}" if tokens > 0 else "")
 
     elif cmd == "count-file":
         if len(sys.argv) < 3:

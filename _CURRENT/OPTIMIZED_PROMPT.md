@@ -1,8 +1,8 @@
 # OPTIMERET SEJR PROMPT
 
-*Auto-genereret baseret på 19 gennemførte sejr*
-*Success rate: 18/19 GRAND ADMIRAL (94%)*
-*Gennemsnitlig score: 29.7/30*
+*Auto-genereret baseret på 20 gennemførte sejr*
+*Success rate: 19/20 GRAND ADMIRAL (95%)*
+*Gennemsnitlig score: 29.6/30*
 
 ---
 

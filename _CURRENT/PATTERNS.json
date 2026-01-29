@@ -1,8 +1,8 @@
 {
   "system": {
     "version": "1.0.0",
-    "last_learned": "2026-01-26 14:01",
-    "total_patterns": 39
+    "last_learned": "2026-01-28 00:55",
+    "total_patterns": 48
   },
   "learned_patterns": [
     {
@@ -393,6 +393,96 @@
       "time_saved_total": "0 min",
       "confidence": 0.9,
       "first_seen": "2026-01-26",
+      "last_applied": null
+    },
+    {
+      "pattern": "SUCCESS RATE: 19/20 sejr opnår GRAND ADMIRAL (95%)",
+      "prevention": "Bevar 3-pass system med obligatorisk review",
+      "optimization": "Fokusér på Pass 1 kvalitet for at reducere Pass 2-3 arbejde",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.98,
+      "first_seen": "2026-01-28",
+      "last_applied": null
+    },
+    {
+      "pattern": "WORKFLOW: 1. if/elif chain ordering er KRITISK for view switching - library view skal være SIDST",
+      "prevention": "Follow this rule in similar situations",
+      "optimization": "Automate enforcement if possible",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.9,
+      "first_seen": "2026-01-28",
+      "last_applied": null
+    },
+    {
+      "pattern": "WORKFLOW: 2. subprocess calls SKAL have try/catch + timeout for robusthed",
+      "prevention": "Follow this rule in similar situations",
+      "optimization": "Automate enforcement if possible",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.9,
+      "first_seen": "2026-01-28",
+      "last_applied": null
+    },
+    {
+      "pattern": "REUSABLE TEMPLATE: 17 identificeret",
+      "prevention": "Check eksisterende Template før oprettelse af ny",
+      "optimization": "Katalogisér Template i 00_TEMPLATES/",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.85,
+      "first_seen": "2026-01-28",
+      "last_applied": null
+    },
+    {
+      "pattern": "REUSABLE SCRIPT: 17 identificeret",
+      "prevention": "Check eksisterende Script før oprettelse af ny",
+      "optimization": "Katalogisér Script i 00_TEMPLATES/",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.85,
+      "first_seen": "2026-01-28",
+      "last_applied": null
+    },
+    {
+      "pattern": "REUSABLE PATTERN: 19 identificeret",
+      "prevention": "Check eksisterende Pattern før oprettelse af ny",
+      "optimization": "Katalogisér Pattern i 00_TEMPLATES/",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.85,
+      "first_seen": "2026-01-28",
+      "last_applied": null
+    },
+    {
+      "pattern": "IMPROVEMENT FOCUS: tests forbedres i 14 sejr",
+      "prevention": "Inkludér tests fra Pass 1",
+      "optimization": "Brug tests checklist i template",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.8,
+      "first_seen": "2026-01-28",
+      "last_applied": null
+    },
+    {
+      "pattern": "IMPROVEMENT FOCUS: error_handling forbedres i 9 sejr",
+      "prevention": "Inkludér error_handling fra Pass 1",
+      "optimization": "Brug error_handling checklist i template",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.8,
+      "first_seen": "2026-01-28",
+      "last_applied": null
+    },
+    {
+      "pattern": "FREQUENT ACTION: sejr_created (20x across sejr)",
+      "prevention": "Consider automating sejr_created",
+      "optimization": "Create script/hotkey for sejr_created",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.9,
+      "first_seen": "2026-01-28",
       "last_applied": null
     }
   ]

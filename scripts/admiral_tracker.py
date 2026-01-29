@@ -287,43 +287,93 @@ def show_score(sejr_path: Path):
     print("=" * 60 + "\n")
 
 
+def _extract_score_from_status(sejr_path: Path) -> dict | None:
+    """Extract score from STATUS.yaml (used by auto_verify.py)."""
+    status_file = sejr_path / "STATUS.yaml"
+    if not status_file.exists():
+        return None
+
+    data = parse_yaml_simple(status_file)
+    score = data.get("score", 0)
+    if isinstance(score, (int, float)):
+        return {
+            "sejr": sejr_path.name,
+            "model": data.get("created_by", "Kv1nt"),
+            "score": int(score),
+            "rank": get_rank(int(score)),
+        }
+    return None
+
+
+def _extract_score_from_diplom(sejr_path: Path) -> dict | None:
+    """Extract score from SEJR_DIPLOM.md (fallback)."""
+    diplom_file = sejr_path / "SEJR_DIPLOM.md"
+    if not diplom_file.exists():
+        return None
+
+    try:
+        content = diplom_file.read_text(encoding="utf-8")
+        import re
+        # Look for "SCORE: XX/30" pattern
+        match = re.search(r"SCORE:\s*(\d+)/30", content)
+        if match:
+            score = int(match.group(1))
+            # Look for rank
+            rank_match = re.search(r"RANG:\s*(\w+)", content)
+            rank = rank_match.group(1) if rank_match else get_rank(score)
+            return {
+                "sejr": sejr_path.name,
+                "model": "Kv1nt",
+                "score": score,
+                "rank": rank,
+            }
+    except Exception:
+        pass
+    return None
+
+
 def show_leaderboard(system_path: Path):
-    """Show global leaderboard."""
+    """Show global leaderboard from all available score sources."""
     scores = []
 
-    # Collect from active
-    active_dir = system_path / "10_ACTIVE"
-    if active_dir.exists():
-        for sejr_path in active_dir.iterdir():
-            if sejr_path.is_dir():
-                score_file = sejr_path / "ADMIRAL_SCORE.yaml"
-                if score_file.exists():
-                    data = parse_yaml_simple(score_file)
-                    totals = calculate_totals(data)
-                    scores.append({
-                        "sejr": sejr_path.name,
-                        "model": data.get("meta", {}).get("model_name", "Unknown"),
-                        "score": totals["total_score"],
-                        "rank": totals["rank"],
-                        "status": "ACTIVE",
-                    })
+    # Helper to collect scores from a directory
+    def collect_from_dir(directory: Path, status_label: str):
+        if not directory.exists():
+            return
+        for sejr_path in directory.iterdir():
+            if not sejr_path.is_dir():
+                continue
 
-    # Collect from archive
-    archive_dir = system_path / "90_ARCHIVE"
-    if archive_dir.exists():
-        for sejr_path in archive_dir.iterdir():
-            if sejr_path.is_dir():
-                score_file = sejr_path / "ADMIRAL_SCORE.yaml"
-                if score_file.exists():
-                    data = parse_yaml_simple(score_file)
-                    totals = calculate_totals(data)
-                    scores.append({
-                        "sejr": sejr_path.name,
-                        "model": data.get("meta", {}).get("model_name", "Unknown"),
-                        "score": totals["total_score"],
-                        "rank": totals["rank"],
-                        "status": "ARCHIVED",
-                    })
+            # Try ADMIRAL_SCORE.yaml first (original format)
+            score_file = sejr_path / "ADMIRAL_SCORE.yaml"
+            if score_file.exists():
+                data = parse_yaml_simple(score_file)
+                totals = calculate_totals(data)
+                scores.append({
+                    "sejr": sejr_path.name,
+                    "model": data.get("meta", {}).get("model_name", "Kv1nt"),
+                    "score": totals["total_score"],
+                    "rank": totals["rank"],
+                    "status": status_label,
+                })
+                continue
+
+            # Try SEJR_DIPLOM.md (has SCORE: XX/30)
+            entry = _extract_score_from_diplom(sejr_path)
+            if entry:
+                entry["status"] = status_label
+                scores.append(entry)
+                continue
+
+            # Try STATUS.yaml (auto_verify output)
+            entry = _extract_score_from_status(sejr_path)
+            if entry:
+                entry["status"] = status_label
+                scores.append(entry)
+
+    # Collect from both directories
+    collect_from_dir(system_path / "10_ACTIVE", "ACTIVE")
+    collect_from_dir(system_path / "90_ARCHIVE", "ARCHIVED")
 
     # Sort by score
     scores.sort(key=lambda x: x["score"], reverse=True)
@@ -335,8 +385,8 @@ def show_leaderboard(system_path: Path):
     if not scores:
         print("\nIngen scores endnu. Start en sejr for at begynde!")
     else:
-        print(f"\n{'#':<3} {'Model':<25} {'Score':<8} {'Rank':<12} {'Status':<10}")
-        print("-" * 70)
+        print(f"\n{'#':<3} {'Sejr':<40} {'Score':<8} {'Rank':<15} {'Status':<10}")
+        print("-" * 80)
         for i, entry in enumerate(scores, 1):
             rank_emoji = {
                 "STORADMIRAL": "🎖️",
@@ -345,9 +395,12 @@ def show_leaderboard(system_path: Path):
                 "LØJTNANT": "🎗️",
                 "KADET": "📛",
                 "SKIBSDRENG": "💀",
+                "GRAND": "🎖️",
             }.get(entry["rank"], "")
-            print(f"{i:<3} {entry['model']:<25} {entry['score']:<8} {rank_emoji} {entry['rank']:<10} {entry['status']}")
+            name = entry["sejr"][:38]
+            print(f"{i:<3} {name:<40} {entry['score']:<8} {rank_emoji} {entry['rank']:<13} {entry['status']}")
 
+    print(f"\nTotal: {len(scores)} sejr registreret")
     print("=" * 70 + "\n")
 
 

@@ -603,7 +603,9 @@ class SejrlisteApp(App):
         super().__init__()
         self.session_start = datetime.now()
         self.load_sejrs()
-        # Start session timer
+
+    def on_mount(self) -> None:
+        """Called when app is mounted - safe to use set_interval here."""
         self.set_interval(1.0, self.update_session_timer)
 
     def get_session_duration(self) -> str:

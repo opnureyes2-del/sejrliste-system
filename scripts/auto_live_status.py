@@ -30,10 +30,7 @@ BASE_DIR = Path(__file__).parent.parent
 ACTIVE_DIR = BASE_DIR / "10_ACTIVE"
 ARCHIVE_DIR = BASE_DIR / "90_ARCHIVE"
 CURRENT_DIR = BASE_DIR / "_CURRENT"
-SERVICES_DIR = BASE_DIR / "services"
 OUTPUT_FILE = CURRENT_DIR / "LIVE_STATUS.md"
-
-sys.path.insert(0, str(SERVICES_DIR))
 
 # ═══════════════════════════════════════════════════════════════════════════
 # DATA COLLECTION
@@ -76,55 +73,69 @@ def get_active_processes() -> Dict[str, str]:
 
 
 def get_active_sejrs() -> List[Dict]:
-    """Hent alle aktive sejrs med deres status"""
+    """Hent alle aktive sejrs med deres status fra SEJR_LISTE.md filer."""
     sejrs = []
 
-    try:
-        from complete_timeline import TimelineGenerator
-        generator = TimelineGenerator()
+    if not ACTIVE_DIR.exists():
+        return sejrs
 
-        for sejr_dir in ACTIVE_DIR.iterdir():
-            if sejr_dir.is_dir():
-                timeline = generator.generate_sejr_timeline(sejr_dir)
+    for sejr_dir in sorted(ACTIVE_DIR.iterdir()):
+        if not sejr_dir.is_dir():
+            continue
 
-                # Get current step name
-                current_step = ""
-                for step in timeline.steps:
-                    if step.status.value == "🔵":
-                        current_step = step.name
-                        break
+        sejr_liste = sejr_dir / "SEJR_LISTE.md"
+        if not sejr_liste.exists():
+            continue
 
-                sejrs.append({
-                    "name": sejr_dir.name,
-                    "progress": timeline.progress_percentage,
-                    "position": timeline.current_position,
-                    "total": timeline.total_steps,
-                    "current_step": current_step,
-                    "estimated": timeline.estimated_completion,
-                    "outcome": timeline.final_outcome
-                })
-    except Exception as e:
-        print(f"Fejl ved hentning af sejrs: {e}")
+        try:
+            content = sejr_liste.read_text(encoding="utf-8")
+            # Count checkboxes
+            done = content.count("- [x]") + content.count("- [X]")
+            total = done + content.count("- [ ]")
+            progress = (done / total * 100) if total > 0 else 0
+
+            # Find current pass
+            current_pass = 1
+            if "## PASS 2" in content:
+                current_pass = 2
+            if "## PASS 3" in content:
+                current_pass = 3
+
+            sejrs.append({
+                "name": sejr_dir.name,
+                "progress": progress,
+                "position": done,
+                "total": total,
+                "current_step": f"Pass {current_pass}/3",
+                "estimated": "—",
+                "outcome": "IN_PROGRESS"
+            })
+        except Exception as e:
+            print(f"  Fejl ved {sejr_dir.name}: {e}")
 
     return sejrs
 
 
 def get_next_steps(sejrs: List[Dict]) -> List[str]:
-    """Hent de næste 3 skridt"""
+    """Hent de næste 3 skridt baseret på aktive sejrs."""
+    if not sejrs:
+        return ["Opret ny sejr med generate_sejr.py"]
+
+    # Find the sejr closest to completion
+    closest = max(sejrs, key=lambda s: s["progress"])
+
     steps = []
+    if closest["progress"] < 100:
+        steps.append(f"Færdiggør {closest['name'].split('_2026')[0].replace('_', ' ')}")
+    if closest["progress"] >= 80:
+        steps.append("Kør verification (auto_verify.py --all)")
+    if closest["progress"] >= 95:
+        steps.append("Arkiver (auto_archive.py)")
+    else:
+        steps.append("Fortsæt med checkboxes")
+        steps.append("Kør verification for status-check")
 
-    if sejrs:
-        try:
-            from unified_sync import PredictiveEngine
-            engine = PredictiveEngine()
-
-            # Get steps for the first active sejr
-            all_steps = engine.get_next_steps(sejrs[0]["name"])
-            steps = all_steps[:3]
-        except:
-            steps = ["Færdiggør nuværende opgave", "Kør verification", "Arkiver"]
-
-    return steps
+    return steps[:3]
 
 
 def get_current_context() -> Dict:

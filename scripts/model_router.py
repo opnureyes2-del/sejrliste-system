@@ -48,6 +48,8 @@ ROUTES = {
             "component", "komponent", "funktion", "function", "class",
             "klasse", "modul", "module", "migration",
             "phase 2", "phase 4", "dna lag 5", "self-archiving",
+            "review", "bug", "fejl", "ændring", "change", "update",
+            "opdater", "tilføj", "add", "slet", "delete", "remove",
         ],
         "model_id": "claude-sonnet-4-20250514",
         "cost": "$$",
