@@ -277,14 +277,14 @@ Each victory folder has these log files:
 
 | When | Action | Required |
 |------|--------|----------|
-| At session start | `SESSION_START` | ✅ YES |
-| When reading CLAUDE.md | `CONTEXT_LOADED` | ✅ YES |
-| When starting checkbox | `CHECKBOX_START` | ✅ YES |
-| When completing checkbox | `CHECKBOX_DONE` | ✅ YES |
-| When running terminal command | `COMMAND_RUN` | ✅ YES |
-| On error | `ERROR_OCCURRED` | ✅ YES |
-| On pass complete | `PASS_COMPLETE` | ✅ YES |
-| At session end | `SESSION_END` | ✅ YES |
+| At session start | `SESSION_START` | [OK] YES |
+| When reading CLAUDE.md | `CONTEXT_LOADED` | [OK] YES |
+| When starting checkbox | `CHECKBOX_START` | [OK] YES |
+| When completing checkbox | `CHECKBOX_DONE` | [OK] YES |
+| When running terminal command | `COMMAND_RUN` | [OK] YES |
+| On error | `ERROR_OCCURRED` | [OK] YES |
+| On pass complete | `PASS_COMPLETE` | [OK] YES |
+| At session end | `SESSION_END` | [OK] YES |
 
 ### Scripts MUST Log
 

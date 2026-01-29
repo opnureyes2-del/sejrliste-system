@@ -47,54 +47,54 @@ python3 scripts/auto_archive.py --sejr "MY_TASK_2026-01-25"
 ```
 sejrliste systemet/
 │
-├── README.md                 ← Danish version (Quick Start)
-├── README_EN.md              ← You are reading this (English)
-├── ADMIRAL.md                ← WHAT IS AN ADMIRAL? (5 qualities)
-├── MODEL_ONBOARDING.md       ← AI ONBOARDING (read first as new model!)
-├── SCRIPT_REFERENCE.md       ← All 11 scripts documented
-├── EKSEMPLER.md              ← 10+ concrete examples
-├── ARBEJDSFORHOLD.md         ← COMPLETE GUIDE (AI rules included)
-├── MANUAL.md                 ← Full documentation (3-pass + score system)
-├── LOG_FORMAT.md             ← Log format specification
-├── DNA.yaml                  ← System identity
-├── ARKITEKTUR.md             ← System architecture
-├── view.py                   ← Terminal viewer (simple)
-├── app/sejr_app.py           ← TUI app (Textual - advanced)
+├── README.md ← Danish version (Quick Start)
+├── README_EN.md ← You are reading this (English)
+├── ADMIRAL.md ← WHAT IS AN ADMIRAL? (5 qualities)
+├── MODEL_ONBOARDING.md ← AI ONBOARDING (read first as new model!)
+├── SCRIPT_REFERENCE.md ← All 11 scripts documented
+├── EKSEMPLER.md ← 10+ concrete examples
+├── ARBEJDSFORHOLD.md ← COMPLETE GUIDE (AI rules included)
+├── MANUAL.md ← Full documentation (3-pass + score system)
+├── LOG_FORMAT.md ← Log format specification
+├── DNA.yaml ← System identity
+├── ARKITEKTUR.md ← System architecture
+├── view.py ← Terminal viewer (simple)
+├── app/sejr_app.py ← TUI app (Textual - advanced)
 │
-├── scripts/                  ← Automation (9 scripts)
-│   ├── generate_sejr.py          → Create new victory + CLAUDE.md
-│   ├── build_claude_context.py   → DYNAMIC CLAUDE.md builder
-│   ├── update_claude_focus.py    → Update focus state
-│   ├── auto_verify.py            → 3-pass verification
-│   ├── auto_archive.py           → Archiving (blocked until done)
-│   ├── auto_track.py             → State tracking
-│   ├── auto_learn.py             → Pattern learning
-│   ├── auto_predict.py           → Predictions
-│   └── admiral_tracker.py        → Score tracking + leaderboard
+├── scripts/ ← Automation (9 scripts)
+│ ├── generate_sejr.py → Create new victory + CLAUDE.md
+│ ├── build_claude_context.py → DYNAMIC CLAUDE.md builder
+│ ├── update_claude_focus.py → Update focus state
+│ ├── auto_verify.py → 3-pass verification
+│ ├── auto_archive.py → Archiving (blocked until done)
+│ ├── auto_track.py → State tracking
+│ ├── auto_learn.py → Pattern learning
+│ ├── auto_predict.py → Predictions
+│ └── admiral_tracker.py → Score tracking + leaderboard
 │
-├── 00_TEMPLATES/             ← Templates (4 items)
-│   ├── SEJR_TEMPLATE.md          → Master template with 3-pass
-│   ├── CLAUDE.md                 → Focus lock template
-│   ├── STATUS_TEMPLATE.yaml      → Unified status template
-│   └── SESSION_TJEK.md           → Session start checklist
+├── 00_TEMPLATES/ ← Templates (4 items)
+│ ├── SEJR_TEMPLATE.md → Master template with 3-pass
+│ ├── CLAUDE.md → Focus lock template
+│ ├── STATUS_TEMPLATE.yaml → Unified status template
+│ └── SESSION_TJEK.md → Session start checklist
 │
-├── 10_ACTIVE/                ← ACTIVE VICTORIES (work here)
-│   └── {TASK_DATE}/
-│       ├── SEJR_LISTE.md         → Main task with checkboxes
-│       ├── CLAUDE.md             → AI FOCUS LOCK (generated)
-│       ├── STATUS.yaml           → UNIFIED (pass + score + model)
-│       └── AUTO_LOG.jsonl        → MASTER (all logging)
+├── 10_ACTIVE/ ← ACTIVE VICTORIES (work here)
+│ └── {TASK_DATE}/
+│ ├── SEJR_LISTE.md → Main task with checkboxes
+│ ├── CLAUDE.md → AI FOCUS LOCK (generated)
+│ ├── STATUS.yaml → UNIFIED (pass + score + model)
+│ └── AUTO_LOG.jsonl → MASTER (all logging)
 │
-├── 90_ARCHIVE/               ← COMPLETED VICTORIES (conclusion only)
-│   └── {TASK_DATE_TIME}/
-│       └── CONCLUSION.md         → Semantic essence
+├── 90_ARCHIVE/ ← COMPLETED VICTORIES (conclusion only)
+│ └── {TASK_DATE_TIME}/
+│ └── CONCLUSION.md → Semantic essence
 │
-└── _CURRENT/                 ← System state (5 files)
-    ├── STATE.md                  → Current state
-    ├── DELTA.md                  → What's new
-    ├── NEXT.md                   → Predictions
-    ├── PATTERNS.yaml             → Learned patterns
-    └── LEADERBOARD.md            → Global competition leaderboard
+└── _CURRENT/ ← System state (5 files)
+ ├── STATE.md → Current state
+ ├── DELTA.md → What's new
+ ├── NEXT.md → Predictions
+ ├── PATTERNS.yaml → Learned patterns
+ └── LEADERBOARD.md → Global competition leaderboard
 ```
 
 ---
@@ -152,13 +152,13 @@ The main task with all checkboxes organized in 3 passes:
 
 ### Pass 3: 7-DNA REVIEW
 - Review ALL 7 DNA layers:
-  1. SELF-AWARE - Does the system know itself?
-  2. SELF-DOCUMENTING - Is everything logged?
-  3. SELF-VERIFYING - Is everything tested?
-  4. SELF-IMPROVING - Did we learn something?
-  5. SELF-ARCHIVING - Only essence preserved?
-  6. PREDICTIVE - What is the next step?
-  7. SELF-OPTIMIZING - Could we have done better?
+ 1. SELF-AWARE - Does the system know itself?
+ 2. SELF-DOCUMENTING - Is everything logged?
+ 3. SELF-VERIFYING - Is everything tested?
+ 4. SELF-IMPROVING - Did we learn something?
+ 5. SELF-ARCHIVING - Only essence preserved?
+ 6. PREDICTIVE - What is the next step?
+ 7. SELF-OPTIMIZING - Could we have done better?
 - Run 5+ tests
 - **Score MUST be higher than Pass 2**
 - **Total score MUST be ≥ 24/30**
@@ -224,7 +224,7 @@ python3 app/sejr_app.py
 
 ---
 
-## 🎖️ ADMIRAL COMPETITION SYSTEM
+## [ADMIRAL] ADMIRAL COMPETITION SYSTEM
 
 A **SCORE SYSTEM** that measures AI model performance objectively!
 
@@ -248,12 +248,12 @@ A **SCORE SYSTEM** that measures AI model performance objectively!
 ### Rankings
 | Rank | Score |
 |------|-------|
-| 🎖️ GRAND ADMIRAL | 150+ |
-| ⭐ ADMIRAL | 100-149 |
-| 🏅 CAPTAIN | 50-99 |
-| 🎗️ LIEUTENANT | 20-49 |
-| 📛 CADET | 0-19 |
-| 💀 DECKHAND | < 0 |
+| [ADMIRAL] GRAND ADMIRAL | 150+ |
+| ADMIRAL | 100-149 |
+| [MEDAL] CAPTAIN | 50-99 |
+| LIEUTENANT | 20-49 |
+| CADET | 0-19 |
+| [DEAD] DECKHAND | < 0 |
 
 ### Commands
 ```bash
@@ -273,4 +273,4 @@ See MANUAL.md for full documentation of the score system.
 
 **Built by:** Kv1nt + Rasmus
 **Date:** 2026-01-25
-**Status:** ✅ OPERATIONAL
+**Status:** [OK] OPERATIONAL

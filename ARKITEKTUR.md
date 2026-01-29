@@ -65,13 +65,13 @@
 
 | Data Type | Findes I | KUN I |
 |-----------|----------|-------|
-| Pass completion | STATUS.yaml | ✅ |
-| Pass scores | STATUS.yaml | ✅ |
-| Konkurrence scores | STATUS.yaml | ✅ |
-| Model history | STATUS.yaml | ✅ |
-| Terminal output | AUTO_LOG.jsonl | ✅ |
-| Handlinger | AUTO_LOG.jsonl | ✅ |
-| Sessions | STATUS.yaml + AUTO_LOG.jsonl | ✅ (reference) |
+| Pass completion | STATUS.yaml | [OK] |
+| Pass scores | STATUS.yaml | [OK] |
+| Konkurrence scores | STATUS.yaml | [OK] |
+| Model history | STATUS.yaml | [OK] |
+| Terminal output | AUTO_LOG.jsonl | [OK] |
+| Handlinger | AUTO_LOG.jsonl | [OK] |
+| Sessions | STATUS.yaml + AUTO_LOG.jsonl | [OK] (reference) |
 
 ### Test 2: Sporbarhed
 
@@ -171,10 +171,10 @@ head -1 AUTO_LOG.jsonl | python3 -c "import sys,json; json.load(sys.stdin)"
 
 **ADMIRAL STANDARD OPNÅET:**
 
-✅ **Single Source of Truth** - Ingen data duplikeret
-✅ **Komplet Sporbarhed** - Hvem/hvad/hvornår fra 2 filer
-✅ **Minimal Kompleksitet** - 4 filer i stedet for 7
-✅ **Ingen Redundans** - 0 overlappende data
+[OK] **Single Source of Truth** - Ingen data duplikeret
+[OK] **Komplet Sporbarhed** - Hvem/hvad/hvornår fra 2 filer
+[OK] **Minimal Kompleksitet** - 4 filer i stedet for 7
+[OK] **Ingen Redundans** - 0 overlappende data
 
 ---
 

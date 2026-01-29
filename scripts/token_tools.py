@@ -17,7 +17,7 @@ import sys
 import os
 import json
 import hashlib
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 # ============================================================
@@ -126,7 +126,7 @@ def cache_set(key: str, value: str, ttl: int = 3600):
     data = {
         "key": key[:200],  # Truncated for readability
         "value": value,
-        "cached_at": datetime.now().isoformat(),
+        "cached_at": datetime.now(timezone.utc).astimezone().isoformat(),
         "ttl": ttl,
     }
     with open(cache_file, 'w') as f:
@@ -150,7 +150,7 @@ def cached_ollama_call(prompt: str, model: str = "llama3.2",
     """Ollama kald med lokal fil-cache. Gentag = GRATIS."""
     cached = cache_get(f"ollama:{model}:{prompt}")
     if cached:
-        print("💰 Svar fra cache (0 tokens, 0 API kald)")
+        print("[COST] Svar fra cache (0 tokens, 0 API kald)")
         return cached
 
     try:
@@ -163,7 +163,7 @@ def cached_ollama_call(prompt: str, model: str = "llama3.2",
         cache_set(f"ollama:{model}:{prompt}", result, ttl)
         return result
     except Exception as e:
-        return f"❌ Fejl: {e}"
+        return f"[FAIL] Fejl: {e}"
 
 
 # ============================================================
@@ -186,22 +186,22 @@ def main():
         # Auto-detect: if argument is a file path, read and count file
         if os.path.isfile(arg):
             result = count_file_tokens(arg)
-            print(f"📁 Fil: {result['file']}")
-            print(f"📊 Tokens: {result['tokens']:,}")
-            print(f"📏 Linjer: {result['lines']:,}")
-            print(f"📝 Tegn: {result['chars']:,}")
-            print(f"📊 Tegn/token: {result['chars_per_token']:.1f}")
+            print(f"[FILE] Fil: {result['file']}")
+            print(f"[DATA] Tokens: {result['tokens']:,}")
+            print(f"[SIZE] Linjer: {result['lines']:,}")
+            print(f"[TEXT] Tegn: {result['chars']:,}")
+            print(f"[DATA] Tegn/token: {result['chars_per_token']:.1f}")
             for model in ["opus", "sonnet", "haiku", "ollama"]:
                 cost = estimate_cost("x" * result['chars'], 1024, model)
-                print(f"  💰 {model}: ${cost['estimated_cost_usd']:.4f}"
+                print(f"  [COST] {model}: ${cost['estimated_cost_usd']:.4f}"
                       f" (input: {result['tokens']:,} tokens)")
         else:
             text = arg
             tokens = count_tokens(text)
-            print(f"📊 Tekst: \"{text[:80]}{'...' if len(text) > 80 else ''}\"")
-            print(f"📊 Tokens: {tokens:,}")
-            print(f"📊 Tegn: {len(text):,}")
-            print(f"📊 Tegn/token: {len(text)/tokens:.1f}" if tokens > 0 else "")
+            print(f"[DATA] Tekst: \"{text[:80]}{'...' if len(text) > 80 else ''}\"")
+            print(f"[DATA] Tokens: {tokens:,}")
+            print(f"[DATA] Tegn: {len(text):,}")
+            print(f"[DATA] Tegn/token: {len(text)/tokens:.1f}" if tokens > 0 else "")
 
     elif cmd == "count-file":
         if len(sys.argv) < 3:
@@ -209,19 +209,19 @@ def main():
             return
         filepath = sys.argv[2]
         if not os.path.isfile(filepath):
-            print(f"❌ Fil ikke fundet: {filepath}")
+            print(f"[FAIL] Fil ikke fundet: {filepath}")
             return
         result = count_file_tokens(filepath)
-        print(f"📁 Fil: {result['file']}")
-        print(f"📊 Tokens: {result['tokens']:,}")
-        print(f"📏 Linjer: {result['lines']:,}")
-        print(f"📝 Tegn: {result['chars']:,}")
-        print(f"📊 Tegn/token: {result['chars_per_token']:.1f}")
+        print(f"[FILE] Fil: {result['file']}")
+        print(f"[DATA] Tokens: {result['tokens']:,}")
+        print(f"[SIZE] Linjer: {result['lines']:,}")
+        print(f"[TEXT] Tegn: {result['chars']:,}")
+        print(f"[DATA] Tegn/token: {result['chars_per_token']:.1f}")
 
         # Vis cost for at sende hele filen
         for model in ["opus", "sonnet", "haiku", "ollama"]:
             cost = estimate_cost("x" * result['chars'], 1024, model)
-            print(f"  💰 {model}: ${cost['estimated_cost_usd']:.4f}"
+            print(f"  [COST] {model}: ${cost['estimated_cost_usd']:.4f}"
                   f" (input: {result['tokens']:,} tokens)")
 
     elif cmd == "cost":
@@ -235,21 +235,21 @@ def main():
                 max_tokens = int(sys.argv[i + 4])
 
         result = estimate_cost(text, max_tokens, model)
-        print(f"📊 Model: {result['model']}")
-        print(f"📊 Input tokens: {result['input_tokens']:,}")
-        print(f"📊 Max output: {result['max_output_tokens']:,}")
-        print(f"💰 Estimeret pris: ${result['estimated_cost_usd']:.6f}")
+        print(f"[DATA] Model: {result['model']}")
+        print(f"[DATA] Input tokens: {result['input_tokens']:,}")
+        print(f"[DATA] Max output: {result['max_output_tokens']:,}")
+        print(f"[COST] Estimeret pris: ${result['estimated_cost_usd']:.6f}")
         if result['savings_if_cached'] > 0:
-            print(f"💰 Besparelse med cache: "
+            print(f"[COST] Besparelse med cache: "
                   f"${result['savings_if_cached']:.6f} (90%)")
 
     elif cmd == "cache-stats":
         stats = cache_stats()
-        print(f"📊 Cache Statistik")
+        print(f"[DATA] Cache Statistik")
         print(f"{'='*30}")
-        print(f"📦 Entries: {stats['entries']}")
-        print(f"📏 Størrelse: {stats['total_size_kb']:.1f} KB")
-        print(f"📁 Mappe: {stats['cache_dir']}")
+        print(f"[ENTRIES] Entries: {stats['entries']}")
+        print(f"[SIZE] Størrelse: {stats['total_size_kb']:.1f} KB")
+        print(f"[FILE] Mappe: {stats['cache_dir']}")
 
     else:
         print(f"Ukendt kommando: {cmd}")

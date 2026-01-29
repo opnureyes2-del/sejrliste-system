@@ -154,9 +154,9 @@ def run_local(prompt: str) -> str:
         )
         return response['message']['content']
     except ImportError:
-        return "❌ ollama Python pakke ikke installeret. Kør: pip install ollama"
+        return "[FAIL] ollama Python pakke ikke installeret. Kør: pip install ollama"
     except Exception as e:
-        return f"❌ Ollama fejl: {e}"
+        return f"[FAIL] Ollama fejl: {e}"
 
 
 def test_routing():
@@ -176,14 +176,14 @@ def test_routing():
         ("Format denne markdown fil", "haiku"),
     ]
 
-    print("🧪 Model Routing Test")
+    print("[TEST] Model Routing Test")
     print("=" * 70)
 
     correct = 0
     for task, expected in test_cases:
         result = classify_task(task)
         actual = result["model"]
-        match = "✅" if actual == expected else "❌"
+        match = "[OK]" if actual == expected else "[FAIL]"
         if actual == expected:
             correct += 1
         print(f"  {match} \"{task}\"")
@@ -204,24 +204,24 @@ def main():
     elif sys.argv[1] == "--classify":
         task = " ".join(sys.argv[2:])
         result = classify_task(task)
-        print(f"\n📋 Opgave: \"{task}\"")
-        print(f"🤖 Model: {result['model']} ({result['model_id']})")
-        print(f"💰 Pris: {result['cost']}")
-        print(f"📊 Confidence: {result['confidence']:.0%}")
-        print(f"🔑 Keywords: {result['matched_keywords']}")
-        print(f"📏 Token budget: {result['token_budget']}")
-        print(f"\n📈 Alle scores: {result['all_scores']}")
+        print(f"\n[LIST] Opgave: \"{task}\"")
+        print(f"[AI] Model: {result['model']} ({result['model_id']})")
+        print(f"[COST] Pris: {result['cost']}")
+        print(f"[DATA] Confidence: {result['confidence']:.0%}")
+        print(f"[KEY] Keywords: {result['matched_keywords']}")
+        print(f"[SIZE] Token budget: {result['token_budget']}")
+        print(f"\n Alle scores: {result['all_scores']}")
     elif sys.argv[1] == "--local":
         prompt = " ".join(sys.argv[2:])
-        print(f"🦙 Ollama (llama3.2): \"{prompt}\"")
+        print(f"[LLAMA] Ollama (llama3.2): \"{prompt}\"")
         print("-" * 40)
         print(run_local(prompt))
     else:
         task = " ".join(sys.argv[1:])
         result = classify_task(task)
-        print(f"🤖 {result['model']} ({result['cost']}) → \"{task}\"")
+        print(f"[AI] {result['model']} ({result['cost']}) → \"{task}\"")
         if result['model'] == 'ollama':
-            print("\n🦙 Kører lokalt (GRATIS)...")
+            print("\n[LLAMA] Kører lokalt (GRATIS)...")
             print("-" * 40)
             print(run_local(task))
 

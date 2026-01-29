@@ -1,4 +1,4 @@
-# 🏆 ADMIRAL LEADERBOARD
+# [VICTORY] ADMIRAL LEADERBOARD
 
 **Opdateret:** 2026-01-25 00:40
 **Total Sessions:** 1
@@ -6,7 +6,7 @@
 
 ---
 
-## 🎖️ TOP PERFORMERS
+## [ADMIRAL] TOP PERFORMERS
 
 | # | Model | Avg Score | Best | Sessions | Rank |
 |---|-------|-----------|------|----------|------|
@@ -14,7 +14,7 @@
 
 ---
 
-## 📊 MODEL STATISTIK
+## [DATA] MODEL STATISTIK
 
 ### Claude Opus 4.5 (Kv1nt)
 ```
@@ -41,7 +41,7 @@ Avg Score:    -
 
 ---
 
-## 🏅 RECENT SESSIONS
+## [MEDAL] RECENT SESSIONS
 
 | Dato | Sejr | Model | Score | Rank |
 |------|------|-------|-------|------|
@@ -49,7 +49,7 @@ Avg Score:    -
 
 ---
 
-## 🏆 ALL-TIME RECORDS
+## [VICTORY] ALL-TIME RECORDS
 
 | Record | Value | Model | Sejr |
 |--------|-------|-------|------|
@@ -61,7 +61,7 @@ Avg Score:    -
 
 ---
 
-## 📈 RANKING DISTRIBUTION
+##  RANKING DISTRIBUTION
 
 ```
 STORADMIRAL (150+):  0 sessions (0%)
@@ -74,14 +74,14 @@ SKIBSDRENG (<0):     0 sessions (0%)
 
 ---
 
-## 🎯 KONKURRENCE STATUS
+## [TARGET] KONKURRENCE STATUS
 
 **Nuværende Leder:** Ingen (kun 1 session)
 **Tættest på Admiral:** Kv1nt (Opus 4.5) - needs 100 points
 
 ---
 
-## 📋 KOMMANDOER
+## [LIST] KOMMANDOER
 
 ```bash
 # Se leaderboard

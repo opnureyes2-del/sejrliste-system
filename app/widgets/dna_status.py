@@ -37,7 +37,7 @@ class DNAStatus:
                 "short": layer["short"],
                 "model": layer["model"],
                 "active": is_active,
-                "icon": "✅" if is_active else "⬜",
+                "icon": "[OK]" if is_active else "⬜",
             })
         return items
 

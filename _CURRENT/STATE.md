@@ -14,37 +14,37 @@
 
 ## ACTIVE SEJR LISTER (7)
 
-### ❓ 3_LAGS_ARKITEKTUR_VIEW_2026-01-27
+### [UNKNOWN] 3_LAGS_ARKITEKTUR_VIEW_2026-01-27
 **Status:** pass_1_in_progress
 **Progress:** 0%
 **Path:** `/home/rasmus/Desktop/sejrliste systemet/10_ACTIVE/3_LAGS_ARKITEKTUR_VIEW_2026-01-27`
 
-### ❓ LINEN_FRAMEWORK_VIEW_2026-01-27
+### [UNKNOWN] LINEN_FRAMEWORK_VIEW_2026-01-27
 **Status:** pass_1_in_progress
 **Progress:** 0%
 **Path:** `/home/rasmus/Desktop/sejrliste systemet/10_ACTIVE/LINEN_FRAMEWORK_VIEW_2026-01-27`
 
-### ❓ INTRO_FOLDER_SYSTEM_2026-01-27
+### [UNKNOWN] INTRO_FOLDER_SYSTEM_2026-01-27
 **Status:** pass_1_in_progress
 **Progress:** 0%
 **Path:** `/home/rasmus/Desktop/sejrliste systemet/10_ACTIVE/INTRO_FOLDER_SYSTEM_2026-01-27`
 
-### ❓ CLAUDE_USAGE_MASTERY_2026-01-27
+### [UNKNOWN] CLAUDE_USAGE_MASTERY_2026-01-27
 **Status:** pass_1_in_progress
 **Progress:** 0%
 **Path:** `/home/rasmus/Desktop/sejrliste systemet/10_ACTIVE/CLAUDE_USAGE_MASTERY_2026-01-27`
 
-### ❓ DRAG_AND_DROP_2026-01-27
+### [UNKNOWN] DRAG_AND_DROP_2026-01-27
 **Status:** pass_1_in_progress
 **Progress:** 0%
 **Path:** `/home/rasmus/Desktop/sejrliste systemet/10_ACTIVE/DRAG_AND_DROP_2026-01-27`
 
-### ❓ DESIGN_LOGO_DESKTOP_2026-01-27
+### [UNKNOWN] DESIGN_LOGO_DESKTOP_2026-01-27
 **Status:** pass_1_in_progress
 **Progress:** 0%
 **Path:** `/home/rasmus/Desktop/sejrliste systemet/10_ACTIVE/DESIGN_LOGO_DESKTOP_2026-01-27`
 
-### ❓ SYNC_FUNKTIONER_DEL21_2026-01-27
+### [UNKNOWN] SYNC_FUNKTIONER_DEL21_2026-01-27
 **Status:** pass_1_in_progress
 **Progress:** 0%
 **Path:** `/home/rasmus/Desktop/sejrliste systemet/10_ACTIVE/SYNC_FUNKTIONER_DEL21_2026-01-27`

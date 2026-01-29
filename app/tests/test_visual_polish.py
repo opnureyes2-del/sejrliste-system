@@ -73,7 +73,7 @@ class TestTheme(unittest.TestCase):
         """Test get_icon with default theme."""
         theme = Theme("default")
         icon = theme.get_icon("done")
-        self.assertEqual(icon, "✅")
+        self.assertEqual(icon, "[OK]")
 
     def test_get_icon_minimal(self):
         """Test get_icon with minimal theme."""
@@ -136,17 +136,17 @@ class TestStatusIndicator(unittest.TestCase):
     def test_get_icon_done(self):
         """Test done status icon."""
         icon = StatusIndicator.get_icon("done")
-        self.assertIn("✅", icon)
+        self.assertIn("[OK]", icon)
 
     def test_get_icon_in_progress(self):
         """Test in_progress status icon."""
         icon = StatusIndicator.get_icon("in_progress")
-        self.assertIn("🔵", icon)
+        self.assertIn("[ACTIVE]", icon)
 
     def test_get_icon_blocked(self):
         """Test blocked status icon."""
         icon = StatusIndicator.get_icon("blocked")
-        self.assertIn("🔴", icon)
+        self.assertIn("[ERROR]", icon)
 
     def test_get_icon_unknown(self):
         """Test unknown status returns default."""
@@ -318,7 +318,7 @@ class TestVisualPolishWidget(unittest.TestCase):
     def test_get_status_icon(self):
         """Test status icon getter."""
         icon = self.widget.get_status_icon("done")
-        self.assertIn("✅", icon)
+        self.assertIn("[OK]", icon)
 
     def test_get_progress_bar(self):
         """Test progress bar getter."""

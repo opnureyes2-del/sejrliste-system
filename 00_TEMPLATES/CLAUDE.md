@@ -1,10 +1,10 @@
-# CLAUDE FOKUS LOCK - LÆS DETTE FØRST
+# FOCUS LOCK
 
-> **DU ER I EN SEJR LISTE MAPPE. DU HAR ÉN OPGAVE. FOKUSÉR.**
+> DU ER I EN SEJR LISTE MAPPE. DU HAR EN OPGAVE. FOKUSER.
 
 ---
 
-## 🔒 CURRENT STATE
+## CURRENT STATE
 
 **Sejr:** {SEJR_NAVN}
 **Current Pass:** {CURRENT_PASS}/3
@@ -13,129 +13,129 @@
 
 ---
 
-## 🎯 DIN ENESTE OPGAVE LIGE NU
+## DIN ENESTE OPGAVE LIGE NU
 
 ```
 {NEXT_ACTION}
 ```
 
-**INTET ANDET.** Færdiggør dette før du gør noget andet.
+INTET ANDET. Faerdiggoer dette foer du goer noget andet.
 
 ---
 
-## ⛔ DU MÅ IKKE
+## FORBUDT
 
-1. ❌ Starte nye features før denne er færdig
-2. ❌ Skifte til andre filer/projekter
-3. ❌ "Forbedre" ting der ikke er i scope
-4. ❌ Auto-compact eller opsummere frit
-5. ❌ Skippe passes eller reviews
-6. ❌ Arkivere før 3-pass er complete
-7. ❌ Give scores du ikke kan bevise
-8. ❌ **ÆNDRE CSS/DESIGN UDEN EKSPLICIT ORDRE**
-9. ❌ **ÆNDRE KODE DER VIRKER UDEN GODKENDELSE**
-10. ❌ **VERIFICERE KODE UDEN AT TESTE FUNKTIONALITET**
-
----
-
-## ✅ DU SKAL
-
-1. ✅ Læse SEJR_LISTE.md for fuld kontekst
-2. ✅ Arbejde KUN på current pass
-3. ✅ Afkrydse checkboxes når færdige
-4. ✅ Dokumentere alt i AUTO_LOG.jsonl
-5. ✅ Køre verification efter hver ændring
-6. ✅ BEVISE forbedring mellem passes
-7. ✅ Gennemgå ALLE 7 DNA lag i Pass 3
+1. Starte nye features foer denne er faerdig
+2. Skifte til andre filer/projekter
+3. "Forbedre" ting der ikke er i scope
+4. Auto-compact eller opsummere frit
+5. Skippe passes eller reviews
+6. Arkivere foer 3-pass er complete
+7. Give scores du ikke kan bevise
+8. AENDRE CSS/DESIGN UDEN EKSPLICIT ORDRE
+9. AENDRE KODE DER VIRKER UDEN GODKENDELSE
+10. VERIFICERE KODE UDEN AT TESTE FUNKTIONALITET
 
 ---
 
-## 📊 3-PASS STATUS
+## KRAV
+
+1. Laes SEJR_LISTE.md for fuld kontekst
+2. Arbejde KUN paa current pass
+3. Afkrydse checkboxes naar faerdige
+4. Dokumentere alt i AUTO_LOG.jsonl
+5. Koere verification efter hver aendring
+6. BEVISE forbedring mellem passes
+7. Gennemgaa ALLE 7 DNA lag i Pass 3
+
+---
+
+## 3-PASS STATUS
 
 | Pass | Status | Score | Krav |
 |------|--------|-------|------|
-| 1: Planlægning | {PASS_1_STATUS} | {PASS_1_SCORE}/10 | Baseline |
+| 1: Planlaegning | {PASS_1_STATUS} | {PASS_1_SCORE}/10 | Baseline |
 | 2: Eksekvering | {PASS_2_STATUS} | {PASS_2_SCORE}/10 | > Pass 1 |
 | 3: 7-DNA Review | {PASS_3_STATUS} | {PASS_3_SCORE}/10 | > Pass 2 |
-| **Total** | | **{TOTAL_SCORE}/30** | **≥ 24** |
+| **Total** | | **{TOTAL_SCORE}/30** | **>= 24** |
 
 ---
 
-## 🧬 7 DNA LAG (Check i Pass 3)
+## 7 DNA LAG (Check i Pass 3)
 
-- [ ] Lag 1: SELF-AWARE - Kender systemet sig selv?
-- [ ] Lag 2: SELF-DOCUMENTING - Er alt logget?
-- [ ] Lag 3: SELF-VERIFYING - Er alt testet?
-- [ ] Lag 4: SELF-IMPROVING - Har vi lært noget?
-- [ ] Lag 5: SELF-ARCHIVING - Kun essens bevaret?
-- [ ] Lag 6: PREDICTIVE - Hvad er næste skridt?
-- [ ] Lag 7: SELF-OPTIMIZING - Kunne vi have gjort det bedre?
+- [ ] Lag 1: SELF-AWARE — Kender systemet sig selv?
+- [ ] Lag 2: SELF-DOCUMENTING — Er alt logget?
+- [ ] Lag 3: SELF-VERIFYING — Er alt testet?
+- [ ] Lag 4: SELF-IMPROVING — Har vi laert noget?
+- [ ] Lag 5: SELF-ARCHIVING — Kun essens bevaret?
+- [ ] Lag 6: PREDICTIVE — Hvad er naeste skridt?
+- [ ] Lag 7: SELF-OPTIMIZING — Kunne vi have gjort det bedre?
 
 ---
 
-## 📁 FILER I DENNE MAPPE
+## FILER I DENNE MAPPE
 
-| Fil | Formål | Læs? |
-|-----|--------|------|
-| `SEJR_LISTE.md` | Hovedopgave med alle checkboxes | **JA - START HER** |
-| `CLAUDE.md` | Denne fil - fokus lock | Du læser den nu |
-| `STATUS.yaml` | 3-Pass status og scores | Læses af scripts |
+| Fil | Formaal | Laes? |
+|-----|---------|-------|
+| `SEJR_LISTE.md` | Hovedopgave med alle checkboxes | **JA — START HER** |
+| `CLAUDE.md` | Denne fil — fokus lock | Du laeser den nu |
+| `STATUS.yaml` | 3-Pass status og scores | Laeses af scripts |
 | `AUTO_LOG.jsonl` | Automatisk log | Skrives til automatisk |
 
 ---
 
-## 🚨 REGLER (OBLIGATORISK)
+## REGLER (OBLIGATORISK)
 
-### Regel 1: ÉN TING AD GANGEN
-Færdiggør nuværende opgave før du starter ny.
+### Regel 1: EN TING AD GANGEN
+Faerdiggoer nuvaerende opgave foer du starter ny.
 
 ### Regel 2: BEVISBYRDE
-Du SKAL bevise hvad du påstår. Ingen "det burde virke".
+Du SKAL bevise hvad du paastaar. Ingen "det burde virke".
 
 ### Regel 3: FORBEDRING ER TVUNGET
-Pass 2 SKAL være bedre end Pass 1.
-Pass 3 SKAL være bedre end Pass 2.
+Pass 2 SKAL vaere bedre end Pass 1.
+Pass 3 SKAL vaere bedre end Pass 2.
 Ingen undtagelser.
 
 ### Regel 4: 7-DNA GENNEMGANG
-Når du påstår "færdig", SKAL du gennemgå alle 7 DNA lag.
+Naar du paastaar "faerdig", SKAL du gennemgaa alle 7 DNA lag.
 Find mangler, fejl, optimeringer.
 
 ### Regel 5: INGEN GENVEJE
-Du kan IKKE arkivere før:
+Du kan IKKE arkivere foer:
 - Alle 3 passes done
-- Score ≥ 24/30
+- Score >= 24/30
 - 5+ tests passed
 - 7-DNA gennemgang gjort
 
 ---
 
-## 🔄 NÅR DU ER FÆRDIG MED CURRENT TASK
+## NAAR DU ER FAERDIG MED CURRENT TASK
 
 1. Afkryds checkbox i SEJR_LISTE.md
 2. Log handling i AUTO_LOG.jsonl
-3. Kør `python scripts/auto_verify.py --sejr "{SEJR_NAVN}"`
-4. Læs næste task fra SEJR_LISTE.md
+3. Koer `python scripts/auto_verify.py --sejr "{SEJR_NAVN}"`
+4. Laes naeste task fra SEJR_LISTE.md
 5. Opdater CLAUDE.md med ny NEXT_ACTION
 
 ---
 
-## ⚠️ HVIS DU ER FORVIRRET
+## HVIS DU ER FORVIRRET
 
-1. Læs SEJR_LISTE.md fra start
-2. Find første uafkrydsede checkbox
-3. GØR DEN
+1. Laes SEJR_LISTE.md fra start
+2. Find foerste uafkrydsede checkbox
+3. GOER DEN
 4. Gentag
 
-**Det er DET. Ikke mere komplekst.**
+Det er DET. Ikke mere komplekst.
 
 ---
 
-## 🎖️ ADMIRAL KOMMANDO
+## ADMIRAL KOMMANDO
 
-> Du er ikke her for at være kreativ.
-> Du er her for at FÆRDIGGØRE.
-> Fokusér. Eksekver. Bevis.
+> Du er ikke her for at vaere kreativ.
+> Du er her for at FAERDIGGOERE.
+> Fokuser. Eksekver. Bevis.
 
 ---
 

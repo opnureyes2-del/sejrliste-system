@@ -3,10 +3,10 @@
 BUILD CLAUDE CONTEXT - Dynamisk CLAUDE.md generator
 ====================================================
 
-Bygger en SPECIFIK CLAUDE.md baseret på:
+Bygger en SPECIFIK CLAUDE.md baseret paa:
 1. Den faktiske opgave i SEJR_LISTE.md
 2. Current state fra STATUS.yaml
-3. Næste uafkrydsede checkbox
+3. Naeste uafkrydsede checkbox
 4. Faktiske scores og blockers
 
 DETTE ER IKKE EN TEMPLATE - DET ER LEVENDE KONTEKST.
@@ -15,7 +15,7 @@ DETTE ER IKKE EN TEMPLATE - DET ER LEVENDE KONTEKST.
 import re
 import json
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 def parse_yaml_simple(filepath: Path) -> dict:
@@ -63,7 +63,7 @@ def extract_task_name(sejr_file: Path) -> str:
 def extract_next_unchecked(sejr_file: Path) -> dict:
     """Find the SPECIFIC next unchecked checkbox with context."""
     if not sejr_file.exists():
-        return {"task": "Åbn SEJR_LISTE.md", "section": "Unknown", "line": 0}
+        return {"task": "Aabn SEJR_LISTE.md", "section": "Unknown", "line": 0}
 
     content = sejr_file.read_text(encoding="utf-8")
     lines = content.split("\n")
@@ -105,7 +105,13 @@ def extract_next_unchecked(sejr_file: Path) -> dict:
 
 
 def count_checkboxes_by_pass(sejr_file: Path) -> dict:
-    """Count checkboxes for each pass."""
+    """Count checkboxes for each pass (excluding REVIEW sections).
+
+    IMPORTANT: This must match auto_verify.py's counting method.
+    REVIEW sections are NOT counted as part of the pass.
+    This prevents discrepancy between build_claude_context.py and auto_verify.py.
+    Fixed: 2026-01-29 (Rule -44 enforcement)
+    """
     if not sejr_file.exists():
         return {}
 
@@ -120,21 +126,34 @@ def count_checkboxes_by_pass(sejr_file: Path) -> dict:
     current_pass = None
 
     for line in content.split("\n"):
-        if "PASS 1" in line and line.startswith("#"):
-            current_pass = "pass_1"
-        elif "PASS 2" in line and line.startswith("#"):
-            current_pass = "pass_2"
-        elif "PASS 3" in line and line.startswith("#"):
-            current_pass = "pass_3"
-        elif "SEMANTISK KONKLUSION" in line:
-            current_pass = None
+        if line.startswith("#"):
+            upper = line.upper()
+            # Calculate heading level (# = 1, ## = 2, ### = 3)
+            heading_level = 0
+            while heading_level < len(line) and line[heading_level] == '#':
+                heading_level += 1
+            is_main = heading_level <= 2  # Only ## or # level stops counting
+
+            # Stop counting at REVIEW, VERIFIKATION, or KONKLUSION (main sections only)
+            if "REVIEW" in upper and is_main:
+                current_pass = None
+            elif ("VERIFIKATION" in upper or "VERIFICATION" in upper) and is_main:
+                current_pass = None
+            elif "SEMANTISK KONKLUSION" in upper:
+                current_pass = None
+            elif "PASS 1" in upper:
+                current_pass = "pass_1"
+            elif "PASS 2" in upper:
+                current_pass = "pass_2"
+            elif "PASS 3" in upper:
+                current_pass = "pass_3"
 
         if current_pass:
-            if re.match(r'^- \[[xX]\]', line.strip()):
-                result[current_pass]["done"] += 1
-                result[current_pass]["total"] += 1
-            elif re.match(r'^- \[ \]', line.strip()):
-                result[current_pass]["total"] += 1
+            # Use findall to handle multiple checkboxes on single line
+            done_count = len(re.findall(r'- \[[xX]\]', line))
+            undone_count = len(re.findall(r'- \[ \]', line))
+            result[current_pass]["done"] += done_count
+            result[current_pass]["total"] += done_count + undone_count
 
     return result
 
@@ -164,7 +183,7 @@ def determine_current_pass(checkbox_counts: dict, status: dict) -> int:
 def build_specific_rules(task_name: str, next_task: dict) -> str:
     """Build rules SPECIFIC to this task."""
     rules = f"""
-## 🎯 DIN SPECIFIKKE OPGAVE
+## DIN SPECIFIKKE OPGAVE
 
 **Opgave:** {task_name}
 
@@ -178,18 +197,18 @@ def build_specific_rules(task_name: str, next_task: dict) -> str:
 
 ---
 
-## ⛔ SPECIFIKT FOR DENNE OPGAVE
+## SPECIFIKT FOR DENNE OPGAVE
 
-Du må IKKE:
-- Arbejde på andre opgaver end "{task_name}"
+Du maa IKKE:
+- Arbejde paa andre opgaver end "{task_name}"
 - Skippe "{next_task['task']}"
-- Starte nye features før denne checkbox er afkrydset
-- Sige "det er færdigt" uden at afkrydse checkbox
+- Starte nye features foer denne checkbox er afkrydset
+- Sige "det er faerdigt" uden at afkrydse checkbox
 
 Du SKAL:
-- Fokusere KUN på: {next_task['task']}
-- Afkrydse checkbox når færdig
-- Gå til næste checkbox efter
+- Fokusere KUN paa: {next_task['task']}
+- Afkrydse checkbox naar faerdig
+- Gaa til naeste checkbox efter
 """
     return rules
 
@@ -217,23 +236,23 @@ def build_claude_md(sejr_path: Path) -> str:
 
     # Determine blocker
     if current_pass == 1:
-        blocker = f"Færdiggør Pass 1 ({p1['done']}/{p1['total']} done)"
+        blocker = f"Faerdiggoer Pass 1 ({p1['done']}/{p1['total']} done)"
     elif current_pass == 2:
-        blocker = f"Færdiggør Pass 2 ({p2['done']}/{p2['total']} done)"
+        blocker = f"Faerdiggoer Pass 2 ({p2['done']}/{p2['total']} done)"
     else:
-        blocker = f"Færdiggør Pass 3 ({p3['done']}/{p3['total']} done)"
+        blocker = f"Faerdiggoer Pass 3 ({p3['done']}/{p3['total']} done)"
 
     if status.get("can_archive"):
-        blocker = "INTET - Klar til arkivering"
+        blocker = "INTET — Klar til arkivering"
 
     # Build the SPECIFIC content
-    content = f"""# 🔒 CLAUDE FOKUS LOCK
+    content = f"""# FOCUS LOCK
 
-> **LÆS DETTE FØR DU GØR NOGET**
+> LAES DETTE FOER DU GOER NOGET
 
 ---
 
-## ⚡ CURRENT STATE
+## CURRENT STATE
 
 | | |
 |---|---|
@@ -248,21 +267,21 @@ def build_claude_md(sejr_path: Path) -> str:
 
 ---
 
-## 📊 FAKTISK PROGRESS
+## FAKTISK PROGRESS
 
-### Pass 1: Planlægning
+### Pass 1: Planlaegning
 ```
-[{"█" * (p1_pct // 10)}{"░" * (10 - p1_pct // 10)}] {p1_pct}% ({p1['done']}/{p1['total']})
+[{"#" * (p1_pct // 10)}{"-" * (10 - p1_pct // 10)}] {p1_pct}% ({p1['done']}/{p1['total']})
 ```
 
 ### Pass 2: Eksekvering
 ```
-[{"█" * (p2_pct // 10)}{"░" * (10 - p2_pct // 10)}] {p2_pct}% ({p2['done']}/{p2['total']})
+[{"#" * (p2_pct // 10)}{"-" * (10 - p2_pct // 10)}] {p2_pct}% ({p2['done']}/{p2['total']})
 ```
 
 ### Pass 3: 7-DNA Review
 ```
-[{"█" * (p3_pct // 10)}{"░" * (10 - p3_pct // 10)}] {p3_pct}% ({p3['done']}/{p3['total']})
+[{"#" * (p3_pct // 10)}{"-" * (10 - p3_pct // 10)}] {p3_pct}% ({p3['done']}/{p3['total']})
 ```
 
 ### Scores
@@ -271,63 +290,63 @@ def build_claude_md(sejr_path: Path) -> str:
 | Pass 1 | {status.get('pass_1_score', 0)}/10 | Baseline |
 | Pass 2 | {status.get('pass_2_score', 0)}/10 | > Pass 1 |
 | Pass 3 | {status.get('pass_3_score', 0)}/10 | > Pass 2 |
-| **Total** | **{status.get('total_score', 0)}/30** | **≥ 24** |
+| **Total** | **{status.get('total_score', 0)}/30** | **>= 24** |
 
 ---
 
-## 🚨 ANTI-DUM CHECKPOINT
+## CHECKPOINT
 
-Før du gør NOGET, bekræft:
+Foer du goer NOGET, bekraeft:
 
-- [ ] Jeg arbejder på: **{task_name}**
-- [ ] Min næste handling er: **{next_task['task'][:50]}...**
-- [ ] Jeg er på Pass: **{current_pass}**
-- [ ] Jeg vil afkrydse checkbox når færdig: **JA**
+- [ ] Jeg arbejder paa: **{task_name}**
+- [ ] Min naeste handling er: **{next_task['task'][:50]}...**
+- [ ] Jeg er paa Pass: **{current_pass}**
+- [ ] Jeg vil afkrydse checkbox naar faerdig: **JA**
 
-**Hvis du ikke kan bekræfte alle 4 → STOP og genlæs denne fil**
+**Hvis du ikke kan bekraefte alle 4 — STOP og genlaes denne fil**
 
 ---
 
-## 📁 FILER DU SKAL BRUGE
+## FILER
 
 | Fil | Hvad | Handling |
 |-----|------|----------|
 | `SEJR_LISTE.md` | Alle opgaver | Afkryds her |
-| `CLAUDE.md` | Denne fil | Genlæs ved tvivl |
-| `STATUS.yaml` | Auto-status | Rør ikke |
-| `AUTO_LOG.jsonl` | Auto-log | Rør ikke |
+| `CLAUDE.md` | Denne fil | Genlaes ved tvivl |
+| `STATUS.yaml` | Auto-status | Roer ikke |
+| `AUTO_LOG.jsonl` | Auto-log | Roer ikke |
 
 ---
 
-## ⛔ FORBUDT
+## FORBUDT
 
-1. ❌ Arbejde på andet end "{task_name}"
-2. ❌ Skippe til næste pass før current er 100%
-3. ❌ Glemme at afkrydse checkboxes
-4. ❌ "Forbedre" ting uden for scope
-5. ❌ Sige "færdig" uden bevis
+1. Arbejde paa andet end "{task_name}"
+2. Skippe til naeste pass foer current er 100%
+3. Glemme at afkrydse checkboxes
+4. "Forbedre" ting uden for scope
+5. Sige "faerdig" uden bevis
 
 ---
 
-## ✅ NÅR DU HAR GJORT CURRENT TASK
+## NAAR DU HAR GJORT CURRENT TASK
 
 1. Afkryds `- [ ]` til `- [x]` i SEJR_LISTE.md linje {next_task.get('line', '?')}
-2. Kør: `python scripts/build_claude_context.py --sejr "{sejr_path.name}"`
-3. Læs opdateret CLAUDE.md
-4. Fortsæt til næste checkbox
+2. Koer: `python scripts/build_claude_context.py --sejr "{sejr_path.name}"`
+3. Laes opdateret CLAUDE.md
+4. Fortsaet til naeste checkbox
 
 ---
 
-## 🎖️ ADMIRAL KOMMANDO
+## ADMIRAL KOMMANDO
 
-> Du er her for at færdiggøre **{task_name}**.
-> Din næste handling er **{next_task['task'][:40]}...**.
-> Intet andet. Fokusér. Eksekver. Bevis.
+> Du er her for at faerdiggoere **{task_name}**.
+> Din naeste handling er **{next_task['task'][:40]}...**.
+> Intet andet. Fokuser. Eksekver. Bevis.
 
 ---
 
-**Auto-genereret:** {datetime.now().isoformat()}
-**Baseret på:** Faktisk state fra SEJR_LISTE.md og STATUS.yaml
+**Auto-genereret:** {datetime.now(timezone.utc).astimezone().isoformat()}
+**Baseret paa:** Faktisk state fra SEJR_LISTE.md og STATUS.yaml
 """
     return content
 
@@ -338,20 +357,20 @@ def update_sejr(sejr_path: Path):
     claude_file = sejr_path / "CLAUDE.md"
     claude_file.write_text(claude_content, encoding="utf-8")
 
-    print(f"✅ CLAUDE.md opdateret: {claude_file}")
+    print(f"[OK] CLAUDE.md opdateret: {claude_file}")
 
     # Also print current state
     status = parse_yaml_simple(sejr_path / "STATUS.yaml")
     next_task = extract_next_unchecked(sejr_path / "SEJR_LISTE.md")
 
-    print(f"\n{'─' * 50}")
-    print(f"🔒 FOKUS LOCK AKTIVERET")
-    print(f"{'─' * 50}")
+    print(f"\n{'=' * 50}")
+    print(f"FOCUS LOCK AKTIVERET")
+    print(f"{'=' * 50}")
     print(f"   Opgave: {extract_task_name(sejr_path / 'SEJR_LISTE.md')}")
-    print(f"   Pass: {status.get('current_pass', 1)}/3")
-    print(f"   Næste: {next_task['task'][:50]}...")
-    print(f"   Score: {status.get('total_score', 0)}/30")
-    print(f"{'─' * 50}\n")
+    print(f"   Pass:   {status.get('current_pass', 1)}/3")
+    print(f"   Naeste: {next_task['task'][:50]}...")
+    print(f"   Score:  {status.get('total_score', 0)}/30")
+    print(f"{'=' * 50}\n")
 
 
 def update_all(system_path: Path):
@@ -359,13 +378,13 @@ def update_all(system_path: Path):
     active_dir = system_path / "10_ACTIVE"
 
     if not active_dir.exists():
-        print("❌ Ingen 10_ACTIVE mappe")
+        print("[FAIL] Ingen 10_ACTIVE mappe")
         return
 
     sejr_folders = [f for f in active_dir.iterdir() if f.is_dir()]
 
     if not sejr_folders:
-        print("ℹ️  Ingen aktive sejr")
+        print("[INFO] Ingen aktive sejr")
         return
 
     for sejr_path in sejr_folders:
@@ -391,6 +410,6 @@ if __name__ == "__main__":
         if sejr_path.exists():
             update_sejr(sejr_path)
         else:
-            print(f"❌ Ikke fundet: {sejr_path}")
+            print(f"[FAIL] Ikke fundet: {sejr_path}")
     else:
         update_all(system_path)

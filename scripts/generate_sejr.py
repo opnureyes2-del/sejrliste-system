@@ -53,11 +53,11 @@ Læs SEJR_LISTE.md og start med PHASE 0: Research
         "{STATUS}": "Pass 1 - Planlægning",
         "{BLOCKER}": "Færdiggør Pass 1",
         "{NEXT_ACTION}": "Læs SEJR_LISTE.md og afkryds første checkbox",
-        "{PASS_1_STATUS}": "🔵 In Progress",
+        "{PASS_1_STATUS}": "IN PROGRESS",
         "{PASS_1_SCORE}": "0",
-        "{PASS_2_STATUS}": "⏳ Pending",
+        "{PASS_2_STATUS}": "PENDING",
         "{PASS_2_SCORE}": "0",
-        "{PASS_3_STATUS}": "⏳ Pending",
+        "{PASS_3_STATUS}": "PENDING",
         "{PASS_3_SCORE}": "0",
         "{TOTAL_SCORE}": "0",
         "{TIMESTAMP}": timestamp,
@@ -87,7 +87,7 @@ def generate_sejr(name: str, system_path: Path, goal: str = None, tech: str = No
 
     sejr_path = system_path / "10_ACTIVE" / folder_name
     sejr_path.mkdir(parents=True, exist_ok=True)
-    print(f"✅ Created: {sejr_path}")
+    print(f"[OK] Created: {sejr_path}")
 
     # Generate IDs
     session_id = generate_session_id()
@@ -106,9 +106,9 @@ def generate_sejr(name: str, system_path: Path, goal: str = None, tech: str = No
         content = content.replace("{DATO}", datetime.now().strftime("%Y-%m-%d %H:%M"))
         content = content.replace("{OWNER}", "Kv1nt + Rasmus")
         sejr_file.write_text(content, encoding="utf-8")
-        print(f"✅ File 1/4: {sejr_file.name}")
+        print(f"[OK] File 1/4: {sejr_file.name}")
     else:
-        print(f"❌ Template not found: {template_path}")
+        print(f"[FAIL] Template not found: {template_path}")
         return False
 
     # ═══════════════════════════════════════════════════════════
@@ -116,7 +116,7 @@ def generate_sejr(name: str, system_path: Path, goal: str = None, tech: str = No
     # ═══════════════════════════════════════════════════════════
 
     claude_file = generate_claude_md(sejr_path, name)
-    print(f"✅ File 2/4: {claude_file.name}")
+    print(f"[OK] File 2/4: {claude_file.name}")
 
     # ═══════════════════════════════════════════════════════════
     # FILE 3: STATUS.yaml (UNIFIED - erstatter 3 filer)
@@ -238,7 +238,7 @@ statistics:
   unique_models: 0
 """
     status_file.write_text(status_content, encoding="utf-8")
-    print(f"✅ File 3/4: {status_file.name}")
+    print(f"[OK] File 3/4: {status_file.name}")
 
     # ═══════════════════════════════════════════════════════════
     # FILE 4: AUTO_LOG.jsonl (MASTER - alt logging)
@@ -266,7 +266,7 @@ statistics:
         "pass": 1
     }
     log_file.write_text(json.dumps(log_entry) + "\n", encoding="utf-8")
-    print(f"✅ File 4/5: {log_file.name}")
+    print(f"[OK] File 4/5: {log_file.name}")
 
     # ═══════════════════════════════════════════════════════════
     # FILE 5: PROJECT_BRIEF.md (Quick Understanding - 30 seconds)
@@ -337,29 +337,29 @@ Vi ved det virker fordi:
 **Ejer:** Kv1nt + Rasmus
 """
     brief_file.write_text(brief_content, encoding="utf-8")
-    print(f"✅ File 5/5: {brief_file.name}")
+    print(f"[OK] File 5/5: {brief_file.name}")
 
     # ═══════════════════════════════════════════════════════════
     # SUMMARY
     # ═══════════════════════════════════════════════════════════
 
-    print(f"\n{'═' * 60}")
-    print(f"🎯 SEJR OPRETTET: {name}")
-    print(f"{'═' * 60}")
-    print(f"\n📁 Mappe: {sejr_path}")
-    print(f"\n📋 STRØMLINET - 5 filer (Single Source of Truth + Brief):")
-    print(f"   1. PROJECT_BRIEF.md → 30-sek forståelse (LÆS FØRST!)")
-    print(f"   2. SEJR_LISTE.md    → Opgaver og checkboxes")
-    print(f"   3. CLAUDE.md        → Fokus lock (genereret)")
-    print(f"   4. STATUS.yaml      → ALT status (unified)")
-    print(f"   5. AUTO_LOG.jsonl   → ALT logging (master)")
-    print(f"\n📊 Session ID: {session_id}")
-    print(f"\n🚀 START:")
-    print(f"   1. Åbn SEJR_LISTE.md")
+    print(f"\n{'=' * 60}")
+    print(f"SEJR OPRETTET: {name}")
+    print(f"{'=' * 60}")
+    print(f"\n   Mappe: {sejr_path}")
+    print(f"\n   STREAMLINED — 5 filer (Single Source of Truth + Brief):")
+    print(f"   1. PROJECT_BRIEF.md  — 30-sek forstaelse (LAES FOERST)")
+    print(f"   2. SEJR_LISTE.md     — Opgaver og checkboxes")
+    print(f"   3. CLAUDE.md         — Fokus lock (genereret)")
+    print(f"   4. STATUS.yaml       — ALT status (unified)")
+    print(f"   5. AUTO_LOG.jsonl    — ALT logging (master)")
+    print(f"\n   Session ID: {session_id}")
+    print(f"\n   START:")
+    print(f"   1. Aabn SEJR_LISTE.md")
     print(f"   2. Start med PHASE 0")
     print(f"   3. Afkryds checkboxes")
-    print(f"\n✅ INGEN REDUNDANS - Alt data kun ét sted!")
-    print(f"{'═' * 60}\n")
+    print(f"\n   INGEN REDUNDANS — Alt data kun et sted!")
+    print(f"{'=' * 60}\n")
 
     return True
 

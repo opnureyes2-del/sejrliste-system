@@ -1,0 +1,73 @@
+{
+  "timestamp": "2026-01-30 00:34:29",
+  "score_pct": 66.66666666666666,
+  "total": 9,
+  "passing": 6,
+  "failing": 1,
+  "warnings": 2,
+  "checks": [
+    {
+      "rule_id": "-9",
+      "name": "Context files exist",
+      "status": "PASS",
+      "details": "All 9 core files present and non-empty",
+      "evidence": "Files checked: rules.md, identity.md, preferences.md, workflows.md, relationships.md, triggers.md, projects.md, session.md, journal.md"
+    },
+    {
+      "rule_id": "29",
+      "name": "Context file sizes within limits",
+      "status": "PASS",
+      "details": "All core .md files under 100KB",
+      "evidence": "Directory: /home/rasmus/.claude/.context/core"
+    },
+    {
+      "rule_id": "-44",
+      "name": "No emoji in documentation",
+      "status": "FAIL",
+      "details": "37 files with emoji: WHO_I_AM.md: 3 emoji found; NAUGHTY_OR_NOT.md: 1 emoji found; FOLDER_ARCHITECTURE.md: 5 emoji found; SYSTEM_CAPABILITIES.md: 6 emoji found; 03_PROTOKOLLER.md: 16 emoji found",
+      "evidence": "Rule: Professional enterprise level"
+    },
+    {
+      "rule_id": "3",
+      "name": "Active sejrlister have CLAUDE.md",
+      "status": "PASS",
+      "details": "10 active sejrlister, all with CLAUDE.md",
+      "evidence": "Active: /home/rasmus/Desktop/sejrliste systemet/10_ACTIVE"
+    },
+    {
+      "rule_id": "-5",
+      "name": "MIN ADMIRAL directory exists",
+      "status": "PASS",
+      "details": "48 .md files in MIN ADMIRAL",
+      "evidence": "Path: /home/rasmus/Desktop/MIN ADMIRAL"
+    },
+    {
+      "rule_id": "-28a",
+      "name": "Git repos clean",
+      "status": "WARN",
+      "details": "3 dirty repos: sejrliste systemet: 100 uncommitted; MIN ADMIRAL: 5 uncommitted; MASTER FOLDERS(INTRO): 1 uncommitted",
+      "evidence": "Repos checked: sejrliste systemet, MIN ADMIRAL, MASTER FOLDERS(INTRO)"
+    },
+    {
+      "rule_id": "-42",
+      "name": "Documentation accuracy",
+      "status": "PASS",
+      "details": "No suspect unverified claims found",
+      "evidence": "Scanned MIN ADMIRAL .md files"
+    },
+    {
+      "rule_id": "-14",
+      "name": "MASTER FOLDERS exists",
+      "status": "PASS",
+      "details": "161 .md files in 13 folders",
+      "evidence": "Path: /home/rasmus/Desktop/MASTER FOLDERS(INTRO)"
+    },
+    {
+      "rule_id": "29b",
+      "name": "Archives outside core/",
+      "status": "WARN",
+      "details": "Large archives in core/: projects_archive_2026-01-25.md (65,020 bytes), journal_archive_2026-01-17_sessions_15-16.md (61,975 bytes)",
+      "evidence": "Should be in archives/ directory"
+    }
+  ]
+}

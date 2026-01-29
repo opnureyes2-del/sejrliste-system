@@ -121,12 +121,12 @@ def update_state_md(system_path: Path, sejr_data: list):
 
     for sejr in sejr_data:
         status_emoji = {
-            'completed': '✅',
-            'nearly_complete': '⚡',
-            'in_progress': '🔵',
-            'early_stage': '🟡',
-            'unknown': '❓'
-        }.get(sejr['status'], '❓')
+            'completed': '[OK]',
+            'nearly_complete': '',
+            'in_progress': '[ACTIVE]',
+            'early_stage': '[WARN]',
+            'unknown': '[UNKNOWN]'
+        }.get(sejr['status'], '[UNKNOWN]')
 
         content += f"""### {status_emoji} {sejr['name']}
 **Status:** {sejr['status']}
@@ -174,7 +174,7 @@ Derefter: Arbejd gennem SEJR_LISTE.md phases → Verify → Archive.
     with open(state_file, 'w') as f:
         f.write(content)
 
-    print(f"✅ Updated: {state_file}")
+    print(f"[OK] Updated: {state_file}")
 
 def update_delta_md(system_path: Path):
     """Append changes to _CURRENT/DELTA.md"""
@@ -192,17 +192,17 @@ def update_delta_md(system_path: Path):
     if not delta_file.exists():
         with open(delta_file, 'w') as f:
             f.write(existing)
-        print(f"✅ Created: {delta_file}")
+        print(f"[OK] Created: {delta_file}")
 
 def rebuild_state(system_path: Path):
     """Rebuild STATE.md from scratch by scanning all sejr"""
-    print("🔄 Rebuilding STATE.md from active sejr lister...\n")
+    print("[SYNC] Rebuilding STATE.md from active sejr lister...\n")
 
     sejr_data = scan_active_sejr(system_path)
     update_state_md(system_path, sejr_data)
     update_delta_md(system_path)
 
-    print(f"\n✅ State rebuilt - found {len(sejr_data)} active sejr")
+    print(f"\n[OK] State rebuilt - found {len(sejr_data)} active sejr")
 
 if __name__ == "__main__":
     import argparse
@@ -220,4 +220,4 @@ if __name__ == "__main__":
         # Default: update state
         sejr_data = scan_active_sejr(system_path)
         update_state_md(system_path, sejr_data)
-        print("✅ State tracking updated")
+        print("[OK] State tracking updated")

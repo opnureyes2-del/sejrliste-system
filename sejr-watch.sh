@@ -3,7 +3,7 @@
 
 cd "/home/rasmus/Desktop/sejrliste systemet"
 
-echo "🔴 REALTIDS OVERVÅGNING STARTET"
+echo "[ERROR] REALTIDS OVERVÅGNING STARTET"
 echo "   Tryk Ctrl+C for at stoppe"
 echo ""
 
@@ -17,10 +17,10 @@ if command -v inotifywait &> /dev/null; then
     done
 else
     # Fallback til watch
-    watch -n 2 -c 'echo "🏆 SEJRLISTE STATUS (opdateres hvert 2. sekund)"
+    watch -n 2 -c 'echo "[VICTORY] SEJRLISTE STATUS (opdateres hvert 2. sekund)"
     echo "═══════════════════════════════════════════════"
     echo ""
-    echo "📋 AKTIVE SEJR:"
+    echo "[LIST] AKTIVE SEJR:"
     ls -1 10_ACTIVE/ 2>/dev/null || echo "   (ingen)"
     echo ""
     for sejr in 10_ACTIVE/*/; do
@@ -32,6 +32,6 @@ else
         fi
     done
     echo ""
-    echo "📦 ARKIVEREDE: $(ls -1 90_ARCHIVE/ 2>/dev/null | grep -v INDEX | wc -l)"
+    echo " ARKIVEREDE: $(ls -1 90_ARCHIVE/ 2>/dev/null | grep -v INDEX | wc -l)"
     '
 fi

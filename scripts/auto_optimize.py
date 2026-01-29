@@ -280,7 +280,7 @@ def main():
                 print(f" Updated: {template_path}")
 
     print("\n═══════════════════════════════════════════════════════════════════════════════")
-    print("✅ SELF-OPTIMIZATION COMPLETE")
+    print("[OK] SELF-OPTIMIZATION COMPLETE")
     print("═══════════════════════════════════════════════════════════════════════════════")
 
     # Preview tips

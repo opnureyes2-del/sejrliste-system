@@ -1,10 +1,10 @@
-# 🔴 LIVE STATUS - Opdateres Automatisk
+# [ERROR] LIVE STATUS - Opdateres Automatisk
 
 > Sidste opdatering: 2026-01-28 01:07:45
 
 ---
 
-## 🎯 HVAD SKER DER NU?
+## [TARGET] HVAD SKER DER NU?
 
 | Aspekt | Status |
 |--------|--------|
@@ -16,7 +16,7 @@
 
 ---
 
-## 🏃 AKTIVE PROCESSER
+##  AKTIVE PROCESSER
 
 ```
 Web App         http://localhost:8501 [KØRER]
@@ -27,7 +27,7 @@ Sync Service    unified_sync.py [AKTIV]
 
 ---
 
-## 📊 PROGRESS
+## [DATA] PROGRESS
 
 | Sejr | Progress | Skridt | Status |
 |------|----------|--------|--------|
@@ -41,7 +41,7 @@ Sync Service    unified_sync.py [AKTIV]
 
 ---
 
-## 🔮 NÆSTE SKRIDT
+##  NÆSTE SKRIDT
 
 1. **Færdiggør CLAUDE USAGE MASTERY** ← NU
 2. **Fortsæt med checkboxes** 
@@ -49,7 +49,7 @@ Sync Service    unified_sync.py [AKTIV]
 
 ---
 
-## 📁 FILER I DENNE MAPPE
+## [DIR] FILER I DENNE MAPPE
 
 | Fil | Formål | Sidst Ændret |
 |-----|--------|--------------|
@@ -66,7 +66,7 @@ Sync Service    unified_sync.py [AKTIV]
 
 ---
 
-## 🔗 DIREKTE LINKS
+## [LINK] DIREKTE LINKS
 
 - **Web App:** [http://localhost:8501](http://localhost:8501)
 - **Aktiv Sejr:** [10_ACTIVE/3_LAGS_ARKITEKTUR_VIEW_2026-01-27/](../10_ACTIVE/3_LAGS_ARKITEKTUR_VIEW_2026-01-27/)

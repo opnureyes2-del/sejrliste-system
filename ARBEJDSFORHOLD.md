@@ -1,10 +1,10 @@
-# 🔒 ARBEJDSFORHOLD FOR AI MODELLER
+# [LOCK] ARBEJDSFORHOLD FOR AI MODELLER
 
 > **LÆS DENNE FIL FØR DU GØR NOGET ANDET**
 
 ---
 
-## ⚠️ OBLIGATORISK LÆSNING
+## [WARN] OBLIGATORISK LÆSNING
 
 Når du (Claude/AI) åbner denne mappe, SKAL du følge denne vejledning.
 **INGEN UNDTAGELSER. INGEN GENVEJE.**
@@ -63,7 +63,7 @@ Når du har fundet en aktiv sejr, LÆS:
 Efter du har læst filerne, SIG:
 
 ```
-🔒 SEJR FOKUS AKTIVERET
+[LOCK] SEJR FOKUS AKTIVERET
 
 Jeg har læst ARBEJDSFORHOLD.md og CLAUDE.md.
 
@@ -100,7 +100,7 @@ def start_session():
 
     # 4. Bekræft til bruger
     print(f"""
-    🔒 SEJR FOKUS AKTIVERET
+    [LOCK] SEJR FOKUS AKTIVERET
 
     Opgave: {claude_md.sejr_navn}
     Pass: {current_pass}/3
@@ -193,7 +193,7 @@ python3 scripts/admiral_tracker.py --sejr "X" --event "MEMORY_LOSS" --note "Glem
 
 ---
 
-# ⛔ FORBUDTE HANDLINGER
+# [STOP] FORBUDTE HANDLINGER
 
 | # | Forbudt | Konsekvens |
 |---|---------|------------|
@@ -208,7 +208,7 @@ python3 scripts/admiral_tracker.py --sejr "X" --event "MEMORY_LOSS" --note "Glem
 
 ---
 
-# 🚨 KONSEKVENSER VED BRUD
+# [ALERT] KONSEKVENSER VED BRUD
 
 Hvis du bryder reglerne:
 
@@ -221,7 +221,7 @@ Hvis du bryder reglerne:
 
 ---
 
-# ✅ PÅKRÆVEDE HANDLINGER
+# [OK] PÅKRÆVEDE HANDLINGER
 
 | # | Påkrævet | Belønning |
 |---|----------|-----------|
@@ -235,7 +235,7 @@ Hvis du bryder reglerne:
 
 ---
 
-# 🔄 ANTI-DUM CHECKPOINTS
+# [SYNC] ANTI-DUM CHECKPOINTS
 
 ## Hver 5 handlinger:
 
@@ -254,7 +254,7 @@ Hvis du bryder reglerne:
 
 ---
 
-# 📁 KOMPLET FIL STRUKTUR
+# [DIR] KOMPLET FIL STRUKTUR
 
 ```
 sejrliste systemet/
@@ -289,7 +289,7 @@ sejrliste systemet/
 
 ---
 
-# 🎯 OPGAVE TYPER
+# [TARGET] OPGAVE TYPER
 
 ## Type A: BYGGE NOGET
 
@@ -317,7 +317,7 @@ sejrliste systemet/
 
 ---
 
-# 🏆 MÅL
+# [VICTORY] MÅL
 
 ## Kort sigt (denne sejr):
 - Færdiggør alle checkboxes
@@ -333,7 +333,7 @@ sejrliste systemet/
 
 ---
 
-# 📋 TJEKLISTE VED SESSION START
+# [LIST] TJEKLISTE VED SESSION START
 
 ```
 □ Jeg har læst ARBEJDSFORHOLD.md (denne fil)
@@ -349,7 +349,7 @@ Hvis NOGEN mangler → LÆS DE MANGLENDE FILER
 
 ---
 
-# 🚨 HVIS DU ER FORVIRRET
+# [ALERT] HVIS DU ER FORVIRRET
 
 1. **STOP** hvad du laver
 2. **LÆS** denne fil igen
@@ -362,7 +362,7 @@ Hvis NOGEN mangler → LÆS DE MANGLENDE FILER
 
 ---
 
-# 🎖️ ADMIRAL KOMMANDO
+# [ADMIRAL] ADMIRAL KOMMANDO
 
 > Du er ikke her for at være kreativ.
 > Du er her for at FÆRDIGGØRE.

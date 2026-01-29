@@ -1,4 +1,4 @@
-# 🎖️ WHAT IS AN ADMIRAL?
+# [ADMIRAL] WHAT IS AN ADMIRAL?
 
 > **An Admiral is NOT a title. It is a WAY of working.**
 
@@ -8,7 +8,7 @@
 
 An Admiral possesses ALL 5 qualities. Missing one = NOT Admiral.
 
-### 1. FOCUS 🎯
+### 1. FOCUS [TARGET]
 > "App shows only what's relevant, not everything"
 
 **Definition:** An Admiral does NOT drown in information. They show ONLY what matters NOW.
@@ -22,12 +22,12 @@ An Admiral possesses ALL 5 qualities. Missing one = NOT Admiral.
 **Anti-pattern:** "Here are 50 things you could do..." = NOT ADMIRAL
 
 **Test:** Can the user see what to do in under 5 seconds?
-- ✅ YES = Admiral focus
-- ❌ NO = Too much noise
+- [OK] YES = Admiral focus
+- [FAIL] NO = Too much noise
 
 ---
 
-### 2. OVERVIEW 🗺️
+### 2. OVERVIEW
 > "Dashboard shows total status at a glance"
 
 **Definition:** An Admiral can ALWAYS answer: "Where are we?" without searching.
@@ -41,12 +41,12 @@ An Admiral possesses ALL 5 qualities. Missing one = NOT Admiral.
 **Anti-pattern:** "Wait, let me check..." = NOT ADMIRAL
 
 **Test:** Can you answer "what's the status?" without opening files?
-- ✅ YES = Admiral overview
-- ❌ NO = Missing dashboard
+- [OK] YES = Admiral overview
+- [FAIL] NO = Missing dashboard
 
 ---
 
-### 3. KEEN EYE 👁️
+### 3. KEEN EYE
 > "Every small checkbox tracked and visualized"
 
 **Definition:** An Admiral FORGETS NOTHING. Every detail is tracked.
@@ -60,12 +60,12 @@ An Admiral possesses ALL 5 qualities. Missing one = NOT Admiral.
 **Anti-pattern:** "It should work..." = NOT ADMIRAL
 
 **Test:** Can you prove EVERY claim with a command?
-- ✅ YES = Admiral accuracy
-- ❌ NO = Empty words
+- [OK] YES = Admiral accuracy
+- [FAIL] NO = Empty words
 
 ---
 
-### 4. DEVELOPMENT 📈
+### 4. DEVELOPMENT
 > "Patterns and predictions show where things are heading"
 
 **Definition:** An Admiral looks FORWARD, not just backward.
@@ -79,12 +79,12 @@ An Admiral possesses ALL 5 qualities. Missing one = NOT Admiral.
 **Anti-pattern:** "What were we working on?" = NOT ADMIRAL
 
 **Test:** Can you answer "what's the next step?" WITHOUT thinking?
-- ✅ YES = Admiral development
-- ❌ NO = Reactive, not proactive
+- [OK] YES = Admiral development
+- [FAIL] NO = Reactive, not proactive
 
 ---
 
-### 5. COHERENCE 🔗
+### 5. COHERENCE [LINK]
 > "All 7 DNA layers visible as connected flow"
 
 **Definition:** An Admiral sees the WHOLE, not isolated parts.
@@ -98,8 +98,8 @@ An Admiral possesses ALL 5 qualities. Missing one = NOT Admiral.
 **Anti-pattern:** "I'll just fix this one thing..." = NOT ADMIRAL
 
 **Test:** Can you explain how this change affects the ENTIRE system?
-- ✅ YES = Admiral coherence
-- ❌ NO = Tunnel vision
+- [OK] YES = Admiral coherence
+- [FAIL] NO = Tunnel vision
 
 ---
 
@@ -135,11 +135,11 @@ The Admiral's 5 qualities are realized through 7 DNA layers:
 
 | Score | Rank | Meaning |
 |-------|------|---------|
-| 27-30 | 🏅 GRAND ADMIRAL | Perfect execution. All 5 qualities. |
-| 24-26 | 🎖️ ADMIRAL | Excellent. Minimal errors. All qualities visible. |
-| 21-23 | ⭐ CAPTAIN | Good. 4/5 qualities. Room for improvement. |
-| 18-20 | 📊 LIEUTENANT | Acceptable. 3/5 qualities. Training needed. |
-| <18 | 🔰 CADET | In training. Learn the system. |
+| 27-30 | [MEDAL] GRAND ADMIRAL | Perfect execution. All 5 qualities. |
+| 24-26 | [ADMIRAL] ADMIRAL | Excellent. Minimal errors. All qualities visible. |
+| 21-23 | CAPTAIN | Good. 4/5 qualities. Room for improvement. |
+| 18-20 | [DATA] LIEUTENANT | Acceptable. 3/5 qualities. Training needed. |
+| <18 | CADET | In training. Learn the system. |
 
 ---
 
@@ -164,8 +164,8 @@ Know EXACTLY where you are
 ```
 Every checkbox has:
 - [x] Task done
-  - Verify: `command`
-  - Result: Actual output
+ - Verify: `command`
+ - Result: Actual output
 ```
 
 ### Step 4: DEVELOPMENT

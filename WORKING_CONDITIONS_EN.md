@@ -63,7 +63,7 @@ When you've found an active victory, READ:
 After reading the files, SAY:
 
 ```
-🔒 VICTORY FOCUS ACTIVATED
+[LOCK] VICTORY FOCUS ACTIVATED
 
 I have read WORKING_CONDITIONS_EN.md and CLAUDE.md.
 
@@ -100,7 +100,7 @@ def start_session():
 
     # 4. Confirm to user
     print(f"""
-    🔒 VICTORY FOCUS ACTIVATED
+    [LOCK] VICTORY FOCUS ACTIVATED
 
     Task: {claude_md.sejr_name}
     Pass: {current_pass}/3

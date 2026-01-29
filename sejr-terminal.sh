@@ -4,10 +4,10 @@
 cd "/home/rasmus/Desktop/sejrliste systemet"
 
 echo "═══════════════════════════════════════════════════════════════════"
-echo "     🏆 SEJRLISTE TERMINAL - REALTIDS KONTROL"
+echo "     [VICTORY] SEJRLISTE TERMINAL - REALTIDS KONTROL"
 echo "═══════════════════════════════════════════════════════════════════"
 echo ""
-echo "📋 KOMMANDOER:"
+echo "[LIST] KOMMANDOER:"
 echo "   verify    - Kør verifikation"
 echo "   track     - Opdater status"
 echo "   predict   - Generér forudsigelser"
@@ -31,10 +31,10 @@ alias web="source venv/bin/activate && streamlit run web_app.py --server.port 85
 alias watch="watch -n 2 'python3 scripts/auto_track.py --status'"
 
 echo "═══════════════════════════════════════════════════════════════════"
-echo "🎯 AKTIVE SEJR:"
+echo "[TARGET] AKTIVE SEJR:"
 ls -1 10_ACTIVE/ 2>/dev/null || echo "   (ingen aktive)"
 echo ""
-echo "📦 ARKIVEREDE: $(ls -1 90_ARCHIVE/ 2>/dev/null | grep -v INDEX | wc -l) sejr"
+echo " ARKIVEREDE: $(ls -1 90_ARCHIVE/ 2>/dev/null | grep -v INDEX | wc -l) sejr"
 echo "═══════════════════════════════════════════════════════════════════"
 echo ""
 
@@ -51,5 +51,5 @@ alias new='python3 scripts/generate_sejr.py --name'
 alias status='python3 scripts/auto_track.py --status'
 alias web='source venv/bin/activate && streamlit run web_app.py --server.port 8501'
 alias watch=\"watch -n 2 'python3 scripts/auto_track.py --status'\"
-PS1='🏆 sejrliste > '
+PS1='[VICTORY] sejrliste > '
 ")

@@ -10,7 +10,7 @@
 | Kategori | Antal | Status |
 |----------|-------|--------|
 | **Scripts** | 15 | 14 virker fuldt, 1 partial |
-| **Desktop Apps** | 3 | GTK4 ✅, Streamlit ✅, TUI ❌ (FIKSET i dag) |
+| **Desktop Apps** | 3 | GTK4 [OK], Streamlit [OK], TUI [FAIL] (FIKSET i dag) |
 | **Docker** | 19 containers | Alle kører |
 | **AI Modeller** | 2 lokale + 3 Claude | Alle tilgængelige |
 | **Pre-commit hooks** | 4 | Alle virker |
@@ -20,49 +20,49 @@
 
 ---
 
-## ✅ VIRKER FULDT — I AKTIV BRUG
+## [OK] VIRKER FULDT — I AKTIV BRUG
 
 ### Scripts (14/15 fuldt funktionelle)
 
 | Script | Kommando | Testet Output | Status |
 |--------|----------|---------------|--------|
-| `generate_sejr.py` | `--name "X"` | Opretter 5-fil SEJR-mappe | ✅ VIRKER |
-| `auto_verify.py` | `--all` | Verificerer alle 7 aktive SEJRs | ✅ VIRKER |
-| `auto_archive.py` | `--list` | Lister 7 aktive, blokerer korrekt | ✅ VIRKER |
-| `auto_learn.py` | (ingen args) | 45 learnings fra 20 sejrs | ✅ VIRKER |
-| `auto_predict.py` | (ingen args) | Genererer NEXT.md | ✅ VIRKER |
-| `auto_track.py` | (ingen args) | Opdaterer STATE.md | ✅ VIRKER |
-| `auto_optimize.py` | (ingen args) | 48 patterns, tips, prompts | ✅ VIRKER |
-| `auto_live_status.py` | (ingen args) | Opdaterer LIVE_STATUS.md | ✅ VIRKER (FIKSET) |
-| `build_claude_context.py` | `--all` | CLAUDE.md for 7 sejrs | ✅ VIRKER |
-| `update_claude_focus.py` | `--all` | Fokus-opdatering | ✅ VIRKER |
-| `build_knowledge_base.py` | `--stats` | 82 docs, ChromaDB | ✅ VIRKER |
-| `model_router.py` | `--test` | 12/12 korrekt routing | ✅ VIRKER |
-| `token_tools.py` | `count X` | Tæller tokens korrekt | ✅ VIRKER (FIKSET) |
-| `automation_pipeline.py` | `--quick` | Syntax + flake8 check | ✅ VIRKER |
+| `generate_sejr.py` | `--name "X"` | Opretter 5-fil SEJR-mappe | [OK] VIRKER |
+| `auto_verify.py` | `--all` | Verificerer alle 7 aktive SEJRs | [OK] VIRKER |
+| `auto_archive.py` | `--list` | Lister 7 aktive, blokerer korrekt | [OK] VIRKER |
+| `auto_learn.py` | (ingen args) | 45 learnings fra 20 sejrs | [OK] VIRKER |
+| `auto_predict.py` | (ingen args) | Genererer NEXT.md | [OK] VIRKER |
+| `auto_track.py` | (ingen args) | Opdaterer STATE.md | [OK] VIRKER |
+| `auto_optimize.py` | (ingen args) | 48 patterns, tips, prompts | [OK] VIRKER |
+| `auto_live_status.py` | (ingen args) | Opdaterer LIVE_STATUS.md | [OK] VIRKER (FIKSET) |
+| `build_claude_context.py` | `--all` | CLAUDE.md for 7 sejrs | [OK] VIRKER |
+| `update_claude_focus.py` | `--all` | Fokus-opdatering | [OK] VIRKER |
+| `build_knowledge_base.py` | `--stats` | 82 docs, ChromaDB | [OK] VIRKER |
+| `model_router.py` | `--test` | 12/12 korrekt routing | [OK] VIRKER |
+| `token_tools.py` | `count X` | Tæller tokens korrekt | [OK] VIRKER (FIKSET) |
+| `automation_pipeline.py` | `--quick` | Syntax + flake8 check | [OK] VIRKER |
 
 ### Apps
 
 | App | Fil | Størrelse | Starter | Port |
 |-----|-----|-----------|---------|------|
-| GTK4 Desktop | `masterpiece_en.py` | 272 KB, 7,506 linjer | ✅ JA | — |
-| Streamlit Web | `web_app.py` | 87 KB | ✅ JA (via venv) | 8501 |
-| .desktop launcher | `sejrliste.desktop` | — | ✅ JA | — |
-| .desktop launcher | `victorylist.desktop` | — | ✅ JA | — |
+| GTK4 Desktop | `masterpiece_en.py` | 272 KB, 7,506 linjer | [OK] JA | — |
+| Streamlit Web | `web_app.py` | 87 KB | [OK] JA (via venv) | 8501 |
+| .desktop launcher | `sejrliste.desktop` | — | [OK] JA | — |
+| .desktop launcher | `victorylist.desktop` | — | [OK] JA | — |
 
 ### Infrastruktur
 
 | Komponent | Status | Detaljer |
 |-----------|--------|----------|
-| Ollama (llama3.2) | ✅ Kører | 1.9 GB, GRATIS, svarer korrekt |
-| Ollama (codellama) | ✅ Kører | 3.6 GB, GRATIS, kode-review |
-| Docker (19 containers) | ✅ Kører | PostgreSQL ×5, Redis ×3, ChromaDB, Grafana, m.fl. |
-| Pre-commit hooks (4) | ✅ Kører | py_compile, flake8, bandit, pipeline |
-| Git repo | ✅ 54 commits | github.com/opnureyes2-del/sejrliste-system |
+| Ollama (llama3.2) | [OK] Kører | 1.9 GB, GRATIS, svarer korrekt |
+| Ollama (codellama) | [OK] Kører | 3.6 GB, GRATIS, kode-review |
+| Docker (19 containers) | [OK] Kører | PostgreSQL ×5, Redis ×3, ChromaDB, Grafana, m.fl. |
+| Pre-commit hooks (4) | [OK] Kører | py_compile, flake8, bandit, pipeline |
+| Git repo | [OK] 54 commits | github.com/opnureyes2-del/sejrliste-system |
 
 ---
 
-## ❌ HAR PROBLEMER — FIKSET I DAG
+## [FAIL] HAR PROBLEMER — FIKSET I DAG
 
 ### 1. TUI App (app/sejr_app.py) — CRASHEDE VED START
 
@@ -71,7 +71,7 @@
 
 **Fix:** Flyttet `set_interval(1.0, self.update_session_timer)` fra `__init__` til ny `on_mount()` metode.
 
-**Status:** ✅ FIKSET
+**Status:** [OK] FIKSET
 
 ---
 
@@ -81,7 +81,7 @@
 
 **Fix:** Tilføjet auto-detect: hvis argumentet er en eksisterende fil, læser den filens indhold. Ellers tæller den tekststrengen.
 
-**Status:** ✅ FIKSET — Brug nu `count` ELLER `count-file` for filer.
+**Status:** [OK] FIKSET — Brug nu `count` ELLER `count-file` for filer.
 
 ---
 
@@ -91,7 +91,7 @@
 
 **Fix:** Leaderboard læser nu fra 3 kilder: ADMIRAL_SCORE.yaml (originalt format), SEJR_DIPLOM.md (score fra diplom), STATUS.yaml (auto_verify output).
 
-**Status:** ✅ FIKSET — Viser nu scores fra alle 20+ arkiverede sejrs.
+**Status:** [OK] FIKSET — Viser nu scores fra alle 20+ arkiverede sejrs.
 
 ---
 
@@ -101,11 +101,11 @@
 
 **Fix:** Erstattet med direkte fil-læsning fra SEJR_LISTE.md (checkbox counting) og lokale predictions. Ingen eksterne afhængigheder længere.
 
-**Status:** ✅ FIKSET — Bruger nu kun lokale filer.
+**Status:** [OK] FIKSET — Bruger nu kun lokale filer.
 
 ---
 
-## ⚠️ KENDTE MANGLER — IKKE KRITISKE
+## [WARN] KENDTE MANGLER — IKKE KRITISKE
 
 ### 1. 7 scripts mangler `chmod +x`
 
@@ -148,7 +148,7 @@ Python cache-filer i projektets root. Bør tilføjes til `.gitignore` og slettes
 
 ---
 
-## 📊 HVAD BLOKERER EFFEKTIV FREMDRIFT?
+## [DATA] HVAD BLOKERER EFFEKTIV FREMDRIFT?
 
 ### REEL BLOKER 1: 7 SEJRs alle i PASS 1 — intet er FÆRDIGT
 
@@ -183,7 +183,7 @@ Masterpiece_en.py = 65,652 tokens = $0.56 per Opus-kald. Med Ollama = $0.00. Mod
 
 ---
 
-## 🛠️ ANBEFALET OPRYDNING (prioriteret)
+## [TOOLS] ANBEFALET OPRYDNING (prioriteret)
 
 ### Prioritet 1: Gør det færdigt
 1. **Færdiggør PASS 1** på de 6 aktive SEJRs (INTRO er separat)

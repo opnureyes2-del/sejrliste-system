@@ -24,53 +24,53 @@ A **FORCED IMPROVEMENT SYSTEM** that guarantees quality through:
 ```
 sejrliste systemet/
 │
-├── README.md                 ← Overview + Quick Start (Danish)
-├── README_EN.md              ← Overview + Quick Start (English)
-├── MANUAL.md                 ← Complete documentation (Danish)
-├── MANUAL_EN.md              ← THIS FILE (Complete documentation English)
-├── ARBEJDSFORHOLD.md         ← Mandatory AI guidelines (Danish)
-├── WORKING_CONDITIONS_EN.md  ← Mandatory AI guidelines (English)
-├── DNA.yaml                  ← System identity
-├── LOG_FORMAT.md             ← Log specification
-├── ARKITEKTUR.md             ← System architecture
+├── README.md ← Overview + Quick Start (Danish)
+├── README_EN.md ← Overview + Quick Start (English)
+├── MANUAL.md ← Complete documentation (Danish)
+├── MANUAL_EN.md ← THIS FILE (Complete documentation English)
+├── ARBEJDSFORHOLD.md ← Mandatory AI guidelines (Danish)
+├── WORKING_CONDITIONS_EN.md ← Mandatory AI guidelines (English)
+├── DNA.yaml ← System identity
+├── LOG_FORMAT.md ← Log specification
+├── ARKITEKTUR.md ← System architecture
 │
-├── scripts/                  ← 9 AUTOMATION SCRIPTS
-│   ├── generate_sejr.py          → Create new victory (4 files)
-│   ├── build_claude_context.py   → DYNAMIC CLAUDE.md builder
-│   ├── update_claude_focus.py    → Update focus state
-│   ├── auto_verify.py            → 3-pass verification
-│   ├── auto_archive.py           → Archiving (blocked until done)
-│   ├── auto_track.py             → State tracking
-│   ├── auto_learn.py             → Pattern learning
-│   ├── auto_predict.py           → Predictions
-│   └── admiral_tracker.py        → Score tracking
+├── scripts/ ← 9 AUTOMATION SCRIPTS
+│ ├── generate_sejr.py → Create new victory (4 files)
+│ ├── build_claude_context.py → DYNAMIC CLAUDE.md builder
+│ ├── update_claude_focus.py → Update focus state
+│ ├── auto_verify.py → 3-pass verification
+│ ├── auto_archive.py → Archiving (blocked until done)
+│ ├── auto_track.py → State tracking
+│ ├── auto_learn.py → Pattern learning
+│ ├── auto_predict.py → Predictions
+│ └── admiral_tracker.py → Score tracking
 │
-├── 00_TEMPLATES/             ← TEMPLATES (4 items)
-│   ├── SEJR_TEMPLATE.md          → Master template with 3-pass
-│   ├── CLAUDE.md                 → Focus lock template
-│   ├── STATUS_TEMPLATE.yaml      → Unified status template
-│   └── SESSION_TJEK.md           → Session start checklist
+├── 00_TEMPLATES/ ← TEMPLATES (4 items)
+│ ├── SEJR_TEMPLATE.md → Master template with 3-pass
+│ ├── CLAUDE.md → Focus lock template
+│ ├── STATUS_TEMPLATE.yaml → Unified status template
+│ └── SESSION_TJEK.md → Session start checklist
 │
-├── 10_ACTIVE/                ← ACTIVE VICTORIES (work here)
-│   └── {TASK_DATE}/
-│       ├── SEJR_LISTE.md         → Main task with checkboxes
-│       ├── CLAUDE.md             → AI FOCUS LOCK (generated)
-│       ├── STATUS.yaml           → ALL status (unified)
-│       └── AUTO_LOG.jsonl        → ALL logging (master)
+├── 10_ACTIVE/ ← ACTIVE VICTORIES (work here)
+│ └── {TASK_DATE}/
+│ ├── SEJR_LISTE.md → Main task with checkboxes
+│ ├── CLAUDE.md → AI FOCUS LOCK (generated)
+│ ├── STATUS.yaml → ALL status (unified)
+│ └── AUTO_LOG.jsonl → ALL logging (master)
 │
-├── 90_ARCHIVE/               ← COMPLETED VICTORIES
-│   └── {TASK_DATE_TIME}/
-│       └── CONCLUSION.md         → Semantic essence only
+├── 90_ARCHIVE/ ← COMPLETED VICTORIES
+│ └── {TASK_DATE_TIME}/
+│ └── CONCLUSION.md → Semantic essence only
 │
-├── _CURRENT/                 ← SYSTEM STATE
-│   ├── STATE.md                  → Current state
-│   ├── DELTA.md                  → What's new
-│   ├── NEXT.md                   → Predictions
-│   ├── PATTERNS.yaml             → Learned patterns
-│   └── LEADERBOARD.md            → Global competition leaderboard
+├── _CURRENT/ ← SYSTEM STATE
+│ ├── STATE.md → Current state
+│ ├── DELTA.md → What's new
+│ ├── NEXT.md → Predictions
+│ ├── PATTERNS.yaml → Learned patterns
+│ └── LEADERBOARD.md → Global competition leaderboard
 │
-├── view.py                   ← Terminal viewer (simple)
-└── app/sejr_app.py           ← TUI app (Textual)
+├── view.py ← Terminal viewer (simple)
+└── app/sejr_app.py ← TUI app (Textual)
 ```
 
 > **SINGLE SOURCE OF TRUTH:** Each victory has ONLY 4 files - no redundancy!
@@ -124,25 +124,25 @@ The main task organized in **3 PASSES**:
 
 ```yaml
 meta:
-  sejr_name: "Task Name"
-  created: "2026-01-25T12:00:00+01:00"
+ sejr_name: "Task Name"
+ created: "2026-01-25T12:00:00+01:00"
 
 pass_tracking:
-  current_pass: 1
-  can_archive: false
-  pass_1: { complete: false, score: 0, checkboxes_done: 0 }
-  pass_2: { complete: false, score: 0 }
-  pass_3: { complete: false, score: 0 }
-  totals: { score: 0, required_score: 24 }
+ current_pass: 1
+ can_archive: false
+ pass_1: { complete: false, score: 0, checkboxes_done: 0 }
+ pass_2: { complete: false, score: 0 }
+ pass_3: { complete: false, score: 0 }
+ totals: { score: 0, required_score: 24 }
 
 score_tracking:
-  positive: { checkbox_done: 0, pass_complete: 0 }
-  negative: { token_waste: 0, memory_loss: 0 }
-  totals: { total_score: 0, rank: "CADET" }
+ positive: { checkbox_done: 0, pass_complete: 0 }
+ negative: { token_waste: 0, memory_loss: 0 }
+ totals: { total_score: 0, rank: "CADET" }
 
 model_tracking:
-  current_model: "claude-opus-4-5-20251101"
-  models_used: [...]
+ current_model: "claude-opus-4-5-20251101"
+ models_used: [...]
 ```
 
 > **Replaces:** VERIFY_STATUS.yaml + ADMIRAL_SCORE.yaml + MODEL_HISTORY.yaml
@@ -315,12 +315,12 @@ A **SCORE SYSTEM** that measures AI model performance objectively:
 
 | Rank | Score | Description |
 |------|-------|-------------|
-| 🎖️ **GRAND ADMIRAL** | 150+ | Legendary. Perfect execution. |
-| ⭐ **ADMIRAL** | 100-149 | Excellence. Minimal errors. |
-| 🏅 **CAPTAIN** | 50-99 | Solid. Good performance. |
-| 🎗️ **LIEUTENANT** | 20-49 | Acceptable. Room for improvement. |
-| 📛 **CADET** | 0-19 | Weak. Many errors. |
-| 💀 **DECKHAND** | < 0 | CATASTROPHE. Negative score! |
+| [ADMIRAL] **GRAND ADMIRAL** | 150+ | Legendary. Perfect execution. |
+| **ADMIRAL** | 100-149 | Excellence. Minimal errors. |
+| [MEDAL] **CAPTAIN** | 50-99 | Solid. Good performance. |
+| **LIEUTENANT** | 20-49 | Acceptable. Room for improvement. |
+| **CADET** | 0-19 | Weak. Many errors. |
+| [DEAD] **DECKHAND** | < 0 | CATASTROPHE. Negative score! |
 
 ### Positive Metrics (Reward)
 
@@ -361,12 +361,12 @@ TOTAL_SCORE = SUM(positive_points) - (SUM(negative_points) × 2)
 
 | Achievement | Requirement | Bonus |
 |-------------|-------------|-------|
-| 🏆 **PERFECT PASS** | 0 negatives in an entire pass | +15 |
-| 🌟 **FLAWLESS VICTORY** | 0 negatives in entire victory | +50 |
-| 🚀 **SPEED DEMON** | Victory done under estimate | +10 |
-| 🧠 **MEMORY MASTER** | 0 memory_loss entire session | +20 |
-| 📚 **DOC KING** | 10+ good_documentation | +10 |
-| 🔍 **BUG HUNTER** | 5+ improvements found | +15 |
+| [VICTORY] **PERFECT PASS** | 0 negatives in an entire pass | +15 |
+| **FLAWLESS VICTORY** | 0 negatives in entire victory | +50 |
+| **SPEED DEMON** | Victory done under estimate | +10 |
+| [AI] **MEMORY MASTER** | 0 memory_loss entire session | +20 |
+| [DOCS] **DOC KING** | 10+ good_documentation | +10 |
+| [SCAN] **BUG HUNTER** | 5+ improvements found | +15 |
 
 ### Score Commands
 
@@ -461,12 +461,12 @@ When you open a victory folder, you MUST:
 2. **READ** `ARBEJDSFORHOLD.md` (or `WORKING_CONDITIONS_EN.md`) in system root
 3. **READ** `CLAUDE.md` in the victory folder
 4. **CONFIRM** to user:
-   ```
-   🔒 VICTORY FOCUS ACTIVATED
-   Task: [name]
-   Pass: [X]/3
-   Next: [specific task]
-   ```
+ ```
+ [LOCK] VICTORY FOCUS ACTIVATED
+ Task: [name]
+ Pass: [X]/3
+ Next: [specific task]
+ ```
 5. **WORK** only on current task
 6. **CHECK** checkbox when done
 7. **UPDATE** CLAUDE.md with `build_claude_context.py`
@@ -482,12 +482,12 @@ Every 5 actions:
 
 ### Forbidden Actions
 
-- ❌ Working on anything other than current victory
-- ❌ Skipping to next pass before current is 100%
-- ❌ Forgetting to check checkboxes
-- ❌ "Improving" things outside scope
-- ❌ Saying "done" without proof
-- ❌ Archiving before 3-pass done
+- [FAIL] Working on anything other than current victory
+- [FAIL] Skipping to next pass before current is 100%
+- [FAIL] Forgetting to check checkboxes
+- [FAIL] "Improving" things outside scope
+- [FAIL] Saying "done" without proof
+- [FAIL] Archiving before 3-pass done
 
 ---
 
@@ -577,4 +577,4 @@ Check:
 ---
 
 **Last updated:** 2026-01-26
-**Status:** ✅ COMPLETE
+**Status:** [OK] COMPLETE

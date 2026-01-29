@@ -163,13 +163,13 @@ def display_sejr(sejr_path: Path):
 
     if completion >= 100:
         color = GREEN
-        status_icon = "✅"
+        status_icon = "[OK]"
     elif completion >= 50:
         color = YELLOW
-        status_icon = "🔵"
+        status_icon = "[ACTIVE]"
     else:
         color = RED
-        status_icon = "⏳"
+        status_icon = "[PENDING]"
 
     # Print header
     print(f"\n{BOLD}{'=' * 60}{RESET}")
@@ -177,31 +177,31 @@ def display_sejr(sejr_path: Path):
     print(f"{'=' * 60}")
 
     # 3-PASS Status
-    pass_icons = ["⏳", "⏳", "⏳"]
+    pass_icons = ["[PENDING]", "[PENDING]", "[PENDING]"]
     if current_pass >= 1 and pass_1_score > 0:
-        pass_icons[0] = "✅"
+        pass_icons[0] = "[OK]"
     if current_pass >= 2 and pass_2_score > 0:
-        pass_icons[1] = "✅"
+        pass_icons[1] = "[OK]"
     if current_pass >= 3 and pass_3_score > 0:
-        pass_icons[2] = "✅"
+        pass_icons[2] = "[OK]"
     if current_pass == 1:
-        pass_icons[0] = "🔵"
+        pass_icons[0] = "[ACTIVE]"
     elif current_pass == 2:
-        pass_icons[1] = "🔵"
+        pass_icons[1] = "[ACTIVE]"
     elif current_pass == 3:
-        pass_icons[2] = "🔵"
+        pass_icons[2] = "[ACTIVE]"
 
-    print(f"\n 🎯 3-PASS KONKURRENCE:")
+    print(f"\n [TARGET] 3-PASS KONKURRENCE:")
     print(f"    {pass_icons[0]} Pass 1 (Planlægning):  {pass_1_score}/10")
     print(f"    {pass_icons[1]} Pass 2 (Eksekvering):  {pass_2_score}/10")
     print(f"    {pass_icons[2]} Pass 3 (7-DNA Review): {pass_3_score}/10")
     print(f"    {'─' * 30}")
-    print(f"    📈 Total: {total_score}/30 {'✅ Klar til arkiv' if can_archive else '🔒 Blokeret'}")
+    print(f"     Total: {total_score}/30 {'[OK] Klar til arkiv' if can_archive else '[LOCK] Blokeret'}")
 
     # Status
     print(f"\n {status_icon} Status: {color}{status_text}{RESET}")
-    print(f" 📊 Progress: {progress_bar(done, total)}")
-    print(f" ✓ Tasks: {done}/{total} done")
+    print(f" [DATA] Progress: {progress_bar(done, total)}")
+    print(f" [OK] Tasks: {done}/{total} done")
 
     # Phases (simplified)
     phases = status.get("phases_complete", {})
@@ -210,7 +210,7 @@ def display_sejr(sejr_path: Path):
         phase_names = ["optimization", "planning", "development", "verification", "git_workflow"]
         for phase in phase_names:
             is_done = phases.get(phase, False) if isinstance(phases, dict) else False
-            icon = f"{GREEN}✓{RESET}" if is_done else "○"
+            icon = f"{GREEN}[OK]{RESET}" if is_done else "○"
             print(f"   {icon} {phase.replace('_', ' ').title()}")
 
     # Recent log
@@ -242,7 +242,7 @@ def main():
         print()
         return
 
-    print(f"\n 📂 Fundet {len(active_sejr)} aktiv(e) sejr:\n")
+    print(f"\n [FOLDER] Fundet {len(active_sejr)} aktiv(e) sejr:\n")
 
     # Display each sejr
     for sejr_path in active_sejr:

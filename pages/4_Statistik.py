@@ -7,14 +7,14 @@ from pathlib import Path
 from datetime import datetime
 import json
 
-st.set_page_config(page_title="Statistik", page_icon="📊", layout="wide")
+st.set_page_config(page_title="Statistik", page_icon="[DATA]", layout="wide")
 
 SYSTEM_PATH = Path(__file__).parent.parent
 ACTIVE_DIR = SYSTEM_PATH / "10_ACTIVE"
 ARCHIVE_DIR = SYSTEM_PATH / "90_ARCHIVE"
 CURRENT_DIR = SYSTEM_PATH / "_CURRENT"
 
-st.title("📊 Statistik & Patterns")
+st.title("[DATA] Statistik & Patterns")
 st.caption("Overblik over alt - lær fra historien")
 
 # Quick stats
@@ -24,22 +24,22 @@ active_count = len(list(ACTIVE_DIR.iterdir())) if ACTIVE_DIR.exists() else 0
 archive_count = len(list(ARCHIVE_DIR.iterdir())) if ARCHIVE_DIR.exists() else 0
 
 with col1:
-    st.metric("📂 Aktive", active_count)
+    st.metric("[FOLDER] Aktive", active_count)
 with col2:
-    st.metric("📦 Arkiverede", archive_count)
+    st.metric(" Arkiverede", archive_count)
 with col3:
-    st.metric("🏆 Total", active_count + archive_count)
+    st.metric("[VICTORY] Total", active_count + archive_count)
 with col4:
     if 'session_start' in st.session_state:
         delta = datetime.now() - st.session_state.session_start
-        st.metric("⏱️ Session", f"{int(delta.total_seconds()//60)} min")
+        st.metric("⏱ Session", f"{int(delta.total_seconds()//60)} min")
     else:
-        st.metric("⏱️ Session", "0 min")
+        st.metric("⏱ Session", "0 min")
 
 st.divider()
 
 # Patterns
-st.subheader("🔮 Learned Patterns")
+st.subheader(" Learned Patterns")
 patterns_file = CURRENT_DIR / "PATTERNS.yaml"
 if patterns_file.exists():
     content = patterns_file.read_text()
@@ -48,7 +48,7 @@ else:
     st.info("Ingen patterns endnu - kør auto_learn.py")
 
 # Predictions
-st.subheader("🎯 Next Steps")
+st.subheader("[TARGET] Next Steps")
 next_file = CURRENT_DIR / "NEXT.md"
 if next_file.exists():
     content = next_file.read_text()
@@ -57,7 +57,7 @@ else:
     st.info("Ingen predictions endnu - kør auto_predict.py")
 
 # DNA Layer Activity
-st.subheader("🧬 7 DNA Layers")
+st.subheader("[DNA] 7 DNA Layers")
 layers = [
     ("1. SELF-AWARE", "System identity", "DNA.yaml"),
     ("2. SELF-DOCUMENTING", "Auto-logging", "Haiku"),
@@ -71,16 +71,16 @@ layers = [
 for name, desc, model in layers:
     col1, col2, col3 = st.columns([2, 2, 1])
     with col1:
-        st.write(f"✅ {name}")
+        st.write(f"[OK] {name}")
     with col2:
         st.caption(desc)
     with col3:
         if model != "DNA.yaml":
-            st.caption(f"🤖 {model}")
+            st.caption(f"[AI] {model}")
 
 # Archive stats
 st.divider()
-st.subheader("📈 Archive Performance")
+st.subheader(" Archive Performance")
 
 if ARCHIVE_DIR.exists():
     archives = list(ARCHIVE_DIR.iterdir())

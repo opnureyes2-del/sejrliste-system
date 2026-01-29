@@ -176,10 +176,10 @@ def update_next_md(system_path: Path, predictions: dict):
 
     for i, step in enumerate(predictions['next_steps'], 1):
         priority_emoji = {
-            'high': '🔴',
-            'medium': '🟡',
-            'low': '🟢'
-        }.get(step['priority'], '⚪')
+            'high': '[ERROR]',
+            'medium': '[WARN]',
+            'low': '[OK]'
+        }.get(step['priority'], '')
 
         content += f"""### {i}. {step['action']} ({priority_emoji} {step['priority'].title()} Prioritet)
 **Hvorfor:** {step['reasoning']}
@@ -222,13 +222,13 @@ def update_next_md(system_path: Path, predictions: dict):
     with open(next_file, 'w') as f:
         f.write(content)
 
-    print(f"✅ Updated: {next_file}")
+    print(f"[OK] Updated: {next_file}")
     print(f"   Generated {len(predictions['next_steps'])} next steps")
     print(f"   Suggested focus: {predictions['suggested_focus']}")
 
 def run_prediction(system_path: Path):
     """Run full prediction cycle"""
-    print("🔮 Generating predictions...\n")
+    print(" Generating predictions...\n")
 
     # Load patterns
     patterns_data = load_patterns(system_path)
@@ -236,7 +236,7 @@ def run_prediction(system_path: Path):
     # Scan current state
     current_state = scan_current_state(system_path)
 
-    print(f"📊 Current state:")
+    print(f"[DATA] Current state:")
     print(f"   Active sejr: {current_state['active_sejr_count']}")
     print(f"   Needs attention: {len(current_state['needs_attention'])}")
     print(f"   Learned patterns: {len(patterns_data.get('learned_patterns', []))}\n")
@@ -247,7 +247,7 @@ def run_prediction(system_path: Path):
     # Update NEXT.md
     update_next_md(system_path, predictions)
 
-    print(f"\n✅ Predictions generated and saved to _CURRENT/NEXT.md")
+    print(f"\n[OK] Predictions generated and saved to _CURRENT/NEXT.md")
 
 if __name__ == "__main__":
     system_path = Path(__file__).parent.parent

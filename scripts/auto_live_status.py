@@ -212,7 +212,7 @@ def generate_live_status() -> str:
     lines = []
 
     # Header
-    lines.append("# 🔴 LIVE STATUS - Opdateres Automatisk")
+    lines.append("# [ERROR] LIVE STATUS - Opdateres Automatisk")
     lines.append("")
     lines.append(f"> Sidste opdatering: {now.strftime('%Y-%m-%d %H:%M:%S')}")
     lines.append("")
@@ -220,7 +220,7 @@ def generate_live_status() -> str:
     lines.append("")
 
     # 5W Context
-    lines.append("## 🎯 HVAD SKER DER NU?")
+    lines.append("## [TARGET] HVAD SKER DER NU?")
     lines.append("")
     lines.append("| Aspekt | Status |")
     lines.append("|--------|--------|")
@@ -231,7 +231,7 @@ def generate_live_status() -> str:
     lines.append("")
 
     # Active Processes
-    lines.append("## 🏃 AKTIVE PROCESSER")
+    lines.append("##  AKTIVE PROCESSER")
     lines.append("")
     lines.append("```")
     for name, status in processes.items():
@@ -242,7 +242,7 @@ def generate_live_status() -> str:
     lines.append("")
 
     # Progress
-    lines.append("## 📊 PROGRESS")
+    lines.append("## [DATA] PROGRESS")
     lines.append("")
     lines.append("| Sejr | Progress | Skridt | Status |")
     lines.append("|------|----------|--------|--------|")
@@ -254,7 +254,7 @@ def generate_live_status() -> str:
     lines.append("")
 
     # Next Steps
-    lines.append("## 🔮 NÆSTE SKRIDT")
+    lines.append("##  NÆSTE SKRIDT")
     lines.append("")
     for i, step in enumerate(next_steps, 1):
         marker = "← NU" if i == 1 else ""
@@ -264,7 +264,7 @@ def generate_live_status() -> str:
     lines.append("")
 
     # Files
-    lines.append("## 📁 FILER I DENNE MAPPE")
+    lines.append("## [DIR] FILER I DENNE MAPPE")
     lines.append("")
     lines.append("| Fil | Formål | Sidst Ændret |")
     lines.append("|-----|--------|--------------|")
@@ -275,7 +275,7 @@ def generate_live_status() -> str:
     lines.append("")
 
     # Direct Links
-    lines.append("## 🔗 DIREKTE LINKS")
+    lines.append("## [LINK] DIREKTE LINKS")
     lines.append("")
     lines.append("- **Web App:** [http://localhost:8501](http://localhost:8501)")
     if sejrs:
@@ -294,14 +294,14 @@ def update_live_status():
     """Opdater LIVE_STATUS.md filen"""
     content = generate_live_status()
     OUTPUT_FILE.write_text(content)
-    print(f"✅ LIVE_STATUS.md opdateret: {datetime.now().strftime('%H:%M:%S')}")
+    print(f"[OK] LIVE_STATUS.md opdateret: {datetime.now().strftime('%H:%M:%S')}")
 
 
 def watch_mode():
     """Kør i watch mode - opdater hvert 10. sekund"""
     import time
 
-    print("🔴 LIVE STATUS WATCH MODE")
+    print("[ERROR] LIVE STATUS WATCH MODE")
     print("   Opdaterer hvert 10. sekund")
     print("   Ctrl+C for at stoppe")
     print()
@@ -311,7 +311,7 @@ def watch_mode():
             update_live_status()
             time.sleep(10)
     except KeyboardInterrupt:
-        print("\n⏹️ Stoppet")
+        print("\n⏹ Stoppet")
 
 
 # ═══════════════════════════════════════════════════════════════════════════

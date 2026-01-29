@@ -1,4 +1,4 @@
-# 🔒 SESSION START TJEKLISTE
+# [LOCK] SESSION START TJEKLISTE
 
 > Udfyld denne tjekliste HVER gang du starter arbejde i sejrliste systemet
 
@@ -28,7 +28,7 @@
 Sig til bruger:
 
 ```
-🔒 SEJR FOKUS AKTIVERET
+[LOCK] SEJR FOKUS AKTIVERET
 
 Opgave: [SEJR NAVN]
 Pass: [X]/3

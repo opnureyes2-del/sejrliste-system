@@ -10,7 +10,7 @@ import json
 import re
 import subprocess
 
-st.set_page_config(page_title="Aktiv Sejr", page_icon="📋", layout="wide")
+st.set_page_config(page_title="Aktiv Sejr", page_icon="[LIST]", layout="wide")
 
 SYSTEM_PATH = Path(__file__).parent.parent
 ACTIVE_DIR = SYSTEM_PATH / "10_ACTIVE"
@@ -38,7 +38,7 @@ def run_script(script_name: str, args=None):
         return f"Error: {e}"
 
 # Header
-st.title("📋 Aktiv Sejr")
+st.title("[LIST] Aktiv Sejr")
 st.caption("Vælg en sejr at arbejde på - som at fortsætte en samtale")
 
 # Get active sejr
@@ -46,8 +46,8 @@ active_sejr = get_active_sejr()
 
 if not active_sejr:
     st.warning("Ingen aktive sejr. Opret en ny!")
-    if st.button("➕ Opret Ny Sejr"):
-        st.switch_page("pages/3_➕_Ny_Sejr.py")
+    if st.button("+ Opret Ny Sejr"):
+        st.switch_page("pages/3_+_Ny_Sejr.py")
 else:
     # Sejr selector
     sejr_names = [s.name for s in active_sejr]
@@ -60,7 +60,7 @@ else:
     col1, col2 = st.columns([3, 1])
 
     with col1:
-        st.subheader(f"📝 {selected_name}")
+        st.subheader(f"[TEXT] {selected_name}")
 
         # Read SEJR_LISTE.md
         sejr_file = selected_sejr / "SEJR_LISTE.md"
@@ -73,7 +73,7 @@ else:
                 if "- [" in line:
                     if "- [x]" in line.lower():
                         text = line.split("]", 1)[1].strip()
-                        st.markdown(f"✅ ~~{text}~~")
+                        st.markdown(f"[OK] ~~{text}~~")
                     else:
                         text = line.split("]", 1)[1].strip()
                         st.markdown(f"⬜ {text}")
@@ -84,7 +84,7 @@ else:
             st.metric("Progress", f"{done}/{total} ({int(done/total*100) if total else 0}%)")
 
         # AUTO_LOG stream
-        st.markdown("### 📜 Live Log")
+        st.markdown("###  Live Log")
         log_file = selected_sejr / "AUTO_LOG.jsonl"
         if log_file.exists():
             lines = log_file.read_text().strip().split("\n")[-5:]
@@ -98,24 +98,24 @@ else:
                     pass
 
     with col2:
-        st.subheader("⚡ Actions")
+        st.subheader(" Actions")
 
-        if st.button("🔍 Verify", use_container_width=True):
+        if st.button("[SCAN] Verify", use_container_width=True):
             with st.spinner("Verifying..."):
                 output = run_script("auto_verify.py", [str(selected_sejr)])
                 st.code(output[:500])
 
-        if st.button("📊 Track", use_container_width=True):
+        if st.button("[DATA] Track", use_container_width=True):
             with st.spinner("Tracking..."):
                 output = run_script("auto_track.py")
                 st.code(output[:500])
 
-        if st.button("🔮 Predict", use_container_width=True):
+        if st.button(" Predict", use_container_width=True):
             with st.spinner("Predicting..."):
                 output = run_script("auto_predict.py")
                 st.code(output[:500])
 
-        if st.button("📚 Learn", use_container_width=True):
+        if st.button("[DOCS] Learn", use_container_width=True):
             with st.spinner("Learning..."):
                 output = run_script("auto_learn.py")
                 st.code(output[:500])
@@ -125,7 +125,7 @@ else:
         # Status
         status_file = selected_sejr / "STATUS.yaml"
         if status_file.exists():
-            st.markdown("### 📊 Status")
+            st.markdown("### [DATA] Status")
             status_content = status_file.read_text()
             for line in status_content.split("\n"):
                 if "score" in line.lower():
@@ -133,10 +133,10 @@ else:
 
         # Archive button
         st.divider()
-        if st.button("📦 Archive Sejr", use_container_width=True, type="primary"):
+        if st.button(" Archive Sejr", use_container_width=True, type="primary"):
             with st.spinner("Archiving..."):
                 output = run_script("auto_archive.py", [str(selected_sejr)])
                 st.code(output[:500])
-                if "✅" in output:
+                if "[OK]" in output:
                     st.success("Arkiveret!")
                     st.rerun()

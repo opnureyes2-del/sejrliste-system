@@ -1,0 +1,117 @@
+# Index-Content Sync Report
+
+**Generated:** 2026-01-30 00:34:35
+
+```
+======================================================================
+VERIFY INDEX-CONTENT SYNC
+Timestamp: 2026-01-30 00:34:34
+======================================================================
+
+Files scanned: 316
+Total issues: 865
+  [FAIL] 0
+  [WARN] 433
+  [INFO] 432
+
+--- 1. Status Header Validation [PASS] ---
+  [OK] No issues found
+
+--- 2. Internal Link Validation [PASS] ---
+  [OK] No issues found
+
+--- 3. External Reference Validation [391 issues] ---
+  [WARN] 00_MASTER_INDEX.md:168
+         Path does not exist: /home/rasmus/Desktop/MIN
+  [WARN] 00_MASTER_INDEX.md:171
+         Path does not exist: /home/rasmus/Desktop/MIN
+  [WARN] 00_MASTER_INDEX.md:174
+         Path does not exist: /home/rasmus/Desktop/MIN
+  [WARN] FOLDER_ARCHITECTURE.md:252
+         Path does not exist: /home/rasmus/Desktop/MASTER
+  [WARN] FOLDER_ARCHITECTURE.md:253
+         Path does not exist: /home/rasmus/Desktop/MANUAL
+  [WARN] SYSTEM_CAPABILITIES.md:215
+         Path does not exist: /home/rasmus/Desktop/sejrliste
+  [WARN] SYSTEM_CAPABILITIES.md:503
+         Path does not exist: /home/rasmus/Desktop/sejrliste
+  [WARN] SYSTEM_CAPABILITIES.md:506
+         Path does not exist: /home/rasmus/Desktop/sejrliste
+  [WARN] EMERGENCY_RECOVERY.md:124
+         Path does not exist: /home/rasmus/Desktop/MASTER
+  [WARN] EMERGENCY_RECOVERY.md:127
+         Path does not exist: /home/rasmus/Desktop/projekts/status
+  ... and 381 more
+
+--- 4. Timestamp Freshness [92 issues] ---
+  [INFO] FAMILY_API_REFERENCE.md:282
+         Stale timestamp (13 days old): **Last Updated:** 2026-01-17 18:30 CET
+  [INFO] NAVIGATION_INDEX.md:3
+         Stale timestamp (13 days old): **Generated:** 2026-01-17 11:40:22
+  [INFO] NAVIGATION_INDEX.md:1101
+         Stale timestamp (14 days old): - Sections: G3: ADMIRAL FLEET - Complete Integration Guide, 🚀 ADMIRAL FLEET OVER
+  [INFO] NAVIGATION_INDEX.md:1127
+         Stale timestamp (14 days old): - Sections: H1: MULTI-ADMIRAL DEVELOPMENT WORKFLOW, 🎯 HVAD ER DETTE?, 🚀 ADMIRAL 
+  [INFO] NAVIGATION_INDEX.md:1257
+         Stale timestamp (14 days old): - Sections: I6. LOCALHOST ENVIRONMENTS - KOMPLET OVERSIGT, AKTIVE PORTE (Verific
+  [INFO] I1_ADMIRAL_PLUS_VISION.md:553
+         Stale timestamp (14 days old): - ✅ Morning Prep File: `/tmp/morning_priorities.json` (generated 2026-01-16 13:0
+  [INFO] HVAD_VI_HAR_OVERSET_2026-01-22.md:573
+         Stale timestamp (11 days old): REAL CURRENT STATE (2026-01-19 15:00 VERIFIED):
+  [INFO] HVAD_VI_HAR_OVERSET_2026-01-22.md:596
+         Stale timestamp (12 days old): "📊 VERIFIED 2026-01-18 02:48:
+  [INFO] I3_HYBRIDERNES_SANDHED.md:3
+         Stale timestamp (14 days old): **Dato:** 2026-01-16 (Opdateret 16:14)
+  [INFO] COMPLETE_SYSTEM_DEEP_DIVE_2026-01-22.md:1248
+         Stale timestamp (14 days old): **Status (Verified 2026-01-16):**
+  ... and 82 more
+
+--- 5. Chapter Numbering [42 issues] ---
+  [WARN] SEJR_LISTE.md:47
+         Duplicate FASE 0 (also at line 27)
+  [WARN] SEJR_LISTE.md:79
+         Duplicate FASE 0 (also at line 47)
+  [WARN] SEJR_LISTE.md:85
+         Duplicate FASE 1 (also at line 54)
+  [WARN] SEJR_LISTE.md:91
+         Duplicate FASE 2 (also at line 60)
+  [WARN] SEJR_LISTE.md:105
+         Duplicate FASE 0 (also at line 45)
+  [WARN] SEJR_LISTE.md:114
+         Duplicate FASE 1 (also at line 59)
+  [WARN] SEJR_LISTE.md:126
+         Duplicate FASE 2 (also at line 70)
+  [WARN] SEJR_LISTE.md:149
+         Duplicate FASE 0 (also at line 105)
+  [WARN] SEJR_LISTE.md:155
+         Duplicate FASE 1 (also at line 114)
+  [WARN] SEJR_LISTE.md:106
+         Duplicate FASE 0 (also at line 26)
+  ... and 32 more
+
+--- 6. TODO Marker Tracking [340 issues] ---
+  [INFO] NAUGHTY_OR_NOT.md:86
+         TODO found: - Used `content.count("TODO:")` which counted ALL occurrences
+  [INFO] FOLDER_ARCHITECTURE.md:287
+         TODO found: [File contains completed work, no TODOs]
+  [INFO] ADMIRAL_PLUS_VICTORIES.md:28
+         TODO found: - Scans files for TODO count
+  [INFO] ADMIRAL_PLUS_VICTORIES.md:82
+         TODO found: **Problem Solved:** Hours spent on TODOs one at a time
+  [INFO] ADMIRAL_PLUS_VICTORIES.md:85
+         TODO found: - Extracts TODO comments from Python files
+  [INFO] ADMIRAL_PLUS_VICTORIES.md:86
+         TODO found: - Distributes TODOs to 14 SWARM models in parallel
+  [INFO] ADMIRAL_PLUS_VICTORIES.md:93
+         TODO found: 1. Priority scan detects: "7 TODOs across 3 files"
+  [INFO] ADMIRAL_PLUS_VICTORIES.md:103
+         TODO found: curl http://localhost:9001/api/read-todos
+  [INFO] ADMIRAL_PLUS_VICTORIES.md:200
+         TODO found: | TODO handling | 8 hours | 2 hours | 4× faster |
+  [INFO] ADMIRAL_PLUS_VICTORIES.md:231
+         TODO found: NOT: "more efficient"        → YES: "8× faster TODO completion"
+  ... and 330 more
+
+----------------------------------------------------------------------
+Generated by verify_index_content_sync.py
+```

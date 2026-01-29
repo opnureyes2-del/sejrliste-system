@@ -196,7 +196,7 @@ if __name__ == "__main__":
     assert read_data["active"] is True, "active mismatch"
     assert read_data["score"] == 27.5, "score mismatch"
 
-    print("\n✅ All tests passed!")
+    print("\n[OK] All tests passed!")
 
     # Cleanup
     test_path.unlink()

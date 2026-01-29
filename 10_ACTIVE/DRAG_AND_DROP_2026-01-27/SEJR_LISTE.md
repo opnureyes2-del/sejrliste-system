@@ -72,7 +72,7 @@
 - [x] Folder-to-folder virker (Active ↔ Archive via cross-category drag)
 - [x] File-to-folder virker (træk fil ind i sejr detail view)
 - [x] Ekstern drop forbedret (SejrConverter API + smart folder detection)
-- [x] App starter uden fejl (py_compile ✅, launch ✅)
+- [x] App starter uden fejl (py_compile [OK], launch [OK])
 - [x] Score: 8/10 (mangler: Escape annullér, bekræftelses-dialog, multi-file drop → Pass 2)
 
 ---

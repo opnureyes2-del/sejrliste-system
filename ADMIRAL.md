@@ -1,4 +1,4 @@
-# 🎖️ HVAD ER EN ADMIRAL?
+# [ADMIRAL] HVAD ER EN ADMIRAL?
 
 > **En Admiral er IKKE en titel. Det er en MÅDE at arbejde på.**
 
@@ -8,7 +8,7 @@
 
 En Admiral besidder ALLE 5 kvaliteter. Mangler én = IKKE Admiral.
 
-### 1. FOKUS 🎯
+### 1. FOKUS [TARGET]
 > "App viser kun det relevante, ikke alt"
 
 **Definition:** En Admiral drukner IKKE i information. De viser KUN hvad der er vigtigt NU.
@@ -22,12 +22,12 @@ En Admiral besidder ALLE 5 kvaliteter. Mangler én = IKKE Admiral.
 **Anti-pattern:** "Her er 50 ting du kunne gøre..." = IKKE ADMIRAL
 
 **Test:** Kan brugeren se hvad de skal gøre på under 5 sekunder?
-- ✅ JA = Admiral fokus
-- ❌ NEJ = For meget støj
+- [OK] JA = Admiral fokus
+- [FAIL] NEJ = For meget støj
 
 ---
 
-### 2. OVERBLIK 🗺️
+### 2. OVERBLIK
 > "Dashboard viser total status på ét øjekast"
 
 **Definition:** En Admiral kan ALTID svare: "Hvor er vi?" uden at lede.
@@ -41,12 +41,12 @@ En Admiral besidder ALLE 5 kvaliteter. Mangler én = IKKE Admiral.
 **Anti-pattern:** "Vent, lad mig lige tjekke..." = IKKE ADMIRAL
 
 **Test:** Kan du besvare "hvad er status?" uden at åbne filer?
-- ✅ JA = Admiral overblik
-- ❌ NEJ = Mangler dashboard
+- [OK] JA = Admiral overblik
+- [FAIL] NEJ = Mangler dashboard
 
 ---
 
-### 3. NØJE ØJE 👁️
+### 3. NØJE ØJE
 > "Hver lille checkbox tracked og visualiseret"
 
 **Definition:** En Admiral GLEMMER INGENTING. Hver detalje er tracked.
@@ -60,12 +60,12 @@ En Admiral besidder ALLE 5 kvaliteter. Mangler én = IKKE Admiral.
 **Anti-pattern:** "Det burde virke..." = IKKE ADMIRAL
 
 **Test:** Kan du bevise HVER påstand med en kommando?
-- ✅ JA = Admiral nøjagtighed
-- ❌ NEJ = Tomme ord
+- [OK] JA = Admiral nøjagtighed
+- [FAIL] NEJ = Tomme ord
 
 ---
 
-### 4. UDVIKLING 📈
+### 4. UDVIKLING
 > "Patterns og predictions viser hvor det går hen"
 
 **Definition:** En Admiral ser FREMAD, ikke kun bagud.
@@ -79,12 +79,12 @@ En Admiral besidder ALLE 5 kvaliteter. Mangler én = IKKE Admiral.
 **Anti-pattern:** "Hvad var det vi lavede?" = IKKE ADMIRAL
 
 **Test:** Kan du svare "hvad er næste skridt?" UDEN at tænke?
-- ✅ JA = Admiral udvikling
-- ❌ NEJ = Reaktiv, ikke proaktiv
+- [OK] JA = Admiral udvikling
+- [FAIL] NEJ = Reaktiv, ikke proaktiv
 
 ---
 
-### 5. SAMMENHÆNG 🔗
+### 5. SAMMENHÆNG [LINK]
 > "Alle 7 DNA lag synlige som connected flow"
 
 **Definition:** En Admiral ser HELHEDEN, ikke isolerede dele.
@@ -98,8 +98,8 @@ En Admiral besidder ALLE 5 kvaliteter. Mangler én = IKKE Admiral.
 **Anti-pattern:** "Jeg fikser bare denne ene ting..." = IKKE ADMIRAL
 
 **Test:** Kan du forklare hvordan denne ændring påvirker HELE systemet?
-- ✅ JA = Admiral sammenhæng
-- ❌ NEJ = Tunnelsyn
+- [OK] JA = Admiral sammenhæng
+- [FAIL] NEJ = Tunnelsyn
 
 ---
 
@@ -135,11 +135,11 @@ Admiralens 5 kvaliteter realiseres gennem 7 DNA lag:
 
 | Score | Rang | Betydning |
 |-------|------|-----------|
-| 27-30 | 🏅 GRAND ADMIRAL | Perfekt eksekvering. Alle 5 kvaliteter. |
-| 24-26 | 🎖️ ADMIRAL | Excellent. Minimal fejl. Alle kvaliteter synlige. |
-| 21-23 | ⭐ KAPTAJN | God. 4/5 kvaliteter. Rum for forbedring. |
-| 18-20 | 📊 LØJTNANT | Acceptabel. 3/5 kvaliteter. Træning nødvendig. |
-| <18 | 🔰 KADET | Under træning. Lær systemet. |
+| 27-30 | [MEDAL] GRAND ADMIRAL | Perfekt eksekvering. Alle 5 kvaliteter. |
+| 24-26 | [ADMIRAL] ADMIRAL | Excellent. Minimal fejl. Alle kvaliteter synlige. |
+| 21-23 | KAPTAJN | God. 4/5 kvaliteter. Rum for forbedring. |
+| 18-20 | [DATA] LØJTNANT | Acceptabel. 3/5 kvaliteter. Træning nødvendig. |
+| <18 | KADET | Under træning. Lær systemet. |
 
 ---
 
@@ -164,8 +164,8 @@ Ved PRÆCIS hvor du er
 ```
 Hver checkbox har:
 - [x] Task done
-  - Verify: `kommando`
-  - Result: Faktisk output
+ - Verify: `kommando`
+ - Result: Faktisk output
 ```
 
 ### Skridt 4: UDVIKLING

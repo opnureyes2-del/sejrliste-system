@@ -25,7 +25,7 @@ def test_script_executor_init():
     assert executor.current_script is None
     assert len(executor.SCRIPTS) == 6
 
-    print("✅ Test 1 PASSED: ScriptExecutor initializes correctly")
+    print("[OK] Test 1 PASSED: ScriptExecutor initializes correctly")
     return True
 
 
@@ -40,10 +40,10 @@ def test_script_paths_exist():
             missing.append(name)
 
     if missing:
-        print(f"❌ Test 2 FAILED: Missing scripts: {missing}")
+        print(f"[FAIL] Test 2 FAILED: Missing scripts: {missing}")
         return False
 
-    print(f"✅ Test 2 PASSED: All {len(all_scripts)} scripts exist")
+    print(f"[OK] Test 2 PASSED: All {len(all_scripts)} scripts exist")
     return True
 
 
@@ -57,7 +57,7 @@ def test_run_script_with_help():
     assert success is True or "usage" in output.lower() or "help" in output.lower()
     assert len(output) > 0
 
-    print(f"✅ Test 3 PASSED: run_script returns output (got {len(output)} chars)")
+    print(f"[OK] Test 3 PASSED: run_script returns output (got {len(output)} chars)")
     return True
 
 
@@ -70,7 +70,7 @@ def test_unknown_script_fails():
     assert success is False
     assert "unknown" in output.lower() or "not found" in output.lower()
 
-    print("✅ Test 4 PASSED: Unknown script fails gracefully")
+    print("[OK] Test 4 PASSED: Unknown script fails gracefully")
     return True
 
 
@@ -91,7 +91,7 @@ def test_dna_lag_mapping():
         actual_lag = executor.get_dna_lag(script_name)
         assert actual_lag == expected_lag, f"{script_name}: expected {expected_lag}, got {actual_lag}"
 
-    print("✅ Test 5 PASSED: DNA lag mapping is correct")
+    print("[OK] Test 5 PASSED: DNA lag mapping is correct")
     return True
 
 
@@ -119,7 +119,7 @@ def run_all_tests():
             else:
                 failed += 1
         except Exception as e:
-            print(f"❌ {test.__name__} FAILED with exception: {e}")
+            print(f"[FAIL] {test.__name__} FAILED with exception: {e}")
             failed += 1
 
     print("=" * 60)

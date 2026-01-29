@@ -380,14 +380,14 @@ statistics:
 
 | Hvornår | Action | Påkrævet |
 |---------|--------|----------|
-| Ved session start | `SESSION_START` | ✅ JA |
-| Ved læsning af CLAUDE.md | `CONTEXT_LOADED` | ✅ JA |
-| Ved start på checkbox | `CHECKBOX_START` | ✅ JA |
-| Ved færdig checkbox | `CHECKBOX_DONE` | ✅ JA |
-| Ved terminal kommando | `COMMAND_RUN` | ✅ JA |
-| Ved fejl | `ERROR_OCCURRED` | ✅ JA |
-| Ved pass complete | `PASS_COMPLETE` | ✅ JA |
-| Ved session slut | `SESSION_END` | ✅ JA |
+| Ved session start | `SESSION_START` | [OK] JA |
+| Ved læsning af CLAUDE.md | `CONTEXT_LOADED` | [OK] JA |
+| Ved start på checkbox | `CHECKBOX_START` | [OK] JA |
+| Ved færdig checkbox | `CHECKBOX_DONE` | [OK] JA |
+| Ved terminal kommando | `COMMAND_RUN` | [OK] JA |
+| Ved fejl | `ERROR_OCCURRED` | [OK] JA |
+| Ved pass complete | `PASS_COMPLETE` | [OK] JA |
+| Ved session slut | `SESSION_END` | [OK] JA |
 
 ### Scripts SKAL Logge
 

@@ -43,6 +43,6 @@ class SejrListWidget:
                 "index": i,
                 "text": text[:50],
                 "checked": checked,
-                "icon": "✅" if checked else "⬜",
+                "icon": "[OK]" if checked else "⬜",
             })
         return items

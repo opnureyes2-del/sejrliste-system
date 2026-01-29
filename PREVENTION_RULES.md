@@ -1,10 +1,10 @@
-# 🛡️ PREVENTION RULES - OBLIGATORISK FOR AI
+# [SHIELD] PREVENTION RULES - OBLIGATORISK FOR AI
 
 > **DENNE FIL SKAL LÆSES FØR ENHVER ÆNDRING I SEJRLISTE SYSTEMET**
 
 ---
 
-## ⛔ FORBUDTE HANDLINGER
+## [STOP] FORBUDTE HANDLINGER
 
 ### 1. ALDRIG ændre CSS/design uden eksplicit ordre
 **Problem:** AI lavede CSS-ændringer der ødelagde designet
@@ -35,7 +35,7 @@
 
 ---
 
-## ✅ OBLIGATORISKE HANDLINGER FØR KODEÆNDRING
+## [OK] OBLIGATORISKE HANDLINGER FØR KODEÆNDRING
 
 ```bash
 # 1. Check git status først
@@ -66,7 +66,7 @@ git add . && git commit -m "ÆNDRING: [beskrivelse]"
 
 ---
 
-## 🚨 HVIS DU ER I TVIVL
+## [ALERT] HVIS DU ER I TVIVL
 
 1. **STOP** - Lav INGEN ændringer
 2. **SPØRG** - Beskriv hvad du vil ændre og hvorfor
@@ -74,7 +74,7 @@ git add . && git commit -m "ÆNDRING: [beskrivelse]"
 
 ---
 
-## 📋 ÆNDRING CHECKLISTE
+## [LIST] ÆNDRING CHECKLISTE
 
 Før ENHVER kodeændring:
 

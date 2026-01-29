@@ -47,53 +47,53 @@ python3 scripts/auto_archive.py --sejr "MIN_OPGAVE_2026-01-25"
 ```
 sejrliste systemet/
 │
-├── README.md                 ← Du læser denne (inkl. Quick Start)
-├── ADMIRAL.md                ← 🆕 HVAD ER EN ADMIRAL? (5 kvaliteter)
-├── MODEL_ONBOARDING.md       ← 🆕 AI ONBOARDING (læs først som ny model!)
-├── SCRIPT_REFERENCE.md       ← 🆕 Alle 11 scripts dokumenteret
-├── EKSEMPLER.md              ← 🆕 10+ konkrete eksempler
-├── ARBEJDSFORHOLD.md         ← KOMPLET VEJLEDNING (AI regler inkluderet)
-├── MANUAL.md                 ← Fuld dokumentation (3-pass + score system)
-├── LOG_FORMAT.md             ← Log format specifikation
-├── DNA.yaml                  ← System identitet
-├── ARKITEKTUR.md             ← System arkitektur
-├── view.py                   ← Terminal viewer (simpel)
-├── app/sejr_app.py           ← TUI app (Textual - avanceret)
+├── README.md ← Du læser denne (inkl. Quick Start)
+├── ADMIRAL.md ← 🆕 HVAD ER EN ADMIRAL? (5 kvaliteter)
+├── MODEL_ONBOARDING.md ← 🆕 AI ONBOARDING (læs først som ny model!)
+├── SCRIPT_REFERENCE.md ← 🆕 Alle 11 scripts dokumenteret
+├── EKSEMPLER.md ← 🆕 10+ konkrete eksempler
+├── ARBEJDSFORHOLD.md ← KOMPLET VEJLEDNING (AI regler inkluderet)
+├── MANUAL.md ← Fuld dokumentation (3-pass + score system)
+├── LOG_FORMAT.md ← Log format specifikation
+├── DNA.yaml ← System identitet
+├── ARKITEKTUR.md ← System arkitektur
+├── view.py ← Terminal viewer (simpel)
+├── app/sejr_app.py ← TUI app (Textual - avanceret)
 │
-├── scripts/                  ← Automatisering (9 scripts)
-│   ├── generate_sejr.py          → Opret ny sejr + CLAUDE.md
-│   ├── build_claude_context.py   → DYNAMISK CLAUDE.md builder
-│   ├── update_claude_focus.py    → Opdater fokus state
-│   ├── auto_verify.py            → 3-pass verification
-│   ├── auto_archive.py           → Arkivering (blokeret til done)
-│   ├── auto_track.py             → State tracking
-│   ├── auto_learn.py             → Pattern learning
-│   ├── auto_predict.py           → Predictions
-│   └── admiral_tracker.py        → Score tracking + leaderboard
+├── scripts/ ← Automatisering (9 scripts)
+│ ├── generate_sejr.py → Opret ny sejr + CLAUDE.md
+│ ├── build_claude_context.py → DYNAMISK CLAUDE.md builder
+│ ├── update_claude_focus.py → Opdater fokus state
+│ ├── auto_verify.py → 3-pass verification
+│ ├── auto_archive.py → Arkivering (blokeret til done)
+│ ├── auto_track.py → State tracking
+│ ├── auto_learn.py → Pattern learning
+│ ├── auto_predict.py → Predictions
+│ └── admiral_tracker.py → Score tracking + leaderboard
 │
-├── 00_TEMPLATES/             ← Skabeloner (4 stk)
-│   ├── SEJR_TEMPLATE.md          → Master template med 3-pass
-│   ├── CLAUDE.md                 → Fokus lock template
-│   ├── STATUS_TEMPLATE.yaml      → Unified status template
-│   └── SESSION_TJEK.md           → Session start tjekliste
+├── 00_TEMPLATES/ ← Skabeloner (4 stk)
+│ ├── SEJR_TEMPLATE.md → Master template med 3-pass
+│ ├── CLAUDE.md → Fokus lock template
+│ ├── STATUS_TEMPLATE.yaml → Unified status template
+│ └── SESSION_TJEK.md → Session start tjekliste
 │
-├── 10_ACTIVE/                ← AKTIVE SEJR (arbejd her)
-│   └── {OPGAVE_DATO}/
-│       ├── SEJR_LISTE.md         → Hovedopgave med checkboxes
-│       ├── CLAUDE.md             → AI FOKUS LOCK (genereret)
-│       ├── STATUS.yaml           → UNIFIED (pass + score + model)
-│       └── AUTO_LOG.jsonl        → MASTER (alt logging)
+├── 10_ACTIVE/ ← AKTIVE SEJR (arbejd her)
+│ └── {OPGAVE_DATO}/
+│ ├── SEJR_LISTE.md → Hovedopgave med checkboxes
+│ ├── CLAUDE.md → AI FOKUS LOCK (genereret)
+│ ├── STATUS.yaml → UNIFIED (pass + score + model)
+│ └── AUTO_LOG.jsonl → MASTER (alt logging)
 │
-├── 90_ARCHIVE/               ← FÆRDIGE SEJR (kun konklusion)
-│   └── {OPGAVE_DATO_TID}/
-│       └── CONCLUSION.md         → Semantisk essens
+├── 90_ARCHIVE/ ← FÆRDIGE SEJR (kun konklusion)
+│ └── {OPGAVE_DATO_TID}/
+│ └── CONCLUSION.md → Semantisk essens
 │
-└── _CURRENT/                 ← System state (5 filer)
-    ├── STATE.md                  → Current state
-    ├── DELTA.md                  → Hvad er nyt
-    ├── NEXT.md                   → Predictions
-    ├── PATTERNS.yaml             → Lærte mønstre
-    └── LEADERBOARD.md            → Global konkurrence leaderboard
+└── _CURRENT/ ← System state (5 filer)
+ ├── STATE.md → Current state
+ ├── DELTA.md → Hvad er nyt
+ ├── NEXT.md → Predictions
+ ├── PATTERNS.yaml → Lærte mønstre
+ └── LEADERBOARD.md → Global konkurrence leaderboard
 ```
 
 ---
@@ -151,13 +151,13 @@ Hovedopgaven med alle checkboxes organiseret i 3 passes:
 
 ### Pass 3: 7-DNA GENNEMGANG
 - Gennemgå ALLE 7 DNA lag:
-  1. SELF-AWARE - Kender systemet sig selv?
-  2. SELF-DOCUMENTING - Er alt logget?
-  3. SELF-VERIFYING - Er alt testet?
-  4. SELF-IMPROVING - Har vi lært noget?
-  5. SELF-ARCHIVING - Kun essens bevaret?
-  6. PREDICTIVE - Hvad er næste skridt?
-  7. SELF-OPTIMIZING - Kunne vi have gjort det bedre?
+ 1. SELF-AWARE - Kender systemet sig selv?
+ 2. SELF-DOCUMENTING - Er alt logget?
+ 3. SELF-VERIFYING - Er alt testet?
+ 4. SELF-IMPROVING - Har vi lært noget?
+ 5. SELF-ARCHIVING - Kun essens bevaret?
+ 6. PREDICTIVE - Hvad er næste skridt?
+ 7. SELF-OPTIMIZING - Kunne vi have gjort det bedre?
 - Kør 5+ tests
 - **Score SKAL være højere end Pass 2**
 - **Total score SKAL være ≥ 24/30**
@@ -223,7 +223,7 @@ python3 app/sejr_app.py
 
 ---
 
-## 🎖️ ADMIRAL KONKURRENCE SYSTEM
+## [ADMIRAL] ADMIRAL KONKURRENCE SYSTEM
 
 Et **SCORE SYSTEM** der måler AI modellers performance objektivt!
 
@@ -247,12 +247,12 @@ Et **SCORE SYSTEM** der måler AI modellers performance objektivt!
 ### Rankings
 | Rang | Score |
 |------|-------|
-| 🎖️ STORADMIRAL | 150+ |
-| ⭐ ADMIRAL | 100-149 |
-| 🏅 KAPTAJN | 50-99 |
-| 🎗️ LØJTNANT | 20-49 |
-| 📛 KADET | 0-19 |
-| 💀 SKIBSDRENG | < 0 |
+| [ADMIRAL] STORADMIRAL | 150+ |
+| ADMIRAL | 100-149 |
+| [MEDAL] KAPTAJN | 50-99 |
+| LØJTNANT | 20-49 |
+| KADET | 0-19 |
+| [DEAD] SKIBSDRENG | < 0 |
 
 ### Kommandoer
 ```bash
@@ -272,4 +272,4 @@ Se MANUAL.md for fuld dokumentation af score systemet.
 
 **Bygget af:** Kv1nt + Rasmus
 **Dato:** 2026-01-25
-**Status:** ✅ OPERATIONEL
+**Status:** [OK] OPERATIONEL

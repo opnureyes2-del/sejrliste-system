@@ -362,31 +362,31 @@ python3 scripts/auto_learn.py
 
 ### Error 1: "Victory folder not found"
 ```
-❌ Error: No active victory found in 10_ACTIVE/
+[FAIL] Error: No active victory found in 10_ACTIVE/
 ```
 **Solution:** Create a new victory first: `python3 scripts/generate_sejr.py --name "My Task"`
 
 ### Error 2: "Archive blocked"
 ```
-❌ ARCHIVE BLOCKED - Total score 23 < 24 required
+[FAIL] ARCHIVE BLOCKED - Total score 23 < 24 required
 ```
 **Solution:** Improve Pass scores. See review sections in SEJR_LISTE.md for what can be improved.
 
 ### Error 3: "CLAUDE.md outdated"
 ```
-⚠️ Warning: CLAUDE.md does not reflect current STATUS.yaml
+[WARN] Warning: CLAUDE.md does not reflect current STATUS.yaml
 ```
 **Solution:** Rebuild: `python3 scripts/build_claude_context.py --all`
 
 ### Error 4: "Permission denied"
 ```
-❌ Permission denied: scripts/generate_sejr.py
+[FAIL] Permission denied: scripts/generate_sejr.py
 ```
 **Solution:** Make script executable: `chmod +x scripts/generate_sejr.py`
 
 ### Error 5: "Missing dependency"
 ```
-❌ ModuleNotFoundError: No module named 'yaml'
+[FAIL] ModuleNotFoundError: No module named 'yaml'
 ```
 **Solution:** Scripts don't use PyYAML - they have simple YAML parser built-in. Check file paths.
 

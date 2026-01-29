@@ -7,7 +7,7 @@
 
 ## NÆSTE SKRIDT (Prioriteret)
 
-### 1. Continue with active sejr (🟡 Medium Prioritet)
+### 1. Continue with active sejr ([WARN] Medium Prioritet)
 **Hvorfor:** 7 active project(s) in progress
 
 **Action:**

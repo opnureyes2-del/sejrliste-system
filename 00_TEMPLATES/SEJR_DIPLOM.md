@@ -1,9 +1,9 @@
-# 🏆 SEJR DIPLOM
+# [VICTORY] SEJR DIPLOM
 
 ```
 ╔══════════════════════════════════════════════════════════════════╗
 ║                                                                  ║
-║                    🎖️  SEJR DIPLOM  🎖️                           ║
+║                    [ADMIRAL]  SEJR DIPLOM  [ADMIRAL]                           ║
 ║                                                                  ║
 ║  ┌────────────────────────────────────────────────────────────┐  ║
 ║  │                                                            │  ║
@@ -17,31 +17,31 @@
 ║  │                                                            │  ║
 ║  └────────────────────────────────────────────────────────────┘  ║
 ║                                                                  ║
-║                     ✅ 3-PASS GENNEMFØRT                         ║
+║                     [OK] 3-PASS GENNEMFØRT                         ║
 ║                                                                  ║
 ╚══════════════════════════════════════════════════════════════════╝
 ```
 
 ---
 
-## 📊 3-PASS RESULTATER
+## [DATA] 3-PASS RESULTATER
 
 | Pass | Checkboxes | Score | Forbedring |
 |------|------------|-------|------------|
-| 🥉 Pass 1 | {P1_CHECKBOXES} | {P1_SCORE}/10 | Baseline |
-| 🥈 Pass 2 | {P2_CHECKBOXES} | {P2_SCORE}/10 | {P2_IMPROVEMENT} |
-| 🥇 Pass 3 | {P3_CHECKBOXES} | {P3_SCORE}/10 | {P3_IMPROVEMENT} |
+|  Pass 1 | {P1_CHECKBOXES} | {P1_SCORE}/10 | Baseline |
+|  Pass 2 | {P2_CHECKBOXES} | {P2_SCORE}/10 | {P2_IMPROVEMENT} |
+|  Pass 3 | {P3_CHECKBOXES} | {P3_SCORE}/10 | {P3_IMPROVEMENT} |
 | **TOTAL** | **{TOTAL_CHECKBOXES}** | **{TOTAL_SCORE}/30** | **{TOTAL_IMPROVEMENT}** |
 
 ---
 
-## 🎯 HVAD BLEV OPNÅET
+## [TARGET] HVAD BLEV OPNÅET
 
 {ACHIEVEMENT_SUMMARY}
 
 ---
 
-## 📚 LÆRING (Kan Genbruges)
+## [DOCS] LÆRING (Kan Genbruges)
 
 ### Hvad Lærte Vi
 {LEARNINGS}
@@ -54,7 +54,7 @@
 
 ---
 
-## 🔍 EKSEMPEL FOR ANDRE
+## [SCAN] EKSEMPEL FOR ANDRE
 
 > **Hvis du er i tvivl om hvordan man gennemfører en sejr, se dette eksempel:**
 
@@ -69,7 +69,7 @@
 
 ---
 
-## 📁 FILER I DENNE ARKIVERING
+## [DIR] FILER I DENNE ARKIVERING
 
 | Fil | Formål |
 |-----|--------|
@@ -81,12 +81,12 @@
 
 ---
 
-## ✅ VERIFICERET AF
+## [OK] VERIFICERET AF
 
 - **System:** Sejrliste 3-Pass Konkurrence System
 - **Dato:** {ARCHIVE_DATE}
-- **Verification:** auto_verify.py ✅
-- **Archive:** auto_archive.py ✅
+- **Verification:** auto_verify.py [OK]
+- **Archive:** auto_archive.py [OK]
 
 ---
 

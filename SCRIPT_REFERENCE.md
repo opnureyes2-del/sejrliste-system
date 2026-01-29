@@ -1,4 +1,4 @@
-# 📜 SCRIPT REFERENCE - Alle 15 Scripts Dokumenteret
+#  SCRIPT REFERENCE - Alle 15 Scripts Dokumenteret
 
 > **LÆS DETTE** for at forstå hvad hvert script gør og hvornår du bruger det.
 > **Sidst verificeret:** 2026-01-28 (alle 15 testet og virker)
@@ -9,21 +9,21 @@
 
 | Script | Formål | Hvornår Bruges | Status |
 |--------|--------|----------------|--------|
-| `generate_sejr.py` | Opret ny sejr | Når du starter ny opgave | ✅ |
-| `auto_verify.py` | Verificer progress | Efter HVER ændring | ✅ |
-| `auto_archive.py` | Arkiver færdig sejr | Når 3-pass er done | ✅ |
-| `build_claude_context.py` | Byg CLAUDE.md | Efter checkbox changes | ✅ |
-| `update_claude_focus.py` | Opdater fokus state | Når task skifter | ✅ |
-| `auto_track.py` | Opdater STATE.md | Ved state changes | ✅ |
-| `auto_learn.py` | Lær patterns | Ved sejr completion | ✅ |
-| `auto_predict.py` | Generér predictions | Ved phase completion | ✅ |
-| `admiral_tracker.py` | Track scores + leaderboard | Ved events | ✅ |
-| `auto_live_status.py` | Live status display | For real-time view | ✅ |
-| `auto_optimize.py` | Auto-optimering | Ved PHASE 0 | ✅ |
-| `model_router.py` | Vælg AI model per opgave | Ved model-valg | ✅ |
-| `token_tools.py` | Tæl tokens + estimer pris | Før API kald | ✅ |
-| `build_knowledge_base.py` | Byg ChromaDB søge-index | Ved ny dokumentation | ✅ |
-| `automation_pipeline.py` | Pre-commit kvalitets-check | Ved git commit | ✅ |
+| `generate_sejr.py` | Opret ny sejr | Når du starter ny opgave | [OK] |
+| `auto_verify.py` | Verificer progress | Efter HVER ændring | [OK] |
+| `auto_archive.py` | Arkiver færdig sejr | Når 3-pass er done | [OK] |
+| `build_claude_context.py` | Byg CLAUDE.md | Efter checkbox changes | [OK] |
+| `update_claude_focus.py` | Opdater fokus state | Når task skifter | [OK] |
+| `auto_track.py` | Opdater STATE.md | Ved state changes | [OK] |
+| `auto_learn.py` | Lær patterns | Ved sejr completion | [OK] |
+| `auto_predict.py` | Generér predictions | Ved phase completion | [OK] |
+| `admiral_tracker.py` | Track scores + leaderboard | Ved events | [OK] |
+| `auto_live_status.py` | Live status display | For real-time view | [OK] |
+| `auto_optimize.py` | Auto-optimering | Ved PHASE 0 | [OK] |
+| `model_router.py` | Vælg AI model per opgave | Ved model-valg | [OK] |
+| `token_tools.py` | Tæl tokens + estimer pris | Før API kald | [OK] |
+| `build_knowledge_base.py` | Byg ChromaDB søge-index | Ved ny dokumentation | [OK] |
+| `automation_pipeline.py` | Pre-commit kvalitets-check | Ved git commit | [OK] |
 
 ---
 
@@ -363,35 +363,35 @@ python3 scripts/auto_learn.py
 
 ---
 
-## ⚠️ COMMON ERRORS & SOLUTIONS
+## [WARN] COMMON ERRORS & SOLUTIONS
 
 ### Error 1: "Sejr folder not found"
 ```
-❌ Error: No active sejr found in 10_ACTIVE/
+[FAIL] Error: No active sejr found in 10_ACTIVE/
 ```
 **Løsning:** Opret ny sejr først: `python3 scripts/generate_sejr.py --name "Min Opgave"`
 
 ### Error 2: "Archive blocked"
 ```
-❌ ARCHIVE BLOCKED - Total score 23 < 24 required
+[FAIL] ARCHIVE BLOCKED - Total score 23 < 24 required
 ```
 **Løsning:** Forbedre Pass scores. Se review sektioner i SEJR_LISTE.md for hvad der kan forbedres.
 
 ### Error 3: "CLAUDE.md outdated"
 ```
-⚠️ Warning: CLAUDE.md does not reflect current STATUS.yaml
+[WARN] Warning: CLAUDE.md does not reflect current STATUS.yaml
 ```
 **Løsning:** Rebuild: `python3 scripts/build_claude_context.py --all`
 
 ### Error 4: "Permission denied"
 ```
-❌ Permission denied: scripts/generate_sejr.py
+[FAIL] Permission denied: scripts/generate_sejr.py
 ```
 **Løsning:** Gør script executable: `chmod +x scripts/generate_sejr.py`
 
 ### Error 5: "Missing dependency"
 ```
-❌ ModuleNotFoundError: No module named 'yaml'
+[FAIL] ModuleNotFoundError: No module named 'yaml'
 ```
 **Løsning:** Scripts bruger ikke PyYAML - de har simple YAML parser indbygget. Check fil paths.
 

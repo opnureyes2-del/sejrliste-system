@@ -328,13 +328,13 @@ class LibrarySidebar(Container):
     """Steam-like sidebar with library categories"""
     
     def compose(self) -> ComposeResult:
-        yield Static("📚 LIBRARY", id="library-header")
+        yield Static("[DOCS] LIBRARY", id="library-header")
         yield Rule()
-        yield Button("🎮 Aktive Sejr", id="btn-active", classes="library-category")
-        yield Button("🏆 Arkiverede", id="btn-archived", classes="library-category")
-        yield Button("📊 Statistik", id="btn-stats", classes="library-category")
+        yield Button(" Aktive Sejr", id="btn-active", classes="library-category")
+        yield Button("[VICTORY] Arkiverede", id="btn-archived", classes="library-category")
+        yield Button("[DATA] Statistik", id="btn-stats", classes="library-category")
         yield Rule()
-        yield Static("⌨️ SHORTCUTS", classes="library-category")
+        yield Static("⌨ SHORTCUTS", classes="library-category")
         yield Static("v: Verify", classes="library-category")
         yield Static("a: Archive", classes="library-category")
         yield Static("p: Predict", classes="library-category")
@@ -351,7 +351,7 @@ class SejrCard(Static):
         self.classes = "sejr-card"
     
     def compose(self) -> ComposeResult:
-        status_icon = "🏆" if self.sejr.is_archived else "🎮"
+        status_icon = "[VICTORY]" if self.sejr.is_archived else ""
         progress_bar = "█" * int(self.sejr.progress / 10) + "░" * (10 - int(self.sejr.progress / 10))
         
         yield Static(f"{status_icon} {self.sejr.name}", classes="sejr-title")
@@ -409,10 +409,10 @@ class DNALayerWidget(Static):
     active_layer = reactive(0)
     
     def compose(self) -> ComposeResult:
-        yield Static("🧬 DNA LAYERS", id="dna-header")
+        yield Static("[DNA] DNA LAYERS", id="dna-header")
         yield Rule()
         for num, name, script in self.DNA_LAYERS:
-            status = "✅" if int(num) <= self.active_layer else "⬜"
+            status = "[OK]" if int(num) <= self.active_layer else "⬜"
             yield Static(f"{status} {num}. {name}", classes="dna-layer")
 
 
@@ -439,10 +439,10 @@ class TaskListWidget(ScrollableContainer):
                     self.tasks.append(("done", task))
     
     def compose(self) -> ComposeResult:
-        yield Static("📋 TASK LIST", id="task-header")
+        yield Static("[LIST] TASK LIST", id="task-header")
         yield Rule()
         for status, task in self.tasks[:20]:  # Limit to 20 visible
-            icon = "✅" if status == "done" else "⬜"
+            icon = "[OK]" if status == "done" else "⬜"
             cls = "task-done" if status == "done" else "task-pending"
             yield Static(f"{icon} {task[:50]}", classes=f"task-item {cls}")
 
@@ -479,7 +479,7 @@ class ProductionRoom(Container):
         with Horizontal():
             # Main content area
             with Vertical(id="production-main"):
-                yield Static(f"🎮 PRODUCTION ROOM: {self.sejr.name}", id="production-header")
+                yield Static(f" PRODUCTION ROOM: {self.sejr.name}", id="production-header")
                 yield Rule()
                 
                 # Progress overview
@@ -494,7 +494,7 @@ class ProductionRoom(Container):
                 yield Rule()
                 
                 # Log stream
-                yield Static("📡 LIVE LOG STREAM", id="log-header")
+                yield Static("[MONITOR] LIVE LOG STREAM", id="log-header")
                 log_widget = LogStreamWidget(self.sejr.path)
                 log_widget.id = "log-stream"
                 yield log_widget
@@ -503,7 +503,7 @@ class ProductionRoom(Container):
             with Container(id="dna-panel"):
                 yield DNALayerWidget()
                 yield Rule()
-                yield Static("⌨️ ACTIONS")
+                yield Static("⌨ ACTIONS")
                 yield Button("v: Verify", id="btn-verify", variant="primary")
                 yield Button("a: Archive", id="btn-archive", variant="success")
                 yield Button("p: Predict", id="btn-predict", variant="default")
@@ -525,7 +525,7 @@ class HelpScreen(Screen):
     def compose(self) -> ComposeResult:
         yield Container(
             Static("""
-# ⌨️ KEYBOARD SHORTCUTS
+# ⌨ KEYBOARD SHORTCUTS
 
 ## Navigation
 - **j/k** or **↓/↑**: Navigate up/down
@@ -718,10 +718,10 @@ class SejrlisteApp(App):
                 text=True
             )
             if result.returncode == 0:
-                self.notify("✅ Verification complete!", severity="information")
+                self.notify("[OK] Verification complete!", severity="information")
                 self.play_sound("success")
             else:
-                self.notify(f"❌ Verification failed: {result.stderr[:100]}", severity="error")
+                self.notify(f"[FAIL] Verification failed: {result.stderr[:100]}", severity="error")
                 self.play_sound("error")
             self.load_sejrs()
             self.refresh()
@@ -739,10 +739,10 @@ class SejrlisteApp(App):
                 text=True
             )
             if result.returncode == 0:
-                self.notify("🏆 Archive complete!", severity="information")
+                self.notify("[VICTORY] Archive complete!", severity="information")
                 self.play_sound("success")
             else:
-                self.notify(f"❌ Archive failed: {result.stderr[:100]}", severity="error")
+                self.notify(f"[FAIL] Archive failed: {result.stderr[:100]}", severity="error")
                 self.play_sound("error")
             self.load_sejrs()
             self.refresh()
@@ -760,10 +760,10 @@ class SejrlisteApp(App):
                 text=True
             )
             if result.returncode == 0:
-                self.notify("🔮 Predictions generated!", severity="information")
+                self.notify(" Predictions generated!", severity="information")
                 self.play_sound("success")
             else:
-                self.notify(f"❌ Predict failed: {result.stderr[:100]}", severity="error")
+                self.notify(f"[FAIL] Predict failed: {result.stderr[:100]}", severity="error")
                 self.play_sound("error")
     
     @work(exclusive=True)
@@ -780,10 +780,10 @@ class SejrlisteApp(App):
                 text=True
             )
             if result.returncode == 0:
-                self.notify("✨ New sejr created!", severity="information")
+                self.notify(" New sejr created!", severity="information")
                 self.play_sound("success")
             else:
-                self.notify(f"❌ Create failed: {result.stderr[:100]}", severity="error")
+                self.notify(f"[FAIL] Create failed: {result.stderr[:100]}", severity="error")
                 self.play_sound("error")
             self.load_sejrs()
             self.refresh()
@@ -791,7 +791,7 @@ class SejrlisteApp(App):
     def action_refresh(self):
         """Refresh all data"""
         self.load_sejrs()
-        self.notify("🔄 Data refreshed", severity="information")
+        self.notify("[SYNC] Data refreshed", severity="information")
         self.refresh()
     
     @on(Button.Pressed, "#btn-active")

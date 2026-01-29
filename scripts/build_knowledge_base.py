@@ -38,7 +38,7 @@ def collect_documents():
 
     for base_path, source_name in SOURCE_DIRS:
         if not os.path.isdir(base_path):
-            print(f"  ⚠️  Mappe ikke fundet: {base_path}")
+            print(f"  [WARN]  Mappe ikke fundet: {base_path}")
             continue
 
         for root, dirs, files in os.walk(base_path):
@@ -55,15 +55,15 @@ def collect_documents():
 
 def build_knowledge_base():
     """Bygger ChromaDB knowledge base fra alle nøgle-dokumenter."""
-    print("🔨 Bygger ChromaDB Knowledge Base...")
-    print(f"📁 Database: {DB_PATH}\n")
+    print("[BUILD] Bygger ChromaDB Knowledge Base...")
+    print(f"[DIR] Database: {DB_PATH}\n")
 
     client = chromadb.PersistentClient(path=DB_PATH)
 
     # Slet eksisterende collection (fresh start)
     try:
         client.delete_collection("cirkelline_docs")
-        print("🗑️  Gammel collection slettet")
+        print("[DELETE]  Gammel collection slettet")
     except Exception:
         pass
 
@@ -109,7 +109,7 @@ def build_knowledge_base():
                 "size": len(content)
             })
         except Exception as e:
-            print(f"  ❌ Fejl ved {fpath}: {e}")
+            print(f"  [FAIL] Fejl ved {fpath}: {e}")
             continue
 
     # Tilføj i batches (ChromaDB anbefaler max ~40 ad gangen for store docs)
@@ -122,7 +122,7 @@ def build_knowledge_base():
 
         collection.add(documents=batch_docs, ids=batch_ids, metadatas=batch_meta)
         total_added += len(batch_docs)
-        print(f"  📦 Batch {i//BATCH_SIZE + 1}: {len(batch_docs)} dokumenter tilføjet")
+        print(f"   Batch {i//BATCH_SIZE + 1}: {len(batch_docs)} dokumenter tilføjet")
 
     # Statistik
     source_counts = {}
@@ -131,10 +131,10 @@ def build_knowledge_base():
         source_counts[s] = source_counts.get(s, 0) + 1
 
     print(f"\n{'='*50}")
-    print(f"✅ ChromaDB Knowledge Base KLAR!")
-    print(f"📚 Dokumenter indekseret: {total_added}")
-    print(f"⏭️  Skipped (for små): {skipped}")
-    print(f"💾 Database: {DB_PATH}")
+    print(f"[OK] ChromaDB Knowledge Base KLAR!")
+    print(f"[DOCS] Dokumenter indekseret: {total_added}")
+    print(f"⏭  Skipped (for små): {skipped}")
+    print(f"[SAVE] Database: {DB_PATH}")
     print(f"\nKilder:")
     for s, c in sorted(source_counts.items()):
         print(f"  - {s}: {c} filer")
@@ -149,7 +149,7 @@ def smart_query(question, n_results=3):
     try:
         collection = client.get_collection("cirkelline_docs")
     except Exception:
-        print("❌ Knowledge base ikke fundet. Kør først: python3 build_knowledge_base.py")
+        print("[FAIL] Knowledge base ikke fundet. Kør først: python3 build_knowledge_base.py")
         return None
 
     results = collection.query(
@@ -157,8 +157,8 @@ def smart_query(question, n_results=3):
         n_results=n_results
     )
 
-    print(f"\n🔍 Søgning: \"{question}\"")
-    print(f"📚 Fandt {len(results['documents'][0])} relevante dokumenter:\n")
+    print(f"\n[SCAN] Søgning: \"{question}\"")
+    print(f"[DOCS] Fandt {len(results['documents'][0])} relevante dokumenter:\n")
 
     total_chars = 0
     for i, (doc, meta, dist) in enumerate(zip(
@@ -176,7 +176,7 @@ def smart_query(question, n_results=3):
 
     # Token estimat
     approx_tokens = total_chars // 4
-    print(f"📊 Total kontekst: ~{approx_tokens} tokens (i stedet for hele basen)")
+    print(f"[DATA] Total kontekst: ~{approx_tokens} tokens (i stedet for hele basen)")
 
     context = "\n---\n".join(results['documents'][0])
     return context
@@ -189,14 +189,14 @@ def show_stats():
     try:
         collection = client.get_collection("cirkelline_docs")
     except Exception:
-        print("❌ Knowledge base ikke fundet. Kør først: python3 build_knowledge_base.py")
+        print("[FAIL] Knowledge base ikke fundet. Kør først: python3 build_knowledge_base.py")
         return
 
     count = collection.count()
-    print(f"\n📊 Knowledge Base Statistik")
+    print(f"\n[DATA] Knowledge Base Statistik")
     print(f"{'='*40}")
-    print(f"📚 Totalt dokumenter: {count}")
-    print(f"💾 Database: {DB_PATH}")
+    print(f"[DOCS] Totalt dokumenter: {count}")
+    print(f"[SAVE] Database: {DB_PATH}")
 
     # Hent alle metadata
     all_data = collection.get()
@@ -207,7 +207,7 @@ def show_stats():
         source_counts[s] = source_counts.get(s, 0) + 1
         total_size += meta.get('size', 0)
 
-    print(f"📏 Total størrelse: {total_size / 1024:.1f} KB")
+    print(f"[SIZE] Total størrelse: {total_size / 1024:.1f} KB")
     print(f"\nKilder:")
     for s, c in sorted(source_counts.items()):
         print(f"  - {s}: {c} filer")

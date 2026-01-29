@@ -24,50 +24,50 @@ Et **TVUNGET FORBEDRINGSSYSTEM** der garanterer kvalitet gennem:
 ```
 sejrliste systemet/
 │
-├── README.md                 ← Overblik + Quick Start
-├── MANUAL.md                 ← DENNE FIL (komplet dokumentation)
-├── ARBEJDSFORHOLD.md         ← Obligatorisk AI vejledning
-├── DNA.yaml                  ← System identitet
-├── LOG_FORMAT.md             ← Log specifikation
-├── ARKITEKTUR.md             ← System arkitektur
+├── README.md ← Overblik + Quick Start
+├── MANUAL.md ← DENNE FIL (komplet dokumentation)
+├── ARBEJDSFORHOLD.md ← Obligatorisk AI vejledning
+├── DNA.yaml ← System identitet
+├── LOG_FORMAT.md ← Log specifikation
+├── ARKITEKTUR.md ← System arkitektur
 │
-├── scripts/                  ← 9 AUTOMATISERINGS SCRIPTS
-│   ├── generate_sejr.py          → Opret ny sejr (4 filer)
-│   ├── build_claude_context.py   → DYNAMISK CLAUDE.md builder
-│   ├── update_claude_focus.py    → Opdater fokus state
-│   ├── auto_verify.py            → 3-pass verification
-│   ├── auto_archive.py           → Arkivering (blokeret til done)
-│   ├── auto_track.py             → State tracking
-│   ├── auto_learn.py             → Pattern learning
-│   ├── auto_predict.py           → Predictions
-│   └── admiral_tracker.py        → Score tracking
+├── scripts/ ← 9 AUTOMATISERINGS SCRIPTS
+│ ├── generate_sejr.py → Opret ny sejr (4 filer)
+│ ├── build_claude_context.py → DYNAMISK CLAUDE.md builder
+│ ├── update_claude_focus.py → Opdater fokus state
+│ ├── auto_verify.py → 3-pass verification
+│ ├── auto_archive.py → Arkivering (blokeret til done)
+│ ├── auto_track.py → State tracking
+│ ├── auto_learn.py → Pattern learning
+│ ├── auto_predict.py → Predictions
+│ └── admiral_tracker.py → Score tracking
 │
-├── 00_TEMPLATES/             ← SKABELONER (4 stk)
-│   ├── SEJR_TEMPLATE.md          → Master template med 3-pass
-│   ├── CLAUDE.md                 → Fokus lock template
-│   ├── STATUS_TEMPLATE.yaml      → Unified status template
-│   └── SESSION_TJEK.md           → Session start tjekliste
+├── 00_TEMPLATES/ ← SKABELONER (4 stk)
+│ ├── SEJR_TEMPLATE.md → Master template med 3-pass
+│ ├── CLAUDE.md → Fokus lock template
+│ ├── STATUS_TEMPLATE.yaml → Unified status template
+│ └── SESSION_TJEK.md → Session start tjekliste
 │
-├── 10_ACTIVE/                ← AKTIVE SEJR (arbejd her)
-│   └── {OPGAVE_DATO}/
-│       ├── SEJR_LISTE.md         → Hovedopgave med checkboxes
-│       ├── CLAUDE.md             → AI FOKUS LOCK (genereret)
-│       ├── STATUS.yaml           → ALT status (unified)
-│       └── AUTO_LOG.jsonl        → ALT logging (master)
+├── 10_ACTIVE/ ← AKTIVE SEJR (arbejd her)
+│ └── {OPGAVE_DATO}/
+│ ├── SEJR_LISTE.md → Hovedopgave med checkboxes
+│ ├── CLAUDE.md → AI FOKUS LOCK (genereret)
+│ ├── STATUS.yaml → ALT status (unified)
+│ └── AUTO_LOG.jsonl → ALT logging (master)
 │
-├── 90_ARCHIVE/               ← FÆRDIGE SEJR
-│   └── {OPGAVE_DATO_TID}/
-│       └── CONCLUSION.md         → Kun semantisk essens
+├── 90_ARCHIVE/ ← FÆRDIGE SEJR
+│ └── {OPGAVE_DATO_TID}/
+│ └── CONCLUSION.md → Kun semantisk essens
 │
-├── _CURRENT/                 ← SYSTEM STATE
-│   ├── STATE.md                  → Current state
-│   ├── DELTA.md                  → Hvad er nyt
-│   ├── NEXT.md                   → Predictions
-│   ├── PATTERNS.yaml             → Lærte mønstre
-│   └── LEADERBOARD.md            → Global konkurrence leaderboard
+├── _CURRENT/ ← SYSTEM STATE
+│ ├── STATE.md → Current state
+│ ├── DELTA.md → Hvad er nyt
+│ ├── NEXT.md → Predictions
+│ ├── PATTERNS.yaml → Lærte mønstre
+│ └── LEADERBOARD.md → Global konkurrence leaderboard
 │
-├── view.py                   ← Terminal viewer (simpel)
-└── app/sejr_app.py           ← TUI app (Textual)
+├── view.py ← Terminal viewer (simpel)
+└── app/sejr_app.py ← TUI app (Textual)
 ```
 
 > **SINGLE SOURCE OF TRUTH:** Hver sejr har KUN 4 filer - ingen redundans!
@@ -121,25 +121,25 @@ Hovedopgaven organiseret i **3 PASSES**:
 
 ```yaml
 meta:
-  sejr_name: "Opgave Navn"
-  created: "2026-01-25T12:00:00+01:00"
+ sejr_name: "Opgave Navn"
+ created: "2026-01-25T12:00:00+01:00"
 
 pass_tracking:
-  current_pass: 1
-  can_archive: false
-  pass_1: { complete: false, score: 0, checkboxes_done: 0 }
-  pass_2: { complete: false, score: 0 }
-  pass_3: { complete: false, score: 0 }
-  totals: { score: 0, required_score: 24 }
+ current_pass: 1
+ can_archive: false
+ pass_1: { complete: false, score: 0, checkboxes_done: 0 }
+ pass_2: { complete: false, score: 0 }
+ pass_3: { complete: false, score: 0 }
+ totals: { score: 0, required_score: 24 }
 
 score_tracking:
-  positive: { checkbox_done: 0, pass_complete: 0 }
-  negative: { token_waste: 0, memory_loss: 0 }
-  totals: { total_score: 0, rank: "KADET" }
+ positive: { checkbox_done: 0, pass_complete: 0 }
+ negative: { token_waste: 0, memory_loss: 0 }
+ totals: { total_score: 0, rank: "KADET" }
 
 model_tracking:
-  current_model: "claude-opus-4-5-20251101"
-  models_used: [...]
+ current_model: "claude-opus-4-5-20251101"
+ models_used: [...]
 ```
 
 > **Erstatter:** VERIFY_STATUS.yaml + ADMIRAL_SCORE.yaml + MODEL_HISTORY.yaml
@@ -300,7 +300,7 @@ Med tvunget forbedring SKAL kvaliteten stige:
 
 ---
 
-## 🎖️ ADMIRAL KONKURRENCE SYSTEM
+## [ADMIRAL] ADMIRAL KONKURRENCE SYSTEM
 
 Et **SCORE SYSTEM** der måler AI modellers performance objektivt:
 
@@ -312,12 +312,12 @@ Et **SCORE SYSTEM** der måler AI modellers performance objektivt:
 
 | Rang | Score | Beskrivelse |
 |------|-------|-------------|
-| 🎖️ **STORADMIRAL** | 150+ | Legendarisk. Perfekt udførelse. |
-| ⭐ **ADMIRAL** | 100-149 | Excellence. Minimal fejl. |
-| 🏅 **KAPTAJN** | 50-99 | Solid. God performance. |
-| 🎗️ **LØJTNANT** | 20-49 | Acceptabel. Plads til forbedring. |
-| 📛 **KADET** | 0-19 | Svag. Mange fejl. |
-| 💀 **SKIBSDRENG** | < 0 | KATASTROFE. Negativ score! |
+| [ADMIRAL] **STORADMIRAL** | 150+ | Legendarisk. Perfekt udførelse. |
+| **ADMIRAL** | 100-149 | Excellence. Minimal fejl. |
+| [MEDAL] **KAPTAJN** | 50-99 | Solid. God performance. |
+| **LØJTNANT** | 20-49 | Acceptabel. Plads til forbedring. |
+| **KADET** | 0-19 | Svag. Mange fejl. |
+| [DEAD] **SKIBSDRENG** | < 0 | KATASTROFE. Negativ score! |
 
 ### Positive Metrics (Belønning)
 
@@ -358,12 +358,12 @@ TOTAL_SCORE = SUM(positive_points) - (SUM(negative_points) × 2)
 
 | Achievement | Krav | Bonus |
 |-------------|------|-------|
-| 🏆 **PERFEKT PASS** | 0 negative i et helt pass | +15 |
-| 🌟 **FLAWLESS SEJR** | 0 negative i hele sejr | +50 |
-| 🚀 **SPEED DEMON** | Sejr done under estimat | +10 |
-| 🧠 **MEMORY MASTER** | 0 memory_loss hele session | +20 |
-| 📚 **DOC KING** | 10+ good_documentation | +10 |
-| 🔍 **BUG HUNTER** | 5+ improvements fundet | +15 |
+| [VICTORY] **PERFEKT PASS** | 0 negative i et helt pass | +15 |
+| **FLAWLESS SEJR** | 0 negative i hele sejr | +50 |
+| **SPEED DEMON** | Sejr done under estimat | +10 |
+| [AI] **MEMORY MASTER** | 0 memory_loss hele session | +20 |
+| [DOCS] **DOC KING** | 10+ good_documentation | +10 |
+| [SCAN] **BUG HUNTER** | 5+ improvements fundet | +15 |
 
 ### Score Kommandoer
 
@@ -458,12 +458,12 @@ Når du åbner en sejr mappe, SKAL du:
 2. **LÆS** `ARBEJDSFORHOLD.md` (i system root)
 3. **LÆS** `CLAUDE.md` i sejr mappen
 4. **BEKRÆFT** til bruger:
-   ```
-   🔒 SEJR FOKUS AKTIVERET
-   Opgave: [navn]
-   Pass: [X]/3
-   Næste: [specifik task]
-   ```
+ ```
+ [LOCK] SEJR FOKUS AKTIVERET
+ Opgave: [navn]
+ Pass: [X]/3
+ Næste: [specifik task]
+ ```
 5. **ARBEJD** kun på current task
 6. **AFKRYDS** checkbox når færdig
 7. **OPDATER** CLAUDE.md med `build_claude_context.py`
@@ -479,12 +479,12 @@ Hver 5 handlinger:
 
 ### Forbudte Handlinger
 
-- ❌ Arbejde på andet end current sejr
-- ❌ Skippe til næste pass før current er 100%
-- ❌ Glemme at afkrydse checkboxes
-- ❌ "Forbedre" ting uden for scope
-- ❌ Sige "færdig" uden bevis
-- ❌ Arkivere før 3-pass done
+- [FAIL] Arbejde på andet end current sejr
+- [FAIL] Skippe til næste pass før current er 100%
+- [FAIL] Glemme at afkrydse checkboxes
+- [FAIL] "Forbedre" ting uden for scope
+- [FAIL] Sige "færdig" uden bevis
+- [FAIL] Arkivere før 3-pass done
 
 ---
 
@@ -575,4 +575,4 @@ Check:
 ---
 
 **Sidst opdateret:** 2026-01-25
-**Status:** ✅ KOMPLET
+**Status:** [OK] KOMPLET

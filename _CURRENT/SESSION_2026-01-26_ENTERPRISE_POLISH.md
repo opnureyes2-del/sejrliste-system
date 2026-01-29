@@ -10,11 +10,11 @@
 
 | Komponent | Status FØR |
 |-----------|------------|
-| Desktop launcher | ❌ Eksisterede IKKE |
-| Logo/ikon | ❌ Intet professionelt logo |
-| LiveActivityMonitor | ❌ Ingen real-time visning |
-| App pinning til dock | ❌ Ikke muligt |
-| 5W statuslinje | ❌ Ingen HVAD/HVOR/HVORNÅR |
+| Desktop launcher | [FAIL] Eksisterede IKKE |
+| Logo/ikon | [FAIL] Intet professionelt logo |
+| LiveActivityMonitor | [FAIL] Ingen real-time visning |
+| App pinning til dock | [FAIL] Ikke muligt |
+| 5W statuslinje | [FAIL] Ingen HVAD/HVOR/HVORNÅR |
 
 **Bruger Krav:**
 - "HVOR MIN LOKALE MAPPE APP DER SKAL VÆRE TIL AT BRUGE I MIT SKRIVE BORD?"
@@ -27,19 +27,19 @@
 
 | Tid | Handling | Resultat |
 |-----|----------|----------|
-| 02:43 | Tjekket om app kører | ✅ PID fundet |
-| 02:44 | Oprettet assets/ mappe | ✅ Klar |
-| 02:45 | Oprettet sejrliste-icon.svg (basic) | ✅ 1.4KB |
-| 02:46 | Oprettet .desktop launcher | ✅ Installeret |
-| 02:47 | LiveActivityMonitor widget startet | ⏳ I gang |
-| 02:48 | CSS styling for monitor tilføjet | ✅ 100+ linjer |
-| 02:49 | Widget tilføjet til main window | ✅ Integreret |
-| 02:50 | Admiral logo (premium) oprettet | ✅ 4.7KB |
-| 02:51 | Desktop launcher opdateret med nyt logo | ✅ Færdig |
-| 02:52 | Fil-events forbundet til monitor | ✅ Logging virker |
-| 02:53 | 5W statuslinje tilføjet | ✅ HVAD/HVOR/HVORNÅR |
-| 02:55 | @keyframes CSS bug fixet | ✅ Transition i stedet |
-| 03:00 | App genstartet og verificeret | ✅ 5/5 tests |
+| 02:43 | Tjekket om app kører | [OK] PID fundet |
+| 02:44 | Oprettet assets/ mappe | [OK] Klar |
+| 02:45 | Oprettet sejrliste-icon.svg (basic) | [OK] 1.4KB |
+| 02:46 | Oprettet .desktop launcher | [OK] Installeret |
+| 02:47 | LiveActivityMonitor widget startet | [PENDING] I gang |
+| 02:48 | CSS styling for monitor tilføjet | [OK] 100+ linjer |
+| 02:49 | Widget tilføjet til main window | [OK] Integreret |
+| 02:50 | Admiral logo (premium) oprettet | [OK] 4.7KB |
+| 02:51 | Desktop launcher opdateret med nyt logo | [OK] Færdig |
+| 02:52 | Fil-events forbundet til monitor | [OK] Logging virker |
+| 02:53 | 5W statuslinje tilføjet | [OK] HVAD/HVOR/HVORNÅR |
+| 02:55 | @keyframes CSS bug fixet | [OK] Transition i stedet |
+| 03:00 | App genstartet og verificeret | [OK] 5/5 tests |
 
 ---
 
@@ -47,11 +47,11 @@
 
 | Komponent | Status EFTER | Bevis |
 |-----------|--------------|-------|
-| Desktop launcher | ✅ Installeret og fungerer | `~/.local/share/applications/sejrliste.desktop` |
-| Logo/ikon | ✅ Admiral niveau SVG | `assets/admiral-logo.svg` (4.7KB) |
-| LiveActivityMonitor | ✅ 215 linjer widget | `masterpiece.py:2565-2780` |
-| App pinning til dock | ✅ Muligt via GNOME Activities | StartupWMClass sat |
-| 5W statuslinje | ✅ HVAD/HVOR/HVORNÅR live | Integreret i monitor |
+| Desktop launcher | [OK] Installeret og fungerer | `~/.local/share/applications/sejrliste.desktop` |
+| Logo/ikon | [OK] Admiral niveau SVG | `assets/admiral-logo.svg` (4.7KB) |
+| LiveActivityMonitor | [OK] 215 linjer widget | `masterpiece.py:2565-2780` |
+| App pinning til dock | [OK] Muligt via GNOME Activities | StartupWMClass sat |
+| 5W statuslinje | [OK] HVAD/HVOR/HVORNÅR live | Integreret i monitor |
 
 ---
 
@@ -133,4 +133,4 @@ $ ls -la ~/Desktop/sejrliste.desktop
 ---
 
 **Dokumenteret af:** Kv1nt
-**300% FÆRDIGT:** ✅ RUNNING + ✅ PROVEN + ✅ TESTED
+**300% FÆRDIGT:** [OK] RUNNING + [OK] PROVEN + [OK] TESTED

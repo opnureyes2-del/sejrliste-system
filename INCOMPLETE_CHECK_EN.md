@@ -29,10 +29,10 @@ grep -r "\- \[ \]" 10_ACTIVE/*/SEJR_LISTE.md
 
 ### Rule 1: Checkboxes Require Proof
 ```markdown
-❌ FORBIDDEN:
+[FAIL] FORBIDDEN:
 - [x] Task done
 
-✅ REQUIRED:
+[OK] REQUIRED:
 - [x] Task done
   - Verify: `command that proves it`
   - Result: Actual output
@@ -40,14 +40,14 @@ grep -r "\- \[ \]" 10_ACTIVE/*/SEJR_LISTE.md
 
 ### Rule 2: Scores Require Justification
 ```markdown
-❌ FORBIDDEN:
+[FAIL] FORBIDDEN:
 ### PASS 1 SCORE: 7/10
 
-✅ REQUIRED:
+[OK] REQUIRED:
 ### PASS 1 SCORE: 7/10
 **Justification:**
-- ✅ X achieved
-- ⚠️ Y missing
+- [OK] X achieved
+- [WARN] Y missing
 ```
 
 ### Rule 3: "Done" Requires 300% DONE
