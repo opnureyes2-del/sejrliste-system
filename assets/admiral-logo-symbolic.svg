@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+  <!-- Symbolic variant for dark/light theme — Pentagon + star -->
+  <polygon points="8,1 14.5,5.5 12,13 4,13 1.5,5.5"
+           fill="none" stroke="currentColor" stroke-width="1.2"/>
+  <polygon points="8,4 9.2,6.5 12,6.5 9.8,8.3 10.5,11 8,9.2 5.5,11 6.2,8.3 4,6.5 6.8,6.5"
+           fill="currentColor"/>
+</svg>

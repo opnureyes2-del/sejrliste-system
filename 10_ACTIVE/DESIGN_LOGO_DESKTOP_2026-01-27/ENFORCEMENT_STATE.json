@@ -1,0 +1,454 @@
+{
+  "current_checkpoint_id": "CP_003",
+  "skipped_checkpoints": [],
+  "enforcement_log": [],
+  "checkpoints": [
+    {
+      "id": "CP_000",
+      "name": "[UNKNOWN] `assets/sejrliste-icon.svg` (1.7K SVG)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-01-28T14:18:21.378047",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_001",
+      "name": "[UNKNOWN] `assets/admiral-logo.svg` (6.7K SVG)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_000"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-01-28T14:18:21.378060",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_002",
+      "name": "[UNKNOWN] `assets/intro-system-icon.svg` (1.6K SVG)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_001"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-01-28T14:18:21.378066",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_003",
+      "name": "[UNKNOWN] **TEST:** Alle 3 renderer korrekt i GNOME (åbn Nautilus, se ",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_002"
+      ],
+      "state": "[WARN] AVAILABLE",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_004",
+      "name": "[UNKNOWN] **TEST:** Højreklik → Properties → viser korrekt icon?",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_003"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_005",
+      "name": "[UNKNOWN] **TEST:** Dobbeltklik på alle 5 → åbner korrekt?",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_004"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_006",
+      "name": "[UNKNOWN] **TEST:** Alle 5 viser korrekte icons?",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_005"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_007",
+      "name": "[UNKNOWN] **FIX:** intro-system.desktop Path peger på INTRO mappe men ",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_006"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_008",
+      "name": "[UNKNOWN] **TEST:** Nautilus viser custom icon for sejrliste systemet?",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_007"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_009",
+      "name": "[UNKNOWN] **TEST:** Nautilus viser custom icon for INTRO FOLDER SYSTEM",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_008"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_010",
+      "name": "[UNKNOWN] **TEST:** Nautilus viser custom icon for MIN ADMIRAL?",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_009"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_011",
+      "name": "[UNKNOWN] Hvis .directory ikke virker → brug `gio set` metadata",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_010"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_012",
+      "name": "[UNKNOWN] Victory List app window icon = sejrliste-icon.svg?",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_011"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_013",
+      "name": "[UNKNOWN] StartupWMClass matcher i .desktop vs. app?",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_012"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_014",
+      "name": "[UNKNOWN] Alle 3 mapper viser custom icons i Nautilus",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_013"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_015",
+      "name": "[UNKNOWN] Alle 5 .desktop launchers virker ved dobbeltklik",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_014"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_016",
+      "name": "[UNKNOWN] App window har korrekt icon i taskbar",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_015"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_017",
+      "name": "[UNKNOWN] Score: ___/10",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_016"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_018",
+      "name": "[UNKNOWN] Ensret stil: alle 3 icons i same design language",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_017"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_019",
+      "name": "[UNKNOWN] intro-system-icon: tilføj LINEN bogstaver + 3-lags hint",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_018"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_020",
+      "name": "[UNKNOWN] Opret størrelsevarianter (16/32/48/128/256px)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_019"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_021",
+      "name": "[UNKNOWN] Kopiér .desktop til `~/.local/share/applications/`",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_020"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_022",
+      "name": "[UNKNOWN] **TEST:** Super → søg \"Victory\" → app vises?",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_021"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_023",
+      "name": "[UNKNOWN] Pin til taskbar/dock",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_022"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_024",
+      "name": "[UNKNOWN] Adw.AboutWindow i masterpiece_en.py (navn, version, develope",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_023"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_025",
+      "name": "[UNKNOWN] Symbolic variants for dark/light theme",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_024"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_026",
+      "name": "[UNKNOWN] HiDPI support",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_025"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_027",
+      "name": "[UNKNOWN] Logo + app navn + loading bar ved start (0.5 sek)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_026"
+      ],
+      "state": "[LOCK] LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    }
+  ],
+  "last_updated": "2026-01-28T14:18:21.378175"
+}

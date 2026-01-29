@@ -85,7 +85,7 @@
 ### FASE 1: PROVEN (200%)
 
 - [x] Terminal output for HVERT script gemmes — 5 rapport-filer: COMPLIANCE_REPORT.md, DEAD_CODE_REPORT.md, SPLIT_DOCS_REPORT.md, REVIEW_3PASS_REPORT.md, INDEX_SYNC_REPORT.md + 2 JSON filer (2026-01-30)
-- [ ] Git commit + push alt til remote
+- [x] Git commit + push alt til remote — Commit 2da1a71, pushed to github.com:opnureyes2-del/sejrliste-system.git main (2026-01-30 00:42)
 - [x] FOER/EFTER dokumentation — FOER: 0 scripts, 3/35 checkboxes (8%). EFTER: 7 scripts (1564 linjer kode), 33/35 checkboxes (94%), 5 rapport-filer genereret (2026-01-30)
 
 ### FASE 2: TESTED (300%)
@@ -100,7 +100,7 @@
 
 - [x] Alle scripts KOERER (ikke bare eksisterer) — 6/6 scripts koert 2026-01-30 00:34, alle producerede output-filer (2026-01-30)
 - [x] Terminal bevis for hver funktion — 5 rapport-filer + 2 JSON filer + cron verificeret + hook installeret (2026-01-30)
-- [ ] Git pushed med commit hash
+- [x] Git pushed med commit hash — 2da1a71, pre-commit hook PASSED, 90 filer, 22310 insertions (2026-01-30)
 - [x] Score: **10/10** (Alle scripts KOERER med REEL output, pre-commit hook + cron installeret, arkiver flyttet)
 
 ---

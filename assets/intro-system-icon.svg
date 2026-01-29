@@ -1,27 +1,38 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
-  <!-- Background circle with gradient -->
+  <!-- Background circle with gradient — same design language as sejrliste-icon -->
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1" />
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="50%" style="stop-color:#7c3aed"/>
+      <stop offset="100%" style="stop-color:#a855f7"/>
     </linearGradient>
-    <linearGradient id="folder" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#f97316;stop-opacity:1" />
+    <linearGradient id="folderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#feca57"/>
+      <stop offset="100%" style="stop-color:#f59e0b"/>
     </linearGradient>
   </defs>
-  <!-- Circle background -->
-  <circle cx="64" cy="64" r="60" fill="url(#bg)" />
+
+  <!-- Main circle (same style as sejrliste-icon) -->
+  <circle cx="64" cy="64" r="60" fill="url(#bgGrad)" stroke="#1e1e2e" stroke-width="4"/>
+
   <!-- Folder icon -->
-  <path d="M28 42 L28 92 L100 92 L100 50 L62 50 L56 42 Z" fill="url(#folder)" rx="4" />
+  <path d="M26 44 L26 94 L102 94 L102 52 L60 52 L54 44 Z"
+        fill="url(#folderGrad)" stroke="#1e1e2e" stroke-width="2"/>
   <!-- Folder tab -->
-  <path d="M28 42 L56 42 L62 50 L28 50 Z" fill="#fbbf24" rx="2" />
-  <!-- LINEN lines inside folder -->
-  <line x1="38" y1="60" x2="90" y2="60" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/>
-  <line x1="38" y1="68" x2="80" y2="68" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
-  <line x1="38" y1="76" x2="85" y2="76" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.5"/>
-  <line x1="38" y1="84" x2="70" y2="84" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.3"/>
-  <!-- DNA helix accent -->
-  <circle cx="96" cy="36" r="14" fill="#10b981" opacity="0.9"/>
-  <text x="96" y="41" text-anchor="middle" font-size="16" font-weight="bold" fill="white" font-family="sans-serif">I</text>
+  <path d="M26 44 L54 44 L60 52 L26 52 Z"
+        fill="#fbbf24" stroke="#1e1e2e" stroke-width="1"/>
+
+  <!-- LINEN: 3-lags hint — 3 horizontal lines representing the 3 architecture layers -->
+  <line x1="36" y1="62" x2="92" y2="62" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.95"/>
+  <line x1="36" y1="72" x2="82" y2="72" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.75"/>
+  <line x1="36" y1="82" x2="72" y2="82" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.55"/>
+
+  <!-- LINEN "L" letter badge -->
+  <circle cx="98" cy="36" r="16" fill="#10b981" stroke="#1e1e2e" stroke-width="2"/>
+  <text x="98" y="42" text-anchor="middle" font-size="18" font-weight="bold" fill="white" font-family="Arial, sans-serif">L</text>
+
+  <!-- 3 small dots for 3 layers -->
+  <circle cx="40" cy="92" r="2" fill="#10b981" opacity="0.8"/>
+  <circle cx="48" cy="92" r="2" fill="#f59e0b" opacity="0.8"/>
+  <circle cx="56" cy="92" r="2" fill="#a855f7" opacity="0.8"/>
 </svg>

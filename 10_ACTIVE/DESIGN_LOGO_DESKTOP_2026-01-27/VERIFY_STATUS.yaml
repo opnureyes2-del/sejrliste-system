@@ -1,0 +1,29 @@
+name: "Design, Logo & Desktop Folder Branding"
+created: "2026-01-27"
+status: "IN_PROGRESS"
+
+current_pass: 1
+current_phase: "FASE_0"
+
+scores:
+  pass_1: 0
+  pass_2: 0
+  pass_3: 0
+  total: 0
+
+verification:
+  all_icons_exist: true
+  all_desktop_files_exist: false
+  directory_files_exist: true
+  gnome_folder_icons_work: false
+  desktop_launchers_work: false
+  gnome_menu_integration: false
+  about_dialog: false
+
+already_built:
+  - "intro-system-icon.svg"
+  - "intro-system.desktop"
+  - ".directory files for 3 folders"
+
+source: "/home/rasmus/Desktop/"
+target: "/home/rasmus/Desktop/"
