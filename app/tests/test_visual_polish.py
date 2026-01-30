@@ -272,7 +272,7 @@ class TestStatisticsView(unittest.TestCase):
 
     def setUp(self):
         """Set up test fixtures."""
-        self.test_path = Path("/home/rasmus/Desktop/sejrliste systemet")
+        self.test_path = Path(__file__).parent.parent.parent
 
     def test_init(self):
         """Test StatisticsView initialization."""
@@ -301,7 +301,7 @@ class TestVisualPolishWidget(unittest.TestCase):
 
     def setUp(self):
         """Set up test fixtures."""
-        self.test_path = Path("/home/rasmus/Desktop/sejrliste systemet")
+        self.test_path = Path(__file__).parent.parent.parent
         self.widget = VisualPolishWidget(self.test_path)
 
     def test_init(self):

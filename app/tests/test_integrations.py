@@ -78,7 +78,7 @@ class TestGitIntegration(unittest.TestCase):
 
     def setUp(self):
         """Set up test fixtures."""
-        self.git = GitIntegration(Path("/home/rasmus/Desktop/sejrliste systemet"))
+        self.git = GitIntegration(Path(__file__).parent.parent.parent)
 
     def test_init(self):
         """Test GitIntegration initialization."""
@@ -127,7 +127,7 @@ class TestTodoSync(unittest.TestCase):
 
     def setUp(self):
         """Set up test fixtures."""
-        self.system_path = Path("/home/rasmus/Desktop/sejrliste systemet")
+        self.system_path = Path(__file__).parent.parent.parent
         self.sync = TodoSync(self.system_path)
         # Find first active sejr
         self.test_sejr = None

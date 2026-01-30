@@ -8,11 +8,11 @@ REAL desktop app - NOT a web app. Runs NATIVELY on your Ubuntu desktop.
 Shows LIVE updates as files change.
 
 FEATURES:
-  📚 LIBRARY sidebar - alle sejrs med progress
-  🏭 PRODUCTION ROOM - real-time file viewer
-  📁 FILE MANAGER - drag and drop
-  🧬 DNA LAYERS - live status
-  🔄 AUTO-REFRESH - watches files for changes
+   LIBRARY sidebar - alle sejrs med progress
+   PRODUCTION ROOM - real-time file viewer
+   FILE MANAGER - drag and drop
+   DNA LAYERS - live status
+   AUTO-REFRESH - watches files for changes
 
 ═══════════════════════════════════════════════════════════════════════════════
 """
@@ -250,7 +250,7 @@ def get_all_sejrs() -> list:
 
 class SejrlisteApp(Gtk.Window):
     def __init__(self):
-        super().__init__(title="🎮 SEJRLISTE COMMAND CENTER - Native Desktop")
+        super().__init__(title=" SEJRLISTE COMMAND CENTER - Native Desktop")
         self.set_default_size(1400, 900)
         self.set_position(Gtk.WindowPosition.CENTER)
 
@@ -290,7 +290,7 @@ class SejrlisteApp(Gtk.Window):
         header = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         header.get_style_context().add_class("header")
 
-        title = Gtk.Label(label="🎮 SEJRLISTE COMMAND CENTER")
+        title = Gtk.Label(label=" SEJRLISTE COMMAND CENTER")
         title.get_style_context().add_class("header-title")
         header.pack_start(title, False, False, 10)
 
@@ -311,7 +311,7 @@ class SejrlisteApp(Gtk.Window):
         sidebar.get_style_context().add_class("sidebar")
 
         # Library title
-        lib_title = Gtk.Label(label="📚 LIBRARY")
+        lib_title = Gtk.Label(label=" LIBRARY")
         lib_title.get_style_context().add_class("section-title")
         sidebar.pack_start(lib_title, False, False, 10)
 
@@ -330,12 +330,12 @@ class SejrlisteApp(Gtk.Window):
         actions.set_margin_start(10)
         actions.set_margin_end(10)
 
-        new_btn = Gtk.Button(label="✨ Ny Sejr")
+        new_btn = Gtk.Button(label=" Ny Sejr")
         new_btn.get_style_context().add_class("action-button")
         new_btn.connect("clicked", self.on_new_sejr)
         actions.pack_start(new_btn, False, False, 5)
 
-        refresh_btn = Gtk.Button(label="🔄 Refresh")
+        refresh_btn = Gtk.Button(label=" Refresh")
         refresh_btn.get_style_context().add_class("action-button")
         refresh_btn.connect("clicked", lambda w: self.refresh_sejrs())
         actions.pack_start(refresh_btn, False, False, 5)
@@ -364,7 +364,7 @@ class SejrlisteApp(Gtk.Window):
         page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         page.get_style_context().add_class("content-area")
 
-        title = Gtk.Label(label="🎮 SELECT YOUR VICTORY")
+        title = Gtk.Label(label=" SELECT YOUR VICTORY")
         title.get_style_context().add_class("section-title")
         page.pack_start(title, False, False, 20)
 
@@ -425,11 +425,11 @@ class SejrlisteApp(Gtk.Window):
         # Header
         header = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
-        back_btn = Gtk.Button(label="⬅️ Back")
+        back_btn = Gtk.Button(label="⬅ Back")
         back_btn.connect("clicked", self.on_back)
         header.pack_start(back_btn, False, False, 5)
 
-        title = Gtk.Label(label=f"🏭 PRODUCTION ROOM: {sejr['name'][:40]}")
+        title = Gtk.Label(label=f" PRODUCTION ROOM: {sejr['name'][:40]}")
         title.get_style_context().add_class("section-title")
         header.pack_start(title, False, False, 10)
 
@@ -449,14 +449,14 @@ class SejrlisteApp(Gtk.Window):
 
         # DNA Actions
         dna_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-        dna_title = Gtk.Label(label="🧬 DNA Actions:")
+        dna_title = Gtk.Label(label=" DNA Actions:")
         dna_box.pack_start(dna_title, False, False, 0)
 
         actions = [
-            ("✅ Verify", "auto_verify.py"),
-            ("📦 Archive", "auto_archive.py"),
-            ("🔮 Predict", "auto_predict.py"),
-            ("📊 Learn", "auto_learn.py"),
+            ("[OK] Verify", "auto_verify.py"),
+            (" Archive", "auto_archive.py"),
+            (" Predict", "auto_predict.py"),
+            (" Learn", "auto_learn.py"),
         ]
 
         for label, script in actions:
@@ -474,19 +474,19 @@ class SejrlisteApp(Gtk.Window):
         files_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         files_box.set_size_request(250, -1)
 
-        files_title = Gtk.Label(label="📁 Files")
+        files_title = Gtk.Label(label=" Files")
         files_title.get_style_context().add_class("section-title")
         files_box.pack_start(files_title, False, False, 5)
 
         for filename in sejr['files']:
-            file_btn = Gtk.Button(label=f"📄 {filename[:25]}")
+            file_btn = Gtk.Button(label=f" {filename[:25]}")
             file_btn.get_style_context().add_class("file-item")
             filepath = Path(sejr['path']) / filename
             file_btn.connect("clicked", lambda w, p=filepath: self.view_file(p))
             files_box.pack_start(file_btn, False, False, 2)
 
         # Open folder button
-        open_btn = Gtk.Button(label="📂 Open in Files")
+        open_btn = Gtk.Button(label=" Open in Files")
         open_btn.get_style_context().add_class("action-button")
         open_btn.connect("clicked", lambda w: subprocess.Popen(["nautilus", sejr['path']]))
         files_box.pack_end(open_btn, False, False, 10)
@@ -496,7 +496,7 @@ class SejrlisteApp(Gtk.Window):
         # Content viewer
         content_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
-        content_title = Gtk.Label(label="📋 Content Viewer")
+        content_title = Gtk.Label(label=" Content Viewer")
         content_title.get_style_context().add_class("section-title")
         content_box.pack_start(content_title, False, False, 5)
 
@@ -535,7 +535,7 @@ class SejrlisteApp(Gtk.Window):
 
         # Active section
         if active:
-            label = Gtk.Label(label=f"🎮 Active ({len(active)})")
+            label = Gtk.Label(label=f" Active ({len(active)})")
             label.set_halign(Gtk.Align.START)
             label.set_margin_start(10)
             self.sejr_list.pack_start(label, False, False, 5)
@@ -546,7 +546,7 @@ class SejrlisteApp(Gtk.Window):
 
         # Archived section
         if archived:
-            label = Gtk.Label(label=f"🏆 Archived ({len(archived)})")
+            label = Gtk.Label(label=f" Archived ({len(archived)})")
             label.set_halign(Gtk.Align.START)
             label.set_margin_start(10)
             label.set_margin_top(15)
@@ -573,9 +573,9 @@ class SejrlisteApp(Gtk.Window):
 
         name = sejr['name'][:25]
         if sejr['is_archived']:
-            text = f"🏆 {name}"
+            text = f" {name}"
         else:
-            text = f"📁 {name}\n{bar} {progress}%"
+            text = f" {name}\n{bar} {progress}%"
 
         btn = Gtk.Button(label=text)
         btn.get_style_context().add_class("sejr-button")
@@ -627,14 +627,14 @@ class SejrlisteApp(Gtk.Window):
             )
 
             if result.returncode == 0:
-                self.show_message(f"✅ {script_name} completed!", Gtk.MessageType.INFO)
+                self.show_message(f"[OK] {script_name} completed!", Gtk.MessageType.INFO)
                 self.refresh_sejrs()
                 if self.selected_sejr:
                     # Refresh current sejr
                     new_info = get_sejr_info(Path(self.selected_sejr['path']))
                     self.build_production_room(new_info)
             else:
-                self.show_message(f"❌ {script_name} failed:\n{result.stderr}", Gtk.MessageType.ERROR)
+                self.show_message(f"[FAIL] {script_name} failed:\n{result.stderr}", Gtk.MessageType.ERROR)
         except Exception as e:
             self.show_message(f"Error: {e}", Gtk.MessageType.ERROR)
 

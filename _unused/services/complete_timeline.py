@@ -34,10 +34,10 @@ ARCHIVE_DIR = BASE_DIR / "90_ARCHIVE"
 # ═══════════════════════════════════════════════════════════════════════════
 
 class StepStatus(Enum):
-    DONE = "✅"
-    CURRENT = "🔵"
+    DONE = "[OK]"
+    CURRENT = ""
     PENDING = "⏳"
-    BLOCKED = "🔴"
+    BLOCKED = ""
 
 
 @dataclass
@@ -243,7 +243,7 @@ MASTER_STEPS = [
     {
         "number": 20,
         "name": "GRAND ADMIRAL",
-        "description": "🎖️ Sejr komplet - Rang opnået",
+        "description": " Sejr komplet - Rang opnået",
         "phase": "COMPLETE",
         "typical_duration_minutes": 0,
         "outputs": ["GRAND ADMIRAL status"]
@@ -405,21 +405,21 @@ class TimelineGenerator:
         current_pass = status.get("current_pass", 1)
 
         if total_score >= 28:
-            return "🎖️ GRAND ADMIRAL (28-30 points) - Exceptionel kvalitet, alt dokumenteret og testet"
+            return " GRAND ADMIRAL (28-30 points) - Exceptionel kvalitet, alt dokumenteret og testet"
         elif total_score >= 24:
-            return "⭐ ADMIRAL (24-27 points) - Høj kvalitet, alle krav opfyldt"
+            return " ADMIRAL (24-27 points) - Høj kvalitet, alle krav opfyldt"
         elif total_score >= 18:
-            return "🔷 KOMMANDØR (18-23 points) - God kvalitet, enkelte mangler"
+            return " KOMMANDØR (18-23 points) - God kvalitet, enkelte mangler"
         elif total_score >= 12:
-            return "🔵 KAPTAJN (12-17 points) - Acceptabel kvalitet, forbedring mulig"
+            return " KAPTAJN (12-17 points) - Acceptabel kvalitet, forbedring mulig"
         else:
             # Forudsig baseret på pass
             if current_pass == 3:
-                return "⭐ ADMIRAL forventet - Pass 3 i gang"
+                return " ADMIRAL forventet - Pass 3 i gang"
             elif current_pass == 2:
-                return "🔷 KOMMANDØR forventet - Implementering i gang"
+                return " KOMMANDØR forventet - Implementering i gang"
             else:
-                return "📋 KADET - Planlægning i gang, potentiale til GRAND ADMIRAL"
+                return " KADET - Planlægning i gang, potentiale til GRAND ADMIRAL"
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -431,7 +431,7 @@ def visualize_timeline(timeline: SejrTimeline) -> str:
     lines = []
 
     lines.append("╔" + "═" * 78 + "╗")
-    lines.append(f"║ 🗓️  KOMPLET TIDSLINJE: {timeline.sejr_name:<52} ║")
+    lines.append(f"║   KOMPLET TIDSLINJE: {timeline.sejr_name:<52} ║")
     lines.append("╠" + "═" * 78 + "╣")
 
     # Progress bar
@@ -474,11 +474,11 @@ def visualize_timeline(timeline: SejrTimeline) -> str:
         est_str = est_complete.strftime("%Y-%m-%d %H:%M")
     except:
         est_str = "Ukendt"
-    lines.append(f"║ ⏱️  Estimeret færdig: {est_str:<54} ║")
+    lines.append(f"║ ⏱  Estimeret færdig: {est_str:<54} ║")
 
     # Endelig outcome
     lines.append("╠" + "═" * 78 + "╣")
-    lines.append(f"║ 🎯 HVORDAN DET ENDER:                                                        ║")
+    lines.append(f"║  HVORDAN DET ENDER:                                                        ║")
     outcome_lines = [timeline.final_outcome[i:i+76] for i in range(0, len(timeline.final_outcome), 76)]
     for ol in outcome_lines:
         lines.append(f"║    {ol:<74} ║")
@@ -516,7 +516,7 @@ def visualize_all_sejrs() -> str:
     from datetime import date
     today = date.today()
 
-    output.append("\n📅 DE NÆSTE 7 DAGE:")
+    output.append("\n DE NÆSTE 7 DAGE:")
     output.append("-" * 40)
 
     for i in range(7):
@@ -524,13 +524,13 @@ def visualize_all_sejrs() -> str:
         weekday = ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"][day.weekday()]
 
         if i == 0:
-            output.append(f"\n🔵 I DAG ({weekday} {day.strftime('%d/%m')}):")
+            output.append(f"\n I DAG ({weekday} {day.strftime('%d/%m')}):")
             output.append("   → Fokusér på aktive sejrs")
         elif i == 1:
             output.append(f"\n⏳ I MORGEN ({weekday} {day.strftime('%d/%m')}):")
             output.append("   → Fortsæt implementation")
         else:
-            output.append(f"\n📋 {weekday} {day.strftime('%d/%m')}:")
+            output.append(f"\n {weekday} {day.strftime('%d/%m')}:")
             if day.weekday() == 4:  # Fredag
                 output.append("   → Ugentlig review og arkivering")
             elif day.weekday() == 0:  # Mandag

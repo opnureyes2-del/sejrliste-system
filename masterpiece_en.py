@@ -1938,7 +1938,7 @@ DNA_LAYERS = [
 ]
 
 # LINEN Framework — 5 pillars of INTRO folder organization
-INTRO_PATH = Path("/home/rasmus/Desktop/MASTER FOLDERS(INTRO)")
+INTRO_PATH = Path.home() / "Desktop" / "MASTER FOLDERS(INTRO)"
 
 LINEN_COMPONENTS = [
     ("L", "LOGGING", "ÆNDRINGSLOG i alle filer", "document-edit-symbolic"),
@@ -4669,7 +4669,7 @@ class PrioritetsOverblik(Gtk.Box):
 
     def _create_new_sejr(self) -> None:
         """Trigger ny victory oprettelse."""
-        script = SCRIPTS_DIR / "generate_victory.py"
+        script = SCRIPTS_DIR / "generate_sejr.py"
         if script.exists():
             subprocess.Popen(["python3", str(script)])
             send_notification("New Victory", "Opretter ny victory...", "list-add-symbolic")
@@ -5170,9 +5170,7 @@ class LinenHealthView(Gtk.Box):
 
     def _setup_live_monitoring(self):
         """Set up FileMonitor for auto-refresh when INTRO files change (Pass 2)"""
-        intro_path = os.path.expanduser(
-            "~/Desktop/MASTER FOLDERS(INTRO)"
-        )
+        intro_path = str(INTRO_PATH)
         if not os.path.isdir(intro_path):
             return
 
@@ -5576,7 +5574,7 @@ class ArchitectureOverviewView(Gtk.Box):
 
     def _get_pattern_examples(self, pattern_name):
         """Find real INTRO files matching a design pattern"""
-        intro_path = os.path.expanduser("~/Desktop/MASTER FOLDERS(INTRO)")
+        intro_path = str(INTRO_PATH)
         if not os.path.isdir(intro_path):
             return []
         results = []
@@ -5730,7 +5728,7 @@ class ArchitectureOverviewView(Gtk.Box):
         parts = range_str.split("-")
         min_num = int(parts[0])
         max_num = int(parts[1])
-        intro_path = os.path.expanduser("~/Desktop/MASTER FOLDERS(INTRO)")
+        intro_path = str(INTRO_PATH)
         if not os.path.isdir(intro_path):
             return []
         files = []
@@ -8000,7 +7998,7 @@ class MasterpieceWindow(Adw.ApplicationWindow):
 
     def _create_sejr(self, name):
         """Actually create the victory"""
-        script_path = SCRIPTS_DIR / "generate_victory.py"
+        script_path = SCRIPTS_DIR / "generate_sejr.py"
         if script_path.exists():
             try:
                 result = subprocess.run(
@@ -8357,7 +8355,7 @@ Du er på vej mod Admiral niveau!"""
         """Actually convert a path to a new Victory using SejrConverter API"""
         try:
             import shutil
-            system_path = Path("/home/rasmus/Desktop/sejrliste systemet")
+            system_path = SYSTEM_PATH
             converter = SejrConverter(system_path)
 
             # Determine input type
@@ -8758,7 +8756,7 @@ class MasterpieceApp(Adw.Application):
         load_custom_css()
 
         # Set window icon from SVG
-        icon_path = Path("/home/rasmus/Desktop/sejrliste systemet/assets/sejrliste-icon.svg")
+        icon_path = SYSTEM_PATH / "assets" / "sejrliste-icon.svg"
         if icon_path.exists():
             try:
                 icon_theme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default())
@@ -8785,7 +8783,7 @@ class MasterpieceApp(Adw.Application):
         box.set_halign(Gtk.Align.CENTER)
 
         # Logo icon
-        splash_icon = Path("/home/rasmus/Desktop/sejrliste systemet/assets/icons/sejrliste-icon/128.png")
+        splash_icon = SYSTEM_PATH / "assets" / "icons" / "sejrliste-icon" / "128.png"
         if splash_icon.exists():
             try:
                 texture = Gdk.Texture.new_from_filename(str(splash_icon))

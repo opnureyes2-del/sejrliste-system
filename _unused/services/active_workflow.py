@@ -71,7 +71,7 @@ def show_current_status():
 
     print()
     print("╔═══════════════════════════════════════════════════════════════╗")
-    print("║               📋 AKTIV ARBEJDSSTATUS                          ║")
+    print("║               [LIST] AKTIV ARBEJDSSTATUS                          ║")
     print("╠═══════════════════════════════════════════════════════════════╣")
 
     if current:
@@ -81,17 +81,17 @@ def show_current_status():
         if current.get('current_step'):
             step = current['current_step']
             print("╠═══════════════════════════════════════════════════════════════╣")
-            print(f"║  🔵 NU: {step.name:<52} ║")
+            print(f"║  [ACTIVE] NU: {step.name:<52} ║")
             print(f"║     {step.description:<55} ║")
 
         if current.get('next_step'):
             step = current['next_step']
             print("╠═══════════════════════════════════════════════════════════════╣")
-            print(f"║  ⏳ NÆSTE: {step.name:<49} ║")
+            print(f"║  [PENDING] NÆSTE: {step.name:<49} ║")
             print(f"║     {step.description:<55} ║")
 
         print("╠═══════════════════════════════════════════════════════════════╣")
-        print(f"║  🎯 Forventet: {current['final_outcome'][:45]:<45} ║")
+        print(f"║  [TARGET] Forventet: {current['final_outcome'][:45]:<45} ║")
     else:
         print("║  Ingen aktiv sejr fundet.                                     ║")
         print("║  Brug: python active_workflow.py --start NAVN                 ║")
@@ -106,7 +106,7 @@ def show_next_steps():
 
     print()
     print("╔═══════════════════════════════════════════════════════════════╗")
-    print("║               🔮 NÆSTE SKRIDT                                  ║")
+    print("║                NÆSTE SKRIDT                                  ║")
     print("╠═══════════════════════════════════════════════════════════════╣")
 
     if current:
@@ -129,7 +129,7 @@ def show_week_predictions():
 
     print()
     print("╔═══════════════════════════════════════════════════════════════╗")
-    print("║               📅 DE NÆSTE 7 DAGE                               ║")
+    print("║               [DATE] DE NÆSTE 7 DAGE                               ║")
     print("╠═══════════════════════════════════════════════════════════════╣")
 
     for v in visions:
@@ -141,7 +141,7 @@ def show_week_predictions():
 
         if v.predicted_sejrs:
             for s in v.predicted_sejrs[:2]:
-                print(f"║    📋 {s[:53]:<53} ║")
+                print(f"║    [LIST] {s[:53]:<53} ║")
 
         if v.recommended_actions:
             for a in v.recommended_actions[:2]:
@@ -170,17 +170,17 @@ def start_new_sejr(name: str, goal: Optional[str] = None):
     result = subprocess.run(args, capture_output=True, text=True, cwd=str(BASE_DIR))
 
     if result.returncode == 0:
-        print(f"✅ Sejr '{name}' oprettet!")
+        print(f"[OK] Sejr '{name}' oprettet!")
 
         # Vis næste skridt
         engine = PredictiveEngine()
         steps = engine.get_next_steps(name)
 
-        print("\n🔮 Næste skridt:")
+        print("\n Næste skridt:")
         for step in steps[:3]:
             print(f"  → {step}")
     else:
-        print(f"❌ Fejl: {result.stderr}")
+        print(f"[FAIL] Fejl: {result.stderr}")
 
 
 def mark_current_done():
@@ -205,12 +205,12 @@ def mark_current_done():
     with open(log_file, 'a') as f:
         f.write(json.dumps(entry, ensure_ascii=False) + '\n')
 
-    print(f"✅ Skridt {current['position']} markeret som færdigt!")
+    print(f"[OK] Skridt {current['position']} markeret som færdigt!")
     print(f"   Logged til: {log_file}")
 
     # Show next step
     if current.get('next_step'):
-        print(f"\n⏳ Næste skridt: {current['next_step'].name}")
+        print(f"\n[PENDING] Næste skridt: {current['next_step'].name}")
         print(f"   {current['next_step'].description}")
 
 

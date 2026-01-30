@@ -471,8 +471,8 @@ Keywords=todo;tasks;projects;sejr;
 ║                                                              ║
 ║  Drop filer eller mapper her for at oprette nye Sejrs!       ║
 ║                                                              ║
-║  ➡️  Drop en fil → Ny Sejr med fil som input                 ║
-║  ➡️  Drop en mappe → Ny Sejr med mappe som input             ║
+║  -->  Drop en fil → Ny Sejr med fil som input                 ║
+║  -->  Drop en mappe → Ny Sejr med mappe som input             ║
 ║                                                              ║
 ║  Systemet overvåger denne mappe og opretter                  ║
 ║  automatisk sejrs når du dropper noget.                      ║
@@ -568,42 +568,42 @@ class SyncService:
 
 def setup_complete_integration():
     """Opsæt komplet integration på tværs af alle platforme"""
-    print("🔗 OPSÆTTER UNIFIED SYNC SERVICE...")
+    print("[LINK] OPSÆTTER UNIFIED SYNC SERVICE...")
     print("=" * 60)
 
     # 1. Nautilus integration
     nautilus = NautilusIntegration()
     if nautilus.install_nautilus_integration():
-        print("✅ Nautilus højreklik-menu installeret")
+        print("[OK] Nautilus højreklik-menu installeret")
         print("   → Højreklik på fil → Scripts → 'Opret Sejr'")
 
     # 2. Drop folder
     drop_folder = nautilus.create_drop_target_folder()
-    print(f"✅ Drop zone oprettet: {drop_folder}")
+    print(f"[OK] Drop zone oprettet: {drop_folder}")
     print("   → Drop filer her for auto-konvertering")
 
     # 3. Sync service
     sync = SyncService()
-    print("✅ Sync service klar")
+    print("[OK] Sync service klar")
     print("   → Real-time synk mellem desktop og web")
 
     # 4. Predictions
     engine = PredictiveEngine()
     visions = engine.analyze_week_ahead()
-    print("\n📅 NÆSTE 7 DAGE (KLARSYN):")
+    print("\n[DATE] NÆSTE 7 DAGE (KLARSYN):")
     print("-" * 40)
     for v in visions:
         date_formatted = datetime.strptime(v.date, "%Y-%m-%d").strftime("%A %d/%m")
         print(f"\n{date_formatted}:")
         if v.predicted_sejrs:
             for s in v.predicted_sejrs:
-                print(f"  📋 {s}")
+                print(f"  [LIST] {s}")
         if v.recommended_actions:
             for a in v.recommended_actions:
                 print(f"  → {a}")
 
     print("\n" + "=" * 60)
-    print("✅ UNIFIED SYNC SERVICE KLAR!")
+    print("[OK] UNIFIED SYNC SERVICE KLAR!")
     print("")
     print("BRUG:")
     print("  • Desktop: python masterpiece.py")
@@ -641,7 +641,7 @@ if __name__ == "__main__":
             sejr_name = sys.argv[2]
             engine = PredictiveEngine()
             steps = engine.get_next_steps(sejr_name)
-            print(f"\n🔮 NÆSTE SKRIDT FOR: {sejr_name}")
+            print(f"\n NÆSTE SKRIDT FOR: {sejr_name}")
             print("-" * 40)
             for step in steps:
                 print(f"  {step}")

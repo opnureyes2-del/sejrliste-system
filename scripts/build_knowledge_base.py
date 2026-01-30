@@ -21,11 +21,12 @@ from pathlib import Path
 DB_PATH = os.path.expanduser("~/.project_db")
 
 # Nøgle-mapper der skal indekseres
+_DESKTOP = Path.home() / "Desktop"
 SOURCE_DIRS = [
-    ("/home/rasmus/Desktop/HOW TO USE A CLAUDE OPUS/", "claude_guide"),
-    ("/home/rasmus/Desktop/MIN ADMIRAL/", "admiral"),
-    ("/home/rasmus/Desktop/INTRO FOLDER SYSTEM/", "intro"),
-    ("/home/rasmus/Desktop/sejrliste systemet/", "sejrliste"),
+    (str(_DESKTOP / "HOW TO USE A CLAUDE OPUS"), "claude_guide"),
+    (str(_DESKTOP / "MIN ADMIRAL"), "admiral"),
+    (str(_DESKTOP / "INTRO FOLDER SYSTEM"), "intro"),
+    (str(Path(__file__).parent.parent), "sejrliste"),
 ]
 
 # Mapper der springes over
