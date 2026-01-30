@@ -115,10 +115,10 @@ AGENTER SOVER (5 min timeout)
 ## PASS 1: FUNDAMENT (Gør 138 Scripts Kørbare)
 
 ### A. PYTHON PAKKE SETUP
-- [ ] **A1.** Opret `requirements.txt` med alle dependencies
+- [x] **A1.** Opret `requirements.txt` med alle dependencies
 - [ ] **A2.** Opret fungerende `.venv` med alle deps installeret
-- [ ] **A3.** Opret `pyproject.toml` for proper pakke
-- [ ] **A4.** Opret `__init__.py` i alle mapper
+- [x] **A3.** Opret `pyproject.toml` for proper pakke
+- [x] **A4.** Opret `__init__.py` i alle mapper
 - [ ] **A5.** Test at top-5 kernefiler kan importeres
 
 ### B. CONFIG I STEDET FOR HARDCODED PATHS

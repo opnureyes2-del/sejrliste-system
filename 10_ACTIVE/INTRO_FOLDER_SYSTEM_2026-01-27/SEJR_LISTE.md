@@ -29,14 +29,14 @@
 
 ### FASE 0: DATA MODEL
 
-- [ ] Definér `INTRO_PATH` konstant: `/home/rasmus/Desktop/MASTER FOLDERS(INTRO)/`
-- [ ] Opret `get_intro_structure()` funktion der scanner INTRO mappens filstruktur
-- [ ] Opret `get_intro_i_files()` der returnerer I1-I12 med titel, størrelse, dato, status
-- [ ] Opret `get_intro_categories()` der returnerer B/C/D/E/F/G/H kategorier
-- [ ] Opret `get_intro_health()` der kører verification commands
-- [ ] Opret `parse_intro_navigation_index()` der læser NAVIGATION_INDEX.md
-- [ ] Opret `IntroFile` dataclass med: name, path, category, size, lines, last_modified, status
-- [ ] Opret `IntroCategory` dataclass med: letter, name, files, description
+- [x] Definér `INTRO_PATH` konstant: `/home/rasmus/Desktop/MASTER FOLDERS(INTRO)/`
+- [x] Opret `get_intro_structure()` funktion der scanner INTRO mappens filstruktur
+- [x] Opret `get_intro_i_files()` der returnerer I1-I12 med titel, størrelse, dato, status
+- [x] Opret `get_intro_categories()` der returnerer B/C/D/E/F/G/H kategorier
+- [x] Opret `get_intro_health()` der kører verification commands
+- [x] Opret `parse_intro_navigation_index()` der læser NAVIGATION_INDEX.md
+- [x] Opret `IntroFile` dataclass med: name, path, category, size, lines, last_modified, status
+- [x] Opret `IntroCategory` dataclass med: letter, name, files, description
 
 ### FASE 1: SIDEBAR INTEGRATION
 
