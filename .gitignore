@@ -1,10 +1,12 @@
 # SEJR LISTE SYSTEM - Git Ignore
 
-# Active work folders (user-specific)
-10_ACTIVE/*/
+# Active work folders — ignore generated files, track essential ones
+10_ACTIVE/*/AUTO_LOG.jsonl
+10_ACTIVE/*/VERIFY_STATUS.yaml
 
-# Archive folders (user-specific)
-90_ARCHIVE/*/
+# Archive folders — ignore generated files, track essential ones
+90_ARCHIVE/*/AUTO_LOG.jsonl
+90_ARCHIVE/*/VERIFY_STATUS.yaml
 
 # Python cache
 __pycache__/
@@ -27,7 +29,10 @@ Thumbs.db
 *.swo
 *~
 
-# Keep folder structure but ignore contents
+# Keep folder structure
 !10_ACTIVE/.gitkeep
 !90_ARCHIVE/.gitkeep
+
+# Ignore _unused folder contents
+_unused/
 venv/
