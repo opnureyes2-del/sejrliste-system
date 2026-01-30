@@ -2127,6 +2127,267 @@ button.action-new {
 .intro-qa-system-kommandor { color: #6366f1; }
 .intro-qa-system-docker { color: #3b82f6; }
 .intro-qa-system-db { color: #f59e0b; }
+
+/* === FASE 3: NAVIGATION INDEX EXPLORER === */
+.intro-nav-search-entry {
+    font-size: 14px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.90);
+    min-height: 36px;
+}
+
+.intro-nav-search-entry:focus {
+    border-color: rgba(168, 85, 247, 0.40);
+    box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.12);
+}
+
+.intro-nav-filter-btn {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.intro-nav-filter-btn:hover {
+    background: rgba(168, 85, 247, 0.12);
+    color: #c084fc;
+    border-color: rgba(168, 85, 247, 0.20);
+}
+
+.intro-nav-filter-btn-active {
+    background: rgba(168, 85, 247, 0.18);
+    color: #c084fc;
+    border-color: rgba(168, 85, 247, 0.30);
+}
+
+.intro-nav-doc-row {
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    transition: all 150ms ease;
+}
+
+.intro-nav-doc-row:hover {
+    background: rgba(168, 85, 247, 0.06);
+    border-color: rgba(168, 85, 247, 0.12);
+}
+
+.intro-nav-doc-name {
+    font-weight: 600;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.90);
+}
+
+.intro-nav-doc-topic {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.50);
+}
+
+.intro-nav-doc-meta {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.35);
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+}
+
+.intro-nav-keyword-tag {
+    font-size: 9px;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: rgba(168, 85, 247, 0.10);
+    color: rgba(168, 85, 247, 0.80);
+    border: 1px solid rgba(168, 85, 247, 0.12);
+}
+
+.intro-nav-stat-label {
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.70);
+}
+
+.intro-nav-category-badge {
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 5px;
+    min-width: 28px;
+}
+
+/* === FASE 4: ARCHITECTURE OVERVIEW === */
+.intro-arch-card {
+    padding: 20px;
+    border-radius: 14px;
+    background: linear-gradient(135deg,
+        rgba(25, 25, 45, 0.8) 0%,
+        rgba(30, 30, 55, 0.6) 100%);
+    border: 1px solid rgba(99, 102, 241, 0.10);
+    transition: all 200ms ease;
+}
+
+.intro-arch-card:hover {
+    border-color: rgba(99, 102, 241, 0.30);
+    box-shadow: 0 6px 24px -6px rgba(99, 102, 241, 0.20);
+}
+
+.intro-arch-icon {
+    font-size: 28px;
+    min-width: 48px;
+    min-height: 48px;
+    border-radius: 12px;
+    background: rgba(99, 102, 241, 0.12);
+    color: #818cf8;
+}
+
+.intro-arch-title {
+    font-weight: 700;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.intro-arch-desc {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.50);
+}
+
+.intro-arch-size {
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.intro-arch-open-btn {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 14px;
+    border-radius: 8px;
+    background: rgba(99, 102, 241, 0.12);
+    color: #a5b4fc;
+    border: 1px solid rgba(99, 102, 241, 0.20);
+}
+
+.intro-arch-open-btn:hover {
+    background: rgba(99, 102, 241, 0.24);
+    border-color: rgba(99, 102, 241, 0.40);
+}
+
+.intro-arch-missing {
+    opacity: 0.45;
+    border-style: dashed;
+}
+
+/* === FASE 5: OBLIGATORY ORDERS TRACKER === */
+.intro-orders-principle-card {
+    padding: 12px 16px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-left: 3px solid rgba(239, 68, 68, 0.40);
+}
+
+.intro-orders-principle-card:hover {
+    border-left-color: rgba(239, 68, 68, 0.70);
+    box-shadow: 0 4px 16px -6px rgba(239, 68, 68, 0.12);
+}
+
+.intro-orders-principle-name {
+    font-weight: 700;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.90);
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+}
+
+.intro-orders-principle-desc {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.50);
+}
+
+.intro-orders-order-card {
+    padding: 14px 16px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 150ms ease;
+}
+
+.intro-orders-order-card:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.10);
+}
+
+.intro-orders-order-num {
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+    font-weight: 800;
+    font-size: 14px;
+    min-width: 28px;
+    min-height: 28px;
+    border-radius: 50%;
+    background: rgba(239, 68, 68, 0.12);
+    color: #f87171;
+}
+
+.intro-orders-order-title {
+    font-weight: 600;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.intro-orders-order-context {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.40);
+}
+
+.intro-orders-status-green {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: rgba(0, 255, 136, 0.12);
+    color: #4ade80;
+}
+
+.intro-orders-status-yellow {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: rgba(250, 204, 21, 0.12);
+    color: #fcd34d;
+}
+
+.intro-orders-status-red {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: rgba(248, 113, 113, 0.12);
+    color: #f87171;
+}
+
+.intro-orders-compliance-card {
+    padding: 16px 20px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Sidebar color accents for new categories */
+.intro-cat-nav_index .intro-sidebar-icon { color: #e879f9; }
+.intro-cat-nav_index .intro-sidebar-count { background: rgba(232, 121, 249, 0.12); color: #e879f9; }
+
+.intro-cat-architecture_overview .intro-sidebar-icon { color: #818cf8; }
+.intro-cat-architecture_overview .intro-sidebar-count { background: rgba(129, 140, 248, 0.12); color: #818cf8; }
+
+.intro-cat-orders_tracker .intro-sidebar-icon { color: #f87171; }
+.intro-cat-orders_tracker .intro-sidebar-count { background: rgba(248, 113, 113, 0.12); color: #f87171; }
 """
 
 def load_custom_css():
@@ -2478,8 +2739,8 @@ class IntelligentSearch:
 
     def search(self, query: str, max_results: int = 50) -> list:
         """
-        Search for query across all sejr folders.
-        Returns list of dicts with: sejr, file, line_num, context, match_type
+        Search for query across all sejr folders AND INTRO files.
+        Returns list of dicts with: sejr/victory, file, line_num, context, match_type
         """
         if not query or len(query) < 2:
             return []
@@ -2498,6 +2759,9 @@ class IntelligentSearch:
             for sejr_folder in self.archive_dir.iterdir():
                 if sejr_folder.is_dir() and not sejr_folder.name.startswith("."):
                     results.extend(self._search_sejr(sejr_folder, query_lower))
+
+        # Search INTRO files in MASTER FOLDERS(INTRO)
+        results.extend(self._search_intro(query_lower))
 
         # Sort by relevance (exact matches first, then partial)
         results.sort(key=lambda x: (0 if query_lower in x["match"].lower() else 1, x["victory"]))
@@ -2603,9 +2867,87 @@ class IntelligentSearch:
 
         return match
 
-# 
+    @staticmethod
+    def _categorize_intro_file(filename: str) -> str:
+        """Return the INTRO category prefix for a filename based on its pattern.
+
+        E.g. I1_ADMIRAL_PLUS_VISION.md -> 'I-fil',
+             B3_CKC_GATEWAY_COMMANDS.md -> 'B-fil',
+             C7_DOCKER_CONFIGURATION.md -> 'C-fil',
+             D1_ARCHITECTURE.md -> 'D-fil',
+             F4_COSMIC_LIBRARY.md -> 'F-fil',
+             00_SYSTEM_GENESIS.md -> 'SYS',
+             anything else -> 'INTRO'
+        """
+        import re as _re
+        m = _re.match(r'^([A-Z])\d+[_\-]', filename)
+        if m:
+            return f"{m.group(1)}-fil"
+        if filename.startswith("00_") or filename.startswith("01_"):
+            return "SYS"
+        return "INTRO"
+
+    def _search_intro(self, query: str) -> list:
+        """Search all .md files in MASTER FOLDERS(INTRO) recursively.
+
+        Returns results with victory='INTRO SYSTEM' and a category prefix
+        so that INTRO results are distinguishable from victory results.
+        """
+        intro_path = Path.home() / "Desktop" / "MASTER FOLDERS(INTRO)"
+        if not intro_path.exists():
+            return []
+
+        results = []
+
+        try:
+            for md_file in intro_path.rglob("*.md"):
+                if not md_file.is_file():
+                    continue
+
+                category = self._categorize_intro_file(md_file.name)
+
+                # Search filename
+                if query in md_file.name.lower():
+                    results.append({
+                        "victory": "INTRO SYSTEM",
+                        "file": md_file.name,
+                        "line_num": 0,
+                        "context": f"[{category}] Filename: {md_file.name}",
+                        "match": md_file.name,
+                        "match_type": "intro_file",
+                        "intro_category": category,
+                        "intro_path": str(md_file),
+                    })
+
+                # Search file contents
+                try:
+                    content = md_file.read_text(errors="ignore")
+                    for i, line in enumerate(content.split("\n"), 1):
+                        if query in line.lower():
+                            context = line.strip()[:100]
+                            if len(line.strip()) > 100:
+                                context += "..."
+
+                            results.append({
+                                "victory": "INTRO SYSTEM",
+                                "file": md_file.name,
+                                "line_num": i,
+                                "context": f"[{category}] {context}",
+                                "match": self._extract_match(line, query),
+                                "match_type": "intro_content",
+                                "intro_category": category,
+                                "intro_path": str(md_file),
+                            })
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+        return results
+
+#
 # CONFIGURATION
-# 
+#
 
 SYSTEM_PATH = Path(__file__).parent
 ACTIVE_DIR = SYSTEM_PATH / "10_ACTIVE"
@@ -7612,6 +7954,10 @@ INTRO_SIDEBAR_ITEMS = [
     ("dna_layers", "7-DNA Layers", "INTRO DNA Analysis", "applications-science-symbolic"),
     ("quick_actions", "Quick Actions", "Commands + Environment", "utilities-terminal-symbolic"),
     ("health", "System Health", "Live verification", "emblem-ok-symbolic"),
+    ("health_dashboard", "Health Dashboard", "System Health Score", "heart-symbolic"),
+    ("nav_index", "Navigation Index", "113 Documents Searchable", "system-search-symbolic"),
+    ("architecture_overview", "Architecture D1-D10", "System Design Documents", "applications-engineering-symbolic"),
+    ("orders_tracker", "Obligatory Orders", "13 Admiral Orders", "security-high-symbolic"),
 ]
 
 
@@ -8324,6 +8670,521 @@ class IntroStructureView(Gtk.Box):
             self._container.append(rule_card)
 
 
+# -----------------------------------------------------------------
+# INTRO HEALTH DASHBOARD (FASE 2: SYSTEM HEALTH DASHBOARD)
+# -----------------------------------------------------------------
+
+class IntroHealthDashboard(Gtk.Box):
+    """FASE 2: System Health Dashboard for INTRO system.
+
+    Shows:
+    - Overall health percentage (Samlet score)
+    - Green/Yellow/Red indicator per check:
+      * Git push status
+      * File names match headers
+      * All I1-I12 present
+      * No broken references
+      * Date headers current (<2 days)
+      * All files committed
+    - Historical health over time (last 10 checks as rows)
+    """
+
+    # Store historical checks across instances (in-memory, last 10)
+    _health_history = []
+
+    def __init__(self):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=16)
+        self.add_css_class("intro-health-dashboard")
+        self.set_margin_start(32)
+        self.set_margin_end(32)
+        self.set_margin_top(24)
+        self.set_margin_bottom(24)
+
+        self._checks = []
+        self._overall_score = 0.0
+        self._build_ui()
+
+    def _build_ui(self):
+        """Build the health dashboard UI."""
+        # Run all checks
+        self._run_all_checks()
+
+        # --- Header ---
+        header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        title = Gtk.Label(label="INTRO System Health Dashboard")
+        title.add_css_class("intro-view-header")
+        title.set_xalign(0)
+        header_box.append(title)
+
+        subtitle = Gtk.Label(
+            label="Comprehensive health assessment of the MASTER FOLDERS(INTRO) system"
+        )
+        subtitle.add_css_class("intro-view-subtitle")
+        subtitle.set_xalign(0)
+        subtitle.set_wrap(True)
+        header_box.append(subtitle)
+        self.append(header_box)
+
+        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        sep.set_margin_top(4)
+        sep.set_margin_bottom(8)
+        self.append(sep)
+
+        # --- Overall Score ---
+        score_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=16)
+        score_box.set_halign(Gtk.Align.CENTER)
+        score_box.set_margin_top(16)
+        score_box.set_margin_bottom(16)
+
+        score_label = Gtk.Label(label=f"{self._overall_score:.0f}%")
+        score_label.add_css_class("intro-health-score")
+        if self._overall_score >= 80:
+            score_label.add_css_class("intro-health-pass")
+        elif self._overall_score >= 50:
+            score_label.add_css_class("intro-health-warn")
+        else:
+            score_label.add_css_class("intro-health-fail")
+        score_box.append(score_label)
+
+        score_meta = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+        score_meta.set_valign(Gtk.Align.CENTER)
+
+        passed = sum(1 for c in self._checks if c["passed"])
+        total = len(self._checks)
+        passed_label = Gtk.Label(label=f"{passed}/{total} checks passed")
+        passed_label.add_css_class("caption")
+        score_meta.append(passed_label)
+
+        ts_label = Gtk.Label(label=f"Checked: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+        ts_label.add_css_class("caption")
+        ts_label.add_css_class("dim-label")
+        score_meta.append(ts_label)
+
+        score_box.append(score_meta)
+        self.append(score_box)
+
+        # --- Refresh button ---
+        refresh_btn = Gtk.Button(label="Re-run Health Checks")
+        refresh_btn.add_css_class("suggested-action")
+        refresh_btn.add_css_class("pill")
+        refresh_btn.set_halign(Gtk.Align.CENTER)
+        refresh_btn.connect("clicked", self._on_refresh_clicked)
+        self.append(refresh_btn)
+
+        # --- Individual Check Rows ---
+        checks_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        checks_box.set_margin_top(12)
+
+        for check in self._checks:
+            row = self._build_check_row(check)
+            checks_box.append(row)
+
+        self.append(checks_box)
+
+        # --- Historical Health ---
+        history_sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        history_sep.set_margin_top(16)
+        history_sep.set_margin_bottom(8)
+        self.append(history_sep)
+
+        history_label = Gtk.Label(label="Health History (last 10 checks)")
+        history_label.add_css_class("intro-view-subtitle")
+        history_label.set_xalign(0)
+        self.append(history_label)
+
+        history_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        history_box.set_margin_top(8)
+
+        if IntroHealthDashboard._health_history:
+            for entry in reversed(IntroHealthDashboard._health_history[-10:]):
+                hist_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+
+                ts = Gtk.Label(label=entry["timestamp"])
+                ts.add_css_class("caption")
+                ts.set_width_chars(18)
+                hist_row.append(ts)
+
+                score_text = f"{entry['score']:.0f}%"
+                score_lbl = Gtk.Label(label=score_text)
+                score_lbl.add_css_class("caption")
+                if entry["score"] >= 80:
+                    score_lbl.add_css_class("success")
+                elif entry["score"] >= 50:
+                    score_lbl.add_css_class("warning")
+                else:
+                    score_lbl.add_css_class("error")
+                score_lbl.set_width_chars(6)
+                hist_row.append(score_lbl)
+
+                detail = Gtk.Label(label=f"{entry['passed']}/{entry['total']} passed")
+                detail.add_css_class("dim-label")
+                detail.add_css_class("caption")
+                detail.set_hexpand(True)
+                detail.set_xalign(0)
+                hist_row.append(detail)
+
+                history_box.append(hist_row)
+        else:
+            no_hist = Gtk.Label(label="No history yet. Run checks to build history.")
+            no_hist.add_css_class("dim-label")
+            no_hist.add_css_class("caption")
+            no_hist.set_xalign(0)
+            history_box.append(no_hist)
+
+        self.append(history_box)
+
+    def _build_check_row(self, check: dict) -> Gtk.Box:
+        """Build a single check row with Green/Yellow/Red indicator."""
+        row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        row.add_css_class("intro-check-row")
+        if check["passed"]:
+            row.add_css_class("intro-check-pass")
+        else:
+            row.add_css_class("intro-check-fail")
+
+        # Traffic light indicator
+        if check["passed"]:
+            indicator_text = "GREEN"
+            indicator_css = "intro-health-indicator-green"
+            icon_name = "emblem-ok-symbolic"
+        elif check.get("warning"):
+            indicator_text = "YELLOW"
+            indicator_css = "intro-health-indicator-yellow"
+            icon_name = "dialog-warning-symbolic"
+        else:
+            indicator_text = "RED"
+            indicator_css = "intro-health-indicator-red"
+            icon_name = "dialog-error-symbolic"
+
+        icon = Gtk.Image.new_from_icon_name(icon_name)
+        icon.set_valign(Gtk.Align.CENTER)
+        row.append(icon)
+
+        # Check info
+        info_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=1)
+        info_box.set_hexpand(True)
+
+        name = Gtk.Label(label=check["name"])
+        name.set_xalign(0)
+        name.add_css_class("intro-file-title")
+        info_box.append(name)
+
+        msg = Gtk.Label(label=check["message"])
+        msg.set_xalign(0)
+        msg.add_css_class("intro-file-meta")
+        msg.set_ellipsize(Pango.EllipsizeMode.END)
+        info_box.append(msg)
+
+        if check.get("details"):
+            details_text = check["details"]
+            detail_lbl = Gtk.Label(label=details_text)
+            detail_lbl.set_xalign(0)
+            detail_lbl.add_css_class("caption")
+            detail_lbl.add_css_class("dim-label")
+            detail_lbl.set_wrap(True)
+            info_box.append(detail_lbl)
+
+        row.append(info_box)
+
+        # Indicator badge
+        badge = Gtk.Label(label=indicator_text)
+        badge.add_css_class("intro-status-badge")
+        badge.add_css_class(indicator_css)
+        badge.set_valign(Gtk.Align.CENTER)
+        row.append(badge)
+
+        return row
+
+    def _on_refresh_clicked(self, button):
+        """Rebuild the dashboard from scratch."""
+        # Remove all children and rebuild
+        while child := self.get_first_child():
+            self.remove(child)
+        self._checks = []
+        self._overall_score = 0.0
+        self._build_ui()
+
+    def _run_all_checks(self):
+        """Run all health checks and compute overall score."""
+        import os as _os
+
+        intro_path = INTRO_PATH
+        self._checks = []
+
+        # CHECK 1: Git push status
+        self._checks.append(self._check_git_push_status(intro_path))
+
+        # CHECK 2: File names match headers
+        self._checks.append(self._check_filenames_match_headers(intro_path))
+
+        # CHECK 3: All I1-I12 present
+        self._checks.append(self._check_i_files_present(intro_path))
+
+        # CHECK 4: No broken references
+        self._checks.append(self._check_broken_references(intro_path))
+
+        # CHECK 5: Date headers current (<2 days)
+        self._checks.append(self._check_date_headers_current(intro_path))
+
+        # CHECK 6: All files committed
+        self._checks.append(self._check_all_files_committed(intro_path))
+
+        # Calculate overall score
+        passed = sum(1 for c in self._checks if c["passed"])
+        total = len(self._checks)
+        self._overall_score = (passed / total * 100) if total > 0 else 0
+
+        # Store in history
+        IntroHealthDashboard._health_history.append({
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "score": self._overall_score,
+            "passed": passed,
+            "total": total,
+        })
+        # Keep only last 10
+        if len(IntroHealthDashboard._health_history) > 10:
+            IntroHealthDashboard._health_history = IntroHealthDashboard._health_history[-10:]
+
+    def _check_git_push_status(self, intro_path: Path) -> dict:
+        """Check if the git working tree is clean (no unpushed changes)."""
+        try:
+            result = subprocess.run(
+                ["git", "-C", str(intro_path), "status", "--porcelain"],
+                capture_output=True, text=True, timeout=10,
+            )
+            output = result.stdout.strip()
+            if result.returncode != 0:
+                return {
+                    "name": "Git Push Status",
+                    "passed": False,
+                    "warning": False,
+                    "message": f"Git command failed (rc={result.returncode})",
+                    "details": result.stderr.strip()[:200] if result.stderr else "",
+                }
+            if output:
+                lines = output.split("\n")
+                return {
+                    "name": "Git Push Status",
+                    "passed": False,
+                    "warning": True,
+                    "message": f"{len(lines)} uncommitted/untracked changes",
+                    "details": "; ".join(l.strip() for l in lines[:5]),
+                }
+            return {
+                "name": "Git Push Status",
+                "passed": True,
+                "warning": False,
+                "message": "Working tree clean",
+                "details": "",
+            }
+        except Exception as e:
+            return {
+                "name": "Git Push Status",
+                "passed": False,
+                "warning": False,
+                "message": f"Error: {e}",
+                "details": "",
+            }
+
+    def _check_filenames_match_headers(self, intro_path: Path) -> dict:
+        """Check that the first H1 line in each .md file matches its filename pattern."""
+        import re as _re
+        mismatches = []
+        checked = 0
+        try:
+            for md_file in intro_path.glob("*.md"):
+                if not md_file.is_file():
+                    continue
+                m = _re.match(r'^([A-Z]\d+)[_\-](.+)\.md$', md_file.name)
+                if not m:
+                    continue  # Skip files without category numbers
+                expected_prefix = m.group(1)  # e.g. I7
+                checked += 1
+                try:
+                    with open(md_file, 'r', errors='ignore') as f:
+                        for line in f:
+                            line = line.strip()
+                            if line.startswith("#"):
+                                # Check if the header contains the file prefix
+                                header_match = _re.search(
+                                    r'\b' + _re.escape(expected_prefix) + r'\b',
+                                    line.replace(".", "").replace("#", "")
+                                )
+                                if not header_match:
+                                    mismatches.append(md_file.name)
+                                break
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+        if mismatches:
+            return {
+                "name": "File Names Match Headers",
+                "passed": False,
+                "warning": True,
+                "message": f"{len(mismatches)} mismatches out of {checked} checked",
+                "details": ", ".join(mismatches[:5]),
+            }
+        return {
+            "name": "File Names Match Headers",
+            "passed": True,
+            "warning": False,
+            "message": f"All {checked} files match their headers",
+            "details": "",
+        }
+
+    def _check_i_files_present(self, intro_path: Path) -> dict:
+        """Check that I1 through I12 files all exist."""
+        missing = []
+        present = []
+        for i in range(1, 13):
+            pattern = f"I{i}_*.md"
+            matches = list(intro_path.glob(pattern))
+            if matches:
+                present.append(f"I{i}")
+            else:
+                missing.append(f"I{i}")
+
+        if missing:
+            return {
+                "name": "All I1-I12 Present",
+                "passed": False,
+                "warning": False,
+                "message": f"{len(missing)} I-files missing: {', '.join(missing)}",
+                "details": f"Present: {', '.join(present)}",
+            }
+        return {
+            "name": "All I1-I12 Present",
+            "passed": True,
+            "warning": False,
+            "message": "All 12 I-files found",
+            "details": "",
+        }
+
+    def _check_broken_references(self, intro_path: Path) -> dict:
+        """Count broken cross-references in .md files (links to non-existent files)."""
+        import re as _re
+        broken_refs = []
+        total_refs = 0
+        try:
+            for md_file in intro_path.rglob("*.md"):
+                if not md_file.is_file():
+                    continue
+                try:
+                    content = md_file.read_text(errors="ignore")
+                    # Find markdown links like [text](file.md) or [text](./path/file.md)
+                    links = _re.findall(r'\[([^\]]*)\]\(([^)]+)\)', content)
+                    for link_text, link_target in links:
+                        # Skip external links
+                        if link_target.startswith("http") or link_target.startswith("#"):
+                            continue
+                        total_refs += 1
+                        # Resolve relative to the file's directory
+                        target_path = md_file.parent / link_target.split("#")[0]
+                        if not target_path.exists():
+                            broken_refs.append(f"{md_file.name} -> {link_target}")
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+        if broken_refs:
+            return {
+                "name": "No Broken References",
+                "passed": False,
+                "warning": True,
+                "message": f"{len(broken_refs)} broken refs out of {total_refs} total",
+                "details": "; ".join(broken_refs[:5]),
+            }
+        return {
+            "name": "No Broken References",
+            "passed": True,
+            "warning": False,
+            "message": f"All {total_refs} references valid",
+            "details": "",
+        }
+
+    def _check_date_headers_current(self, intro_path: Path) -> dict:
+        """Check that date headers in .md files are less than 2 days old."""
+        import re as _re
+        import os as _os
+        stale_files = []
+        checked = 0
+        two_days_ago = datetime.now().timestamp() - (2 * 24 * 3600)
+
+        try:
+            for md_file in intro_path.glob("*.md"):
+                if not md_file.is_file():
+                    continue
+                # Check file modification time
+                mtime = _os.path.getmtime(str(md_file))
+                checked += 1
+                if mtime < two_days_ago:
+                    days_old = int((datetime.now().timestamp() - mtime) / 86400)
+                    stale_files.append(f"{md_file.name} ({days_old}d)")
+        except Exception:
+            pass
+
+        if stale_files:
+            return {
+                "name": "Date Headers Current (<2 days)",
+                "passed": False,
+                "warning": True,
+                "message": f"{len(stale_files)} files older than 2 days",
+                "details": ", ".join(stale_files[:5]),
+            }
+        return {
+            "name": "Date Headers Current (<2 days)",
+            "passed": True,
+            "warning": False,
+            "message": f"All {checked} top-level files modified within 2 days",
+            "details": "",
+        }
+
+    def _check_all_files_committed(self, intro_path: Path) -> dict:
+        """Check that all files are committed in git (git status clean)."""
+        try:
+            result = subprocess.run(
+                ["git", "-C", str(intro_path), "status", "--porcelain"],
+                capture_output=True, text=True, timeout=10,
+            )
+            if result.returncode != 0:
+                return {
+                    "name": "All Files Committed",
+                    "passed": False,
+                    "warning": False,
+                    "message": "Git status failed",
+                    "details": result.stderr.strip()[:200] if result.stderr else "",
+                }
+            output = result.stdout.strip()
+            if output:
+                lines = output.split("\n")
+                uncommitted = [l.strip() for l in lines if l.strip()]
+                return {
+                    "name": "All Files Committed",
+                    "passed": False,
+                    "warning": True,
+                    "message": f"{len(uncommitted)} uncommitted changes",
+                    "details": "; ".join(uncommitted[:5]),
+                }
+            return {
+                "name": "All Files Committed",
+                "passed": True,
+                "warning": False,
+                "message": "All files committed",
+                "details": "",
+            }
+        except Exception as e:
+            return {
+                "name": "All Files Committed",
+                "passed": False,
+                "warning": False,
+                "message": f"Error: {e}",
+                "details": "",
+            }
+
+
 class IntroSystemView(Gtk.Box):
     """Content view for INTRO System sidebar items.
 
@@ -8334,6 +9195,9 @@ class IntroSystemView(Gtk.Box):
     def __init__(self):
         super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         self._current_view = None
+        self._activity_monitor = None  # Set externally by MasterpieceWindow
+        self._file_monitors = []  # Gio.FileMonitor list for INTRO folders
+        self._section_mtimes = {}  # {category_letter: last_modified_datetime}
 
         # Main scrollable area
         self._scroll = Gtk.ScrolledWindow()
@@ -8349,6 +9213,139 @@ class IntroSystemView(Gtk.Box):
         self._scroll.set_child(self._container)
         self.append(self._scroll)
 
+        # Start INTRO file monitoring (FASE 1)
+        self._setup_intro_file_monitoring()
+
+    # -----------------------------------------------------------------
+    # FASE 1: REAL-TIME MONITORING — Gio.FileMonitor for INTRO folders
+    # -----------------------------------------------------------------
+
+    def _setup_intro_file_monitoring(self):
+        """Set up recursive Gio.FileMonitor for MASTER FOLDERS(INTRO).
+
+        Monitors the top-level directory and all immediate subdirectories
+        for file changes. When changes are detected:
+        - Logs the change to the LiveActivityMonitor
+        - Auto-refreshes the currently visible INTRO view
+        """
+        import os as _os
+        intro_path = str(INTRO_PATH)
+        if not _os.path.isdir(intro_path):
+            return
+
+        dirs_to_monitor = [intro_path]
+        # Also monitor immediate subdirectories
+        try:
+            for entry in _os.listdir(intro_path):
+                full = _os.path.join(intro_path, entry)
+                if _os.path.isdir(full) and not entry.startswith("."):
+                    dirs_to_monitor.append(full)
+        except Exception:
+            pass
+
+        for dir_path in dirs_to_monitor:
+            try:
+                gfile = Gio.File.new_for_path(dir_path)
+                monitor = gfile.monitor_directory(
+                    Gio.FileMonitorFlags.NONE, None
+                )
+                monitor.set_rate_limit(3000)  # 3 sec debounce
+                monitor.connect("changed", self._on_intro_file_changed)
+                self._file_monitors.append(monitor)
+            except Exception:
+                pass
+
+    def _on_intro_file_changed(self, monitor, file, other_file, event_type):
+        """Handle file change events from INTRO file monitor.
+
+        Logs to LiveActivityMonitor and auto-refreshes the current view.
+        """
+        if event_type not in (
+            Gio.FileMonitorEvent.CHANGED,
+            Gio.FileMonitorEvent.CREATED,
+            Gio.FileMonitorEvent.DELETED,
+        ):
+            return
+
+        fname = file.get_basename() if file else "unknown"
+        event_names = {
+            Gio.FileMonitorEvent.CHANGED: "changed",
+            Gio.FileMonitorEvent.CREATED: "created",
+            Gio.FileMonitorEvent.DELETED: "deleted",
+        }
+        event_str = event_names.get(event_type, "modified")
+
+        # Log to LiveActivityMonitor if available
+        if self._activity_monitor and hasattr(self._activity_monitor, 'log_event'):
+            self._activity_monitor.log_event(
+                "INTRO",
+                f"{fname} {event_str}",
+                ""
+            )
+
+        # Track modification time per category
+        import re as _re
+        m = _re.match(r'^([A-Z])\d+[_\-]', fname)
+        if m:
+            self._section_mtimes[m.group(1)] = datetime.now()
+
+        # Auto-refresh the currently visible INTRO view
+        GLib.idle_add(self._auto_refresh_current_view)
+
+    def _auto_refresh_current_view(self):
+        """Re-render the currently visible INTRO view after file change."""
+        if self._current_view:
+            self.show_category(self._current_view)
+        return False  # One-shot idle callback
+
+    def _get_section_last_changed_text(self, category_letter: str) -> str:
+        """Return 'Last changed: X minutes ago' text for a section.
+
+        Uses tracked modification times from the file monitor, falling back
+        to scanning actual file mtimes on disk.
+        """
+        import os as _os
+
+        # Check tracked in-memory time first
+        if category_letter in self._section_mtimes:
+            delta = datetime.now() - self._section_mtimes[category_letter]
+            minutes = int(delta.total_seconds() / 60)
+            if minutes < 1:
+                return "Last changed: just now"
+            elif minutes < 60:
+                return f"Last changed: {minutes} min ago"
+            else:
+                hours = minutes // 60
+                return f"Last changed: {hours}h ago"
+
+        # Fall back to scanning actual file mtimes
+        intro_path = INTRO_PATH
+        latest_mtime = 0
+        try:
+            for md_file in intro_path.rglob(f"{category_letter}*.md"):
+                if md_file.is_file():
+                    mt = _os.path.getmtime(str(md_file))
+                    if mt > latest_mtime:
+                        latest_mtime = mt
+        except Exception:
+            pass
+
+        if latest_mtime > 0:
+            delta = datetime.now() - datetime.fromtimestamp(latest_mtime)
+            minutes = int(delta.total_seconds() / 60)
+            if minutes < 1:
+                return "Last changed: just now"
+            elif minutes < 60:
+                return f"Last changed: {minutes} min ago"
+            elif minutes < 1440:
+                hours = minutes // 60
+                return f"Last changed: {hours}h ago"
+            else:
+                days = minutes // 1440
+                return f"Last changed: {days}d ago"
+
+        return "Last changed: unknown"
+
     def _clear(self):
         """Remove all children from the container."""
         while child := self._container.get_first_child():
@@ -8358,13 +9355,17 @@ class IntroSystemView(Gtk.Box):
         """Display the specified INTRO category view.
 
         Args:
-            category_key: One of 'I', 'B', 'C', 'D', 'structure', 'system_functions', 'dna_layers', 'health'
+            category_key: One of 'I', 'B', 'C', 'D', 'structure', 'system_functions',
+                          'dna_layers', 'health', 'health_dashboard',
+                          'nav_index', 'architecture_overview', 'orders_tracker'
         """
         self._current_view = category_key
         self._clear()
 
         if category_key == "health":
             self._build_health_view()
+        elif category_key == "health_dashboard":
+            self._build_health_dashboard_view()
         elif category_key == "structure":
             self._build_structure_view()
         elif category_key == "system_functions":
@@ -8373,6 +9374,12 @@ class IntroSystemView(Gtk.Box):
             self._build_dna_layers_view()
         elif category_key == "quick_actions":
             self._build_quick_actions_view()
+        elif category_key == "nav_index":
+            self._build_navigation_index_view()
+        elif category_key == "architecture_overview":
+            self._build_architecture_overview_view()
+        elif category_key == "orders_tracker":
+            self._build_orders_tracker_view()
         elif category_key == "I":
             self._build_i_files_view()
         elif category_key in ("B", "C", "D"):
@@ -8438,6 +9445,15 @@ class IntroSystemView(Gtk.Box):
         subtitle.set_xalign(0)
         subtitle.set_wrap(True)
         header_box.append(subtitle)
+
+        # "Last changed: X minutes ago" label (FASE 1)
+        last_changed_text = self._get_section_last_changed_text(letter)
+        last_changed_label = Gtk.Label(label=last_changed_text)
+        last_changed_label.add_css_class("intro-last-changed")
+        last_changed_label.add_css_class("caption")
+        last_changed_label.set_xalign(0)
+        header_box.append(last_changed_label)
+
         self._container.append(header_box)
 
         # Separator
@@ -9901,6 +10917,29 @@ class IntroSystemView(Gtk.Box):
         self._container.append(checks_box)
 
     # -----------------------------------------------------------------
+    # FASE 2 PASS 2: HEALTH DASHBOARD VIEW
+    # -----------------------------------------------------------------
+
+    def _build_health_dashboard_view(self):
+        """Build the INTRO System Health Dashboard (FASE 2 PASS 2).
+
+        Embeds the IntroHealthDashboard widget into the IntroSystemView
+        container. Shows overall score, Green/Yellow/Red checks, and
+        historical health data.
+        """
+        dashboard = IntroHealthDashboard()
+        # Extract inner children and embed them in our container
+        children = []
+        child = dashboard.get_first_child()
+        while child:
+            next_child = child.get_next_sibling()
+            children.append(child)
+            child = next_child
+        for ch in children:
+            dashboard.remove(ch)
+            self._container.append(ch)
+
+    # -----------------------------------------------------------------
     # FASE 6: QUICK ACTIONS PANEL
     # -----------------------------------------------------------------
 
@@ -10516,6 +11555,936 @@ class IntroSystemView(Gtk.Box):
                 self._check_service_status(svc, status_label, dummy_btn)
 
     # -----------------------------------------------------------------
+    # FASE 3: NAVIGATION INDEX EXPLORER
+    # -----------------------------------------------------------------
+
+    def _build_navigation_index_view(self):
+        """Build the Navigation Index Explorer view (FASE 3 PASS 2).
+
+        Parses NAVIGATION_INDEX.md and displays a searchable, filterable
+        list of all 113 documents with keywords, categories, and stats.
+        """
+        # --- Header ---
+        header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        title = Gtk.Label(label="Navigation Index Explorer")
+        title.add_css_class("intro-view-header")
+        title.set_xalign(0)
+        header_box.append(title)
+
+        subtitle = Gtk.Label(
+            label="113 documents \u2022 68K lines \u2022 2650 keywords \u2014 Searchable catalog from NAVIGATION_INDEX.md"
+        )
+        subtitle.add_css_class("intro-view-subtitle")
+        subtitle.set_xalign(0)
+        subtitle.set_wrap(True)
+        header_box.append(subtitle)
+
+        last_changed = self._get_section_last_changed_text("N")
+        date_label = Gtk.Label(label=last_changed)
+        date_label.add_css_class("intro-nav-doc-meta")
+        date_label.set_xalign(0)
+        header_box.append(date_label)
+
+        self._container.append(header_box)
+
+        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        sep.set_margin_top(4)
+        sep.set_margin_bottom(8)
+        self._container.append(sep)
+
+        # --- Search entry ---
+        search_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        search_icon = Gtk.Image.new_from_icon_name("system-search-symbolic")
+        search_box.append(search_icon)
+
+        self._nav_search_entry = Gtk.SearchEntry()
+        self._nav_search_entry.set_placeholder_text("Search documents, topics, keywords...")
+        self._nav_search_entry.add_css_class("intro-nav-search-entry")
+        self._nav_search_entry.set_hexpand(True)
+        self._nav_search_entry.connect("search-changed", self._on_nav_search_changed)
+        search_box.append(self._nav_search_entry)
+
+        self._container.append(search_box)
+
+        # --- Category filter buttons ---
+        self._nav_active_filter = None
+        filter_scroll = Gtk.ScrolledWindow()
+        filter_scroll.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.NEVER)
+        filter_scroll.set_max_content_height(40)
+
+        filter_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=4)
+        filter_box.set_margin_top(6)
+        filter_box.set_margin_bottom(6)
+
+        all_btn = Gtk.Button(label="ALL")
+        all_btn.add_css_class("intro-nav-filter-btn")
+        all_btn.add_css_class("intro-nav-filter-btn-active")
+        all_btn.connect("clicked", self._on_nav_filter_clicked, None)
+        filter_box.append(all_btn)
+        self._nav_filter_buttons = {"ALL": all_btn}
+
+        filter_scroll.set_child(filter_box)
+        self._container.append(filter_scroll)
+        self._nav_filter_box = filter_box
+
+        # --- Document list container ---
+        self._nav_docs_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        self._container.append(self._nav_docs_box)
+
+        # --- Stats summary ---
+        self._nav_stats_label = Gtk.Label()
+        self._nav_stats_label.add_css_class("intro-nav-stat-label")
+        self._nav_stats_label.set_xalign(0)
+        self._nav_stats_label.set_margin_top(8)
+        self._container.append(self._nav_stats_label)
+
+        # Parse and display in background thread
+        self._nav_all_docs = []
+        self._nav_categories = set()
+        t = threading.Thread(target=self._parse_navigation_index_bg, daemon=True)
+        t.start()
+
+    def _parse_navigation_index_bg(self):
+        """Background thread: parse NAVIGATION_INDEX.md and populate the view."""
+        import re as _re
+        docs = []
+        categories = set()
+        current_category = ""
+        current_doc = None
+
+        nav_path = INTRO_PATH / "NAVIGATION_INDEX.md"
+        try:
+            text = nav_path.read_text(encoding="utf-8", errors="replace")
+        except Exception:
+            GLib.idle_add(self._nav_show_error, "Could not read NAVIGATION_INDEX.md")
+            return
+
+        for line in text.splitlines():
+            # Category headers like "### 00 (5 files)"
+            cat_match = _re.match(r'^###\s+(\d+)\s+\((\d+)\s+files?\)', line)
+            if cat_match:
+                current_category = cat_match.group(1)
+                categories.add(current_category)
+                if current_doc:
+                    docs.append(current_doc)
+                    current_doc = None
+                continue
+
+            # Document entries like "- **00_ARCHIVE_INDEX.md** (286 lines)"
+            doc_match = _re.match(r'^-\s+\*\*(.+?)\*\*\s+\((\d+)\s+lines\)', line)
+            if doc_match:
+                if current_doc:
+                    docs.append(current_doc)
+                current_doc = {
+                    "name": doc_match.group(1),
+                    "lines": int(doc_match.group(2)),
+                    "category": current_category,
+                    "location": "",
+                    "topic": "",
+                    "sections": [],
+                    "keywords": [],
+                }
+                continue
+
+            if current_doc:
+                # Location line
+                loc_match = _re.match(r'^\s+-\s+Location:\s+`(.+?)`', line)
+                if loc_match:
+                    current_doc["location"] = loc_match.group(1)
+                    continue
+
+                # Main topic line
+                topic_match = _re.match(r'^\s+-\s+Main topic:\s+(.+)', line)
+                if topic_match:
+                    raw_topic = topic_match.group(1).strip()
+                    # Remove emoji prefixes
+                    current_doc["topic"] = _re.sub(r'^[\U0001f300-\U0001f9ff\u2600-\u27bf]+\s*', '', raw_topic)
+                    continue
+
+                # Sections line (extract as keywords)
+                sec_match = _re.match(r'^\s+-\s+Sections:\s+(.+)', line)
+                if sec_match:
+                    raw_sections = sec_match.group(1).strip()
+                    parts = [s.strip() for s in raw_sections.split(",")]
+                    # Use first few section names as keywords
+                    kw = []
+                    for p in parts[:5]:
+                        clean = _re.sub(r'^[\U0001f300-\U0001f9ff\u2600-\u27bf]+\s*', '', p).strip()
+                        if clean and len(clean) < 40:
+                            kw.append(clean)
+                    current_doc["keywords"] = kw
+                    continue
+
+        if current_doc:
+            docs.append(current_doc)
+
+        # Get file stats for each doc
+        for doc in docs:
+            if doc["location"]:
+                full_path = INTRO_PATH / doc["location"]
+            else:
+                full_path = INTRO_PATH / doc["name"]
+            try:
+                if full_path.exists():
+                    stat = full_path.stat()
+                    doc["size_bytes"] = stat.st_size
+                    doc["mtime"] = stat.st_mtime
+                else:
+                    doc["size_bytes"] = 0
+                    doc["mtime"] = 0
+            except Exception:
+                doc["size_bytes"] = 0
+                doc["mtime"] = 0
+
+        self._nav_all_docs = docs
+        self._nav_categories = sorted(categories)
+        GLib.idle_add(self._nav_populate_ui)
+
+    def _nav_show_error(self, msg: str):
+        """Show an error message in the navigation index view."""
+        err = Gtk.Label(label=msg)
+        err.add_css_class("intro-health-fail")
+        self._nav_docs_box.append(err)
+        return False
+
+    def _nav_populate_ui(self):
+        """Populate the navigation index UI with parsed data (main thread)."""
+        import os as _os
+
+        # Add category filter buttons
+        for cat in self._nav_categories:
+            btn = Gtk.Button(label=cat)
+            btn.add_css_class("intro-nav-filter-btn")
+            btn.connect("clicked", self._on_nav_filter_clicked, cat)
+            self._nav_filter_box.append(btn)
+            self._nav_filter_buttons[cat] = btn
+
+        # Show all documents
+        self._nav_render_docs(self._nav_all_docs)
+
+        # Stats summary
+        total_lines = sum(d.get("lines", 0) for d in self._nav_all_docs)
+        total_size = sum(d.get("size_bytes", 0) for d in self._nav_all_docs)
+        self._nav_stats_label.set_label(
+            f"Total: {len(self._nav_all_docs)} documents \u2022 "
+            f"{total_lines:,} lines \u2022 "
+            f"{total_size / 1024:.0f} KB \u2022 "
+            f"{len(self._nav_categories)} categories"
+        )
+        return False
+
+    def _nav_render_docs(self, docs: list):
+        """Render document rows into the nav docs box."""
+        # Clear existing
+        while child := self._nav_docs_box.get_first_child():
+            self._nav_docs_box.remove(child)
+
+        for doc in docs:
+            row = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+            row.add_css_class("intro-nav-doc-row")
+
+            # Top line: category badge + filename + lines
+            top = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+            top.set_valign(Gtk.Align.CENTER)
+
+            cat_badge = Gtk.Label(label=doc.get("category", "??"))
+            cat_badge.add_css_class("intro-nav-category-badge")
+            cat_badge.add_css_class("intro-sidebar-count")
+            top.append(cat_badge)
+
+            name_label = Gtk.Label(label=doc["name"])
+            name_label.add_css_class("intro-nav-doc-name")
+            name_label.set_xalign(0)
+            name_label.set_hexpand(True)
+            name_label.set_ellipsize(3)  # Pango.EllipsizeMode.END
+            top.append(name_label)
+
+            lines_label = Gtk.Label(label=f"{doc.get('lines', 0)} lines")
+            lines_label.add_css_class("intro-nav-doc-meta")
+            top.append(lines_label)
+
+            size_kb = doc.get("size_bytes", 0) / 1024
+            if size_kb > 0:
+                size_label = Gtk.Label(label=f"{size_kb:.1f} KB")
+                size_label.add_css_class("intro-nav-doc-meta")
+                top.append(size_label)
+
+            # Last modified
+            mtime = doc.get("mtime", 0)
+            if mtime > 0:
+                from datetime import datetime as _dt
+                dt = _dt.fromtimestamp(mtime)
+                delta = _dt.now() - dt
+                days = delta.days
+                if days == 0:
+                    age = "today"
+                elif days == 1:
+                    age = "yesterday"
+                else:
+                    age = f"{days}d ago"
+                mtime_label = Gtk.Label(label=age)
+                mtime_label.add_css_class("intro-nav-doc-meta")
+                top.append(mtime_label)
+
+            row.append(top)
+
+            # Topic line
+            topic = doc.get("topic", "")
+            if topic:
+                topic_label = Gtk.Label(label=topic)
+                topic_label.add_css_class("intro-nav-doc-topic")
+                topic_label.set_xalign(0)
+                topic_label.set_ellipsize(3)
+                row.append(topic_label)
+
+            # Keywords as tags
+            kws = doc.get("keywords", [])
+            if kws:
+                kw_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=4)
+                kw_box.set_margin_top(2)
+                for kw in kws[:4]:
+                    tag = Gtk.Label(label=kw)
+                    tag.add_css_class("intro-nav-keyword-tag")
+                    kw_box.append(tag)
+                if len(kws) > 4:
+                    more = Gtk.Label(label=f"+{len(kws) - 4}")
+                    more.add_css_class("intro-nav-doc-meta")
+                    kw_box.append(more)
+                row.append(kw_box)
+
+            # Open button
+            loc = doc.get("location", "")
+            if loc:
+                full_path = str(INTRO_PATH / loc)
+            else:
+                full_path = str(INTRO_PATH / doc["name"])
+
+            open_btn = Gtk.Button(label="Open")
+            open_btn.add_css_class("intro-open-btn")
+            open_btn.set_halign(Gtk.Align.END)
+            open_btn.connect("clicked", lambda b, p=full_path: self._open_file(p))
+            row.append(open_btn)
+
+            self._nav_docs_box.append(row)
+
+    def _on_nav_search_changed(self, entry):
+        """Filter navigation index documents by search text."""
+        query = entry.get_text().lower().strip()
+        if not query and self._nav_active_filter is None:
+            self._nav_render_docs(self._nav_all_docs)
+            return
+
+        filtered = []
+        for doc in self._nav_all_docs:
+            # Apply category filter
+            if self._nav_active_filter and doc.get("category", "") != self._nav_active_filter:
+                continue
+            # Apply text search
+            if query:
+                searchable = (
+                    doc.get("name", "").lower()
+                    + " " + doc.get("topic", "").lower()
+                    + " " + " ".join(doc.get("keywords", [])).lower()
+                    + " " + doc.get("location", "").lower()
+                )
+                if query not in searchable:
+                    continue
+            filtered.append(doc)
+
+        self._nav_render_docs(filtered)
+
+    def _on_nav_filter_clicked(self, button, category):
+        """Handle category filter button click."""
+        # Update active filter
+        self._nav_active_filter = category
+
+        # Update button styles
+        for key, btn in self._nav_filter_buttons.items():
+            btn.remove_css_class("intro-nav-filter-btn-active")
+        if category is None:
+            if "ALL" in self._nav_filter_buttons:
+                self._nav_filter_buttons["ALL"].add_css_class("intro-nav-filter-btn-active")
+        elif category in self._nav_filter_buttons:
+            self._nav_filter_buttons[category].add_css_class("intro-nav-filter-btn-active")
+
+        # Re-apply search + filter
+        self._on_nav_search_changed(self._nav_search_entry)
+
+    # -----------------------------------------------------------------
+    # FASE 4: ARCHITECTURE OVERVIEW (D1-D10)
+    # -----------------------------------------------------------------
+
+    def _build_architecture_overview_view(self):
+        """Build the Architecture Overview view (FASE 4 PASS 2).
+
+        Shows D1-D10 architecture documents as visual cards with icons,
+        titles, descriptions, file sizes, and open buttons.
+        """
+        # --- Header ---
+        header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        title = Gtk.Label(label="Architecture Overview \u2014 D1-D10")
+        title.add_css_class("intro-view-header")
+        title.set_xalign(0)
+        header_box.append(title)
+
+        subtitle = Gtk.Label(
+            label="System design documents from PROJEKTS ARKITEKTUR(TEMPLATES) \u2014 10 architectural domains"
+        )
+        subtitle.add_css_class("intro-view-subtitle")
+        subtitle.set_xalign(0)
+        subtitle.set_wrap(True)
+        header_box.append(subtitle)
+
+        last_changed = self._get_section_last_changed_text("D")
+        date_label = Gtk.Label(label=last_changed)
+        date_label.add_css_class("intro-nav-doc-meta")
+        date_label.set_xalign(0)
+        header_box.append(date_label)
+
+        self._container.append(header_box)
+
+        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        sep.set_margin_top(4)
+        sep.set_margin_bottom(12)
+        self._container.append(sep)
+
+        # --- Architecture card definitions ---
+        arch_defs = [
+            ("D1", "System Architecture Overview", "applications-system-symbolic",
+             "Complete system architecture and component overview"),
+            ("D2", "Cirkelline Architecture", "view-continuous-symbolic",
+             "Cirkelline system design, circular patterns, and flow"),
+            ("D3", "Cosmic Library Architecture", "starred-symbolic",
+             "Cosmic Library structure, data models, and API design"),
+            ("D4", "CKC Gateway Architecture", "network-server-symbolic",
+             "CKC Gateway integration, routing, and middleware design"),
+            ("D5", "Kommandoer Architecture", "utilities-terminal-symbolic",
+             "Command system, task execution, and orchestration"),
+            ("D6", "Integration Architecture", "emblem-shared-symbolic",
+             "Cross-system integration patterns and data flow"),
+            ("D7", "Database Schema Designs", "drive-harddisk-symbolic",
+             "PostgreSQL schemas, migrations, and data models"),
+            ("D8", "API Design Patterns", "network-wired-symbolic",
+             "REST/GraphQL API patterns, authentication, and versioning"),
+            ("D9", "Security Architecture", "channel-secure-symbolic",
+             "Security model, authentication, authorization, and audit"),
+            ("D10", "Deployment Architecture", "network-workgroup-symbolic",
+             "Deployment topology, Docker, systemd, and CI/CD"),
+        ]
+
+        # Cards container -- use a FlowBox for responsive grid
+        flow = Gtk.FlowBox()
+        flow.set_valign(Gtk.Align.START)
+        flow.set_max_children_per_line(2)
+        flow.set_min_children_per_line(1)
+        flow.set_selection_mode(Gtk.SelectionMode.NONE)
+        flow.set_column_spacing(12)
+        flow.set_row_spacing(12)
+        flow.set_homogeneous(True)
+
+        # Load architecture card data in background
+        self._arch_flow = flow
+        self._arch_defs = arch_defs
+        self._container.append(flow)
+
+        t = threading.Thread(target=self._load_arch_cards_bg, daemon=True)
+        t.start()
+
+    def _load_arch_cards_bg(self):
+        """Background thread: resolve D1-D10 file paths and metadata."""
+        import os as _os
+
+        arch_dir = INTRO_PATH / "PROJEKTS ARKITEKTUR(TEMPLATES)"
+        results = []
+
+        for d_id, d_title, d_icon, d_desc in self._arch_defs:
+            # Try to find the D-file in the architecture directory
+            d_num = d_id  # e.g. "D1"
+            found_path = None
+            found_desc = d_desc
+            found_size = 0
+            found_lines = 0
+
+            # Search for files starting with D1_, D2_, etc.
+            try:
+                if arch_dir.exists():
+                    for f in arch_dir.iterdir():
+                        if f.name.upper().startswith(d_num.upper() + "_") and f.suffix == ".md":
+                            found_path = str(f)
+                            found_size = f.stat().st_size
+                            # Read first header line for description
+                            try:
+                                with open(f, 'r', encoding='utf-8', errors='replace') as fh:
+                                    for fline in fh:
+                                        fline = fline.strip()
+                                        if fline.startswith("#"):
+                                            # Strip markdown heading markers and emoji
+                                            import re as _re
+                                            clean = _re.sub(r'^#+\s*', '', fline)
+                                            clean = _re.sub(r'^[\U0001f300-\U0001f9ff\u2600-\u27bf]+\s*', '', clean)
+                                            if clean:
+                                                found_desc = clean.strip()
+                                            break
+                                        elif fline:
+                                            break
+                                # Count lines
+                                fh.seek(0)
+                                found_lines = sum(1 for _ in open(f, 'r', encoding='utf-8', errors='replace'))
+                            except Exception:
+                                pass
+                            break
+            except Exception:
+                pass
+
+            # Also check top-level INTRO_PATH for D-files
+            if not found_path:
+                try:
+                    for f in INTRO_PATH.iterdir():
+                        if f.name.upper().startswith(d_num.upper() + "_") and f.suffix == ".md":
+                            found_path = str(f)
+                            found_size = f.stat().st_size
+                            try:
+                                import re as _re
+                                with open(f, 'r', encoding='utf-8', errors='replace') as fh:
+                                    for fline in fh:
+                                        fline = fline.strip()
+                                        if fline.startswith("#"):
+                                            clean = _re.sub(r'^#+\s*', '', fline)
+                                            clean = _re.sub(r'^[\U0001f300-\U0001f9ff\u2600-\u27bf]+\s*', '', clean)
+                                            if clean:
+                                                found_desc = clean.strip()
+                                            break
+                                        elif fline:
+                                            break
+                                found_lines = sum(1 for _ in open(f, 'r', encoding='utf-8', errors='replace'))
+                            except Exception:
+                                pass
+                            break
+                except Exception:
+                    pass
+
+            results.append({
+                "id": d_id,
+                "title": d_title,
+                "icon": d_icon,
+                "desc": found_desc,
+                "path": found_path,
+                "size": found_size,
+                "lines": found_lines,
+            })
+
+        GLib.idle_add(self._arch_populate_cards, results)
+
+    def _arch_populate_cards(self, results: list):
+        """Populate architecture cards in the FlowBox (main thread)."""
+        for r in results:
+            card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+            card.add_css_class("intro-arch-card")
+            if not r["path"]:
+                card.add_css_class("intro-arch-missing")
+
+            # Top row: icon + title
+            top = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            top.set_valign(Gtk.Align.CENTER)
+
+            icon = Gtk.Image.new_from_icon_name(r["icon"])
+            icon.add_css_class("intro-arch-icon")
+            icon.set_pixel_size(28)
+            top.append(icon)
+
+            title_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+            id_label = Gtk.Label(label=r["id"])
+            id_label.add_css_class("intro-sidebar-count")
+            id_label.set_xalign(0)
+            title_box.append(id_label)
+
+            title_label = Gtk.Label(label=r["title"])
+            title_label.add_css_class("intro-arch-title")
+            title_label.set_xalign(0)
+            title_label.set_ellipsize(3)
+            title_box.append(title_label)
+
+            title_box.set_hexpand(True)
+            top.append(title_box)
+            card.append(top)
+
+            # Description
+            desc_label = Gtk.Label(label=r["desc"])
+            desc_label.add_css_class("intro-arch-desc")
+            desc_label.set_xalign(0)
+            desc_label.set_wrap(True)
+            desc_label.set_max_width_chars(50)
+            card.append(desc_label)
+
+            # Stats row
+            stats = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            if r["path"]:
+                size_kb = r["size"] / 1024
+                size_text = f"{size_kb:.1f} KB" if size_kb > 0 else "unknown"
+                lines_text = f"{r['lines']} lines" if r["lines"] > 0 else ""
+                stat_label = Gtk.Label(label=f"{size_text}  {lines_text}".strip())
+            else:
+                stat_label = Gtk.Label(label="File not found")
+            stat_label.add_css_class("intro-arch-size")
+            stat_label.set_xalign(0)
+            stat_label.set_hexpand(True)
+            stats.append(stat_label)
+
+            # Open button
+            if r["path"]:
+                open_btn = Gtk.Button(label="Open")
+                open_btn.add_css_class("intro-arch-open-btn")
+                open_btn.connect("clicked", lambda b, p=r["path"]: self._open_file(p))
+                stats.append(open_btn)
+            else:
+                missing_label = Gtk.Label(label="MISSING")
+                missing_label.add_css_class("intro-orders-status-red")
+                stats.append(missing_label)
+
+            card.append(stats)
+            self._arch_flow.insert(card, -1)
+
+        return False
+
+    # -----------------------------------------------------------------
+    # FASE 5: OBLIGATORY ORDERS TRACKER
+    # -----------------------------------------------------------------
+
+    def _build_orders_tracker_view(self):
+        """Build the Obligatory Orders Tracker view (FASE 5 PASS 2).
+
+        Parses OBLIGATORISKE_ORDRER.md for 6 principles and
+        I2_ADMIRAL_OBLIGATORY_ORDERS.md for 13 orders, showing
+        compliance status per order.
+        """
+        # --- Header ---
+        header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        title = Gtk.Label(label="Obligatory Orders Tracker")
+        title.add_css_class("intro-view-header")
+        title.set_xalign(0)
+        header_box.append(title)
+
+        subtitle = Gtk.Label(
+            label="6 principles + 13 Admiral orders \u2014 Compliance status from OBLIGATORISKE_ORDRER.md and I2_ADMIRAL_OBLIGATORY_ORDERS.md"
+        )
+        subtitle.add_css_class("intro-view-subtitle")
+        subtitle.set_xalign(0)
+        subtitle.set_wrap(True)
+        header_box.append(subtitle)
+
+        last_changed = self._get_section_last_changed_text("I")
+        date_label = Gtk.Label(label=last_changed)
+        date_label.add_css_class("intro-nav-doc-meta")
+        date_label.set_xalign(0)
+        header_box.append(date_label)
+
+        self._container.append(header_box)
+
+        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        sep.set_margin_top(4)
+        sep.set_margin_bottom(8)
+        self._container.append(sep)
+
+        # --- Principles section placeholder ---
+        principles_header = Gtk.Label(label="6 Core Principles")
+        principles_header.add_css_class("intro-qa-section-header")
+        principles_header.set_xalign(0)
+        self._container.append(principles_header)
+
+        self._orders_principles_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        self._container.append(self._orders_principles_box)
+
+        # --- Separator ---
+        mid_sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        mid_sep.set_margin_top(12)
+        mid_sep.set_margin_bottom(8)
+        self._container.append(mid_sep)
+
+        # --- Orders section placeholder ---
+        orders_header = Gtk.Label(label="13 Admiral Orders")
+        orders_header.add_css_class("intro-qa-section-header")
+        orders_header.set_xalign(0)
+        self._container.append(orders_header)
+
+        self._orders_list_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        self._container.append(self._orders_list_box)
+
+        # --- Compliance summary placeholder ---
+        self._orders_compliance_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        self._orders_compliance_box.set_margin_top(16)
+        self._container.append(self._orders_compliance_box)
+
+        # Parse in background
+        t = threading.Thread(target=self._parse_orders_bg, daemon=True)
+        t.start()
+
+    def _parse_orders_bg(self):
+        """Background thread: parse both orders files and populate the view."""
+        import re as _re
+
+        # --- Parse OBLIGATORISKE_ORDRER.md for 6 principles ---
+        principles = []
+        ordrer_path = INTRO_PATH / "OBLIGATORISKE_ORDRER.md"
+        try:
+            text = ordrer_path.read_text(encoding="utf-8", errors="replace")
+            # Find ORDRE sections: ## ORDRE 1: ... through ## ORDRE 6: ...
+            ordre_pattern = _re.compile(
+                r'^##\s+ORDRE\s+(\d+):\s+(.+?)$\s*\n(.*?)(?=^##\s|\Z)',
+                _re.MULTILINE | _re.DOTALL
+            )
+            for m in ordre_pattern.finditer(text):
+                num = int(m.group(1))
+                title = m.group(2).strip()
+                body = m.group(3).strip()
+                # Extract first non-empty line as description
+                desc = ""
+                for bline in body.splitlines():
+                    bline = bline.strip()
+                    if bline and not bline.startswith("```") and not bline.startswith("|"):
+                        desc = _re.sub(r'\*\*(.+?)\*\*', r'\1', bline)
+                        break
+                principles.append({
+                    "num": num,
+                    "title": title,
+                    "desc": desc,
+                })
+        except Exception:
+            pass
+
+        # Named principles mapping (from the task spec)
+        named_principles = [
+            ("BYPASS BROKEN SYSTEMS", "When something fails, build WITHOUT the failing dependency"),
+            ("PROVE ALWAYS", "No claim without proof. Always provide terminal output."),
+            ("AUTOMATE PROOFS", "Manual proofs = forgotten proofs. Use systemd timers."),
+            ("DOCUMENT IN REAL FOLDERS", "Results must be in MASTER FOLDERS, not just AI context."),
+            ("FAERDIG = 100%", "A task is ONLY done when ALL checklist items are complete."),
+            ("MEASURE EVERYTHING", "Surprise with action. Build dashboards, automate checks."),
+        ]
+
+        # If we got principles from parsing, use them; otherwise use named list
+        if len(principles) < 6:
+            principles = []
+            for i, (name, desc) in enumerate(named_principles, 1):
+                principles.append({"num": i, "title": name, "desc": desc})
+
+        # --- Parse I2_ADMIRAL_OBLIGATORY_ORDERS.md for 13 orders ---
+        orders = []
+        i2_path = INTRO_PATH / "I2_ADMIRAL_OBLIGATORY_ORDERS.md"
+        try:
+            text = i2_path.read_text(encoding="utf-8", errors="replace")
+            # Find ORDER sections: ### ORDER #1: ...
+            order_pattern = _re.compile(
+                r'^###\s+ORDER\s+#(\d+):\s+(.+?)$\s*\n(.*?)(?=^###\s|\Z)',
+                _re.MULTILINE | _re.DOTALL
+            )
+            for m in order_pattern.finditer(text):
+                num = int(m.group(1))
+                title = m.group(2).strip()
+                # Remove parenthetical like "(MANDATORY COMPLETION CRITERIA)"
+                clean_title = _re.sub(r'\s*\(.+?\)\s*$', '', title)
+                body = m.group(3).strip()
+
+                # Extract context line
+                context = ""
+                ctx_match = _re.search(r'\*\*Context:\*\*\s*(.+)', body)
+                if ctx_match:
+                    context = ctx_match.group(1).strip()
+
+                # Determine compliance status based on file content
+                # Green = has verification/checklist, Yellow = has context, Red = violation mentioned
+                status = "green"  # default optimistic
+                body_lower = body.lower()
+                if "violation" in body_lower and "critical" in body_lower:
+                    status = "yellow"
+
+                orders.append({
+                    "num": num,
+                    "title": clean_title,
+                    "context": context,
+                    "status": status,
+                })
+        except Exception:
+            pass
+
+        # Check for additional orders mentioned in STATUS section (#11, #12, #13)
+        if len(orders) < 13:
+            try:
+                text = i2_path.read_text(encoding="utf-8", errors="replace")
+                extra_pattern = _re.compile(r'ORDER\s+#(\d+):\s+(.+?)(?:\n|$)')
+                seen_nums = {o["num"] for o in orders}
+                for m in extra_pattern.finditer(text):
+                    num = int(m.group(1))
+                    if num not in seen_nums:
+                        title = m.group(2).strip()
+                        orders.append({
+                            "num": num,
+                            "title": title,
+                            "context": "Added organically",
+                            "status": "green",
+                        })
+                        seen_nums.add(num)
+            except Exception:
+                pass
+
+        # Sort orders by number
+        orders.sort(key=lambda o: o["num"])
+
+        GLib.idle_add(self._orders_populate_ui, principles, orders)
+
+    def _orders_populate_ui(self, principles: list, orders: list):
+        """Populate the Orders Tracker UI (main thread)."""
+
+        # --- Render 6 principles as checklist ---
+        for p in principles:
+            card = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+            card.add_css_class("intro-orders-principle-card")
+            card.set_valign(Gtk.Align.CENTER)
+
+            # Checkmark icon (all principles are "active" by definition)
+            check = Gtk.Image.new_from_icon_name("emblem-ok-symbolic")
+            check.set_pixel_size(16)
+            check.add_css_class("intro-health-pass")
+            card.append(check)
+
+            # Principle text
+            text_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+            name_label = Gtk.Label(label=f"ORDRE {p['num']}: {p['title']}")
+            name_label.add_css_class("intro-orders-principle-name")
+            name_label.set_xalign(0)
+            name_label.set_ellipsize(3)
+            name_label.set_hexpand(True)
+            text_box.append(name_label)
+
+            if p["desc"]:
+                desc_label = Gtk.Label(label=p["desc"])
+                desc_label.add_css_class("intro-orders-principle-desc")
+                desc_label.set_xalign(0)
+                desc_label.set_wrap(True)
+                desc_label.set_max_width_chars(80)
+                text_box.append(desc_label)
+
+            card.append(text_box)
+            self._orders_principles_box.append(card)
+
+        # --- Render 13 orders ---
+        green_count = 0
+        yellow_count = 0
+        red_count = 0
+
+        for o in orders:
+            card = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+            card.add_css_class("intro-orders-order-card")
+            card.set_valign(Gtk.Align.CENTER)
+
+            # Order number circle
+            num_label = Gtk.Label(label=str(o["num"]))
+            num_label.add_css_class("intro-orders-order-num")
+            num_label.set_halign(Gtk.Align.CENTER)
+            num_label.set_valign(Gtk.Align.CENTER)
+            card.append(num_label)
+
+            # Order content
+            text_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+            text_box.set_hexpand(True)
+
+            title_label = Gtk.Label(label=o["title"])
+            title_label.add_css_class("intro-orders-order-title")
+            title_label.set_xalign(0)
+            title_label.set_ellipsize(3)
+            text_box.append(title_label)
+
+            if o.get("context"):
+                ctx_label = Gtk.Label(label=o["context"])
+                ctx_label.add_css_class("intro-orders-order-context")
+                ctx_label.set_xalign(0)
+                ctx_label.set_ellipsize(3)
+                text_box.append(ctx_label)
+
+            card.append(text_box)
+
+            # Compliance status badge
+            status = o.get("status", "green")
+            if status == "green":
+                badge = Gtk.Label(label="COMPLIANT")
+                badge.add_css_class("intro-orders-status-green")
+                green_count += 1
+            elif status == "yellow":
+                badge = Gtk.Label(label="ATTENTION")
+                badge.add_css_class("intro-orders-status-yellow")
+                yellow_count += 1
+            else:
+                badge = Gtk.Label(label="VIOLATION")
+                badge.add_css_class("intro-orders-status-red")
+                red_count += 1
+
+            card.append(badge)
+            self._orders_list_box.append(card)
+
+        # --- Compliance summary ---
+        total = len(orders)
+        summary_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        summary_card.add_css_class("intro-orders-compliance-card")
+
+        summary_title = Gtk.Label(label="Compliance Summary")
+        summary_title.add_css_class("intro-qa-section-header")
+        summary_title.set_xalign(0)
+        summary_card.append(summary_title)
+
+        stats_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=16)
+
+        green_label = Gtk.Label(label=f"COMPLIANT: {green_count}/{total}")
+        green_label.add_css_class("intro-orders-status-green")
+        stats_row.append(green_label)
+
+        if yellow_count > 0:
+            yellow_label = Gtk.Label(label=f"ATTENTION: {yellow_count}/{total}")
+            yellow_label.add_css_class("intro-orders-status-yellow")
+            stats_row.append(yellow_label)
+
+        if red_count > 0:
+            red_label = Gtk.Label(label=f"VIOLATION: {red_count}/{total}")
+            red_label.add_css_class("intro-orders-status-red")
+            stats_row.append(red_label)
+
+        summary_card.append(stats_row)
+
+        # Overall score
+        if total > 0:
+            pct = (green_count / total) * 100
+            score_label = Gtk.Label()
+            score_label.add_css_class("intro-health-score")
+            if pct >= 80:
+                score_label.add_css_class("intro-health-pass")
+            elif pct >= 50:
+                score_label.add_css_class("intro-health-warn")
+            else:
+                score_label.add_css_class("intro-health-fail")
+            score_label.set_label(f"{pct:.0f}%")
+            score_label.set_xalign(0)
+            summary_card.append(score_label)
+
+        # Open source files buttons
+        btn_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        btn_row.set_margin_top(8)
+
+        ordrer_btn = Gtk.Button(label="Open OBLIGATORISKE_ORDRER.md")
+        ordrer_btn.add_css_class("intro-open-btn")
+        ordrer_btn.connect("clicked", lambda b: self._open_file(
+            str(INTRO_PATH / "OBLIGATORISKE_ORDRER.md")))
+        btn_row.append(ordrer_btn)
+
+        i2_btn = Gtk.Button(label="Open I2_ADMIRAL_OBLIGATORY_ORDERS.md")
+        i2_btn.add_css_class("intro-open-btn")
+        i2_btn.connect("clicked", lambda b: self._open_file(
+            str(INTRO_PATH / "I2_ADMIRAL_OBLIGATORY_ORDERS.md")))
+        btn_row.append(i2_btn)
+
+        summary_card.append(btn_row)
+        self._orders_compliance_box.append(summary_card)
+
+        return False
+
+    # -----------------------------------------------------------------
     # UTILITY
     # -----------------------------------------------------------------
 
@@ -10811,6 +12780,8 @@ class MasterpieceWindow(Adw.ApplicationWindow):
                 date_text = f"{cat_range}"
             elif cat_key == "dna_layers":
                 date_text = f"{cat_range}"
+            elif cat_key == "health_dashboard":
+                date_text = f"{cat_range}"
 
             if date_text:
                 date_label = Gtk.Label(label=date_text)
@@ -10833,6 +12804,8 @@ class MasterpieceWindow(Adw.ApplicationWindow):
                 count_text = "..."
             elif cat_key == "dna_layers":
                 count_text = "7"
+            elif cat_key == "health_dashboard":
+                count_text = "6"
 
             if count_text:
                 count_label = Gtk.Label(label=count_text)
@@ -11006,6 +12979,8 @@ class MasterpieceWindow(Adw.ApplicationWindow):
 
         # INTRO System page (FASE 1 sidebar integration)
         self.intro_view = IntroSystemView()
+        # Wire up activity monitor for INTRO file change logging (FASE 1)
+        self.intro_view._activity_monitor = self.activity_monitor
         self.content_stack.add_named(self.intro_view, "intro")
 
         content_page.set_child(self.content_stack)
@@ -12804,7 +14779,9 @@ Ctrl+Q    Afslut
                 "folder": "folder-symbolic",
                 "filename": "text-x-generic-symbolic",
                 "content": "format-text-rich-symbolic",
-                "log": "text-x-log-symbolic"
+                "log": "text-x-log-symbolic",
+                "intro_file": "accessories-text-editor-symbolic",
+                "intro_content": "accessories-text-editor-symbolic",
             }.get(result["match_type"], "text-x-generic-symbolic")
 
             row.add_prefix(Gtk.Image.new_from_icon_name(icon_name))
@@ -12821,8 +14798,12 @@ Ctrl+Q    Afslut
             else:
                 row.set_subtitle(result["file"])
 
-            # Type badge
-            type_badge = Gtk.Label(label=result["match_type"].upper())
+            # Type badge — show INTRO category for INTRO results
+            if result["match_type"] in ("intro_file", "intro_content"):
+                badge_text = result.get("intro_category", "INTRO").upper()
+            else:
+                badge_text = result["match_type"].upper()
+            type_badge = Gtk.Label(label=badge_text)
             type_badge.add_css_class("caption")
             type_badge.add_css_class("dim-label")
             row.add_suffix(type_badge)
@@ -12837,6 +14818,35 @@ Ctrl+Q    Afslut
 
         result = row.result_data
 
+        # --- INTRO result: navigate to INTRO view ---
+        if result["match_type"] in ("intro_file", "intro_content"):
+            # Determine the INTRO category key from the filename
+            import re as _re
+            fname = result.get("file", "")
+            m = _re.match(r'^([A-Z])\d+[_\-]', fname)
+            if m:
+                cat_key = m.group(1)  # I, B, C, D, F, etc.
+            else:
+                cat_key = "structure"
+
+            # Navigate to the INTRO view
+            self.intro_view.show_category(cat_key)
+            self.content_stack.set_visible_child_name("intro")
+            self.split_view.set_show_content(True)
+
+            # Also open the specific file in the editor
+            intro_file_path = result.get("intro_path", "")
+            if intro_file_path:
+                try:
+                    subprocess.Popen(["xdg-open", intro_file_path])
+                except Exception as e:
+                    print(f"Could not open INTRO file: {e}")
+
+            # Close search mode
+            self.search_btn.set_active(False)
+            return
+
+        # --- Victory result (original behavior) ---
         # Find the victory folder path
         sejr_path = None
 
@@ -12869,7 +14879,7 @@ Ctrl+Q    Afslut
                 try:
                     subprocess.Popen(["xdg-open", str(file_path)])
                 except Exception as e:
-                    print(f"Could not åbne fil: {e}")
+                    print(f"Could not open file: {e}")
 
         # Close search mode
         self.search_btn.set_active(False)

@@ -167,66 +167,66 @@
 
 ### FASE 0: SEARCH INTEGRATION
 
-- [ ] Udvid `IntelligentSearch` til at søge i INTRO filer
-- [ ] Tilføj INTRO filer til søgeindeks
-- [ ] Søgeresultater viser kategori (I-fil, B-fil, etc.)
-- [ ] Klik på søgeresultat → navigér til rigtig INTRO view
+- [x] Udvid `IntelligentSearch` til at søge i INTRO filer
+- [x] Tilføj INTRO filer til søgeindeks
+- [x] Søgeresultater viser kategori (I-fil, B-fil, etc.)
+- [x] Klik på søgeresultat → navigér til rigtig INTRO view
 
 ### FASE 1: REAL-TIME MONITORING
 
-- [ ] Tilføj `Gio.FileMonitor` for MASTER FOLDERS(INTRO)/
-- [ ] Vis fil-ændringer i LiveActivityMonitor bund-panelet
-- [ ] Auto-refresh INTRO views når filer ændres
-- [ ] Vis "Sidst ændret: X minutter siden" per sektion
+- [x] Tilføj `Gio.FileMonitor` for MASTER FOLDERS(INTRO)/
+- [x] Vis fil-ændringer i LiveActivityMonitor bund-panelet
+- [x] Auto-refresh INTRO views når filer ændres
+- [x] Vis "Sidst ændret: X minutter siden" per sektion
 
 ### FASE 2: SYSTEM HEALTH DASHBOARD
 
-- [ ] Opret `IntroHealthDashboard(Gtk.Box)`:
-  - [ ] Samlet score for INTRO system sundhed
-  - [ ] Grøn/Gul/Rød indikator per check:
-    - [ ] Git push status (alle repos)
-    - [ ] Fil-navne ≡ headers (pre-commit check)
-    - [ ] Alle I1-I12 til stede
-    - [ ] Ingen broken references
-    - [ ] Dato-headers aktuelle (<2 dage)
-    - [ ] Alle filer committed
-  - [ ] Historisk sundhed over tid (simple graf)
+- [x] Opret `IntroHealthDashboard(Gtk.Box)`:
+  - [x] Samlet score for INTRO system sundhed
+  - [x] Grøn/Gul/Rød indikator per check:
+    - [x] Git push status (alle repos)
+    - [x] Fil-navne ≡ headers (pre-commit check)
+    - [x] Alle I1-I12 til stede
+    - [x] Ingen broken references
+    - [x] Dato-headers aktuelle (<2 dage)
+    - [x] Alle filer committed
+  - [x] Historisk sundhed over tid (simple graf)
 
 ### FASE 3: NAVIGATION INDEX EXPLORER
 
-- [ ] Parse NAVIGATION_INDEX.md (113 docs, 68K linjer, 2650 keywords)
-- [ ] Søgbar indeks af alle INTRO dokumenter
-- [ ] Vis keywords som tags
-- [ ] Filtrér efter kategori (00-99+)
-- [ ] Vis dokument-statistik per fil
+- [x] Parse NAVIGATION_INDEX.md (113 docs, 68K linjer, 2650 keywords)
+- [x] Søgbar indeks af alle INTRO dokumenter
+- [x] Vis keywords som tags
+- [x] Filtrér efter kategori (00-99+)
+- [x] Vis dokument-statistik per fil
 
 ### FASE 4: ARCHITECTURE OVERVIEW
 
-- [ ] Vis D1-D10 arkitektur som visuelt overblik:
-  - [ ] D1: System Architecture Overview
-  - [ ] D2: Cirkelline Architecture
-  - [ ] D3: Cosmic Library Architecture
-  - [ ] D4: CKC Gateway Architecture
-  - [ ] D5: Kommandør Architecture
-  - [ ] D6: Integration Architecture
-  - [ ] D7: Database Schema Designs
-  - [ ] D8: API Design Patterns
-  - [ ] D9: Security Architecture
-  - [ ] D10: Deployment Architecture
-- [ ] Vis som cards med icon + beskrivelse + klik for at åbne
+- [x] Vis D1-D10 arkitektur som visuelt overblik:
+  - [x] D1: System Architecture Overview
+  - [x] D2: Cirkelline Architecture
+  - [x] D3: Cosmic Library Architecture
+  - [x] D4: CKC Gateway Architecture
+  - [x] D5: Kommandør Architecture
+  - [x] D6: Integration Architecture
+  - [x] D7: Database Schema Designs
+  - [x] D8: API Design Patterns
+  - [x] D9: Security Architecture
+  - [x] D10: Deployment Architecture
+- [x] Vis som cards med icon + beskrivelse + klik for at åbne
 
 ### FASE 5: OBLIGATORY ORDERS TRACKER
 
-- [ ] Parse OBLIGATORISKE_ORDRER.md
-- [ ] Vis 6 principper som checklist:
-  - [ ] BYPASS BROKEN SYSTEMS
-  - [ ] PROVE ALWAYS
-  - [ ] AUTOMATE PROOFS
-  - [ ] DOCUMENT IN REAL FOLDERS
-  - [ ] FÆRDIG = 100%
-  - [ ] MEASURE EVERYTHING
-- [ ] Parse I2_ADMIRAL_OBLIGATORY_ORDERS.md for de 13 ordrer
-- [ ] Vis compliance status per ordre
+- [x] Parse OBLIGATORISKE_ORDRER.md
+- [x] Vis 6 principper som checklist:
+  - [x] BYPASS BROKEN SYSTEMS
+  - [x] PROVE ALWAYS
+  - [x] AUTOMATE PROOFS
+  - [x] DOCUMENT IN REAL FOLDERS
+  - [x] FÆRDIG = 100%
+  - [x] MEASURE EVERYTHING
+- [x] Parse I2_ADMIRAL_OBLIGATORY_ORDERS.md for de 13 ordrer
+- [x] Vis compliance status per ordre
 
 ---
 
