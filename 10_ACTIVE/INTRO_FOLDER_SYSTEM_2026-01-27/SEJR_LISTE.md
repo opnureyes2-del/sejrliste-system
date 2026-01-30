@@ -106,25 +106,25 @@
 
 ### FASE 4: SYSTEM FUNCTIONS VIEW
 
-- [ ] Opret `IntroSystemView(Gtk.Box)` widget
-- [ ] Vis automatiserede systemer:
-  - [ ] Pre-commit hook (`.git/hooks/pre-commit`)
-    - [ ] Status: Aktiv/Inaktiv
-    - [ ] Sidste kørsel tidspunkt
-    - [ ] 7 verificeringsniveauer forklaret
-  - [ ] Daily Sync Script (`sync_indexes.sh`)
-    - [ ] Schedule: Dagligt kl 04:00
-    - [ ] 5 faser forklaret
-    - [ ] Log lokation: `/tmp/MASTER_FOLDERS_SYNC_*.log`
-  - [ ] Verification Script (`verify_master_folders.py`)
-    - [ ] 6 tjek forklaret
-    - [ ] "Kør Nu" knap
-  - [ ] Navigation Index Generator (`generate_navigation_index.py`)
-    - [ ] 113 dokumenter, 68.506 linjer, 2.650+ keywords
-  - [ ] Health Check (`check_folder_health.sh`)
-    - [ ] "Kør Nu" knap
-- [ ] "Kør Alle Checks" knap der kører alle scripts sekventielt
-- [ ] Vis resultater i real-time log panel
+- [x] Opret `IntroSystemView(Gtk.Box)` widget
+- [x] Vis automatiserede systemer:
+  - [x] Pre-commit hook (`.git/hooks/pre-commit`)
+    - [x] Status: Aktiv/Inaktiv
+    - [x] Sidste kørsel tidspunkt
+    - [x] 7 verificeringsniveauer forklaret
+  - [x] Daily Sync Script (`sync_indexes.sh`)
+    - [x] Schedule: Dagligt kl 04:00
+    - [x] 5 faser forklaret
+    - [x] Log lokation: `/tmp/MASTER_FOLDERS_SYNC_*.log`
+  - [x] Verification Script (`verify_master_folders.py`)
+    - [x] 6 tjek forklaret
+    - [x] "Kør Nu" knap
+  - [x] Navigation Index Generator (`generate_navigation_index.py`)
+    - [x] 113 dokumenter, 68.506 linjer, 2.650+ keywords
+  - [x] Health Check (`check_folder_health.sh`)
+    - [x] "Kør Nu" knap
+- [x] "Kør Alle Checks" knap der kører alle scripts sekventielt
+- [x] Vis resultater i real-time log panel
 
 ### FASE 5: DNA LAYER ENHANCEMENT
 

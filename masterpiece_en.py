@@ -1789,6 +1789,107 @@ button.action-new {
     color: rgba(255, 255, 255, 0.80);
     border-color: rgba(255, 255, 255, 0.18);
 }
+
+/* === INTRO SYSTEM FUNCTIONS VIEW (FASE 4) === */
+.intro-sysfunc-card {
+    padding: 12px 16px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-left: 3px solid rgba(0, 217, 255, 0.40);
+}
+
+.intro-sysfunc-card:hover {
+    border-left-color: rgba(0, 217, 255, 0.70);
+    box-shadow: 0 4px 20px -6px rgba(0, 217, 255, 0.15);
+}
+
+.intro-sysfunc-title {
+    font-weight: 700;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.90);
+}
+
+.intro-sysfunc-desc {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.intro-sysfunc-status-active {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: rgba(0, 255, 136, 0.12);
+    color: #4ade80;
+}
+
+.intro-sysfunc-status-inactive {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: rgba(248, 113, 113, 0.12);
+    color: #f87171;
+}
+
+.intro-sysfunc-detail {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.intro-sysfunc-run-btn {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 8px;
+    background: rgba(0, 217, 255, 0.12);
+    color: #67e8f9;
+    border: 1px solid rgba(0, 217, 255, 0.20);
+}
+
+.intro-sysfunc-run-btn:hover {
+    background: rgba(0, 217, 255, 0.22);
+    border-color: rgba(0, 217, 255, 0.35);
+}
+
+.intro-sysfunc-runall-btn {
+    font-weight: 700;
+    padding: 8px 24px;
+    border-radius: 10px;
+    background: rgba(0, 217, 255, 0.15);
+    color: #67e8f9;
+    border: 1px solid rgba(0, 217, 255, 0.25);
+}
+
+.intro-sysfunc-runall-btn:hover {
+    background: rgba(0, 217, 255, 0.28);
+    border-color: rgba(0, 217, 255, 0.45);
+}
+
+.intro-sysfunc-log-panel {
+    font-family: monospace;
+    font-size: 11px;
+    padding: 12px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.30);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.70);
+}
+
+.intro-sysfunc-level-card {
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.intro-sysfunc-phase-card {
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
 """
 
 def load_custom_css():
@@ -7270,6 +7371,7 @@ INTRO_SIDEBAR_ITEMS = [
     ("C", "Environment Config", "C2-C10", "preferences-system-symbolic"),
     ("D", "Architecture", "D1-D10", "view-grid-symbolic"),
     ("structure", "Folder Structure", "Governance + Rules", "folder-symbolic"),
+    ("system_functions", "System Functions", "Scripts + Automation", "system-run-symbolic"),
     ("health", "System Health", "Live verification", "emblem-ok-symbolic"),
 ]
 
@@ -8017,7 +8119,7 @@ class IntroSystemView(Gtk.Box):
         """Display the specified INTRO category view.
 
         Args:
-            category_key: One of 'I', 'B', 'C', 'D', 'structure', 'health'
+            category_key: One of 'I', 'B', 'C', 'D', 'structure', 'system_functions', 'health'
         """
         self._current_view = category_key
         self._clear()
@@ -8026,6 +8128,8 @@ class IntroSystemView(Gtk.Box):
             self._build_health_view()
         elif category_key == "structure":
             self._build_structure_view()
+        elif category_key == "system_functions":
+            self._build_system_functions_view()
         elif category_key == "I":
             self._build_i_files_view()
         elif category_key in ("B", "C", "D"):
@@ -8196,6 +8300,660 @@ class IntroSystemView(Gtk.Box):
         for ch in children:
             source.remove(ch)
             self._container.append(ch)
+
+    # -----------------------------------------------------------------
+    # SYSTEM FUNCTIONS VIEW (FASE 4: Automated scripts + run buttons)
+    # -----------------------------------------------------------------
+
+    def _build_system_functions_view(self):
+        """Build the System Functions view showing all automated INTRO scripts.
+
+        Displays:
+        - Pre-commit hook status and 7 verification levels
+        - Daily Sync Script with 5 phases
+        - Verification Script with 6 checks and Run Now button
+        - Navigation Index Generator stats
+        - Health Check with Run Now button
+        - Run All Checks button
+        - Real-time log panel
+        """
+        intro_path = INTRO_PATH
+
+        # --- Header ---
+        header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        title = Gtk.Label(label="INTRO System Functions")
+        title.add_css_class("intro-view-header")
+        title.set_xalign(0)
+        header_box.append(title)
+
+        subtitle = Gtk.Label(label="Automated scripts, verification hooks, and system maintenance tools")
+        subtitle.add_css_class("intro-view-subtitle")
+        subtitle.set_xalign(0)
+        subtitle.set_wrap(True)
+        header_box.append(subtitle)
+        self._container.append(header_box)
+
+        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        sep.set_margin_top(4)
+        sep.set_margin_bottom(8)
+        self._container.append(sep)
+
+        # =============================================================
+        # 1. PRE-COMMIT HOOK
+        # =============================================================
+        self._build_precommit_card(intro_path)
+
+        # =============================================================
+        # 2. DAILY SYNC SCRIPT
+        # =============================================================
+        self._build_sync_script_card(intro_path)
+
+        # =============================================================
+        # 3. VERIFICATION SCRIPT
+        # =============================================================
+        self._build_verification_script_card(intro_path)
+
+        # =============================================================
+        # 4. NAVIGATION INDEX GENERATOR
+        # =============================================================
+        self._build_nav_index_card(intro_path)
+
+        # =============================================================
+        # 5. HEALTH CHECK SCRIPT
+        # =============================================================
+        self._build_health_check_card(intro_path)
+
+        # =============================================================
+        # 6. RUN ALL CHECKS BUTTON
+        # =============================================================
+        run_all_sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        run_all_sep.set_margin_top(8)
+        run_all_sep.set_margin_bottom(4)
+        self._container.append(run_all_sep)
+
+        run_all_btn = Gtk.Button(label="Run All Checks")
+        run_all_btn.add_css_class("intro-sysfunc-runall-btn")
+        run_all_btn.set_halign(Gtk.Align.CENTER)
+        run_all_btn.set_tooltip_text("Runs verify_master_folders.py, check_folder_health.sh, and generate_navigation_index.py sequentially")
+        run_all_btn.connect("clicked", self._on_run_all_checks)
+        self._container.append(run_all_btn)
+
+        # =============================================================
+        # 7. REAL-TIME LOG PANEL
+        # =============================================================
+        log_label = Gtk.Label(label="Execution Log")
+        log_label.add_css_class("intro-view-subtitle")
+        log_label.set_xalign(0)
+        log_label.set_margin_top(12)
+        self._container.append(log_label)
+
+        log_scroll = Gtk.ScrolledWindow()
+        log_scroll.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        log_scroll.set_min_content_height(200)
+        log_scroll.set_max_content_height(300)
+
+        self._log_textview = Gtk.TextView()
+        self._log_textview.set_editable(False)
+        self._log_textview.set_cursor_visible(False)
+        self._log_textview.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
+        self._log_textview.add_css_class("intro-sysfunc-log-panel")
+        self._log_buffer = self._log_textview.get_buffer()
+        self._log_buffer.set_text("No script output yet. Click a 'Run Now' button or 'Run All Checks' to begin.\n")
+
+        log_scroll.set_child(self._log_textview)
+        self._container.append(log_scroll)
+
+    # -- Pre-commit hook card --
+
+    def _build_precommit_card(self, intro_path):
+        """Build the pre-commit hook information card."""
+        card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        card.add_css_class("intro-sysfunc-card")
+
+        # Title row
+        title_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+
+        icon = Gtk.Image.new_from_icon_name("security-high-symbolic")
+        icon.set_pixel_size(20)
+        title_row.append(icon)
+
+        title = Gtk.Label(label="Pre-commit Hook")
+        title.add_css_class("intro-sysfunc-title")
+        title.set_xalign(0)
+        title.set_hexpand(True)
+        title_row.append(title)
+
+        # Status badge: check if hook file exists and is executable
+        hook_path = intro_path / ".git" / "hooks" / "pre-commit"
+        hook_exists = hook_path.exists()
+        hook_executable = False
+        hook_mtime = ""
+        if hook_exists:
+            import os as _os
+            import stat as _stat
+            st = hook_path.stat()
+            hook_executable = bool(st.st_mode & _stat.S_IXUSR)
+            hook_mtime = datetime.fromtimestamp(st.st_mtime).strftime("%Y-%m-%d %H:%M:%S")
+
+        is_active = hook_exists and hook_executable
+        status_badge = Gtk.Label(label="Active" if is_active else "Inactive")
+        status_badge.add_css_class("intro-sysfunc-status-active" if is_active else "intro-sysfunc-status-inactive")
+        title_row.append(status_badge)
+
+        card.append(title_row)
+
+        # Description
+        desc = Gtk.Label(label="Runs verify_master_folders.py before every commit to MASTER FOLDERS")
+        desc.add_css_class("intro-sysfunc-desc")
+        desc.set_xalign(0)
+        desc.set_wrap(True)
+        card.append(desc)
+
+        # File path
+        path_label = Gtk.Label(label=f"Path: {hook_path}")
+        path_label.add_css_class("intro-sysfunc-detail")
+        path_label.set_xalign(0)
+        path_label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
+        card.append(path_label)
+
+        # Last run timestamp
+        if hook_mtime:
+            ts_label = Gtk.Label(label=f"Last modified: {hook_mtime}")
+            ts_label.add_css_class("intro-sysfunc-detail")
+            ts_label.set_xalign(0)
+            card.append(ts_label)
+
+        # 7 verification levels
+        levels_label = Gtk.Label(label="7 Verification Levels:")
+        levels_label.add_css_class("caption")
+        levels_label.set_xalign(0)
+        levels_label.set_margin_top(6)
+        card.append(levels_label)
+
+        verification_levels = [
+            ("1. Git Status", "Checks for uncommitted changes in the repository"),
+            ("2. HOVEDINDEKS Accuracy", "Verifies master index matches physical files"),
+            ("3. I-File Numbering", "Confirms I1-I12 files are correctly numbered"),
+            ("4. Cross-References", "Validates all internal file references resolve"),
+            ("5. Subdirectory Structure", "Ensures all expected directories exist"),
+            ("6. TODO Analysis", "Distinguishes intentional vs forgotten TODOs"),
+            ("7. Report Generation", "Produces verification report with PASS/FAIL status"),
+        ]
+
+        for level_name, level_desc in verification_levels:
+            level_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+            level_box.add_css_class("intro-sysfunc-level-card")
+
+            name_lbl = Gtk.Label(label=level_name)
+            name_lbl.add_css_class("caption")
+            name_lbl.set_xalign(0)
+            name_lbl.set_hexpand(False)
+            level_box.append(name_lbl)
+
+            desc_lbl = Gtk.Label(label=level_desc)
+            desc_lbl.add_css_class("intro-sysfunc-detail")
+            desc_lbl.set_xalign(0)
+            desc_lbl.set_hexpand(True)
+            desc_lbl.set_ellipsize(Pango.EllipsizeMode.END)
+            level_box.append(desc_lbl)
+
+            card.append(level_box)
+
+        self._container.append(card)
+
+    # -- Daily Sync Script card --
+
+    def _build_sync_script_card(self, intro_path):
+        """Build the daily sync script information card."""
+        card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        card.add_css_class("intro-sysfunc-card")
+
+        # Title row
+        title_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+
+        icon = Gtk.Image.new_from_icon_name("emblem-synchronizing-symbolic")
+        icon.set_pixel_size(20)
+        title_row.append(icon)
+
+        title = Gtk.Label(label="Daily Sync Script")
+        title.add_css_class("intro-sysfunc-title")
+        title.set_xalign(0)
+        title.set_hexpand(True)
+        title_row.append(title)
+
+        # Status: check if script exists
+        script_path = intro_path / "sync_indexes.sh"
+        script_exists = script_path.exists()
+        status_badge = Gtk.Label(label="Available" if script_exists else "Missing")
+        status_badge.add_css_class("intro-sysfunc-status-active" if script_exists else "intro-sysfunc-status-inactive")
+        title_row.append(status_badge)
+
+        card.append(title_row)
+
+        # Description
+        desc = Gtk.Label(label="Runs daily at 04:00 to auto-fix metadata mismatches and verify indexes")
+        desc.add_css_class("intro-sysfunc-desc")
+        desc.set_xalign(0)
+        desc.set_wrap(True)
+        card.append(desc)
+
+        # Schedule + log info
+        schedule_label = Gtk.Label(label="Schedule: Daily at 04:00 CET")
+        schedule_label.add_css_class("intro-sysfunc-detail")
+        schedule_label.set_xalign(0)
+        card.append(schedule_label)
+
+        log_label = Gtk.Label(label="Log location: /tmp/MASTER_FOLDERS_SYNC_*.log")
+        log_label.add_css_class("intro-sysfunc-detail")
+        log_label.set_xalign(0)
+        card.append(log_label)
+
+        # 5 sync phases
+        phases_label = Gtk.Label(label="5 Sync Phases:")
+        phases_label.add_css_class("caption")
+        phases_label.set_xalign(0)
+        phases_label.set_margin_top(6)
+        card.append(phases_label)
+
+        sync_phases = [
+            ("Phase 1: Verify State", "Runs verification check on current state"),
+            ("Phase 2: Update Timestamps", "Updates documentation date headers for modified files"),
+            ("Phase 3: Verify Links", "Checks all internal markdown references are valid"),
+            ("Phase 4: Uncommitted Check", "Reports files with uncommitted changes (no auto-commit)"),
+            ("Phase 5: Generate Report", "Creates verification report in /tmp/"),
+        ]
+
+        for phase_name, phase_desc in sync_phases:
+            phase_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+            phase_box.add_css_class("intro-sysfunc-phase-card")
+
+            name_lbl = Gtk.Label(label=phase_name)
+            name_lbl.add_css_class("caption")
+            name_lbl.set_xalign(0)
+            name_lbl.set_hexpand(False)
+            phase_box.append(name_lbl)
+
+            desc_lbl = Gtk.Label(label=phase_desc)
+            desc_lbl.add_css_class("intro-sysfunc-detail")
+            desc_lbl.set_xalign(0)
+            desc_lbl.set_hexpand(True)
+            desc_lbl.set_ellipsize(Pango.EllipsizeMode.END)
+            phase_box.append(desc_lbl)
+
+            card.append(phase_box)
+
+        self._container.append(card)
+
+    # -- Verification Script card --
+
+    def _build_verification_script_card(self, intro_path):
+        """Build the verification script card with Run Now button."""
+        card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        card.add_css_class("intro-sysfunc-card")
+
+        # Title row
+        title_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+
+        icon = Gtk.Image.new_from_icon_name("emblem-default-symbolic")
+        icon.set_pixel_size(20)
+        title_row.append(icon)
+
+        title = Gtk.Label(label="Verification Script")
+        title.add_css_class("intro-sysfunc-title")
+        title.set_xalign(0)
+        title.set_hexpand(True)
+        title_row.append(title)
+
+        # Run Now button
+        run_btn = Gtk.Button(label="Run Now")
+        run_btn.add_css_class("intro-sysfunc-run-btn")
+        run_btn.set_tooltip_text("Run verify_master_folders.py")
+        run_btn.connect("clicked", lambda b: self._run_script_async(
+            "python3", str(intro_path / "verify_master_folders.py"),
+            cwd=str(intro_path), label="verify_master_folders.py"
+        ))
+        title_row.append(run_btn)
+
+        card.append(title_row)
+
+        # Description
+        desc = Gtk.Label(label="Admiral-level automatic verification of the entire documentation system")
+        desc.add_css_class("intro-sysfunc-desc")
+        desc.set_xalign(0)
+        desc.set_wrap(True)
+        card.append(desc)
+
+        # Path
+        script_path = intro_path / "verify_master_folders.py"
+        path_label = Gtk.Label(label=f"Path: {script_path}")
+        path_label.add_css_class("intro-sysfunc-detail")
+        path_label.set_xalign(0)
+        path_label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
+        card.append(path_label)
+
+        # 6 checks explained
+        checks_label = Gtk.Label(label="6 Verification Checks:")
+        checks_label.add_css_class("caption")
+        checks_label.set_xalign(0)
+        checks_label.set_margin_top(6)
+        card.append(checks_label)
+
+        verify_checks = [
+            ("1. Git Status", "Verifies repository is clean with no uncommitted changes"),
+            ("2. HOVEDINDEKS Accuracy", "Checks master index file listings match physical files"),
+            ("3. I-File Numbering", "Confirms I1-I12 numbering is correct and complete"),
+            ("4. Cross-References", "Scans all markdown files for broken internal references"),
+            ("5. Subdirectory Structure", "Ensures all 8 expected directories exist"),
+            ("6. TODO Markers", "Analyzes TODO markers -- intentional vs forgotten"),
+        ]
+
+        for check_name, check_desc in verify_checks:
+            check_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+            check_box.add_css_class("intro-sysfunc-level-card")
+
+            name_lbl = Gtk.Label(label=check_name)
+            name_lbl.add_css_class("caption")
+            name_lbl.set_xalign(0)
+            name_lbl.set_hexpand(False)
+            check_box.append(name_lbl)
+
+            desc_lbl = Gtk.Label(label=check_desc)
+            desc_lbl.add_css_class("intro-sysfunc-detail")
+            desc_lbl.set_xalign(0)
+            desc_lbl.set_hexpand(True)
+            desc_lbl.set_ellipsize(Pango.EllipsizeMode.END)
+            check_box.append(desc_lbl)
+
+            card.append(check_box)
+
+        self._container.append(card)
+
+    # -- Navigation Index Generator card --
+
+    def _build_nav_index_card(self, intro_path):
+        """Build the navigation index generator information card."""
+        card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        card.add_css_class("intro-sysfunc-card")
+
+        # Title row
+        title_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+
+        icon = Gtk.Image.new_from_icon_name("system-search-symbolic")
+        icon.set_pixel_size(20)
+        title_row.append(icon)
+
+        title = Gtk.Label(label="Navigation Index Generator")
+        title.add_css_class("intro-sysfunc-title")
+        title.set_xalign(0)
+        title.set_hexpand(True)
+        title_row.append(title)
+
+        # Status: check if script exists
+        script_path = intro_path / "generate_navigation_index.py"
+        script_exists = script_path.exists()
+        status_badge = Gtk.Label(label="Available" if script_exists else "Missing")
+        status_badge.add_css_class("intro-sysfunc-status-active" if script_exists else "intro-sysfunc-status-inactive")
+        title_row.append(status_badge)
+
+        card.append(title_row)
+
+        # Description
+        desc = Gtk.Label(label="Creates automated, searchable index of all documents across MASTER FOLDERS and MANUAL")
+        desc.add_css_class("intro-sysfunc-desc")
+        desc.set_xalign(0)
+        desc.set_wrap(True)
+        card.append(desc)
+
+        # Path
+        path_label = Gtk.Label(label=f"Path: {script_path}")
+        path_label.add_css_class("intro-sysfunc-detail")
+        path_label.set_xalign(0)
+        path_label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
+        card.append(path_label)
+
+        # Stats: try to read NAVIGATION_INDEX.json for live stats
+        stats_text = "113 documents, 68,506 lines, 2,650+ keywords"
+        nav_json = intro_path / "NAVIGATION_INDEX.json"
+        if nav_json.exists():
+            try:
+                with open(nav_json, "r") as f:
+                    nav_data = json.load(f)
+                summary = nav_data.get("summary", {})
+                total_docs = summary.get("total_documents", 113)
+                total_lines = summary.get("total_lines", 68506)
+                total_kw = summary.get("unique_keywords", 2650)
+                stats_text = f"{total_docs} documents, {total_lines:,} lines, {total_kw:,}+ keywords"
+            except Exception:
+                pass
+
+        stats_label = Gtk.Label(label=f"Index scope: {stats_text}")
+        stats_label.add_css_class("intro-sysfunc-detail")
+        stats_label.set_xalign(0)
+        card.append(stats_label)
+
+        # Features
+        features_label = Gtk.Label(label="Features:")
+        features_label.add_css_class("caption")
+        features_label.set_xalign(0)
+        features_label.set_margin_top(6)
+        card.append(features_label)
+
+        features = [
+            ("Markdown scanning", "Scans all .md files in both MASTER FOLDERS and MANUAL"),
+            ("Header extraction", "Extracts all headers and document structure automatically"),
+            ("Keyword indexing", "Builds searchable keyword index across all documents"),
+            ("Cross-references", "Generates organized index by category and topic"),
+            ("JSON + Markdown", "Outputs both NAVIGATION_INDEX.md and NAVIGATION_INDEX.json"),
+        ]
+
+        for feat_name, feat_desc in features:
+            feat_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+            feat_box.add_css_class("intro-sysfunc-level-card")
+
+            name_lbl = Gtk.Label(label=feat_name)
+            name_lbl.add_css_class("caption")
+            name_lbl.set_xalign(0)
+            name_lbl.set_hexpand(False)
+            feat_box.append(name_lbl)
+
+            desc_lbl = Gtk.Label(label=feat_desc)
+            desc_lbl.add_css_class("intro-sysfunc-detail")
+            desc_lbl.set_xalign(0)
+            desc_lbl.set_hexpand(True)
+            desc_lbl.set_ellipsize(Pango.EllipsizeMode.END)
+            feat_box.append(desc_lbl)
+
+            card.append(feat_box)
+
+        self._container.append(card)
+
+    # -- Health Check Script card --
+
+    def _build_health_check_card(self, intro_path):
+        """Build the health check script card with Run Now button."""
+        card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        card.add_css_class("intro-sysfunc-card")
+
+        # Title row
+        title_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+
+        icon = Gtk.Image.new_from_icon_name("dialog-information-symbolic")
+        icon.set_pixel_size(20)
+        title_row.append(icon)
+
+        title = Gtk.Label(label="Folder Health Check")
+        title.add_css_class("intro-sysfunc-title")
+        title.set_xalign(0)
+        title.set_hexpand(True)
+        title_row.append(title)
+
+        # Run Now button
+        run_btn = Gtk.Button(label="Run Now")
+        run_btn.add_css_class("intro-sysfunc-run-btn")
+        run_btn.set_tooltip_text("Run check_folder_health.sh --summary")
+        run_btn.connect("clicked", lambda b: self._run_script_async(
+            "bash", str(intro_path / "check_folder_health.sh"), "--summary",
+            cwd=str(intro_path), label="check_folder_health.sh"
+        ))
+        title_row.append(run_btn)
+
+        card.append(title_row)
+
+        # Description
+        desc = Gtk.Label(label="Real-time status dashboard for MASTER FOLDERS and MANUAL folders")
+        desc.add_css_class("intro-sysfunc-desc")
+        desc.set_xalign(0)
+        desc.set_wrap(True)
+        card.append(desc)
+
+        # Path
+        script_path = intro_path / "check_folder_health.sh"
+        path_label = Gtk.Label(label=f"Path: {script_path}")
+        path_label.add_css_class("intro-sysfunc-detail")
+        path_label.set_xalign(0)
+        path_label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
+        card.append(path_label)
+
+        # Capabilities
+        caps_label = Gtk.Label(label="Capabilities:")
+        caps_label.add_css_class("caption")
+        caps_label.set_xalign(0)
+        caps_label.set_margin_top(6)
+        card.append(caps_label)
+
+        capabilities = [
+            ("File statistics", "Counts markdown files and total lines per folder"),
+            ("TODO analysis", "Reports TODO/PENDING/TBD marker counts"),
+            ("Link verification", "Checks for broken reference indicators"),
+            ("Git status", "Reports pushed/unpushed commits status"),
+            ("Critical files", "Verifies critical I-files and STATUS files exist"),
+            ("Completeness", "Calculates overall completeness percentage"),
+        ]
+
+        for cap_name, cap_desc in capabilities:
+            cap_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+            cap_box.add_css_class("intro-sysfunc-level-card")
+
+            name_lbl = Gtk.Label(label=cap_name)
+            name_lbl.add_css_class("caption")
+            name_lbl.set_xalign(0)
+            name_lbl.set_hexpand(False)
+            cap_box.append(name_lbl)
+
+            desc_lbl = Gtk.Label(label=cap_desc)
+            desc_lbl.add_css_class("intro-sysfunc-detail")
+            desc_lbl.set_xalign(0)
+            desc_lbl.set_hexpand(True)
+            desc_lbl.set_ellipsize(Pango.EllipsizeMode.END)
+            cap_box.append(desc_lbl)
+
+            card.append(cap_box)
+
+        self._container.append(card)
+
+    # -- Script execution helpers --
+
+    def _run_script_async(self, *cmd_args, cwd=None, label="script"):
+        """Run a script in a background thread and stream output to the log panel.
+
+        Uses GLib.idle_add() to safely update the UI from the worker thread.
+        """
+        import threading
+
+        def _append_log(text):
+            """Thread-safe log append via GLib.idle_add."""
+            def _do():
+                end_iter = self._log_buffer.get_end_iter()
+                self._log_buffer.insert(end_iter, text)
+                # Auto-scroll to bottom
+                mark = self._log_buffer.get_insert()
+                self._log_textview.scroll_to_mark(mark, 0.0, True, 0.0, 1.0)
+                return False
+            GLib.idle_add(_do)
+
+        def _worker():
+            _append_log(f"\n--- Running {label} ---\n")
+            try:
+                result = subprocess.run(
+                    list(cmd_args),
+                    cwd=cwd,
+                    capture_output=True,
+                    text=True,
+                    timeout=120,
+                )
+                if result.stdout:
+                    _append_log(result.stdout)
+                if result.stderr:
+                    _append_log(f"[stderr] {result.stderr}")
+                exit_label = "OK" if result.returncode == 0 else f"EXIT {result.returncode}"
+                _append_log(f"--- {label} finished ({exit_label}) ---\n")
+            except subprocess.TimeoutExpired:
+                _append_log(f"--- {label} TIMED OUT (120s) ---\n")
+            except Exception as e:
+                _append_log(f"--- {label} ERROR: {e} ---\n")
+
+        thread = threading.Thread(target=_worker, daemon=True)
+        thread.start()
+
+    def _on_run_all_checks(self, button):
+        """Run all INTRO system scripts sequentially in a background thread."""
+        import threading
+        intro_path = INTRO_PATH
+
+        def _append_log(text):
+            def _do():
+                end_iter = self._log_buffer.get_end_iter()
+                self._log_buffer.insert(end_iter, text)
+                mark = self._log_buffer.get_insert()
+                self._log_textview.scroll_to_mark(mark, 0.0, True, 0.0, 1.0)
+                return False
+            GLib.idle_add(_do)
+
+        def _run_one(cmd_list, cwd_path, script_label):
+            _append_log(f"\n=== Running {script_label} ===\n")
+            try:
+                result = subprocess.run(
+                    cmd_list,
+                    cwd=str(cwd_path),
+                    capture_output=True,
+                    text=True,
+                    timeout=120,
+                )
+                if result.stdout:
+                    _append_log(result.stdout)
+                if result.stderr:
+                    _append_log(f"[stderr] {result.stderr}")
+                exit_label = "OK" if result.returncode == 0 else f"EXIT {result.returncode}"
+                _append_log(f"=== {script_label} finished ({exit_label}) ===\n")
+            except subprocess.TimeoutExpired:
+                _append_log(f"=== {script_label} TIMED OUT ===\n")
+            except Exception as e:
+                _append_log(f"=== {script_label} ERROR: {e} ===\n")
+
+        def _worker():
+            _append_log("\n" + "=" * 60 + "\n")
+            _append_log("  RUN ALL CHECKS -- Starting sequential execution\n")
+            _append_log("=" * 60 + "\n")
+
+            scripts = [
+                (["python3", str(intro_path / "verify_master_folders.py")], intro_path, "verify_master_folders.py"),
+                (["bash", str(intro_path / "check_folder_health.sh"), "--summary"], intro_path, "check_folder_health.sh"),
+                (["python3", str(intro_path / "generate_navigation_index.py")], intro_path, "generate_navigation_index.py"),
+            ]
+
+            for cmd, cwd_path, label in scripts:
+                script_file = Path(cmd[-1]) if len(cmd) > 1 else None
+                if script_file and not script_file.exists():
+                    _append_log(f"\n=== SKIPPING {label} (file not found) ===\n")
+                    continue
+                _run_one(cmd, cwd_path, label)
+
+            _append_log("\n" + "=" * 60 + "\n")
+            _append_log("  RUN ALL CHECKS -- Complete\n")
+            _append_log("=" * 60 + "\n")
+
+        thread = threading.Thread(target=_worker, daemon=True)
+        thread.start()
 
     # -----------------------------------------------------------------
     # HEALTH VIEW (Live verification status)
@@ -8617,6 +9375,8 @@ class MasterpieceWindow(Adw.ApplicationWindow):
                     date_text = f"Updated: {lm[:10]}"
             elif cat_key == "structure":
                 date_text = f"{cat_range}"
+            elif cat_key == "system_functions":
+                date_text = f"{cat_range}"
             elif cat_key == "health":
                 date_text = f"{cat_range}"
 
@@ -8635,6 +9395,8 @@ class MasterpieceWindow(Adw.ApplicationWindow):
             elif cat_key == "structure":
                 if intro_summary.get("available"):
                     count_text = str(len(intro_integration.get_intro_structure().get("subdirectories", [])))
+            elif cat_key == "system_functions":
+                count_text = "5"
             elif cat_key == "health":
                 count_text = "..."
 

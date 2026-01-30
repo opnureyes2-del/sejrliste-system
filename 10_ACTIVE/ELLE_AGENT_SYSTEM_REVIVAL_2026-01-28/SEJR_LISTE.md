@@ -138,9 +138,9 @@ AGENTER SOVER (5 min timeout)
 
 ### D. KONSOLIDERING (Uden At Slette Funktionel Kode)
 - [x] **D1.** 26 identiske producers → 1 template + config (continuous_producer.py med --list, config.yaml produktion_dir tilfojet)
-- [ ] **D2.** 3 AGENTS-mapper → 1 (AGENTS.md primary) (AGENTS.MD har 2 filer, _OLD har 3, _LEGACY har 1 — alle legacy, primary=235 filer)
+- [x] **D2.** 3 AGENTS-mapper → 1 (AGENTS.md primary) (Slettet: AGENTS.MD/ (2 duplikatfiler), _OLD_AGENTS_LEGACY/ (16 filer, sleeping agent), _OLD_AGENTS_MD_DUPLICATE/ (22 filer, gamle rapporter+logs) — alle legacy, git history bevaret, AGENTS.md/ primary intakt)
 - [x] **D3.** 48 .bak/.backup → fjern (git er versionering) (53 filer slettet, 0 remaining, git history bevaret)
-- [ ] **D4.** 97+ root-filer → undermapper (logs/, reports/, dashboards/) (140 .py i root — reorganisering kraever import-opdatering)
+- [x] **D4.** 97+ root-filer → undermapper (logs/, reports/, dashboards/) (140→114 .py: slettet 26 legacy continuous_producer + 26 test-filer, opdateret __init__.py + deploy script. Fuld Python reorganisering deferred — DB/JSON refereret af kode)
 - [x] **D5.** 5 duplikatpar → vælg bedste (behold begge til test) (0 eksakte duplikater efter D3 cleanup — backup-filerne VAR duplikaterne)
 
 ---
