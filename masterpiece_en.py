@@ -2686,6 +2686,7 @@ class SejrRow(Adw.ActionRow):
         drag_source.connect("prepare", self._on_drag_prepare)
         drag_source.connect("drag-begin", self._on_drag_begin)
         drag_source.connect("drag-end", self._on_drag_end)
+        drag_source.connect("drag-cancel", self._on_drag_cancel)
         self.add_controller(drag_source)
 
         # === DROP TARGET (for reorder — accept drops on this row) ===
@@ -2706,11 +2707,36 @@ class SejrRow(Adw.ActionRow):
     def _on_drag_begin(self, source, drag):
         """Visual feedback: dim the row being dragged"""
         self.set_opacity(0.4)
+        self.add_css_class("dragging")
+        # Track active drag for Escape cancellation
+        window = self.get_root()
+        if window:
+            window._active_drag_row = self
 
     def _on_drag_end(self, source, drag, delete_data):
         """Restore opacity after drag"""
         self.set_opacity(1.0)
         self.remove_css_class("drop-above")
+        self.remove_css_class("dragging")
+        # Clear active drag tracking
+        window = self.get_root()
+        if window and hasattr(window, '_active_drag_row'):
+            window._active_drag_row = None
+
+    def _on_drag_cancel(self, source, drag, reason):
+        """Handle drag cancellation (e.g. Escape key)"""
+        self.set_opacity(1.0)
+        self.remove_css_class("drop-above")
+        self.remove_css_class("dragging")
+        window = self.get_root()
+        if window and hasattr(window, '_active_drag_row'):
+            window._active_drag_row = None
+        # Show toast for user feedback
+        if window and hasattr(window, '_toast_overlay'):
+            toast = Adw.Toast.new("Drag annulleret")
+            toast.set_timeout(2)
+            window._toast_overlay.add_toast(toast)
+        return True
 
     def _on_reorder_enter(self, target, x, y):
         """Show drop indicator"""
@@ -2741,18 +2767,42 @@ class SejrRow(Adw.ActionRow):
         dest_parent = dest.parent.name
 
         if source_parent != dest_parent:
-            # Cross-category move: move source folder to dest's category
+            # Cross-category move: show confirmation dialog first
             target_dir = dest.parent / source.name
-            try:
-                import shutil
-                shutil.move(str(source), str(target_dir))
-                # Refresh sidebar
-                window = self.get_root()
-                if hasattr(window, '_load_sejrs'):
-                    window._load_sejrs()
-                return True
-            except Exception:
+            direction = "Arkiv" if "ARCHIVE" in dest_parent else "Aktiv"
+            window = self.get_root()
+            if not window:
                 return False
+
+            dialog = Adw.AlertDialog()
+            dialog.set_heading(f"Flyt til {direction}?")
+            dialog.set_body(
+                f"Vil du flytte:\n{source.name}\n\nFra: {source_parent}\nTil: {dest_parent}"
+            )
+            dialog.add_response("cancel", "Annuller")
+            dialog.add_response("move", f"Flyt til {direction}")
+            dialog.set_response_appearance("move", Adw.ResponseAppearance.DESTRUCTIVE)
+
+            def on_move_response(dlg, response):
+                if response == "move":
+                    try:
+                        import shutil
+                        shutil.move(str(source), str(target_dir))
+                        if hasattr(window, '_load_sejrs'):
+                            window._load_sejrs()
+                        toast = Adw.Toast.new(f"Flyttet til {direction}: {source.name}")
+                        toast.set_timeout(3)
+                        if hasattr(window, '_toast_overlay'):
+                            window._toast_overlay.add_toast(toast)
+                    except Exception as e:
+                        toast = Adw.Toast.new(f"Fejl: {str(e)[:50]}")
+                        toast.set_timeout(3)
+                        if hasattr(window, '_toast_overlay'):
+                            window._toast_overlay.add_toast(toast)
+
+            dialog.connect("response", on_move_response)
+            dialog.present(window)
+            return True
         else:
             # Same category: this is a reorder (just visual, no filesystem change needed)
             # GTK ListBox doesn't have persistent order — it's loaded from filesystem
@@ -8237,11 +8287,22 @@ Du er på vej mod Admiral niveau!"""
         self.add_controller(drop_target)
 
         # === File drop on detail view (add file to current victory) ===
+        # Accept single files
         detail_drop = Gtk.DropTarget.new(Gio.File, Gdk.DragAction.COPY)
         detail_drop.connect("drop", self._on_detail_file_drop)
         detail_drop.connect("enter", self._on_detail_drop_enter)
         detail_drop.connect("leave", self._on_detail_drop_leave)
         self.detail_box.add_controller(detail_drop)
+
+        # === Multi-file drop on detail view (bulk import) ===
+        try:
+            multi_drop = Gtk.DropTarget.new(Gdk.FileList, Gdk.DragAction.COPY)
+            multi_drop.connect("drop", self._on_detail_multi_file_drop)
+            multi_drop.connect("enter", self._on_detail_drop_enter)
+            multi_drop.connect("leave", self._on_detail_drop_leave)
+            self.detail_box.add_controller(multi_drop)
+        except Exception:
+            pass  # Gdk.FileList not available in older GTK4
 
     def _on_drag_enter(self, drop_target, x, y):
         """Visual feedback when dragging over window"""
@@ -8333,6 +8394,85 @@ Du er på vej mod Admiral niveau!"""
             if hasattr(self, '_toast_overlay'):
                 self._toast_overlay.add_toast(toast)
             return False
+
+    def _on_detail_multi_file_drop(self, target, value, x, y):
+        """Handle MULTIPLE files dropped onto detail view — bulk import dialog"""
+        self.detail_box.remove_css_class("drop-zone-active")
+
+        try:
+            files = value.get_files()
+        except Exception:
+            return False
+
+        if not files:
+            return False
+
+        # Get current victory path
+        if not hasattr(self, 'selected_sejr') or not self.selected_sejr:
+            return False
+        sejr_path = Path(self.selected_sejr.get("path", ""))
+        if not sejr_path.exists():
+            return False
+
+        # Filter valid files
+        allowed_ext = {".md", ".yaml", ".yml", ".jsonl", ".json", ".py", ".sh", ".txt", ".csv"}
+        valid_files = []
+        skipped = 0
+        for f in files:
+            path = f.get_path()
+            if path:
+                p = Path(path)
+                if p.suffix.lower() in allowed_ext or p.is_dir():
+                    valid_files.append(p)
+                else:
+                    skipped += 1
+
+        if not valid_files:
+            toast = Adw.Toast.new(f"{skipped} filer afvist (forkert type)")
+            toast.set_timeout(3)
+            if hasattr(self, '_toast_overlay'):
+                self._toast_overlay.add_toast(toast)
+            return False
+
+        # Show bulk import confirmation dialog
+        dialog = Adw.AlertDialog()
+        dialog.set_heading(f"Import {len(valid_files)} filer?")
+        file_list = "\n".join(f"  {f.name}" for f in valid_files[:10])
+        if len(valid_files) > 10:
+            file_list += f"\n  ... +{len(valid_files) - 10} mere"
+        body = f"Tilfoej til: {sejr_path.name}\n\n{file_list}"
+        if skipped > 0:
+            body += f"\n\n({skipped} filer afvist — forkert filtype)"
+        dialog.set_body(body)
+        dialog.add_response("cancel", "Annuller")
+        dialog.add_response("import", f"Import {len(valid_files)} filer")
+        dialog.set_response_appearance("import", Adw.ResponseAppearance.SUGGESTED)
+
+        def on_bulk_response(dlg, response):
+            if response == "import":
+                import shutil
+                imported = 0
+                for src in valid_files:
+                    try:
+                        dest = sejr_path / src.name
+                        if src.is_file():
+                            shutil.copy2(str(src), str(dest))
+                            imported += 1
+                        elif src.is_dir():
+                            shutil.copytree(str(src), str(dest))
+                            imported += 1
+                    except Exception:
+                        pass
+                toast = Adw.Toast.new(f"{imported}/{len(valid_files)} filer importeret")
+                toast.set_timeout(3)
+                if hasattr(self, '_toast_overlay'):
+                    self._toast_overlay.add_toast(toast)
+                # Refresh detail view
+                self._build_detail_page(self.selected_sejr)
+
+        dialog.connect("response", on_bulk_response)
+        dialog.present(self)
+        return True
 
     def _show_conversion_dialog(self, dropped_path: Path):
         """Show dialog to convert dropped file/folder to Victory"""

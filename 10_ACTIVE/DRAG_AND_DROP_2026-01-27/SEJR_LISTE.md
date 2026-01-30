@@ -36,7 +36,7 @@
 - [x] Implementér `_on_reorder_drop()` → flyt sejr til ny position / kategori
 - [x] Opdater filsystem (shutil.move for cross-category)
 - [x] Visuelt feedback: Blå linje viser drop-position (`row.drop-above` CSS)
-- [ ] Annullér drag med Escape ← Pass 2
+- [x] Annullér drag med Escape — IMPLEMENTERET (2026-01-30): `_on_drag_cancel` + `drag-cancel` signal + toast "Drag annulleret"
 
 ### FASE 2: FOLDER-TO-FOLDER (Kategori flytning)
 
@@ -44,7 +44,7 @@
 - [x] Implementér cross-category move i `_on_reorder_drop()`
 - [x] Active → Archive: Flyt mappe fra 10_ACTIVE/ til 90_ARCHIVE/ (shutil.move)
 - [x] Archive → Active: Flyt mappe fra 90_ARCHIVE/ til 10_ACTIVE/ (shutil.move)
-- [ ] Bekræftelses-dialog: "Flyt X til Arkiv?" ← Pass 2
+- [x] Bekræftelses-dialog: "Flyt X til Arkiv?" — IMPLEMENTERET (2026-01-30): `Adw.AlertDialog` med Annuller/Flyt, destructive appearance
 - [x] Auto-refresh sidebar efter flytning (`window._load_sejrs()`)
 
 ### FASE 3: FILE-TO-FOLDER (Fil ind i sejr)
@@ -60,7 +60,7 @@
 - [x] Forbedre eksisterende ekstern drop:
   - [x] Drop .md fil → parse via SejrConverter.analyze_input + create_sejr
   - [x] Drop mappe → importér som komplet sejr (smart: folder med SEJR_LISTE.md → direkte import)
-  - [ ] Drop multiple filer → bulk import dialog ← Pass 2 (kræver Gdk.FileList)
+  - [x] Drop multiple filer → bulk import dialog — IMPLEMENTERET (2026-01-30): `Gdk.FileList` DropTarget + validering + bulk import Adw.AlertDialog
 - [x] Vis "Drop zone" overlay — CSS allerede implementeret (window.drop-active + .drop-zone-active)
 - [x] Fix `_convert_path_to_sejr` bug: brugte ikke-eksisterende `from_file/from_folder` metoder → rettet til SejrConverter API
 
@@ -73,7 +73,7 @@
 - [x] File-to-folder virker (træk fil ind i sejr detail view)
 - [x] Ekstern drop forbedret (SejrConverter API + smart folder detection)
 - [x] App starter uden fejl (py_compile [OK], launch [OK])
-- [x] Score: 8/10 (mangler: Escape annullér, bekræftelses-dialog, multi-file drop → Pass 2)
+- [x] Score: 10/10 (ALLE implementeret: Escape annullér, bekræftelses-dialog, multi-file drop — komplet 2026-01-30)
 
 ---
 

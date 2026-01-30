@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/home/rasmus/Desktop/sejrliste systemet/.venv/bin/python3
 """
 Generate Icon Sizes — Opretter PNG varianter af SVG icons
 ==========================================================
