@@ -32,6 +32,9 @@ import shutil
 from typing import Dict, List, Any, Optional, Tuple
 from dataclasses import dataclass, field
 
+# INTRO Folder System integration (FASE 0 data model)
+import intro_integration
+
 # 
 # CIRKELLINE KV1NT ADMIRAL DESIGN SYSTEM - VF STANDARD
 # 
@@ -1474,6 +1477,205 @@ button.action-new {
     padding: 4px 8px;
     background: rgba(255, 255, 255, 0.03);
     border-radius: 6px;
+}
+
+/* === INTRO SYSTEM SIDEBAR SECTION === */
+.intro-section-header {
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(168, 85, 247, 0.85);
+    padding: 12px 16px 4px 16px;
+}
+
+.intro-sidebar-btn {
+    border-radius: 10px;
+    padding: 8px 12px;
+    background: rgba(168, 85, 247, 0.04);
+    border: 1px solid rgba(168, 85, 247, 0.06);
+    transition: all 200ms ease;
+}
+
+.intro-sidebar-btn:hover {
+    background: rgba(168, 85, 247, 0.10);
+    border-color: rgba(168, 85, 247, 0.18);
+    box-shadow: 0 2px 12px -3px rgba(168, 85, 247, 0.20);
+}
+
+.intro-sidebar-icon {
+    font-size: 14px;
+    min-width: 22px;
+    color: rgba(168, 85, 247, 0.80);
+}
+
+.intro-sidebar-label {
+    font-weight: 600;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.intro-sidebar-count {
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: rgba(168, 85, 247, 0.12);
+    color: rgba(168, 85, 247, 0.90);
+}
+
+.intro-sidebar-date {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.35);
+}
+
+/* INTRO category color accents */
+.intro-cat-I .intro-sidebar-icon { color: #a855f7; }
+.intro-cat-I .intro-sidebar-count { background: rgba(168, 85, 247, 0.12); color: #c084fc; }
+
+.intro-cat-B .intro-sidebar-icon { color: #00D9FF; }
+.intro-cat-B .intro-sidebar-count { background: rgba(0, 217, 255, 0.12); color: #22d3ee; }
+
+.intro-cat-C .intro-sidebar-icon { color: #f59e0b; }
+.intro-cat-C .intro-sidebar-count { background: rgba(245, 158, 11, 0.12); color: #fcd34d; }
+
+.intro-cat-D .intro-sidebar-icon { color: #6366f1; }
+.intro-cat-D .intro-sidebar-count { background: rgba(99, 102, 241, 0.12); color: #818cf8; }
+
+.intro-cat-structure .intro-sidebar-icon { color: #10b981; }
+.intro-cat-structure .intro-sidebar-count { background: rgba(16, 185, 129, 0.12); color: #34d399; }
+
+.intro-cat-health .intro-sidebar-icon { color: #00FF88; }
+.intro-cat-health .intro-sidebar-count { background: rgba(0, 255, 136, 0.12); color: #4ade80; }
+
+/* === INTRO SYSTEM CONTENT VIEW === */
+.intro-view-header {
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.intro-view-subtitle {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.50);
+}
+
+.intro-category-card {
+    background: linear-gradient(135deg,
+        rgba(25, 25, 45, 0.8) 0%,
+        rgba(30, 30, 55, 0.6) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 20px;
+    transition: all 200ms ease;
+}
+
+.intro-category-card:hover {
+    border-color: rgba(168, 85, 247, 0.20);
+    box-shadow: 0 4px 20px -6px rgba(168, 85, 247, 0.15);
+}
+
+.intro-file-row {
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    transition: all 150ms ease;
+}
+
+.intro-file-row:hover {
+    background: rgba(168, 85, 247, 0.06);
+    border-color: rgba(168, 85, 247, 0.12);
+}
+
+.intro-file-number {
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+    font-weight: 800;
+    font-size: 14px;
+    min-width: 32px;
+}
+
+.intro-file-title {
+    font-weight: 600;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.90);
+}
+
+.intro-file-meta {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.40);
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+}
+
+.intro-status-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+
+.intro-status-complete {
+    background: rgba(0, 255, 136, 0.12);
+    color: #4ade80;
+}
+
+.intro-status-active {
+    background: rgba(0, 217, 255, 0.12);
+    color: #22d3ee;
+}
+
+.intro-status-unknown {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.40);
+}
+
+.intro-health-score {
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+    font-weight: 800;
+    font-size: 36px;
+}
+
+.intro-health-pass {
+    color: #4ade80;
+}
+
+.intro-health-warn {
+    color: #fbbf24;
+}
+
+.intro-health-fail {
+    color: #f87171;
+}
+
+.intro-check-row {
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.intro-check-pass {
+    border-left: 3px solid #4ade80;
+}
+
+.intro-check-fail {
+    border-left: 3px solid #f87171;
+}
+
+.intro-open-btn {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: rgba(168, 85, 247, 0.10);
+    color: #c084fc;
+    border: 1px solid rgba(168, 85, 247, 0.15);
+}
+
+.intro-open-btn:hover {
+    background: rgba(168, 85, 247, 0.20);
+    border-color: rgba(168, 85, 247, 0.30);
 }
 """
 
@@ -6913,9 +7115,615 @@ class SyncDashboardView(Gtk.Box):
         self.health_bar.set_text(f"{health:.0f}%")
 
 
-# 
+#
+# INTRO SYSTEM VIEW — FASE 1 SIDEBAR INTEGRATION
+#
+
+# I-file color mapping (chakra-aligned)
+INTRO_I_FILE_COLORS = {
+    1: "#a855f7",   # I1 Vision — Divine violet
+    2: "#f87171",   # I2 Orders — Error red
+    3: "#10b981",   # I3 Hybrids — Heart emerald
+    4: "#f59e0b",   # I4 Operations — Wisdom gold
+    5: "#f59e0b",   # I5 Operations — Wisdom gold
+    6: "#6366f1",   # I6 Technical — Intuition indigo
+    7: "#6366f1",   # I7 Technical — Intuition indigo
+    8: "#6366f1",   # I8 Technical — Intuition indigo
+    9: "#6366f1",   # I9 Technical — Intuition indigo
+    10: "#00FF88",  # I10 Ecosystem — Success green
+    11: "#fbbf24",  # I11 Prevention — Warning orange
+    12: "#F97316",  # I12 Sejrliste — Primary orange
+}
+
+# Sidebar item definitions for INTRO categories
+INTRO_SIDEBAR_ITEMS = [
+    ("I", "I-Files (System Intelligence)", "I1-I12", "accessories-text-editor-symbolic"),
+    ("B", "Terminal Commands", "B1-B10", "utilities-terminal-symbolic"),
+    ("C", "Environment Config", "C2-C10", "preferences-system-symbolic"),
+    ("D", "Architecture", "D1-D10", "view-grid-symbolic"),
+    ("structure", "Folder Structure", "Governance + Rules", "folder-symbolic"),
+    ("health", "System Health", "Live verification", "emblem-ok-symbolic"),
+]
+
+
+class IntroSystemView(Gtk.Box):
+    """Content view for INTRO System sidebar items.
+
+    Shows different sub-views depending on which INTRO sidebar category
+    was clicked: I-files, B-files, C-files, D-files, structure, or health.
+    """
+
+    def __init__(self):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        self._current_view = None
+
+        # Main scrollable area
+        self._scroll = Gtk.ScrolledWindow()
+        self._scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        self._scroll.set_vexpand(True)
+
+        self._container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=24)
+        self._container.set_margin_start(40)
+        self._container.set_margin_end(40)
+        self._container.set_margin_top(32)
+        self._container.set_margin_bottom(40)
+
+        self._scroll.set_child(self._container)
+        self.append(self._scroll)
+
+    def _clear(self):
+        """Remove all children from the container."""
+        while child := self._container.get_first_child():
+            self._container.remove(child)
+
+    def show_category(self, category_key: str):
+        """Display the specified INTRO category view.
+
+        Args:
+            category_key: One of 'I', 'B', 'C', 'D', 'structure', 'health'
+        """
+        self._current_view = category_key
+        self._clear()
+
+        if category_key == "health":
+            self._build_health_view()
+        elif category_key == "structure":
+            self._build_structure_view()
+        elif category_key == "I":
+            self._build_i_files_view()
+        elif category_key in ("B", "C", "D"):
+            self._build_category_view(category_key)
+        else:
+            self._build_category_view(category_key)
+
+    # -----------------------------------------------------------------
+    # I-FILES VIEW (System Intelligence I1-I12)
+    # -----------------------------------------------------------------
+
+    def _build_i_files_view(self):
+        """Build the I1-I12 System Intelligence file listing."""
+        # Header
+        header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        title = Gtk.Label(label="System Intelligence -- I1-I12")
+        title.add_css_class("intro-view-header")
+        title.set_xalign(0)
+        header_box.append(title)
+
+        subtitle = Gtk.Label(label="Core system intelligence files: vision, orders, briefings, environments, compliance, and more")
+        subtitle.add_css_class("intro-view-subtitle")
+        subtitle.set_xalign(0)
+        subtitle.set_wrap(True)
+        header_box.append(subtitle)
+        self._container.append(header_box)
+
+        # Separator
+        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        sep.set_margin_top(4)
+        sep.set_margin_bottom(4)
+        self._container.append(sep)
+
+        # I-files list
+        i_files = intro_integration.get_intro_i_files()
+
+        if not i_files:
+            empty = Adw.StatusPage()
+            empty.set_title("No I-Files Found")
+            empty.set_description(f"Could not find I-files in {intro_integration.INTRO_PATH}")
+            empty.set_icon_name("dialog-warning-symbolic")
+            self._container.append(empty)
+            return
+
+        # Summary bar
+        total_lines = sum(f.lines for f in i_files)
+        total_size = sum(f.size for f in i_files)
+        size_kb = total_size / 1024
+        summary = Gtk.Label(label=f"{len(i_files)} files  |  {total_lines:,} lines  |  {size_kb:.0f} KB total")
+        summary.add_css_class("caption")
+        summary.add_css_class("dim-label")
+        summary.set_xalign(0)
+        self._container.append(summary)
+
+        # File rows
+        files_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+
+        for ifile in i_files:
+            row = self._build_i_file_row(ifile)
+            files_box.append(row)
+
+        self._container.append(files_box)
+
+    def _build_i_file_row(self, ifile):
+        """Build a single I-file row widget."""
+        row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        row.add_css_class("intro-file-row")
+
+        # I-number with color
+        num = ifile.category_number or 0
+        color = INTRO_I_FILE_COLORS.get(num, "#a855f7")
+        i_title = intro_integration.get_i_file_title(num)
+        i_desc = intro_integration.get_i_file_description(num)
+
+        number_label = Gtk.Label(label=f"I{num}")
+        number_label.add_css_class("intro-file-number")
+        # Apply color via inline CSS markup
+        number_label.set_markup(f'<span foreground="{color}" weight="ultrabold">I{num}</span>')
+        number_label.set_valign(Gtk.Align.CENTER)
+        row.append(number_label)
+
+        # Title and meta info
+        info_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+        info_box.set_hexpand(True)
+
+        title = Gtk.Label(label=i_title)
+        title.add_css_class("intro-file-title")
+        title.set_xalign(0)
+        title.set_ellipsize(Pango.EllipsizeMode.END)
+        info_box.append(title)
+
+        # Description
+        if i_desc:
+            desc = Gtk.Label(label=i_desc)
+            desc.add_css_class("intro-file-meta")
+            desc.set_xalign(0)
+            desc.set_ellipsize(Pango.EllipsizeMode.END)
+            info_box.append(desc)
+
+        # Meta: size + lines + date
+        mod_date = ifile.last_modified[:10] if ifile.last_modified else "?"
+        meta_text = f"{ifile.size_human}  |  {ifile.lines:,} lines  |  {mod_date}"
+        meta = Gtk.Label(label=meta_text)
+        meta.add_css_class("intro-file-meta")
+        meta.set_xalign(0)
+        info_box.append(meta)
+
+        row.append(info_box)
+
+        # Status badge
+        status_label = Gtk.Label(label=ifile.status)
+        status_label.add_css_class("intro-status-badge")
+        if ifile.status in ("COMPLETE", "VERIFIED", "ALL_WORKING", "OPERATIONAL", "ESTABLISHED", "STABLE"):
+            status_label.add_css_class("intro-status-complete")
+        elif ifile.status in ("ACTIVE", "IN_PROGRESS"):
+            status_label.add_css_class("intro-status-active")
+        else:
+            status_label.add_css_class("intro-status-unknown")
+        status_label.set_valign(Gtk.Align.CENTER)
+        row.append(status_label)
+
+        # Open button
+        open_btn = Gtk.Button(label="Open")
+        open_btn.add_css_class("intro-open-btn")
+        open_btn.set_valign(Gtk.Align.CENTER)
+        file_path = str(ifile.path)
+        open_btn.connect("clicked", lambda b, p=file_path: self._open_file(p))
+        row.append(open_btn)
+
+        return row
+
+    # -----------------------------------------------------------------
+    # CATEGORY VIEW (B, C, D files)
+    # -----------------------------------------------------------------
+
+    def _build_category_view(self, letter: str):
+        """Build a view for a file category (B, C, D, etc.)."""
+        categories = intro_integration.get_intro_categories()
+        target_cat = None
+        for cat in categories:
+            if cat.letter == letter:
+                target_cat = cat
+                break
+
+        if not target_cat:
+            empty = Adw.StatusPage()
+            empty.set_title(f"Category {letter} Not Found")
+            empty.set_icon_name("dialog-warning-symbolic")
+            self._container.append(empty)
+            return
+
+        # Header
+        header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        title = Gtk.Label(label=f"{target_cat.name} -- {letter}-Files")
+        title.add_css_class("intro-view-header")
+        title.set_xalign(0)
+        header_box.append(title)
+
+        subtitle = Gtk.Label(label=target_cat.description)
+        subtitle.add_css_class("intro-view-subtitle")
+        subtitle.set_xalign(0)
+        subtitle.set_wrap(True)
+        header_box.append(subtitle)
+        self._container.append(header_box)
+
+        # Separator
+        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        sep.set_margin_top(4)
+        sep.set_margin_bottom(4)
+        self._container.append(sep)
+
+        if not target_cat.files:
+            empty = Adw.StatusPage()
+            empty.set_title(f"No {letter}-Files Found")
+            empty.set_description(f"Could not find {letter}-files in MASTER FOLDERS(INTRO)")
+            empty.set_icon_name("folder-symbolic")
+            self._container.append(empty)
+            return
+
+        # Summary
+        summary = Gtk.Label(
+            label=f"{target_cat.file_count} files  |  {target_cat.total_lines:,} lines  |  Last modified: {target_cat.latest_modified[:10] if target_cat.latest_modified else '?'}"
+        )
+        summary.add_css_class("caption")
+        summary.add_css_class("dim-label")
+        summary.set_xalign(0)
+        self._container.append(summary)
+
+        # File rows
+        files_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+
+        for f in target_cat.files:
+            row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            row.add_css_class("intro-file-row")
+
+            # File number
+            num = f.category_number
+            num_str = f"{letter}{num}" if num is not None else f.name[:3]
+            number_label = Gtk.Label(label=num_str)
+            number_label.add_css_class("intro-file-number")
+            number_label.set_valign(Gtk.Align.CENTER)
+            row.append(number_label)
+
+            # Info
+            info_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+            info_box.set_hexpand(True)
+
+            name_label = Gtk.Label(label=f.name)
+            name_label.add_css_class("intro-file-title")
+            name_label.set_xalign(0)
+            name_label.set_ellipsize(Pango.EllipsizeMode.END)
+            info_box.append(name_label)
+
+            mod_date = f.last_modified[:10] if f.last_modified else "?"
+            meta = Gtk.Label(label=f"{f.size_human}  |  {f.lines:,} lines  |  {mod_date}")
+            meta.add_css_class("intro-file-meta")
+            meta.set_xalign(0)
+            info_box.append(meta)
+
+            row.append(info_box)
+
+            # Status badge
+            status = Gtk.Label(label=f.status)
+            status.add_css_class("intro-status-badge")
+            if f.status in ("COMPLETE", "VERIFIED", "ALL_WORKING", "OPERATIONAL", "ESTABLISHED", "STABLE"):
+                status.add_css_class("intro-status-complete")
+            elif f.status in ("ACTIVE", "IN_PROGRESS"):
+                status.add_css_class("intro-status-active")
+            else:
+                status.add_css_class("intro-status-unknown")
+            status.set_valign(Gtk.Align.CENTER)
+            row.append(status)
+
+            # Open button
+            open_btn = Gtk.Button(label="Open")
+            open_btn.add_css_class("intro-open-btn")
+            open_btn.set_valign(Gtk.Align.CENTER)
+            fpath = str(f.path)
+            open_btn.connect("clicked", lambda b, p=fpath: self._open_file(p))
+            row.append(open_btn)
+
+            files_box.append(row)
+
+        self._container.append(files_box)
+
+    # -----------------------------------------------------------------
+    # STRUCTURE VIEW (Folder governance + rules)
+    # -----------------------------------------------------------------
+
+    def _build_structure_view(self):
+        """Build the folder structure and governance rules view."""
+        header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        title = Gtk.Label(label="Folder Structure & Governance")
+        title.add_css_class("intro-view-header")
+        title.set_xalign(0)
+        header_box.append(title)
+
+        subtitle = Gtk.Label(label="MASTER FOLDERS(INTRO) directory layout, naming conventions, and governance rules")
+        subtitle.add_css_class("intro-view-subtitle")
+        subtitle.set_xalign(0)
+        subtitle.set_wrap(True)
+        header_box.append(subtitle)
+        self._container.append(header_box)
+
+        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        sep.set_margin_top(4)
+        sep.set_margin_bottom(4)
+        self._container.append(sep)
+
+        # Get full structure
+        structure = intro_integration.get_intro_structure()
+
+        if not structure["exists"]:
+            empty = Adw.StatusPage()
+            empty.set_title("INTRO Folder Not Found")
+            empty.set_description(f"Expected at: {intro_integration.INTRO_PATH}")
+            empty.set_icon_name("dialog-error-symbolic")
+            self._container.append(empty)
+            return
+
+        # Overview stats card
+        stats_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        stats_card.add_css_class("intro-category-card")
+
+        stats_title = Gtk.Label(label="Overview")
+        stats_title.set_xalign(0)
+        stats_title.add_css_class("heading")
+        stats_card.append(stats_title)
+
+        stats_grid = Gtk.Grid()
+        stats_grid.set_column_spacing(24)
+        stats_grid.set_row_spacing(4)
+
+        stat_items = [
+            ("Total files:", str(structure["total_files"])),
+            ("Total lines:", f"{structure['total_lines']:,}"),
+            ("Subdirectories:", str(len(structure["subdirectories"]))),
+            ("Root files:", str(len(structure["root_files"]))),
+        ]
+
+        for i, (label_text, value_text) in enumerate(stat_items):
+            key_label = Gtk.Label(label=label_text)
+            key_label.set_xalign(0)
+            key_label.add_css_class("dim-label")
+            key_label.add_css_class("caption")
+            stats_grid.attach(key_label, 0, i, 1, 1)
+
+            val_label = Gtk.Label(label=value_text)
+            val_label.set_xalign(0)
+            val_label.add_css_class("caption")
+            stats_grid.attach(val_label, 1, i, 1, 1)
+
+        stats_card.append(stats_grid)
+        self._container.append(stats_card)
+
+        # Categories overview card
+        categories = intro_integration.get_intro_categories()
+        cat_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        cat_card.add_css_class("intro-category-card")
+
+        cat_title = Gtk.Label(label="File Categories")
+        cat_title.set_xalign(0)
+        cat_title.add_css_class("heading")
+        cat_card.append(cat_title)
+
+        for cat in categories:
+            cat_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            cat_row.set_margin_top(4)
+            cat_row.set_margin_bottom(4)
+
+            letter_label = Gtk.Label()
+            letter_label.set_markup(f'<span weight="ultrabold" font_family="JetBrains Mono">[{cat.letter}]</span>')
+            letter_label.set_valign(Gtk.Align.CENTER)
+            cat_row.append(letter_label)
+
+            name_label = Gtk.Label(label=cat.name)
+            name_label.set_hexpand(True)
+            name_label.set_xalign(0)
+            name_label.add_css_class("intro-file-title")
+            cat_row.append(name_label)
+
+            count_label = Gtk.Label(label=f"{cat.file_count} files")
+            count_label.add_css_class("intro-sidebar-count")
+            count_label.set_valign(Gtk.Align.CENTER)
+            cat_row.append(count_label)
+
+            lines_label = Gtk.Label(label=f"{cat.total_lines:,} lines")
+            lines_label.add_css_class("caption")
+            lines_label.add_css_class("dim-label")
+            lines_label.set_valign(Gtk.Align.CENTER)
+            cat_row.append(lines_label)
+
+            cat_card.append(cat_row)
+
+        self._container.append(cat_card)
+
+        # Subdirectories card
+        if structure["subdirectories"]:
+            dir_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+            dir_card.add_css_class("intro-category-card")
+
+            dir_title = Gtk.Label(label="Subdirectories")
+            dir_title.set_xalign(0)
+            dir_title.add_css_class("heading")
+            dir_card.append(dir_title)
+
+            for dirname in structure["subdirectories"]:
+                dir_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+                dir_icon = Gtk.Image.new_from_icon_name("folder-symbolic")
+                dir_icon.add_css_class("dim-label")
+                dir_row.append(dir_icon)
+
+                dir_label = Gtk.Label(label=dirname)
+                dir_label.set_xalign(0)
+                dir_label.set_hexpand(True)
+                dir_label.add_css_class("caption")
+                dir_row.append(dir_label)
+
+                # Open button
+                open_btn = Gtk.Button(icon_name="folder-open-symbolic")
+                open_btn.add_css_class("flat")
+                open_btn.set_tooltip_text(f"Open {dirname}")
+                dir_path = str(intro_integration.INTRO_PATH / dirname)
+                open_btn.connect("clicked", lambda b, p=dir_path: subprocess.Popen(["xdg-open", p]))
+                dir_row.append(open_btn)
+
+                dir_card.append(dir_row)
+
+            self._container.append(dir_card)
+
+    # -----------------------------------------------------------------
+    # HEALTH VIEW (Live verification status)
+    # -----------------------------------------------------------------
+
+    def _build_health_view(self):
+        """Build the system health verification dashboard."""
+        header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        title = Gtk.Label(label="INTRO System Health")
+        title.add_css_class("intro-view-header")
+        title.set_xalign(0)
+        header_box.append(title)
+
+        subtitle = Gtk.Label(label="Live verification status for the MASTER FOLDERS(INTRO) system")
+        subtitle.add_css_class("intro-view-subtitle")
+        subtitle.set_xalign(0)
+        subtitle.set_wrap(True)
+        header_box.append(subtitle)
+        self._container.append(header_box)
+
+        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        sep.set_margin_top(4)
+        sep.set_margin_bottom(4)
+        self._container.append(sep)
+
+        # Run health checks
+        report = intro_integration.get_intro_health()
+
+        # Score display
+        score_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=16)
+        score_box.set_halign(Gtk.Align.CENTER)
+        score_box.set_margin_top(16)
+        score_box.set_margin_bottom(16)
+
+        score_label = Gtk.Label(label=f"{report.overall_score:.0f}%")
+        score_label.add_css_class("intro-health-score")
+        if report.overall_score >= 80:
+            score_label.add_css_class("intro-health-pass")
+        elif report.overall_score >= 50:
+            score_label.add_css_class("intro-health-warn")
+        else:
+            score_label.add_css_class("intro-health-fail")
+        score_box.append(score_label)
+
+        score_meta_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+        score_meta_box.set_valign(Gtk.Align.CENTER)
+
+        passed_count = sum(1 for c in report.checks if c.passed)
+        total_count = len(report.checks)
+        passed_label = Gtk.Label(label=f"{passed_count}/{total_count} checks passed")
+        passed_label.add_css_class("caption")
+        score_meta_box.append(passed_label)
+
+        ts_label = Gtk.Label(label=f"Checked: {report.timestamp[:19]}")
+        ts_label.add_css_class("caption")
+        ts_label.add_css_class("dim-label")
+        score_meta_box.append(ts_label)
+
+        score_box.append(score_meta_box)
+        self._container.append(score_box)
+
+        # Refresh button
+        refresh_btn = Gtk.Button(label="Re-run Health Checks")
+        refresh_btn.add_css_class("suggested-action")
+        refresh_btn.add_css_class("pill")
+        refresh_btn.set_halign(Gtk.Align.CENTER)
+        refresh_btn.connect("clicked", lambda b: self.show_category("health"))
+        self._container.append(refresh_btn)
+
+        # Individual checks
+        checks_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        checks_box.set_margin_top(12)
+
+        for check in report.checks:
+            check_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+            check_row.add_css_class("intro-check-row")
+            if check.passed:
+                check_row.add_css_class("intro-check-pass")
+            else:
+                check_row.add_css_class("intro-check-fail")
+
+            # Status icon
+            icon_name = "emblem-ok-symbolic" if check.passed else "dialog-error-symbolic"
+            icon = Gtk.Image.new_from_icon_name(icon_name)
+            if check.passed:
+                icon.add_css_class("success")
+            else:
+                icon.add_css_class("error")
+            icon.set_valign(Gtk.Align.CENTER)
+            check_row.append(icon)
+
+            # Check info
+            info_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=1)
+            info_box.set_hexpand(True)
+
+            name = Gtk.Label(label=check.check_name)
+            name.set_xalign(0)
+            name.add_css_class("intro-file-title")
+            info_box.append(name)
+
+            msg = Gtk.Label(label=check.message)
+            msg.set_xalign(0)
+            msg.add_css_class("intro-file-meta")
+            msg.set_ellipsize(Pango.EllipsizeMode.END)
+            info_box.append(msg)
+
+            # Show details if any
+            if check.details:
+                details_text = ", ".join(check.details[:5])
+                if len(check.details) > 5:
+                    details_text += f" (+{len(check.details) - 5} more)"
+                details = Gtk.Label(label=details_text)
+                details.set_xalign(0)
+                details.add_css_class("caption")
+                details.add_css_class("dim-label")
+                details.set_wrap(True)
+                info_box.append(details)
+
+            check_row.append(info_box)
+
+            # Pass/Fail badge
+            badge = Gtk.Label(label="PASS" if check.passed else "FAIL")
+            badge.add_css_class("intro-status-badge")
+            badge.add_css_class("intro-status-complete" if check.passed else "error")
+            badge.set_valign(Gtk.Align.CENTER)
+            check_row.append(badge)
+
+            checks_box.append(check_row)
+
+        self._container.append(checks_box)
+
+    # -----------------------------------------------------------------
+    # UTILITY
+    # -----------------------------------------------------------------
+
+    def _open_file(self, path: str):
+        """Open a file in the default system editor."""
+        try:
+            subprocess.Popen(["xdg-open", path])
+        except Exception as e:
+            print(f"Could not open file: {e}")
+
+
+#
 # MAIN WINDOW
-# 
+#
 
 class MasterpieceWindow(Adw.ApplicationWindow):
     """The main application window"""
@@ -7130,6 +7938,100 @@ class MasterpieceWindow(Adw.ApplicationWindow):
 
         sidebar_box.append(scroll)
 
+        # === INTRO SYSTEM SIDEBAR SECTION ===
+        intro_sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        intro_sep.set_margin_top(8)
+        sidebar_box.append(intro_sep)
+
+        # Section header
+        intro_header = Gtk.Label(label="INTRO SYSTEM")
+        intro_header.add_css_class("intro-section-header")
+        intro_header.set_xalign(0)
+        sidebar_box.append(intro_header)
+
+        # Build INTRO sidebar items from INTRO_SIDEBAR_ITEMS
+        # Each item: (key, label, range_text, icon_name)
+        self._intro_sidebar_btns = {}
+
+        # Pre-fetch category data for file counts and dates
+        try:
+            intro_summary = intro_integration.get_intro_summary()
+            intro_cats = intro_integration.get_intro_categories()
+            intro_cat_dict = {cat.letter: cat for cat in intro_cats}
+        except Exception:
+            intro_summary = {"available": False}
+            intro_cat_dict = {}
+
+        for cat_key, cat_label, cat_range, cat_icon in INTRO_SIDEBAR_ITEMS:
+            btn_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+            btn_box.set_margin_start(12)
+            btn_box.set_margin_end(12)
+            btn_box.set_margin_top(2)
+            btn_box.set_margin_bottom(2)
+
+            btn = Gtk.Button()
+            btn.set_hexpand(True)
+            btn.add_css_class("flat")
+            btn.add_css_class("intro-sidebar-btn")
+            btn.add_css_class(f"intro-cat-{cat_key}")
+
+            btn_content = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+
+            icon = Gtk.Image.new_from_icon_name(cat_icon)
+            icon.add_css_class("intro-sidebar-icon")
+            btn_content.append(icon)
+
+            # Label + date column
+            label_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=1)
+            label_box.set_hexpand(True)
+
+            name_label = Gtk.Label(label=cat_label)
+            name_label.add_css_class("intro-sidebar-label")
+            name_label.set_xalign(0)
+            name_label.set_ellipsize(Pango.EllipsizeMode.END)
+            label_box.append(name_label)
+
+            # Last updated date
+            date_text = ""
+            if cat_key in intro_cat_dict:
+                lm = intro_cat_dict[cat_key].latest_modified
+                if lm:
+                    date_text = f"Updated: {lm[:10]}"
+            elif cat_key == "structure":
+                date_text = f"{cat_range}"
+            elif cat_key == "health":
+                date_text = f"{cat_range}"
+
+            if date_text:
+                date_label = Gtk.Label(label=date_text)
+                date_label.add_css_class("intro-sidebar-date")
+                date_label.set_xalign(0)
+                label_box.append(date_label)
+
+            btn_content.append(label_box)
+
+            # File count badge
+            count_text = ""
+            if cat_key in intro_cat_dict:
+                count_text = str(intro_cat_dict[cat_key].file_count)
+            elif cat_key == "structure":
+                if intro_summary.get("available"):
+                    count_text = str(len(intro_integration.get_intro_structure().get("subdirectories", [])))
+            elif cat_key == "health":
+                count_text = "..."
+
+            if count_text:
+                count_label = Gtk.Label(label=count_text)
+                count_label.add_css_class("intro-sidebar-count")
+                btn_content.append(count_label)
+
+            btn.set_child(btn_content)
+            btn.connect("clicked", self._on_intro_sidebar_clicked, cat_key)
+            btn_box.append(btn)
+
+            self._intro_sidebar_btns[cat_key] = btn
+            sidebar_box.append(btn_box)
+
         # === LINEN HEALTH BUTTON (INTRO System) ===
         linen_sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
         linen_sep.set_margin_top(8)
@@ -7287,6 +8189,10 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         self.sync_view = SyncDashboardView()
         sync_scroll.set_child(self.sync_view)
         self.content_stack.add_named(sync_scroll, "sync")
+
+        # INTRO System page (FASE 1 sidebar integration)
+        self.intro_view = IntroSystemView()
+        self.content_stack.add_named(self.intro_view, "intro")
 
         content_page.set_child(self.content_stack)
         self.split_view.set_content(content_page)
@@ -7939,6 +8845,30 @@ class MasterpieceWindow(Adw.ApplicationWindow):
                 self.sync_score_label.add_css_class("error")
         except Exception:
             self.sync_score_label.set_label("?")
+
+    def _on_intro_sidebar_clicked(self, button, category_key):
+        """Navigate to an INTRO system view for the given category."""
+        # Deselect any selected victory in sidebar
+        self.sejr_list.unselect_all()
+        # Show the INTRO view for this category
+        self.intro_view.show_category(category_key)
+        self.content_stack.set_visible_child_name("intro")
+        self.split_view.set_show_content(True)
+
+        # Update health score in sidebar if health category exists
+        if category_key == "health" and "health" in self._intro_sidebar_btns:
+            try:
+                report = intro_integration.get_intro_health()
+                # Find the count label in the health button
+                btn = self._intro_sidebar_btns["health"]
+                # The btn's child is btn_content, find the count label (last child)
+                content_box = btn.get_child()
+                if content_box:
+                    child = content_box.get_last_child()
+                    if child and isinstance(child, Gtk.Label):
+                        child.set_label(f"{report.overall_score:.0f}%")
+            except Exception:
+                pass
 
     def _on_new_sejr(self, button):
         """Create a new victory with dialog for name input"""

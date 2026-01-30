@@ -40,17 +40,17 @@
 
 ### FASE 1: SIDEBAR INTEGRATION
 
-- [ ] Tilføj ny sidebar sektion "INTRO SYSTEM" under eksisterende sejr-lister
-- [ ] Tilføj separator mellem Victories og INTRO sektioner
-- [ ] Vis INTRO fil-kategorier som sidebar rows:
-  - [ ] "[LIST] I-Files (System Intelligence)" — I1-I12
-  - [ ] "[CODE] Terminal Commands" — B1-B10
-  - [ ] "[CONFIG] Environment Config" — C2-C10
-  - [ ] "[BUILD] Architecture" — D1-D10
-  - [ ] "[DIR] Folder Structure" — Governance + Rules
-  - [ ] "[DATA] System Health" — Live verification status
-- [ ] Hvert sidebar item viser: Navn + antal filer + sidst opdateret
-- [ ] Click på sidebar item → vis detail view i content area
+- [x] Tilføj ny sidebar sektion "INTRO SYSTEM" under eksisterende sejr-lister
+- [x] Tilføj separator mellem Victories og INTRO sektioner
+- [x] Vis INTRO fil-kategorier som sidebar rows:
+  - [x] "[LIST] I-Files (System Intelligence)" — I1-I12
+  - [x] "[CODE] Terminal Commands" — B1-B10
+  - [x] "[CONFIG] Environment Config" — C2-C10
+  - [x] "[BUILD] Architecture" — D1-D10
+  - [x] "[DIR] Folder Structure" — Governance + Rules
+  - [x] "[DATA] System Health" — Live verification status
+- [x] Hvert sidebar item viser: Navn + antal filer + sidst opdateret
+- [x] Click på sidebar item → vis detail view i content area
 
 ### FASE 2: I-FILES DETAIL VIEW (System Intelligence)
 

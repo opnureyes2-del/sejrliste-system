@@ -116,13 +116,13 @@ AGENTER SOVER (5 min timeout)
 
 ### A. PYTHON PAKKE SETUP
 - [x] **A1.** Opret `requirements.txt` med alle dependencies
-- [ ] **A2.** Opret fungerende `.venv` med alle deps installeret
+- [x] **A2.** Opret fungerende `.venv` med alle deps installeret
 - [x] **A3.** Opret `pyproject.toml` for proper pakke
 - [x] **A4.** Opret `__init__.py` i alle mapper
 - [ ] **A5.** Test at top-5 kernefiler kan importeres
 
 ### B. CONFIG I STEDET FOR HARDCODED PATHS
-- [ ] **B1.** Opret `config.yaml` med alle paths samlet
+- [x] **B1.** Opret `config.yaml` med alle paths samlet
 - [ ] **B2.** Erstat hardcoded i admiral_genesis.py
 - [ ] **B3.** Erstat hardcoded i organic_spawner.py
 - [ ] **B4.** Erstat hardcoded i hybrid_worker.py
