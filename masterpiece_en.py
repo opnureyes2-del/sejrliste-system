@@ -746,6 +746,39 @@ row.drop-above {
     border: 2px dashed #10b981;
 }
 
+/* === DRAG VALID/INVALID INDICATORS === */
+row.drop-valid {
+    border-top: 3px solid #10b981;
+    background: rgba(16, 185, 129, 0.12);
+}
+
+row.drop-invalid {
+    border-top: 3px solid #ef4444;
+    background: rgba(239, 68, 68, 0.08);
+}
+
+/* === DRAG SUCCESS FLASH === */
+@keyframes success-flash {
+    0% { background: rgba(16, 185, 129, 0.3); }
+    100% { background: transparent; }
+}
+
+row.success-flash {
+    animation: success-flash 0.6s ease-out;
+}
+
+/* === MULTI-SELECT INDICATOR === */
+row.selected-multi {
+    background: rgba(99, 102, 241, 0.15);
+    border-left: 3px solid @primary_500;
+}
+
+/* === DRAGGING ROW STYLE === */
+row.dragging {
+    opacity: 0.4;
+    background: rgba(99, 102, 241, 0.05);
+}
+
 /* === ZOOM SLIDER === */
 .zoom-slider {
     min-width: 100px;
@@ -2680,6 +2713,12 @@ class SejrRow(Adw.ActionRow):
         # Make it activatable
         self.set_activatable(True)
 
+        # === MULTI-SELECT (Ctrl+Click) ===
+        click_ctrl = Gtk.GestureClick()
+        click_ctrl.set_button(1)  # Left mouse button
+        click_ctrl.connect("pressed", self._on_multi_click)
+        self.add_controller(click_ctrl)
+
         # === DRAG SOURCE (for reorder + folder-to-folder) ===
         drag_source = Gtk.DragSource()
         drag_source.set_actions(Gdk.DragAction.MOVE)
@@ -2696,8 +2735,57 @@ class SejrRow(Adw.ActionRow):
         drop_target.connect("leave", self._on_reorder_leave)
         self.add_controller(drop_target)
 
+    def _on_multi_click(self, gesture, n_press, x, y):
+        """Handle Ctrl+Click for multi-select"""
+        state = gesture.get_current_event_state()
+        ctrl_held = bool(state & Gdk.ModifierType.CONTROL_MASK)
+        window = self.get_root()
+
+        if ctrl_held and window and hasattr(window, '_selected_rows'):
+            path_str = str(self.sejr_info.get("path", ""))
+            if path_str in window._selected_rows:
+                window._selected_rows.discard(path_str)
+                self.remove_css_class("selected-multi")
+            else:
+                window._selected_rows.add(path_str)
+                self.add_css_class("selected-multi")
+            # Show multi-select count
+            count = len(window._selected_rows)
+            if count > 0 and hasattr(window, '_toast_overlay'):
+                toast = Adw.Toast.new(f"{count} sejrliste{'r' if count > 1 else ''} valgt")
+                toast.set_timeout(1)
+                window._toast_overlay.add_toast(toast)
+        else:
+            # Normal click: clear multi-selection
+            if window and hasattr(window, '_selected_rows'):
+                for row_widget in self._get_all_rows(window):
+                    row_widget.remove_css_class("selected-multi")
+                window._selected_rows.clear()
+
+    @staticmethod
+    def _get_all_rows(window):
+        """Get all SejrRow widgets from the sidebar list"""
+        rows = []
+        if hasattr(window, 'sejr_list'):
+            child = window.sejr_list.get_first_child()
+            while child:
+                if isinstance(child, SejrRow):
+                    rows.append(child)
+                child = child.get_next_sibling()
+        return rows
+
     def _on_drag_prepare(self, source, x, y):
-        """Provide the sejr path as drag data"""
+        """Provide the sejr path(s) as drag data — supports multi-select"""
+        window = self.get_root()
+        # If multi-selected, include all selected paths
+        if window and hasattr(window, '_selected_rows') and len(window._selected_rows) > 1:
+            path_str = str(self.sejr_info.get("path", ""))
+            if path_str in window._selected_rows:
+                # Drag all selected as pipe-separated paths
+                all_paths = "|".join(sorted(window._selected_rows))
+                value = GObject.Value(GObject.TYPE_STRING, all_paths)
+                return Gdk.ContentProvider.new_for_value(value)
+        # Single drag
         path_str = str(self.sejr_info.get("path", ""))
         if not path_str:
             return None
@@ -2705,11 +2793,44 @@ class SejrRow(Adw.ActionRow):
         return Gdk.ContentProvider.new_for_value(value)
 
     def _on_drag_begin(self, source, drag):
-        """Visual feedback: dim the row being dragged"""
+        """Visual feedback: dim the row being dragged + show drag ghost"""
         self.set_opacity(0.4)
         self.add_css_class("dragging")
-        # Track active drag for Escape cancellation
         window = self.get_root()
+        multi_count = 0
+        if window and hasattr(window, '_selected_rows') and len(window._selected_rows) > 1:
+            multi_count = len(window._selected_rows)
+            # Dim all selected rows
+            for row in SejrRow._get_all_rows(window):
+                path_str = str(row.sejr_info.get("path", ""))
+                if path_str in window._selected_rows:
+                    row.set_opacity(0.4)
+                    row.add_css_class("dragging")
+        # Create drag ghost (semi-transparent snapshot of the row)
+        try:
+            if multi_count > 1:
+                # Multi-select: show count badge
+                badge_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+                badge_box.set_opacity(0.85)
+                label = Gtk.Label(label=f"{multi_count} sejrlister")
+                label.add_css_class("heading")
+                badge_box.append(label)
+                icon_widget = Gtk.DragIcon.get_for_drag(drag)
+                icon_widget.set_child(badge_box)
+            else:
+                # Single: show row snapshot
+                snapshot = Gtk.Snapshot()
+                self.snapshot(snapshot)
+                paintable = snapshot.to_paintable(None)
+                if paintable:
+                    icon_widget = Gtk.DragIcon.get_for_drag(drag)
+                    picture = Gtk.Picture.new_for_paintable(paintable)
+                    picture.set_size_request(250, 48)
+                    picture.set_opacity(0.8)
+                    icon_widget.set_child(picture)
+        except Exception:
+            pass  # Fallback: no ghost, still functional
+        # Track active drag for Escape cancellation
         if window:
             window._active_drag_row = self
 
@@ -2739,17 +2860,29 @@ class SejrRow(Adw.ActionRow):
         return True
 
     def _on_reorder_enter(self, target, x, y):
-        """Show drop indicator"""
+        """Show drop indicator with valid/invalid coloring"""
         self.add_css_class("drop-above")
+        # Determine if this is a valid drop target
+        window = self.get_root()
+        if window and hasattr(window, '_active_drag_row'):
+            drag_row = window._active_drag_row
+            if drag_row and drag_row != self:
+                self.add_css_class("drop-valid")
+            else:
+                self.add_css_class("drop-invalid")
         return Gdk.DragAction.MOVE
 
     def _on_reorder_leave(self, target):
-        """Remove drop indicator"""
+        """Remove all drop indicator classes"""
         self.remove_css_class("drop-above")
+        self.remove_css_class("drop-valid")
+        self.remove_css_class("drop-invalid")
 
     def _on_reorder_drop(self, target, value, x, y):
         """Handle a sejr being dropped onto this row (reorder or move)"""
         self.remove_css_class("drop-above")
+        self.remove_css_class("drop-valid")
+        self.remove_css_class("drop-invalid")
         source_path = str(value)
         dest_info = self.sejr_info
 
@@ -2783,15 +2916,31 @@ class SejrRow(Adw.ActionRow):
             dialog.add_response("move", f"Flyt til {direction}")
             dialog.set_response_appearance("move", Adw.ResponseAppearance.DESTRUCTIVE)
 
+            drop_row = self  # Capture for closure
+
             def on_move_response(dlg, response):
                 if response == "move":
                     try:
                         import shutil
                         shutil.move(str(source), str(target_dir))
+                        # Track for undo
+                        if hasattr(window, '_drag_history'):
+                            window._drag_history.append({
+                                'from': str(source),
+                                'to': str(target_dir),
+                                'name': source.name,
+                                'direction': direction
+                            })
                         if hasattr(window, '_load_sejrs'):
                             window._load_sejrs()
+                        # Success animation
+                        drop_row.add_css_class("success-flash")
+                        GLib.timeout_add(700, lambda: drop_row.remove_css_class("success-flash") or False)
+                        # Undo toast with 5 second timeout
                         toast = Adw.Toast.new(f"Flyttet til {direction}: {source.name}")
-                        toast.set_timeout(3)
+                        toast.set_timeout(5)
+                        toast.set_button_label("Fortryd")
+                        toast.connect("button-clicked", lambda t: window._undo_last_drag() if hasattr(window, '_undo_last_drag') else None)
                         if hasattr(window, '_toast_overlay'):
                             window._toast_overlay.add_toast(toast)
                     except Exception as e:
@@ -2804,9 +2953,9 @@ class SejrRow(Adw.ActionRow):
             dialog.present(window)
             return True
         else:
-            # Same category: this is a reorder (just visual, no filesystem change needed)
-            # GTK ListBox doesn't have persistent order — it's loaded from filesystem
-            # For now, just accept the drop silently
+            # Same category: this is a reorder (just visual feedback)
+            self.add_css_class("success-flash")
+            GLib.timeout_add(700, lambda: self.remove_css_class("success-flash") or False)
             return True
 
 
@@ -6765,6 +6914,9 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         self.search_mode = False
         self.zoom_level = 1.0  # For zoom functionality
         self.file_monitors = []  # Real-time file monitoring
+        self._drag_history = []  # Undo stack for drag operations
+        self._selected_rows = set()  # Multi-select tracking
+        self._active_drag_row = None  # Currently dragged row
 
         self._build_ui()
         self._load_sejrs()
@@ -6782,9 +6934,11 @@ class MasterpieceWindow(Adw.ApplicationWindow):
         # Main container
         main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
-        # Wrap in konfetti overlay
+        # Wrap in toast overlay (REQUIRED for toasts to work) then konfetti
+        self._toast_overlay = Adw.ToastOverlay()
         self.konfetti.set_child(main_box)
-        self.set_content(self.konfetti)
+        self._toast_overlay.set_child(self.konfetti)
+        self.set_content(self._toast_overlay)
 
         # Header bar
         header = Adw.HeaderBar()
@@ -8218,9 +8372,48 @@ Du er på vej mod Admiral niveau!"""
                     break
         return True
 
-    # 
+    #
+    # DRAG UNDO SYSTEM
+    #
+
+    def _undo_last_drag(self):
+        """Undo the last drag-and-drop move operation (Ctrl+Z)"""
+        if not self._drag_history:
+            toast = Adw.Toast.new("Ingen drag-operationer at fortryde")
+            toast.set_timeout(2)
+            if hasattr(self, '_toast_overlay'):
+                self._toast_overlay.add_toast(toast)
+            return
+
+        last = self._drag_history.pop()
+        moved_to = Path(last['to'])
+        original_from = Path(last['from'])
+
+        if moved_to.exists() and not original_from.exists():
+            try:
+                import shutil
+                shutil.move(str(moved_to), str(original_from))
+                self._load_sejrs()
+                toast = Adw.Toast.new(f"Fortrudt: {last['name']} flyttet tilbage")
+                toast.set_timeout(3)
+                if hasattr(self, '_toast_overlay'):
+                    self._toast_overlay.add_toast(toast)
+            except Exception as e:
+                toast = Adw.Toast.new(f"Fortryd fejl: {str(e)[:50]}")
+                toast.set_timeout(3)
+                if hasattr(self, '_toast_overlay'):
+                    self._toast_overlay.add_toast(toast)
+                # Put it back in history since undo failed
+                self._drag_history.append(last)
+        else:
+            toast = Adw.Toast.new("Kan ikke fortryde: filer er aendret")
+            toast.set_timeout(3)
+            if hasattr(self, '_toast_overlay'):
+                self._toast_overlay.add_toast(toast)
+
+    #
     # REAL-TIME FILE MONITORING
-    # 
+    #
 
     def _setup_file_monitoring(self):
         """Setup Gio.FileMonitor for real-time updates"""
@@ -9065,6 +9258,12 @@ class MasterpieceApp(Adw.Application):
         predict_action.connect("activate", lambda a, p: win._run_predict_script())
         self.add_action(predict_action)
         self.set_accels_for_action("app.predict", ["p"])
+
+        # Ctrl+Z for undo last drag
+        undo_action = Gio.SimpleAction.new("undo-drag", None)
+        undo_action.connect("activate", lambda a, p: win._undo_last_drag())
+        self.add_action(undo_action)
+        self.set_accels_for_action("app.undo-drag", ["<Control>z"])
 
         # Zoom shortcuts
         zoom_in_action = Gio.SimpleAction.new("zoom-in", None)
