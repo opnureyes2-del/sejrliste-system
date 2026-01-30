@@ -168,20 +168,20 @@ AGENTER SOVER (5 min timeout)
 ## PASS 3: INTEGRATION + 7-DNA REVIEW
 
 ### G. SYSTEM INTEGRATION
-- [ ] **G1.** Agenter kommunikerer via event_bus
-- [ ] **G2.** Persistent memory deles korrekt
-- [ ] **G3.** AI backend rotation virker med Ollama
-- [ ] **G4.** Hybrid worker overtager ved AI-fejl
-- [ ] **G5.** Organic spawner kan generere ny agent
+- [x] **G1.** Agenter kommunikerer via event_bus -- YES (CODE PATTERN): 3+ agents import og bruger EventBus (unified_query_api.py publisher 10+ steder, unified_knowledge_sync.py subscriber file.created/updated/deleted, auto_healer.py pub+sub heal.attempted/success/failed + agent.down). Pattern er korrekt: import EventBus, connect(), publish(routing_key, msg), subscribe(pattern, callback). Kan ikke koere live (RabbitMQ mangler), men koden er strukturelt korrekt og konsistent.
+- [x] **G2.** Persistent memory deles korrekt -- YES: PersistentMemory tager data_dir parameter (default ~/.aho). admiral_hybrid_organic.py instantierer med self.data_dir, SQLite DB er fil-baseret (memory.db) saa multiple processer kan laese. Testet i Pass 2: CRUD fuldt verificeret med tempdir. Skema har conversations, decisions, learnings, family_snapshots tabeller med indekser.
+- [x] **G3.** AI backend rotation virker med Ollama -- YES (VERIFIED LIVE): AIBackendRotator init checker Ollama via GET localhost:11434/api/tags. Ollama svarer med 14 modeller. get_available_backend() returnerer "ollama" (eneste enabled, 5 cloud disabled). _ollama_chat() sender til /api/chat med model llama3.2:3b. Rotation logic: least-loaded first, failover efter 3 consecutive errors, rate limit tracking per backend.
+- [x] **G4.** Hybrid worker overtager ved AI-fejl -- YES (BY DESIGN): hybrid_worker.py har ZERO AI imports. Alle funktioner (check_python_syntax, analyze_python_file, get_codebase_stats, find_issues, check_git_status, run_real_work) bruger kun ast, subprocess, pathlib. Docstring: "BYPASS BROKEN SYSTEMS - Hvis AI fejler, arbejdet sker STADIG". Verificeret i Pass 2: 114 filer analyseret, 36848 linjer, 408 funktioner, 85 klasser -- alt uden AI.
+- [x] **G5.** Organic spawner kan generere ny agent -- YES (CODE VERIFIED): spawn_system() genererer Python fil fra MONITOR_TEMPLATE + systemd .service/.timer filer. Flow: analyze_failures() finder fejlmoenstre i EXECUTION_LOG, get_solution_for_type() mapper fejltype til loeesning (4 kendte: FAILED_SERVICE, PORT_DOWN, GIT_UNCOMMITTED, TODO + fallback), generate_check_logic() genererer check-kode, spawn_system() skriver fil + service + timer, activate_spawned() enabler via systemctl. 2 spawned_* filer eksisterer allerede i agents/.
 
 ### H. 7-DNA REVIEW
-- [ ] Lag 1: SELF-AWARE — Ved systemet hvad det har?
-- [ ] Lag 2: SELF-DOCUMENTING — Er alt logget?
-- [ ] Lag 3: SELF-VERIFYING — Kan det teste sig selv?
-- [ ] Lag 4: SELF-IMPROVING — Lærer det fra fejl?
-- [ ] Lag 5: SELF-ARCHIVING — Arkiveres data korrekt?
-- [ ] Lag 6: PREDICTIVE — Kan det forudsige næste skridt?
-- [ ] Lag 7: SELF-OPTIMIZING — Finder det bedre løsninger?
+- [x] Lag 1: SELF-AWARE -- YES: config.yaml (298 linjer) enumererer alle paths, ports, AI backends, Ollama modeller (14), family services (10+ HTTP endpoints), systemd services (10), git repos (3). __init__.py eksporterer alle moduler. get_codebase_stats() returnerer filantal, linjer, funktioner, klasser. get_status_report() viser alle backends.
+- [x] Lag 2: SELF-DOCUMENTING -- YES: Logging er gennemgaaende: event_bus har Python logging modul, persistent_memory gemmer alle conversations/decisions/learnings til SQLite + JSONL daglig log, hybrid_worker har log_work() til JSON, organic_spawner har log_spawn(), auto_healer logger til LOGS/auto_healer.log. config.yaml definerer 5+ log paths. 100% docstring coverage (verificeret Pass 2).
+- [x] Lag 3: SELF-VERIFYING -- YES: pytest suite med 97+ testfiler, 739 passed, 77/77 core tests passed. Test coverage: base_agent (14), event_bus (9), persistent_memory (19), ai_backend_rotator (21), hybrid_worker (14). health_check() i event_bus returnerer connection/channel/circuit status. hybrid_worker find_issues() verificerer syntax paa alle .py filer.
+- [x] Lag 4: SELF-IMPROVING -- PARTIAL: persistent_memory.save_learning() gemmer laering med kategori/kilde/confidence. admiral_hybrid_organic.monitor_family_health() kalder save_learning() ved service failures. admiral_learner.py genererer wisdom fra fejlanalyse. organic_spawner analyserer fejlmoenstre og spawner nye agenter. MEN: ingen automatisk kode-rettelse eller parameter-tuning baseret paa learnings. Learnings gemmes men genbruges ikke automatisk.
+- [x] Lag 5: SELF-ARCHIVING -- PARTIAL: config.yaml definerer log_retention_count: 50, work_log_retention_count: 20. hybrid_worker log_work() beholder kun sidste 20 entries. organic_spawner log_spawn() beholder sidste 50 entries. auto_healer rydder logs aeldre end 30 dage ved disk pressure. persistent_memory gemmer daily JSONL + SQLite. MEN: ingen automatisk arkivering til langtidslagring, ingen komprimering, ingen scheduled cleanup.
+- [x] Lag 6: PREDICTIVE -- PARTIAL: admiral_oracle.py har predict_issues() der bruger AI (Ollama qwen3:8b) til at forudsige problemer baseret paa system scan. admiral_kommando_hq.py laver predictions baseret paa crash loops og port konflikter. MEN: predictions er AI-genererede tekst, ikke strukturerede data. Ingen historisk traenings-loop eller accuracy tracking.
+- [x] Lag 7: SELF-OPTIMIZING -- PARTIAL: hybrid_super_architect.py har generate_improvements() + apply_improvements() for kode-kvalitet. agent_training_system.py tracker performance og identificerer weak areas. autonomous_evolution_loop.py og self_optimizing_engine.py eksisterer som filer. MEN: optimeringerne er templates/forslag, ikke automatisk eksekveret i produktion. Ingen A/B testing eller performance regression tracking.
 
 ---
 
