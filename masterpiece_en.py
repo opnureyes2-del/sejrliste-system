@@ -2112,6 +2112,16 @@ SYNC_PRIORITY_COLORS = {
     "P3": "#9ca3af",  # Grey — nice to have
 }
 
+# Component-specific colors for sync cards (Pass 3 visual polish)
+SYNC_COMPONENT_COLORS = {
+    "SYNC-1": "#00D9FF",  # Git: Cyan
+    "SYNC-2": "#f59e0b",  # Log: Wisdom gold
+    "SYNC-3": "#6366f1",  # Version: Intuition indigo
+    "SYNC-4": "#10b981",  # Links: Heart emerald
+    "SYNC-5": "#00FF88",  # Status: Success green
+    "SYNC-6": "#f97316",  # Notify: Warning orange
+}
+
 
 @dataclass
 class SyncStatus:
@@ -2505,6 +2515,55 @@ def _sync_cross_references(intro_path: Path) -> SyncStatus:
     status = "ok" if broken_links == 0 else ("warning" if broken_links <= 3 else "error")
     return SyncStatus("SYNC-4", "Cross-Reference", "P2", status,
                       f"{ok_links} OK / {broken_links} broken", ok_links, total_links)
+
+
+def _get_broken_links_detail(intro_path: Path):
+    """Return list of (source_file, link_text, target_path) for broken links"""
+    broken = []
+    md_files = list(intro_path.rglob("*.md"))
+    for f in md_files:
+        try:
+            content = f.read_text(encoding="utf-8", errors="ignore")
+            links = re.findall(r'\[([^\]]*)\]\(([^)]+)\)', content)
+            for text, href in links:
+                if href.startswith("http") or href.startswith("#") or href.startswith("mailto"):
+                    continue
+                target = f.parent / href
+                if not target.exists():
+                    # Try to find a close match for auto-suggest
+                    suggested = _suggest_link_fix(f.parent, href)
+                    broken.append((str(f.relative_to(intro_path)), text, href, suggested))
+        except Exception:
+            pass
+    return broken
+
+
+def _suggest_link_fix(base_dir: Path, broken_href: str):
+    """Try to find a close match for a broken link"""
+    target_name = Path(broken_href).name
+    # Search in base_dir and parent
+    search_dirs = [base_dir, base_dir.parent]
+    for d in search_dirs:
+        if not d.exists():
+            continue
+        for entry in d.iterdir():
+            if entry.name.lower() == target_name.lower():
+                try:
+                    return str(entry.relative_to(base_dir))
+                except ValueError:
+                    return str(entry)
+    # Try fuzzy: same prefix
+    prefix = target_name[:5].lower() if len(target_name) > 5 else target_name.lower()
+    for d in search_dirs:
+        if not d.exists():
+            continue
+        for entry in d.iterdir():
+            if entry.name.lower().startswith(prefix):
+                try:
+                    return str(entry.relative_to(base_dir))
+                except ValueError:
+                    return str(entry)
+    return None
 
 
 def _sync_status_md(intro_path: Path) -> SyncStatus:
@@ -6056,11 +6115,21 @@ class SyncComponentCard(Gtk.Box):
         self.set_margin_end(12)
         self.sync_status = sync_status
 
-        # Priority border color
-        pri_color = SYNC_PRIORITY_COLORS.get(sync_status.priority, "#9ca3af")
+        # Component-specific color (Pass 3)
+        comp_color = SYNC_COMPONENT_COLORS.get(sync_status.component_id, "#9ca3af")
 
-        # Card frame
+        # Card frame with color bar
         frame = Gtk.Frame()
+        outer_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
+
+        # Color bar (left side — component identity)
+        color_bar = Gtk.Box()
+        color_bar.set_size_request(5, -1)
+        css_bar = Gtk.CssProvider()
+        css_bar.load_from_string(f"box {{ background-color: {comp_color}; border-radius: 3px 0 0 3px; }}")
+        color_bar.get_style_context().add_provider(css_bar, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        outer_box.append(color_bar)
+
         frame_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         frame_box.set_margin_top(12)
         frame_box.set_margin_bottom(12)
@@ -6078,6 +6147,9 @@ class SyncComponentCard(Gtk.Box):
                 break
         icon = Gtk.Image.new_from_icon_name(icon_name)
         icon.set_pixel_size(24)
+        icon_css = Gtk.CssProvider()
+        icon_css.load_from_string(f"image {{ color: {comp_color}; }}")
+        icon.get_style_context().add_provider(icon_css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         header.append(icon)
 
         # Component name
@@ -6122,7 +6194,9 @@ class SyncComponentCard(Gtk.Box):
             bar.set_margin_top(4)
             frame_box.append(bar)
 
-        frame.set_child(frame_box)
+        frame_box.set_hexpand(True)
+        outer_box.append(frame_box)
+        frame.set_child(outer_box)
         self.append(frame)
 
 
@@ -6202,21 +6276,368 @@ class SyncDashboardView(Gtk.Box):
         links_btn.connect("clicked", self._on_check_links)
         actions_box.append(links_btn)
 
-        # Refresh button
-        refresh_btn = Gtk.Button(label="Scan Again")
-        refresh_btn.set_icon_name("view-refresh-symbolic")
-        refresh_btn.connect("clicked", self._on_refresh)
-        actions_box.append(refresh_btn)
+        # Refresh button with animated indicator
+        self._refresh_btn = Gtk.Button(label="Scan Again")
+        self._refresh_btn.set_icon_name("view-refresh-symbolic")
+        self._refresh_btn.connect("clicked", self._on_refresh_animated)
+        actions_box.append(self._refresh_btn)
+
+        # --- Pass 1 deferred: Git Push + Full Sync ---
+        push_btn = Gtk.Button(label="Git Push")
+        push_btn.set_icon_name("network-transmit-symbolic")
+        push_btn.connect("clicked", self._on_git_push)
+        actions_box.append(push_btn)
+
+        full_sync_btn = Gtk.Button(label="Full Sync")
+        full_sync_btn.set_icon_name("emblem-synchronizing-symbolic")
+        full_sync_btn.add_css_class("suggested-action")
+        full_sync_btn.connect("clicked", self._on_full_sync)
+        actions_box.append(full_sync_btn)
 
         self.append(actions_box)
+
+        # --- Pass 2: Last synced timestamp ---
+        self._last_synced = None
+        self.timestamp_label = Gtk.Label(label="Last synced: aldrig")
+        self.timestamp_label.set_xalign(0)
+        self.timestamp_label.add_css_class("caption")
+        self.timestamp_label.add_css_class("dim-label")
+        self.timestamp_label.set_margin_top(4)
+        self.append(self.timestamp_label)
 
         # Output log area
         self.log_label = Gtk.Label(label="")
         self.log_label.set_xalign(0)
         self.log_label.set_wrap(True)
-        self.log_label.set_margin_top(12)
+        self.log_label.set_margin_top(8)
         self.log_label.set_selectable(True)
         self.append(self.log_label)
+
+        # --- Pass 1 deferred: Session Checkliste (DEL 21) ---
+        self._build_session_checkliste()
+
+        # --- Pass 2: Sync Historik ---
+        self._build_sync_history()
+
+        # --- Pass 2: Broken Link Fixer ---
+        self._build_broken_links()
+
+        # --- Pass 3: Background sync timer (every 5 minutes) ---
+        self._prev_health = None  # Track for change-only notifications
+        GLib.timeout_add_seconds(300, self._background_sync)
+
+        # --- Pass 2: Auto-sync on start ---
+        GLib.idle_add(self._auto_sync_start)
+
+    def _build_session_checkliste(self):
+        """Build DEL 21 session checkliste (Pass 1 deferred)"""
+        check_label = Gtk.Label(label="Session Sync Checkliste (DEL 21)")
+        check_label.add_css_class("title-3")
+        check_label.set_xalign(0)
+        check_label.set_margin_top(16)
+        self.append(check_label)
+
+        checklist_items = [
+            "Git pull ved session start",
+            "Check AENDRINGSLOG coverage",
+            "Verificer VERSION.md",
+            "Scan krydsreferencer",
+            "Opdater STATUS.md",
+            "Git push ved session slut",
+        ]
+        checklist_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        checklist_box.set_margin_top(4)
+
+        for item in checklist_items:
+            row = Gtk.CheckButton(label=item)
+            row.add_css_class("caption")
+            checklist_box.append(row)
+
+        self.append(checklist_box)
+
+    def _build_sync_history(self):
+        """Build sync history log section (Pass 2)"""
+        hist_label = Gtk.Label(label="Sync Historik")
+        hist_label.add_css_class("title-3")
+        hist_label.set_xalign(0)
+        hist_label.set_margin_top(16)
+        self.append(hist_label)
+
+        self.history_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+        self.history_box.set_margin_top(4)
+        self._sync_history = []
+
+        empty = Gtk.Label(label="Ingen sync-operationer endnu")
+        empty.add_css_class("caption")
+        empty.add_css_class("dim-label")
+        empty.set_xalign(0)
+        self.history_box.append(empty)
+        self.append(self.history_box)
+
+        # View Git Log button
+        log_btn = Gtk.Button(label="View Git Log")
+        log_btn.set_icon_name("document-open-recent-symbolic")
+        log_btn.add_css_class("pill")
+        log_btn.add_css_class("caption")
+        log_btn.set_margin_top(4)
+        log_btn.set_halign(Gtk.Align.START)
+        log_btn.connect("clicked", self._on_view_git_log)
+        self.append(log_btn)
+
+    def _build_broken_links(self):
+        """Build broken link fixer section (Pass 2 FASE 2)"""
+        bl_header = Gtk.Label(label="Broken Link Fixer")
+        bl_header.add_css_class("title-3")
+        bl_header.set_xalign(0)
+        bl_header.set_margin_top(16)
+        self.append(bl_header)
+
+        self.broken_links_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        self.broken_links_box.set_margin_top(4)
+
+        # Scan button
+        scan_btn = Gtk.Button(label="Scan Broken Links")
+        scan_btn.set_icon_name("edit-find-symbolic")
+        scan_btn.add_css_class("pill")
+        scan_btn.add_css_class("caption")
+        scan_btn.set_halign(Gtk.Align.START)
+        scan_btn.connect("clicked", self._on_scan_broken_links)
+        self.append(scan_btn)
+
+        empty = Gtk.Label(label="Klik 'Scan Broken Links' for at finde problemer")
+        empty.add_css_class("caption")
+        empty.add_css_class("dim-label")
+        empty.set_xalign(0)
+        self.broken_links_box.append(empty)
+        self.append(self.broken_links_box)
+
+    def _on_scan_broken_links(self, button):
+        """Scan and display broken links with fix suggestions"""
+        # Clear existing
+        child = self.broken_links_box.get_first_child()
+        while child:
+            next_c = child.get_next_sibling()
+            self.broken_links_box.remove(child)
+            child = next_c
+
+        broken = _get_broken_links_detail(INTRO_PATH)
+        if not broken:
+            ok_label = Gtk.Label(label="Ingen broken links fundet!")
+            ok_label.add_css_class("caption")
+            ok_label.set_xalign(0)
+            ok_css = Gtk.CssProvider()
+            ok_css.load_from_string("label { color: #10b981; }")
+            ok_label.get_style_context().add_provider(ok_css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+            self.broken_links_box.append(ok_label)
+            self._add_history_entry("Link Scan", "0 broken")
+            return
+
+        count_label = Gtk.Label(label=f"{len(broken)} broken links fundet:")
+        count_label.add_css_class("caption")
+        count_label.set_xalign(0)
+        err_css = Gtk.CssProvider()
+        err_css.load_from_string("label { color: #ef4444; }")
+        count_label.get_style_context().add_provider(err_css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        self.broken_links_box.append(count_label)
+
+        for source, text, href, suggestion in broken[:15]:
+            row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+            row.set_margin_start(8)
+
+            # Source and broken path
+            info = Gtk.Label(label=f"{source}: [{text}]({href})")
+            info.set_xalign(0)
+            info.set_hexpand(True)
+            info.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
+            info.add_css_class("caption")
+            row.append(info)
+
+            # Suggestion badge
+            if suggestion:
+                fix_label = Gtk.Label(label=f"-> {suggestion}")
+                fix_label.add_css_class("caption")
+                fix_css = Gtk.CssProvider()
+                fix_css.load_from_string("label { color: #f59e0b; font-style: italic; }")
+                fix_label.get_style_context().add_provider(fix_css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+                row.append(fix_label)
+            else:
+                no_fix = Gtk.Label(label="[ingen forslag]")
+                no_fix.add_css_class("caption")
+                no_fix.add_css_class("dim-label")
+                row.append(no_fix)
+
+            self.broken_links_box.append(row)
+
+        if len(broken) > 15:
+            more = Gtk.Label(label=f"... og {len(broken) - 15} mere")
+            more.add_css_class("caption")
+            more.add_css_class("dim-label")
+            more.set_xalign(0)
+            self.broken_links_box.append(more)
+
+        self._add_history_entry("Link Scan", f"{len(broken)} broken")
+
+    def _add_history_entry(self, action, result):
+        """Add an entry to sync history"""
+        from datetime import datetime
+        ts = datetime.now().strftime("%H:%M:%S")
+        entry = f"[{ts}] {action}: {result}"
+        self._sync_history.insert(0, entry)
+        if len(self._sync_history) > 20:
+            self._sync_history = self._sync_history[:20]
+
+        # Rebuild history box
+        child = self.history_box.get_first_child()
+        while child:
+            next_c = child.get_next_sibling()
+            self.history_box.remove(child)
+            child = next_c
+
+        for e in self._sync_history[:10]:
+            lbl = Gtk.Label(label=e)
+            lbl.set_xalign(0)
+            lbl.add_css_class("monospace")
+            lbl.add_css_class("caption")
+            lbl.set_ellipsize(Pango.EllipsizeMode.END)
+            self.history_box.append(lbl)
+
+    def _on_git_push(self, button):
+        """Git push with commit message (Pass 1 deferred)"""
+        try:
+            # Check if there are changes to commit
+            status = subprocess.run(
+                ["git", "status", "--porcelain"],
+                cwd=str(INTRO_PATH), capture_output=True, text=True, timeout=10
+            )
+            if status.stdout.strip():
+                # Auto-commit with timestamp
+                from datetime import datetime
+                msg = f"Auto-sync {datetime.now().strftime('%Y-%m-%d %H:%M')}"
+                subprocess.run(
+                    ["git", "add", "-A"],
+                    cwd=str(INTRO_PATH), capture_output=True, timeout=10
+                )
+                subprocess.run(
+                    ["git", "commit", "-m", msg],
+                    cwd=str(INTRO_PATH), capture_output=True, timeout=10
+                )
+
+            result = subprocess.run(
+                ["git", "push", "origin", "main"],
+                cwd=str(INTRO_PATH), capture_output=True, text=True, timeout=30
+            )
+            output = result.stdout.strip() or result.stderr.strip() or "Push complete"
+            self.log_label.set_label(f"Git Push:\n{output}")
+            self._add_history_entry("Git Push", output[:80])
+            self._update_timestamp()
+            self._on_refresh(button)
+        except Exception as e:
+            self.log_label.set_label(f"Git Push Error: {str(e)}")
+            self._add_history_entry("Git Push", f"ERROR: {str(e)[:60]}")
+
+    def _on_full_sync(self, button):
+        """Run complete sync sequence (Pass 1 deferred)"""
+        self.log_label.set_label("Running full sync...")
+        steps = []
+
+        # Step 1: Git Pull
+        try:
+            r = subprocess.run(
+                ["git", "pull", "origin", "main"],
+                cwd=str(INTRO_PATH), capture_output=True, text=True, timeout=30
+            )
+            steps.append(f"Pull: {r.stdout.strip() or 'OK'}")
+        except Exception as e:
+            steps.append(f"Pull: ERROR {e}")
+
+        # Step 2: Check links
+        link_status = _sync_cross_references(INTRO_PATH)
+        steps.append(f"Links: {link_status.detail}")
+
+        # Step 3: Refresh status
+        self._populate_cards()
+        health = get_sync_health()
+        self.health_label.set_label(f"Sync Health: {health:.0f}%")
+        self.health_bar.set_fraction(health / 100)
+        steps.append(f"Health: {health:.0f}%")
+
+        output = "\n".join(steps)
+        self.log_label.set_label(f"Full Sync Complete:\n{output}")
+        self._add_history_entry("Full Sync", f"Health {health:.0f}%")
+        self._update_timestamp()
+
+    def _auto_sync_start(self):
+        """Auto-sync at app start (Pass 2)"""
+        try:
+            result = subprocess.run(
+                ["git", "pull", "--rebase", "origin", "main"],
+                cwd=str(INTRO_PATH), capture_output=True, text=True, timeout=15
+            )
+            output = result.stdout.strip() if result.stdout else "OK"
+            if "Already up to date" not in output:
+                # Remote had changes — pulse animation (Pass 3)
+                self._pulse_health_label()
+                self._add_history_entry("Auto Pull (start)", f"Nye aendringer: {output[:60]}")
+            else:
+                self._add_history_entry("Auto Pull (start)", "Already up to date")
+            self._update_timestamp()
+            self._on_refresh(None)
+        except Exception:
+            pass
+        return False  # Run once
+
+    def _pulse_health_label(self):
+        """Pulse animation on health label when remote changes detected (Pass 3)"""
+        pulse_css = Gtk.CssProvider()
+        pulse_css.load_from_string(
+            "label { color: #00D9FF; font-weight: bold; }"
+        )
+        self.health_label.get_style_context().add_provider(
+            pulse_css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        )
+        # Remove pulse after 3 seconds
+        GLib.timeout_add_seconds(3, self._remove_pulse, pulse_css)
+
+    def _remove_pulse(self, pulse_css):
+        """Remove pulse animation"""
+        self.health_label.get_style_context().remove_provider(pulse_css)
+        return False
+
+    def _background_sync(self):
+        """Background sync every 5 minutes (Pass 3) — only notify on changes"""
+        try:
+            self._populate_cards()
+            health = get_sync_health()
+            self.health_label.set_label(f"Sync Health: {health:.0f}%")
+            self.health_bar.set_fraction(health / 100)
+            self._update_timestamp()
+            # Only log if health changed (not spam)
+            if self._prev_health is not None and abs(health - self._prev_health) >= 1:
+                self._add_history_entry("Background Sync",
+                    f"Health {self._prev_health:.0f}% -> {health:.0f}%")
+            self._prev_health = health
+        except Exception:
+            pass
+        return True  # Keep running
+
+    def _update_timestamp(self):
+        """Update the last synced timestamp"""
+        from datetime import datetime
+        self._last_synced = datetime.now()
+        self.timestamp_label.set_label(
+            f"Last synced: {self._last_synced.strftime('%H:%M:%S')}"
+        )
+
+    def _on_view_git_log(self, button):
+        """Show recent git commits (Pass 2)"""
+        try:
+            result = subprocess.run(
+                ["git", "log", "--oneline", "-10"],
+                cwd=str(INTRO_PATH), capture_output=True, text=True, timeout=10
+            )
+            self.log_label.set_label(f"Git Log (last 10):\n{result.stdout.strip()}")
+        except Exception as e:
+            self.log_label.set_label(f"Git Log Error: {str(e)}")
 
     def _populate_cards(self):
         # Clear existing
@@ -6249,6 +6670,25 @@ class SyncDashboardView(Gtk.Box):
         status = _sync_cross_references(INTRO_PATH)
         self.log_label.set_label(f"Link Check: {status.detail}")
         self._on_refresh(button)
+
+    def _on_refresh_animated(self, button):
+        """Refresh with spinning indicator animation (Pass 3)"""
+        # Add spinning CSS to button
+        spin_css = Gtk.CssProvider()
+        spin_css.load_from_string("button { opacity: 0.6; }")
+        button.get_style_context().add_provider(spin_css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        button.set_label("Scanning...")
+        button.set_sensitive(False)
+        # Defer actual work so UI updates
+        GLib.idle_add(self._do_refresh_animated, button, spin_css)
+
+    def _do_refresh_animated(self, button, spin_css):
+        """Perform refresh and restore button"""
+        self._on_refresh(button)
+        button.get_style_context().remove_provider(spin_css)
+        button.set_label("Scan Again")
+        button.set_sensitive(True)
+        return False
 
     def _on_refresh(self, button):
         """Refresh all sync status"""
