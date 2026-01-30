@@ -36,3 +36,13 @@ Thumbs.db
 # Ignore _unused folder contents
 _unused/
 venv/
+
+# Virtual environments
+.venv/
+
+# OS files
+.directory
+
+# Archive folders — full ignore (archived sejrlister are complete)
+90_ARCHIVE/*/
+!90_ARCHIVE/.gitkeep
