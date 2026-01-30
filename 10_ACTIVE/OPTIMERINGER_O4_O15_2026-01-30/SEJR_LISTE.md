@@ -82,70 +82,77 @@ PASS 3: OPTIMERET      — "Make it best"        — FINAL VERIFICATION
 
 **Hvad:** Automatisk daglig check af Python/npm dependencies for sikkerhedsopdateringer
 **Hvorfor:** Forældede dependencies = sikkerhedsrisiko
-**Status:** AABEN — ikke paabeyndt
+**Status:** DONE — script bygget, cron sat, dokumenteret
 
-- [ ] **D1.** Byg script: `admiral_dependency_check.sh`
+- [x] **D1.** Byg script: `admiral_dependency_check.sh`
   - Verify: `bash ~/Desktop/MIN\ ADMIRAL/SCRIPTS/admiral_dependency_check.sh`
-  - Script skal: scanne alle venvs for outdated packages, tjekke npm audit, logge resultater
+  - Result: 190 linjer, scanner 7 Python venvs + 6 npm projekter. Global `depcheck` kommando.
 
-- [ ] **D2.** Tilfoej cron job (daglig kl 06:00)
+- [x] **D2.** Tilfoej cron job (daglig kl 06:00)
   - Verify: `crontab -l | grep dependency`
-  - Cron: `0 6 * * * ~/Desktop/MIN\ ADMIRAL/SCRIPTS/admiral_dependency_check.sh`
+  - Result: `0 6 * * * ~/Desktop/MIN\ ADMIRAL/SCRIPTS/admiral_dependency_check.sh`
 
-- [ ] **D3.** Dokumenter i GENVEJE_OG_KOMMANDOER.md
-  - Verify: `grep "dependency" "/home/rasmus/Desktop/MIN ADMIRAL/GENVEJE_OG_KOMMANDOER.md"`
+- [x] **D3.** Dokumenter i GENVEJE_OG_KOMMANDOER.md
+  - Verify: `grep "depcheck" "/home/rasmus/Desktop/MIN ADMIRAL/GENVEJE_OG_KOMMANDOER.md"`
+  - Result: Fuld dybde dokumentation med 3 subkommandoer, 2 sektioner, output-beskrivelse
 
 ### E. O13 — VS Code Workspace Profiles
 
 **Hvad:** Opret VS Code workspace profiles for hvert projekt
 **Hvorfor:** Hurtigere skift mellem projekter med korrekte settings
-**Status:** AABEN — ikke paabeyndt
+**Status:** DONE — 3 workspace filer oprettet
 
-- [ ] **E1.** Opret workspace fil for ELLE.md
+- [x] **E1.** Opret workspace fil for ELLE.md
   - Verify: `ls ~/Desktop/ELLE.md/*.code-workspace`
-  - Indhold: extensions, settings, tasks
+  - Result: ELLE.code-workspace — Python settings, .venv interpreter, 3 tasks (tests, group chat, type check), blaa titellinje
 
-- [ ] **E2.** Opret workspace fil for MIN ADMIRAL
+- [x] **E2.** Opret workspace fil for MIN ADMIRAL
   - Verify: `ls ~/Desktop/MIN\ ADMIRAL/*.code-workspace`
+  - Result: ADMIRAL.code-workspace — Markdown+shell settings, 5 tasks (health, audit, depcheck, briefing, verify), lilla titellinje
 
-- [ ] **E3.** Opret workspace fil for MASTER FOLDERS(INTRO)
+- [x] **E3.** Opret workspace fil for MASTER FOLDERS(INTRO)
   - Verify: `ls ~/Desktop/MASTER\ FOLDERS\(INTRO\)/*.code-workspace`
+  - Result: INTRO.code-workspace — Python+markdown settings, 4 tasks (app start, verify, syntax, sejrstatus), groen titellinje
 
 ### F. O14 — Ollama Model Aliases
 
 **Hvad:** Opret shell aliases for hyppigt brugte Ollama modeller
 **Hvorfor:** `ollama run qwen2.5-coder:7b` er for langt at skrive
-**Status:** AABEN — ikke paabeyndt
+**Status:** DONE — 4 nye aliases tilfojet (total 9)
 
-- [ ] **F1.** Identificer top 5 mest brugte modeller
+- [x] **F1.** Identificer top 5 mest brugte modeller
   - Verify: `ollama list`
-  - Dokumenter: Hvilke bruges oftest?
+  - Result: 14 modeller. Top: llama3.2 (general), qwen2.5-coder (kode), mistral (reasoning), deepseek-r1 (dyb), phi4 (stoerst)
 
-- [ ] **F2.** Opret aliases i .bashrc/.zshrc
-  - Verify: `alias | grep ollama`
-  - Format: `alias ask="ollama run qwen2.5-coder:7b"`
+- [x] **F2.** Opret aliases i .bashrc/.zshrc
+  - Verify: `grep "ollama" ~/.zshrc | wc -l` → 9 aliases
+  - Nye: `deep` (deepseek-r1:8b), `phi` (phi4), `qwen` (qwen3:8b), `fast` (gemma3:4b)
 
-- [ ] **F3.** Dokumenter i GENVEJE_OG_KOMMANDOER.md
-  - Verify: `grep "ollama" "/home/rasmus/Desktop/MIN ADMIRAL/GENVEJE_OG_KOMMANDOER.md"`
+- [x] **F3.** Dokumenter i GENVEJE_OG_KOMMANDOER.md
+  - Verify: Allerede dokumenteret i SHELL ALIASES sektionen (linje ~50)
+  - Result: 9 ollama aliases total: ask, code-ai, think, codellama, models, deep, phi, qwen, fast
 
 ### G. O15 — Desktop Environment Guide
 
 **Hvad:** Dokumenter hele desktop-miljoeet (shortcuts, panels, workflow)
 **Hvorfor:** Rasmus glemmer keyboard shortcuts og workflow-tricks
-**Status:** AABEN — ikke paabeyndt
+**Status:** DONE — DESKTOP_GUIDE.md oprettet (620 linjer)
 
-- [ ] **G1.** Dokumenter system keyboard shortcuts
-  - Verify: Fil oprettet med shortcuts
-  - Kilde: gsettings, dconf, xdotool
+- [x] **G1.** Dokumenter system keyboard shortcuts
+  - Verify: `grep "Super" "/home/rasmus/Desktop/MIN ADMIRAL/DESKTOP_GUIDE.md" | head -5`
+  - Result: 5 custom GNOME keybindings + 41 window manager bindings fra gsettings
 
-- [ ] **G2.** Dokumenter VS Code shortcuts brugt dagligt
-  - Verify: `cat ~/.config/Code/User/keybindings.json`
+- [x] **G2.** Dokumenter VS Code shortcuts brugt dagligt
+  - Verify: VS Code 1.108.2, 27 extensions, standard keybindings (ingen custom)
+  - Result: Python/Markdown/Git workflow shortcuts dokumenteret
 
-- [ ] **G3.** Dokumenter terminal workflow (tmux, aliases, scripts)
-  - Verify: Komplet workflow-guide
+- [x] **G3.** Dokumenter terminal workflow (tmux, aliases, scripts)
+  - Verify: zsh 5.9 + oh-my-zsh + Starship, 94 aliases, 80+ ~/.local/bin commands, 19 cron jobs
+  - Result: Komplet terminal workflow med alle aliases, funktioner, cron jobs
 
-- [ ] **G4.** Saml alt i MIN ADMIRAL som DESKTOP_GUIDE.md
-  - Verify: `ls "/home/rasmus/Desktop/MIN ADMIRAL/DESKTOP_GUIDE.md"`
+- [x] **G4.** Saml alt i MIN ADMIRAL som DESKTOP_GUIDE.md
+  - Verify: `ls "/home/rasmus/Desktop/MIN ADMIRAL/DESKTOP_GUIDE.md"` → 620 linjer
+  - Result: 4 sektioner + daily workflow + troubleshooting. Rule -42 compliant.
 
 ---
 
@@ -154,10 +161,10 @@ PASS 3: OPTIMERET      — "Make it best"        — FINAL VERIFICATION
 - [x] A1-A4 checkboxes afkrydset (INTRO App — AGENT DONE)
 - [x] B1-B4 checkboxes afkrydset (ELLE Agent — AGENT DONE)
 - [x] C1 checkbox afkrydset (Scripts Katalog — DONE)
-- [ ] D1-D3 checkboxes afkrydset (Dependency Check)
-- [ ] E1-E3 checkboxes afkrydset (VS Code Workspaces)
-- [ ] F1-F3 checkboxes afkrydset (Ollama Aliases)
-- [ ] G1-G4 checkboxes afkrydset (Desktop Guide)
+- [x] D1-D3 checkboxes afkrydset (Dependency Check — DONE)
+- [x] E1-E3 checkboxes afkrydset (VS Code Workspaces — DONE)
+- [x] F1-F3 checkboxes afkrydset (Ollama Aliases — DONE)
+- [x] G1-G4 checkboxes afkrydset (Desktop Guide — DONE)
 - [ ] Git committed med "PASS 1:" prefix
 
 #### PASS 1 SCORE: ___/10
