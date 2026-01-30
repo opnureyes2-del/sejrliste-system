@@ -2015,6 +2015,77 @@ LAYER_COLORS = {
     "3": "#00FF88",  # Green — Verification
 }
 
+# --- 3-LAGS PASS 2: Design Decisions ---
+DESIGN_DECISIONS = [
+    ("Markdown Over Database",
+     "Valgt: Markdown filer i mapper",
+     ["Human-readable uden specialvaerktoj", "Git versionable linje-for-linje",
+      "Kopi/pasta til enhver platform", "Ingen server eller runtime kraevet"],
+     ["Ingen SQL queries eller relationer", "Manuel cross-referencing",
+      "Ingen real-time collaboration"]),
+    ("Flat Files Over Nested DB",
+     "Valgt: Flad mappestruktur med numerisk prefix",
+     ["Synlig i enhver filbrowser", "Naturlig sortering med 00-99",
+      "Ingen broken foreign keys", "cp/mv/rsync fungerer direkte"],
+     ["Begroenset til 100 top-level", "Ingen automatisk referentiel integritet",
+      "Manuel navigation i store systemer"]),
+    ("Numerisk Hierarki",
+     "Valgt: 00-99 prefix system",
+     ["Garanteret sorteringsorden", "Visuelt klart hierarki",
+      "Reserverede ranges for kategorier", "Nemt at inserere nye filer"],
+     ["Alle ranges skal planlaegges forud", "Omnavngivning = mange filaendringer",
+      "Maksimalt 100 per niveau"]),
+    ("LINEN Overhead",
+     "Valgt: Obligatorisk LINEN verification",
+     ["Konsistent kvalitet over tid", "Automatiserbar validering",
+      "Self-documenting system", "Fejl opdages proaktivt"],
+     ["Ekstra overhead per fil/mappe", "Laeringsbarriere for nye bidragydere",
+      "Kraever disciplin at vedligeholde"]),
+]
+
+SCALING_MILESTONES = [
+    ("Nu", "~400 filer, ~50 mapper", 400),
+    ("Aar 1", "400 -> 600 filer", 600),
+    ("Aar 2", "600 -> 1000 filer", 1000),
+    ("Aar 3", "1000 -> 2000 filer", 2000),
+]
+
+SCALING_STRATEGIES = [
+    "Split store sektioner i undersektioner (XX -> XXA/XXB/XXC)",
+    "Arkiver afsluttede projekter til 90_ARCHIVE",
+    "Brug INDEX filer som navigation hubs",
+    "Auto-genereret search index for hurtig opslag",
+]
+
+FOLDER_ANATOMY = [
+    ("XX_SEKTION.md", "Hovedfil", "Primaer content for sektionen", "#a855f7"),
+    ("XX_INDEX.md", "Navigation", "Links til alle filer i sektionen", "#60a5fa"),
+    ("XXA_UNDERSEKTION/", "Undermapper", "Dybere indhold organiseret", "#10b981"),
+    ("_TODO_VERIFIKATION/STATUS.md", "Meta-data", "LINEN verifikationsdata", "#f59e0b"),
+    ("_SKRALDESPAND/", "Arkiv", "Soft-delete for gammel content", "#9ca3af"),
+]
+
+SYSTEM_FOLDERS = [
+    ("_TODO_VERIFIKATION/", "Verifikationsdata per mappe"),
+    ("_SKRALDESPAND/", "Soft-delete arkiv"),
+    ("_MANUAL/", "Instruktioner og guides"),
+    ("_ARCHIVE/", "Historiske versioner"),
+]
+
+# --- LINEN PASS 2: Validation Layers ---
+VALIDATION_LAYERS = [
+    ("1", "Syntax Validation", "Markdown valid, ingen parse errors", "#60a5fa"),
+    ("2", "Structure Validation", "VERSION + AENDRINGSLOG i alle filer", "#6366f1"),
+    ("3", "Content Validation", "STATUS.md konsistent med virkelighed", "#10b981"),
+    ("4", "Cross-Reference Validation", "Alle links virker, ingen orphans", "#f59e0b"),
+]
+
+VALIDATION_SCHEDULE = [
+    ("Dagligt", "validate_single.sh", "Filer under aktiv redigering"),
+    ("Ugentligt", "validate_all.sh", "Hele INTRO systemet"),
+    ("Maanedligt", "Fuld manuel audit", "Komplet gennemgang af alt"),
+]
+
 
 @dataclass
 class ArchitectureStats:
@@ -4549,8 +4620,17 @@ class PrioritetsOverblik(Gtk.Box):
 # LINEN HEALTH VIEW
 # 
 
+LINEN_CHAKRA_COLORS = {
+    "L": "#00D9FF",   # Cyan — Logging
+    "I": "#f59e0b",   # Wisdom gold — Indeksering
+    "N": "#6366f1",   # Intuition indigo — Nesting
+    "E": "#00FF88",   # Success green — Efterproevning
+    "N2": "#10b981",  # Heart emerald — Navigation
+}
+
+
 class LinenComponentRow(Gtk.Box):
-    """A single row showing one LINEN component with progress bar"""
+    """A single row showing one LINEN component with progress bar and chakra colors (Pass 3)"""
 
     def __init__(self, score: LinenScore):
         super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=8)
@@ -4561,20 +4641,34 @@ class LinenComponentRow(Gtk.Box):
         self.set_margin_top(4)
         self.set_margin_bottom(4)
 
+        # Chakra color indicator bar (left side)
+        outer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
+        chakra_color = LINEN_CHAKRA_COLORS.get(score.component, "#9ca3af")
+        color_bar = Gtk.Box()
+        color_bar.set_size_request(4, -1)
+        css_bar = Gtk.CssProvider()
+        css_bar.load_from_string(f"box {{ background-color: {chakra_color}; border-radius: 2px; }}")
+        color_bar.get_style_context().add_provider(css_bar, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        outer.append(color_bar)
+
         inner = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         inner.set_margin_start(16)
         inner.set_margin_end(16)
         inner.set_margin_top(12)
         inner.set_margin_bottom(12)
+        inner.set_hexpand(True)
 
         # Top row: Letter + Name + Percentage
         top_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
 
-        # Letter badge
+        # Letter badge with chakra color
         letter_label = Gtk.Label(label=score.component[0])  # Just first char (L, I, N, E, N)
         letter_label.add_css_class("title-1")
         letter_label.set_size_request(40, 40)
         letter_label.set_valign(Gtk.Align.CENTER)
+        letter_css = Gtk.CssProvider()
+        letter_css.load_from_string(f"label {{ color: {chakra_color}; }}")
+        letter_label.get_style_context().add_provider(letter_css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         top_row.append(letter_label)
 
         # Name + description
@@ -4634,7 +4728,8 @@ class LinenComponentRow(Gtk.Box):
         stats_label.add_css_class("dim-label")
         inner.append(stats_label)
 
-        self.append(inner)
+        outer.append(inner)
+        self.append(outer)
 
         # === EXPANDABLE DETAIL SECTION ===
         self.detail_revealer = Gtk.Revealer()
@@ -4731,12 +4826,22 @@ class LinenHealthView(Gtk.Box):
 
         title_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
-        title = Gtk.Label(label="LINEN System Health")
+        # LINEN badge (Pass 3)
+        badge_label = Gtk.Label(label="LINEN")
+        badge_label.add_css_class("heading")
+        badge_css = Gtk.CssProvider()
+        badge_css.load_from_string(
+            "label { color: #00D9FF; letter-spacing: 3px; font-weight: bold; }"
+        )
+        badge_label.get_style_context().add_provider(badge_css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        title_box.append(badge_label)
+
+        title = Gtk.Label(label="System Health")
         title.set_halign(Gtk.Align.START)
         title.add_css_class("title-1")
         title_box.append(title)
 
-        subtitle = Gtk.Label(label="Logging • Indeksering • Nesting • Efterprøvning • Navigation")
+        subtitle = Gtk.Label(label="Logging | Indeksering | Nesting | Efterproevning | Navigation")
         subtitle.set_halign(Gtk.Align.START)
         subtitle.add_css_class("caption")
         subtitle.add_css_class("dim-label")
@@ -4785,6 +4890,29 @@ class LinenHealthView(Gtk.Box):
 
         self.append(action_box)
 
+        # === PASS 2 SECTIONS ===
+        self.append(Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL))
+
+        # 4-layer validation diagram
+        self._build_validation_layers()
+
+        # Continuous validation schedule
+        self._build_validation_schedule()
+
+        # Live monitoring
+        self._setup_live_monitoring()
+
+        # Monitoring status indicator
+        monitor_label = Gtk.Label(
+            label="Live monitoring: Aktiv" if getattr(self, '_monitoring_active', False)
+            else "Live monitoring: INTRO mappe ikke fundet"
+        )
+        monitor_label.set_halign(Gtk.Align.START)
+        monitor_label.add_css_class("caption")
+        monitor_label.add_css_class("dim-label")
+        monitor_label.set_margin_top(8)
+        self.append(monitor_label)
+
     def _refresh_scores(self):
         """Scan INTRO folder and update all components"""
         self.scores = get_linen_status()
@@ -4819,10 +4947,201 @@ class LinenHealthView(Gtk.Box):
         """Return current scores for use by other widgets"""
         return self.scores
 
+    def _build_validation_layers(self):
+        """Build the 4-layer validation diagram (Pass 2)"""
+        section_label = Gtk.Label(label="4-Lags Validering")
+        section_label.set_halign(Gtk.Align.START)
+        section_label.add_css_class("title-3")
+        section_label.set_margin_top(16)
+        self.append(section_label)
 
-# 
+        desc = Gtk.Label(
+            label="Validering sker i 4 lag — fra syntaks til cross-referencer"
+        )
+        desc.set_halign(Gtk.Align.START)
+        desc.add_css_class("caption")
+        desc.add_css_class("dim-label")
+        desc.set_wrap(True)
+        desc.set_wrap_mode(Pango.WrapMode.WORD)
+        self.append(desc)
+
+        layers_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        layers_box.set_margin_top(8)
+
+        for i, (num, name, description, _color) in enumerate(VALIDATION_LAYERS):
+            card = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            card.add_css_class("card")
+            card.set_margin_start(4)
+            card.set_margin_end(4)
+
+            inner = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            inner.set_margin_start(16)
+            inner.set_margin_end(16)
+            inner.set_margin_top(10)
+            inner.set_margin_bottom(10)
+            inner.set_hexpand(True)
+
+            # Layer number badge
+            num_label = Gtk.Label(label=f"L{num}")
+            num_label.add_css_class("title-2")
+            num_label.set_size_request(40, -1)
+            inner.append(num_label)
+
+            # Name + description
+            info_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+            info_box.set_hexpand(True)
+
+            n_label = Gtk.Label(label=name)
+            n_label.set_halign(Gtk.Align.START)
+            n_label.add_css_class("heading")
+            info_box.append(n_label)
+
+            d_label = Gtk.Label(label=description)
+            d_label.set_halign(Gtk.Align.START)
+            d_label.add_css_class("caption")
+            d_label.add_css_class("dim-label")
+            d_label.set_wrap(True)
+            d_label.set_wrap_mode(Pango.WrapMode.WORD)
+            info_box.append(d_label)
+
+            inner.append(info_box)
+            card.append(inner)
+            layers_box.append(card)
+
+            # Arrow between layers (except after last)
+            if i < len(VALIDATION_LAYERS) - 1:
+                arrow = Gtk.Label(label="v")
+                arrow.add_css_class("dim-label")
+                arrow.set_halign(Gtk.Align.CENTER)
+                arrow.set_margin_top(2)
+                arrow.set_margin_bottom(2)
+                layers_box.append(arrow)
+
+        self.append(layers_box)
+
+    def _build_validation_schedule(self):
+        """Build the validation schedule view with action buttons (Pass 2)"""
+        section_label = Gtk.Label(label="Validerings Tidsplan")
+        section_label.set_halign(Gtk.Align.START)
+        section_label.add_css_class("title-3")
+        section_label.set_margin_top(16)
+        self.append(section_label)
+
+        schedule_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        schedule_box.set_margin_top(8)
+
+        for freq, script, description in VALIDATION_SCHEDULE:
+            card = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            card.add_css_class("card")
+            card.set_margin_start(4)
+            card.set_margin_end(4)
+
+            inner = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            inner.set_margin_start(16)
+            inner.set_margin_end(16)
+            inner.set_margin_top(10)
+            inner.set_margin_bottom(10)
+            inner.set_hexpand(True)
+
+            # Frequency badge
+            f_label = Gtk.Label(label=freq)
+            f_label.add_css_class("heading")
+            f_label.set_size_request(90, -1)
+            f_label.set_halign(Gtk.Align.START)
+            inner.append(f_label)
+
+            # Script + description
+            info = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+            info.set_hexpand(True)
+
+            s_label = Gtk.Label(label=script)
+            s_label.set_halign(Gtk.Align.START)
+            s_label.add_css_class("monospace")
+            s_label.add_css_class("caption")
+            info.append(s_label)
+
+            d_label = Gtk.Label(label=description)
+            d_label.set_halign(Gtk.Align.START)
+            d_label.add_css_class("caption")
+            d_label.add_css_class("dim-label")
+            info.append(d_label)
+
+            inner.append(info)
+
+            # Timestamp placeholder
+            self._schedule_timestamps = getattr(self, '_schedule_timestamps', {})
+            ts = self._schedule_timestamps.get(freq, "Aldrig koert")
+            ts_label = Gtk.Label(label=ts)
+            ts_label.add_css_class("caption")
+            ts_label.add_css_class("dim-label")
+            inner.append(ts_label)
+
+            card.append(inner)
+            schedule_box.append(card)
+
+        self.append(schedule_box)
+
+        # Action buttons
+        btn_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        btn_box.set_margin_top(8)
+        btn_box.set_halign(Gtk.Align.CENTER)
+
+        daily_btn = Gtk.Button(label="Koer Daglig Check")
+        daily_btn.set_icon_name("emblem-ok-symbolic")
+        daily_btn.add_css_class("suggested-action")
+        daily_btn.add_css_class("pill")
+        daily_btn.connect("clicked", lambda b: self._run_validation("Dagligt"))
+        btn_box.append(daily_btn)
+
+        weekly_btn = Gtk.Button(label="Koer Ugentlig Check")
+        weekly_btn.set_icon_name("view-refresh-symbolic")
+        weekly_btn.add_css_class("pill")
+        weekly_btn.connect("clicked", lambda b: self._run_validation("Ugentligt"))
+        btn_box.append(weekly_btn)
+
+        self.append(btn_box)
+
+    def _run_validation(self, freq: str):
+        """Run a validation check and update timestamp"""
+        from datetime import datetime
+        self._schedule_timestamps = getattr(self, '_schedule_timestamps', {})
+        self._schedule_timestamps[freq] = datetime.now().strftime("%Y-%m-%d %H:%M")
+        # Refresh the LINEN scan
+        self._refresh_scores()
+
+    def _setup_live_monitoring(self):
+        """Set up FileMonitor for auto-refresh when INTRO files change (Pass 2)"""
+        intro_path = os.path.expanduser(
+            "~/Desktop/MASTER FOLDERS(INTRO)"
+        )
+        if not os.path.isdir(intro_path):
+            return
+
+        monitor_file = Gio.File.new_for_path(intro_path)
+        try:
+            self._file_monitor = monitor_file.monitor_directory(
+                Gio.FileMonitorFlags.NONE, None
+            )
+            self._file_monitor.set_rate_limit(5000)  # 5 sec debounce
+            self._file_monitor.connect("changed", self._on_intro_changed)
+            self._monitoring_active = True
+        except Exception:
+            self._monitoring_active = False
+
+    def _on_intro_changed(self, monitor, file, other_file, event_type):
+        """Auto-refresh LINEN scores when INTRO files change"""
+        if event_type in (
+            Gio.FileMonitorEvent.CHANGED,
+            Gio.FileMonitorEvent.CREATED,
+            Gio.FileMonitorEvent.DELETED,
+        ):
+            # Use GLib.idle_add for thread safety
+            GLib.idle_add(self._refresh_scores)
+
+
+#
 # ARCHITECTURE OVERVIEW VIEW
-# 
+#
 
 class ArchitectureOverviewView(Gtk.Box):
     """
@@ -4881,23 +5200,49 @@ class ArchitectureOverviewView(Gtk.Box):
         # === SECTION 4: NUMERIC HIERARCHY ===
         self._build_hierarchy_section()
 
+        # === SECTION 5: DESIGN DECISIONS (Pass 2) ===
+        self._build_decisions_section()
+
+        # === SECTION 6: SCALING OVERVIEW (Pass 2) ===
+        self._build_scaling_section()
+
+        # === SECTION 7: FOLDER ANATOMY (Pass 2) ===
+        self._build_anatomy_section()
+
     def _build_layers_section(self):
-        """Build the 3-layer flow diagram with real stats"""
+        """Build the 3-layer flow diagram with real stats, colors, and click detail (Pass 3)"""
         section_label = Gtk.Label(label="Systemets 3 Lag")
         section_label.set_halign(Gtk.Align.START)
         section_label.add_css_class("title-3")
         section_label.set_margin_top(8)
         self.append(section_label)
 
+        hint = Gtk.Label(label="Klik paa et lag for detaljeret statistik")
+        hint.set_halign(Gtk.Align.START)
+        hint.add_css_class("caption")
+        hint.add_css_class("dim-label")
+        self.append(hint)
+
         stats = get_layer_stats()
         flow_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
 
         for i, stat in enumerate(stats):
+            layer_color = LAYER_COLORS.get(str(stat.layer), "#9ca3af")
+
             # Layer card
-            card = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            card = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
             card.add_css_class("card")
             card.set_margin_start(4)
             card.set_margin_end(4)
+            card.set_cursor(Gdk.Cursor.new_from_name("pointer"))
+
+            # Color indicator bar (left side)
+            color_bar = Gtk.Box()
+            color_bar.set_size_request(6, -1)
+            css_prov = Gtk.CssProvider()
+            css_prov.load_from_string(f"box {{ background-color: {layer_color}; border-radius: 3px 0 0 3px; }}")
+            color_bar.get_style_context().add_provider(css_prov, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+            card.append(color_bar)
 
             inner = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
             inner.set_margin_start(16)
@@ -4906,11 +5251,14 @@ class ArchitectureOverviewView(Gtk.Box):
             inner.set_margin_bottom(12)
             inner.set_hexpand(True)
 
-            # Layer number
+            # Layer number with color
             num_label = Gtk.Label(label=str(stat.layer))
             num_label.add_css_class("title-1")
             num_label.set_size_request(40, 40)
             num_label.set_valign(Gtk.Align.CENTER)
+            num_css = Gtk.CssProvider()
+            num_css.load_from_string(f"label {{ color: {layer_color}; }}")
+            num_label.get_style_context().add_provider(num_css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
             inner.append(num_label)
 
             # Layer info
@@ -4936,20 +5284,74 @@ class ArchitectureOverviewView(Gtk.Box):
             count_label.set_valign(Gtk.Align.CENTER)
             inner.append(count_label)
 
+            # Click indicator
+            arrow = Gtk.Label(label=">")
+            arrow.add_css_class("dim-label")
+            arrow.set_valign(Gtk.Align.CENTER)
+            inner.append(arrow)
+
             card.append(inner)
             flow_box.append(card)
 
+            # Detail revealer for layer stats
+            detail_revealer = Gtk.Revealer()
+            detail_revealer.set_reveal_child(False)
+            detail_revealer.set_transition_type(Gtk.RevealerTransitionType.SLIDE_DOWN)
+            detail_revealer.set_transition_duration(200)
+            flow_box.append(detail_revealer)
+
+            # Click gesture
+            gesture = Gtk.GestureClick.new()
+            gesture.connect("released", self._on_layer_clicked, stat, detail_revealer)
+            card.add_controller(gesture)
+
             # Arrow between layers (except after last)
             if i < len(stats) - 1:
-                arrow = Gtk.Label(label="↓")
-                arrow.add_css_class("title-3")
-                arrow.add_css_class("dim-label")
-                arrow.set_halign(Gtk.Align.CENTER)
-                arrow.set_margin_top(4)
-                arrow.set_margin_bottom(4)
-                flow_box.append(arrow)
+                flow_arrow = Gtk.Label(label="v")
+                flow_arrow.add_css_class("title-3")
+                flow_arrow.add_css_class("dim-label")
+                flow_arrow.set_halign(Gtk.Align.CENTER)
+                flow_arrow.set_margin_top(4)
+                flow_arrow.set_margin_bottom(4)
+                flow_box.append(flow_arrow)
 
         self.append(flow_box)
+
+    def _on_layer_clicked(self, gesture, n_press, x, y, stat, revealer):
+        """Show detailed stats for a layer"""
+        if revealer.get_reveal_child():
+            revealer.set_reveal_child(False)
+            return
+
+        detail = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        detail.set_margin_start(24)
+        detail.set_margin_end(8)
+        detail.set_margin_top(4)
+        detail.set_margin_bottom(8)
+
+        # Summary
+        summary = Gtk.Label(label=f"Lag {stat.layer}: {stat.name}")
+        summary.set_halign(Gtk.Align.START)
+        summary.add_css_class("heading")
+        detail.append(summary)
+
+        info_lines = [
+            f"Beskrivelse: {stat.description}",
+            f"Total items: {stat.total_items}",
+        ]
+        if hasattr(stat, 'details') and stat.details:
+            info_lines.append(f"Detaljer: {stat.details}")
+
+        for line in info_lines:
+            l = Gtk.Label(label=line)
+            l.set_halign(Gtk.Align.START)
+            l.add_css_class("caption")
+            l.set_wrap(True)
+            l.set_wrap_mode(Pango.WrapMode.WORD)
+            detail.append(l)
+
+        revealer.set_child(detail)
+        revealer.set_reveal_child(True)
 
     def _build_principles_section(self):
         """Build the 6 architecture principles as a grid"""
@@ -4996,12 +5398,18 @@ class ArchitectureOverviewView(Gtk.Box):
         self.append(grid)
 
     def _build_patterns_section(self):
-        """Build the 3 design patterns as expandable cards"""
+        """Build the 3 design patterns as clickable expandable cards (Pass 3)"""
         section_label = Gtk.Label(label="3 Design Patterns")
         section_label.set_halign(Gtk.Align.START)
         section_label.add_css_class("title-3")
         section_label.set_margin_top(16)
         self.append(section_label)
+
+        hint = Gtk.Label(label="Klik paa et pattern for at se eksempler fra INTRO")
+        hint.set_halign(Gtk.Align.START)
+        hint.add_css_class("caption")
+        hint.add_css_class("dim-label")
+        self.append(hint)
 
         patterns_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
 
@@ -5010,6 +5418,7 @@ class ArchitectureOverviewView(Gtk.Box):
             card.add_css_class("card")
             card.set_margin_start(4)
             card.set_margin_end(4)
+            card.set_cursor(Gdk.Cursor.new_from_name("pointer"))
 
             inner = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
             inner.set_margin_start(16)
@@ -5017,11 +5426,18 @@ class ArchitectureOverviewView(Gtk.Box):
             inner.set_margin_top(12)
             inner.set_margin_bottom(12)
 
-            # Pattern name
+            # Pattern name with click hint
+            name_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
             n_label = Gtk.Label(label=name)
             n_label.set_halign(Gtk.Align.START)
             n_label.add_css_class("heading")
-            inner.append(n_label)
+            n_label.set_hexpand(True)
+            name_row.append(n_label)
+
+            arrow = Gtk.Label(label=">")
+            arrow.add_css_class("dim-label")
+            name_row.append(arrow)
+            inner.append(name_row)
 
             # Description (monospace for structure)
             d_label = Gtk.Label(label=description)
@@ -5044,15 +5460,111 @@ class ArchitectureOverviewView(Gtk.Box):
             card.append(inner)
             patterns_box.append(card)
 
+            # Detail revealer for pattern examples
+            detail_revealer = Gtk.Revealer()
+            detail_revealer.set_reveal_child(False)
+            detail_revealer.set_transition_type(Gtk.RevealerTransitionType.SLIDE_DOWN)
+            detail_revealer.set_transition_duration(200)
+            patterns_box.append(detail_revealer)
+
+            # Click gesture
+            gesture = Gtk.GestureClick.new()
+            gesture.connect("released", self._on_pattern_clicked, name, detail_revealer)
+            card.add_controller(gesture)
+
         self.append(patterns_box)
 
+    def _on_pattern_clicked(self, gesture, n_press, x, y, pattern_name, revealer):
+        """Show real INTRO examples for a design pattern"""
+        if revealer.get_reveal_child():
+            revealer.set_reveal_child(False)
+            return
+
+        examples = self._get_pattern_examples(pattern_name)
+        detail = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        detail.set_margin_start(24)
+        detail.set_margin_end(8)
+        detail.set_margin_top(4)
+        detail.set_margin_bottom(8)
+
+        header = Gtk.Label(label=f"Eksempler fra INTRO ({pattern_name}):")
+        header.set_halign(Gtk.Align.START)
+        header.add_css_class("heading")
+        detail.append(header)
+
+        if examples:
+            for ex in examples[:10]:
+                e_label = Gtk.Label(label=ex)
+                e_label.set_halign(Gtk.Align.START)
+                e_label.add_css_class("monospace")
+                e_label.add_css_class("caption")
+                detail.append(e_label)
+            if len(examples) > 10:
+                more = Gtk.Label(label=f"... og {len(examples) - 10} mere")
+                more.add_css_class("caption")
+                more.add_css_class("dim-label")
+                more.set_halign(Gtk.Align.START)
+                detail.append(more)
+        else:
+            empty = Gtk.Label(label="Ingen eksempler fundet")
+            empty.add_css_class("caption")
+            empty.add_css_class("dim-label")
+            empty.set_halign(Gtk.Align.START)
+            detail.append(empty)
+
+        revealer.set_child(detail)
+        revealer.set_reveal_child(True)
+
+    def _get_pattern_examples(self, pattern_name):
+        """Find real INTRO files matching a design pattern"""
+        intro_path = os.path.expanduser("~/Desktop/MASTER FOLDERS(INTRO)")
+        if not os.path.isdir(intro_path):
+            return []
+        results = []
+        if "Sektion Container" in pattern_name:
+            # Look for XX_SEKTION folders with content + _TODO_VERIFIKATION
+            for entry in sorted(os.listdir(intro_path)):
+                full = os.path.join(intro_path, entry)
+                if os.path.isdir(full) and re.match(r'^\d{2}_', entry):
+                    has_todo = os.path.isdir(os.path.join(full, "_TODO_VERIFIKATION"))
+                    tag = " [+VERIFIKATION]" if has_todo else ""
+                    results.append(f"{entry}/{tag}")
+        elif "Document Sandwich" in pattern_name:
+            # Look for .md files that have AENDRINGSLOG
+            for entry in sorted(os.listdir(intro_path)):
+                if entry.endswith(".md"):
+                    try:
+                        full = os.path.join(intro_path, entry)
+                        with open(full, "r", errors="ignore") as f:
+                            content = f.read(4096)
+                        has_log = "NDRINGSLOG" in content or "CHANGELOG" in content
+                        tag = " [+AENDRINGSLOG]" if has_log else ""
+                        results.append(f"{entry}{tag}")
+                    except Exception:
+                        results.append(entry)
+        elif "Meta-Data Nesting" in pattern_name:
+            # Look for _TODO_VERIFIKATION/STATUS.md
+            for entry in sorted(os.listdir(intro_path)):
+                full = os.path.join(intro_path, entry)
+                if os.path.isdir(full):
+                    status = os.path.join(full, "_TODO_VERIFIKATION", "STATUS.md")
+                    if os.path.exists(status):
+                        results.append(f"{entry}/_TODO_VERIFIKATION/STATUS.md")
+        return results
+
     def _build_hierarchy_section(self):
-        """Build the 00-99 numeric hierarchy table"""
+        """Build the 00-99 numeric hierarchy table with clickable rows (Pass 3)"""
         section_label = Gtk.Label(label="Numerisk Hierarki (00-99)")
         section_label.set_halign(Gtk.Align.START)
         section_label.add_css_class("title-3")
         section_label.set_margin_top(16)
         self.append(section_label)
+
+        hint = Gtk.Label(label="Klik paa en range for at se filer")
+        hint.set_halign(Gtk.Align.START)
+        hint.add_css_class("caption")
+        hint.add_css_class("dim-label")
+        self.append(hint)
 
         distribution = get_numerisk_distribution()
 
@@ -5065,6 +5577,7 @@ class ArchitectureOverviewView(Gtk.Box):
             row.add_css_class("card")
             row.set_margin_start(4)
             row.set_margin_end(4)
+            row.set_cursor(Gdk.Cursor.new_from_name("pointer"))
 
             inner = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
             inner.set_margin_start(12)
@@ -5087,7 +5600,7 @@ class ArchitectureOverviewView(Gtk.Box):
             inner.append(label_widget)
 
             # Count
-            count_label = Gtk.Label(label=str(count) if count > 0 else "—")
+            count_label = Gtk.Label(label=str(count) if count > 0 else "---")
             count_label.add_css_class("caption")
             if count > 0:
                 count_label.add_css_class("success")
@@ -5095,15 +5608,442 @@ class ArchitectureOverviewView(Gtk.Box):
                 count_label.add_css_class("dim-label")
             inner.append(count_label)
 
+            # Click indicator
+            arrow_label = Gtk.Label(label=">")
+            arrow_label.add_css_class("dim-label")
+            inner.append(arrow_label)
+
             row.append(inner)
             hierarchy_box.append(row)
 
+            # Detail revealer (hidden by default)
+            detail_revealer = Gtk.Revealer()
+            detail_revealer.set_reveal_child(False)
+            detail_revealer.set_transition_type(Gtk.RevealerTransitionType.SLIDE_DOWN)
+            detail_revealer.set_transition_duration(200)
+            hierarchy_box.append(detail_revealer)
+
+            # Click gesture
+            gesture = Gtk.GestureClick.new()
+            gesture.connect("released", self._on_range_clicked, range_str, detail_revealer)
+            row.add_controller(gesture)
+
         self.append(hierarchy_box)
 
+    def _on_range_clicked(self, gesture, n_press, x, y, range_str, revealer):
+        """Toggle file list for a numeric range"""
+        if revealer.get_reveal_child():
+            revealer.set_reveal_child(False)
+            return
 
-# 
+        files = self._get_files_for_range(range_str)
+        detail_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+        detail_box.set_margin_start(24)
+        detail_box.set_margin_end(8)
+        detail_box.set_margin_top(4)
+        detail_box.set_margin_bottom(8)
+
+        if files:
+            for f in files[:20]:  # Limit to 20
+                f_label = Gtk.Label(label=f)
+                f_label.set_halign(Gtk.Align.START)
+                f_label.add_css_class("monospace")
+                f_label.add_css_class("caption")
+                detail_box.append(f_label)
+            if len(files) > 20:
+                more = Gtk.Label(label=f"... og {len(files) - 20} mere")
+                more.set_halign(Gtk.Align.START)
+                more.add_css_class("caption")
+                more.add_css_class("dim-label")
+                detail_box.append(more)
+        else:
+            empty = Gtk.Label(label="Ingen filer i denne range")
+            empty.set_halign(Gtk.Align.START)
+            empty.add_css_class("caption")
+            empty.add_css_class("dim-label")
+            detail_box.append(empty)
+
+        revealer.set_child(detail_box)
+        revealer.set_reveal_child(True)
+
+    def _get_files_for_range(self, range_str):
+        """Scan INTRO for files/folders matching a numeric range"""
+        parts = range_str.split("-")
+        min_num = int(parts[0])
+        max_num = int(parts[1])
+        intro_path = os.path.expanduser("~/Desktop/MASTER FOLDERS(INTRO)")
+        if not os.path.isdir(intro_path):
+            return []
+        files = []
+        for entry in os.listdir(intro_path):
+            match = re.match(r'^(\d{2})_', entry)
+            if match:
+                num = int(match.group(1))
+                if min_num <= num <= max_num:
+                    files.append(entry)
+        return sorted(files)
+
+    def _build_decisions_section(self):
+        """Build the 4 design decisions with pros/cons cards (Pass 2)"""
+        section_label = Gtk.Label(label="4 Design Beslutninger")
+        section_label.set_halign(Gtk.Align.START)
+        section_label.add_css_class("title-3")
+        section_label.set_margin_top(24)
+        self.append(section_label)
+
+        desc = Gtk.Label(
+            label="Bevidste valg der former systemets arkitektur — med afvejning af fordele og ulemper"
+        )
+        desc.set_halign(Gtk.Align.START)
+        desc.add_css_class("caption")
+        desc.add_css_class("dim-label")
+        desc.set_wrap(True)
+        desc.set_wrap_mode(Pango.WrapMode.WORD)
+        self.append(desc)
+
+        decisions_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        decisions_box.set_margin_top(8)
+
+        for title, chosen, pros, cons in DESIGN_DECISIONS:
+            card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+            card.add_css_class("card")
+            card.set_margin_start(4)
+            card.set_margin_end(4)
+
+            inner = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+            inner.set_margin_start(16)
+            inner.set_margin_end(16)
+            inner.set_margin_top(12)
+            inner.set_margin_bottom(12)
+
+            # Title row with "Valgt" badge
+            title_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+            t_label = Gtk.Label(label=title)
+            t_label.set_halign(Gtk.Align.START)
+            t_label.add_css_class("heading")
+            t_label.set_hexpand(True)
+            title_row.append(t_label)
+
+            badge = Gtk.Label(label="Valgt")
+            badge.add_css_class("success")
+            badge.add_css_class("caption")
+            title_row.append(badge)
+            inner.append(title_row)
+
+            # Chosen approach
+            c_label = Gtk.Label(label=chosen)
+            c_label.set_halign(Gtk.Align.START)
+            c_label.add_css_class("caption")
+            c_label.add_css_class("dim-label")
+            inner.append(c_label)
+
+            # Pros and cons in two columns
+            columns = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=16)
+            columns.set_margin_top(4)
+
+            # Pros column
+            pros_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+            pros_box.set_hexpand(True)
+            pros_header = Gtk.Label(label="Fordele")
+            pros_header.set_halign(Gtk.Align.START)
+            pros_header.add_css_class("caption")
+            pros_header.add_css_class("success")
+            pros_box.append(pros_header)
+            for pro in pros:
+                p = Gtk.Label(label=f"+ {pro}")
+                p.set_halign(Gtk.Align.START)
+                p.add_css_class("caption")
+                p.set_wrap(True)
+                p.set_wrap_mode(Pango.WrapMode.WORD)
+                pros_box.append(p)
+            columns.append(pros_box)
+
+            # Cons column
+            cons_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+            cons_box.set_hexpand(True)
+            cons_header = Gtk.Label(label="Ulemper")
+            cons_header.set_halign(Gtk.Align.START)
+            cons_header.add_css_class("caption")
+            cons_header.add_css_class("error")
+            cons_box.append(cons_header)
+            for con in cons:
+                c = Gtk.Label(label=f"- {con}")
+                c.set_halign(Gtk.Align.START)
+                c.add_css_class("caption")
+                c.add_css_class("dim-label")
+                c.set_wrap(True)
+                c.set_wrap_mode(Pango.WrapMode.WORD)
+                cons_box.append(c)
+            columns.append(cons_box)
+
+            inner.append(columns)
+            card.append(inner)
+            decisions_box.append(card)
+
+        self.append(decisions_box)
+
+    def _build_scaling_section(self):
+        """Build the scaling overview with horizontal + vertical + strategies (Pass 2)"""
+        section_label = Gtk.Label(label="Skalerings Oversigt")
+        section_label.set_halign(Gtk.Align.START)
+        section_label.add_css_class("title-3")
+        section_label.set_margin_top(24)
+        self.append(section_label)
+
+        # --- Horizontal scaling: timeline ---
+        h_label = Gtk.Label(label="Horisontal Skalering (mere content)")
+        h_label.set_halign(Gtk.Align.START)
+        h_label.add_css_class("heading")
+        h_label.set_margin_top(8)
+        self.append(h_label)
+
+        timeline = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
+        timeline.set_halign(Gtk.Align.FILL)
+        timeline.set_margin_start(4)
+        timeline.set_margin_end(4)
+
+        max_files = SCALING_MILESTONES[-1][2]
+        for i, (period, desc, count) in enumerate(SCALING_MILESTONES):
+            milestone = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+            milestone.set_hexpand(True)
+
+            card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+            card.add_css_class("card")
+
+            card_inner = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+            card_inner.set_margin_start(8)
+            card_inner.set_margin_end(8)
+            card_inner.set_margin_top(8)
+            card_inner.set_margin_bottom(8)
+
+            p_label = Gtk.Label(label=period)
+            p_label.add_css_class("heading")
+            p_label.set_halign(Gtk.Align.CENTER)
+            card_inner.append(p_label)
+
+            # Progress bar
+            bar = Gtk.ProgressBar()
+            bar.set_fraction(count / max_files)
+            card_inner.append(bar)
+
+            d_label = Gtk.Label(label=desc)
+            d_label.add_css_class("caption")
+            d_label.add_css_class("dim-label")
+            d_label.set_halign(Gtk.Align.CENTER)
+            d_label.set_wrap(True)
+            d_label.set_wrap_mode(Pango.WrapMode.WORD)
+            card_inner.append(d_label)
+
+            card.append(card_inner)
+            milestone.append(card)
+
+            # Arrow between milestones
+            if i < len(SCALING_MILESTONES) - 1:
+                arrow = Gtk.Label(label="->")
+                arrow.add_css_class("dim-label")
+                arrow.set_halign(Gtk.Align.CENTER)
+                arrow.set_valign(Gtk.Align.CENTER)
+                milestone.append(arrow)
+
+            timeline.append(milestone)
+
+        self.append(timeline)
+
+        # --- Vertical scaling: depth ---
+        v_label = Gtk.Label(label="Vertikal Skalering (dybere hierarki)")
+        v_label.set_halign(Gtk.Align.START)
+        v_label.add_css_class("heading")
+        v_label.set_margin_top(16)
+        self.append(v_label)
+
+        depth_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        depth_card.add_css_class("card")
+        depth_card.set_margin_start(4)
+        depth_card.set_margin_end(4)
+
+        depth_inner = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        depth_inner.set_margin_start(16)
+        depth_inner.set_margin_end(16)
+        depth_inner.set_margin_top(12)
+        depth_inner.set_margin_bottom(12)
+
+        max_label = Gtk.Label(label="Max dybde: 3 niveauer")
+        max_label.set_halign(Gtk.Align.START)
+        max_label.add_css_class("heading")
+        depth_inner.append(max_label)
+
+        levels = [
+            ("Niveau 1", "XX_SEKTION/", "#a855f7", 0),
+            ("Niveau 2", "XXA_UNDERSEKTION/", "#f59e0b", 24),
+            ("Niveau 3", "XXA1_DYB_FIL.md", "#00FF88", 48),
+        ]
+        for level_name, example, _color, indent in levels:
+            row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+            row.set_margin_start(indent)
+            n = Gtk.Label(label=level_name)
+            n.add_css_class("caption")
+            n.set_size_request(80, -1)
+            row.append(n)
+            e = Gtk.Label(label=example)
+            e.add_css_class("monospace")
+            e.add_css_class("caption")
+            row.append(e)
+            depth_inner.append(row)
+
+        depth_card.append(depth_inner)
+        self.append(depth_card)
+
+        # --- Strategies for 1000+ files ---
+        s_label = Gtk.Label(label="Optimerings-strategier for 1000+ filer")
+        s_label.set_halign(Gtk.Align.START)
+        s_label.add_css_class("heading")
+        s_label.set_margin_top(16)
+        self.append(s_label)
+
+        strat_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        strat_box.set_margin_start(4)
+        strat_box.set_margin_end(4)
+
+        for strategy in SCALING_STRATEGIES:
+            row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+            row.add_css_class("card")
+
+            row_inner = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+            row_inner.set_margin_start(12)
+            row_inner.set_margin_end(12)
+            row_inner.set_margin_top(8)
+            row_inner.set_margin_bottom(8)
+
+            bullet = Gtk.Label(label="*")
+            bullet.add_css_class("success")
+            row_inner.append(bullet)
+
+            text = Gtk.Label(label=strategy)
+            text.set_halign(Gtk.Align.START)
+            text.set_hexpand(True)
+            text.set_wrap(True)
+            text.set_wrap_mode(Pango.WrapMode.WORD)
+            row_inner.append(text)
+
+            row.append(row_inner)
+            strat_box.append(row)
+
+        self.append(strat_box)
+
+    def _build_anatomy_section(self):
+        """Build the folder structure anatomy view (Pass 2)"""
+        section_label = Gtk.Label(label="Mappestruktur Anatomi")
+        section_label.set_halign(Gtk.Align.START)
+        section_label.add_css_class("title-3")
+        section_label.set_margin_top(24)
+        self.append(section_label)
+
+        # --- Content folder anatomy ---
+        content_label = Gtk.Label(label="Content Mappe (fuld anatomi)")
+        content_label.set_halign(Gtk.Align.START)
+        content_label.add_css_class("heading")
+        content_label.set_margin_top(8)
+        self.append(content_label)
+
+        anatomy_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        anatomy_box.set_margin_start(4)
+        anatomy_box.set_margin_end(4)
+
+        for filename, role, description, _color in FOLDER_ANATOMY:
+            card = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            card.add_css_class("card")
+
+            inner = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            inner.set_margin_start(12)
+            inner.set_margin_end(12)
+            inner.set_margin_top(8)
+            inner.set_margin_bottom(8)
+            inner.set_hexpand(True)
+
+            # Filename (monospace)
+            f_label = Gtk.Label(label=filename)
+            f_label.add_css_class("monospace")
+            f_label.add_css_class("caption")
+            f_label.set_size_request(260, -1)
+            f_label.set_halign(Gtk.Align.START)
+            inner.append(f_label)
+
+            # Role
+            r_label = Gtk.Label(label=role)
+            r_label.add_css_class("heading")
+            r_label.set_size_request(100, -1)
+            r_label.set_halign(Gtk.Align.START)
+            inner.append(r_label)
+
+            # Description
+            d_label = Gtk.Label(label=description)
+            d_label.add_css_class("caption")
+            d_label.add_css_class("dim-label")
+            d_label.set_hexpand(True)
+            d_label.set_halign(Gtk.Align.START)
+            d_label.set_wrap(True)
+            d_label.set_wrap_mode(Pango.WrapMode.WORD)
+            inner.append(d_label)
+
+            card.append(inner)
+            anatomy_box.append(card)
+
+        self.append(anatomy_box)
+
+        # --- System folders with underscore convention ---
+        sys_label = Gtk.Label(label="System Mapper (underscore convention)")
+        sys_label.set_halign(Gtk.Align.START)
+        sys_label.add_css_class("heading")
+        sys_label.set_margin_top(16)
+        self.append(sys_label)
+
+        sys_desc = Gtk.Label(
+            label="Mapper med underscore prefix (_) er system/meta-data — aldrig primaer content"
+        )
+        sys_desc.set_halign(Gtk.Align.START)
+        sys_desc.add_css_class("caption")
+        sys_desc.add_css_class("dim-label")
+        sys_desc.set_wrap(True)
+        sys_desc.set_wrap_mode(Pango.WrapMode.WORD)
+        self.append(sys_desc)
+
+        sys_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        sys_box.set_margin_start(4)
+        sys_box.set_margin_end(4)
+        sys_box.set_margin_top(4)
+
+        for folder, purpose in SYSTEM_FOLDERS:
+            row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            row.add_css_class("card")
+
+            row_inner = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            row_inner.set_margin_start(12)
+            row_inner.set_margin_end(12)
+            row_inner.set_margin_top(8)
+            row_inner.set_margin_bottom(8)
+
+            f = Gtk.Label(label=folder)
+            f.add_css_class("monospace")
+            f.add_css_class("caption")
+            f.set_size_request(200, -1)
+            f.set_halign(Gtk.Align.START)
+            row_inner.append(f)
+
+            p = Gtk.Label(label=purpose)
+            p.set_halign(Gtk.Align.START)
+            p.set_hexpand(True)
+            p.add_css_class("dim-label")
+            row_inner.append(p)
+
+            row.append(row_inner)
+            sys_box.append(row)
+
+        self.append(sys_box)
+
+
+#
 # SYNC DASHBOARD VIEW (DEL 21)
-# 
+#
 
 class SyncComponentCard(Gtk.Box):
     """A card showing status for one sync component"""
