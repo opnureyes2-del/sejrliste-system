@@ -1,99 +1,70 @@
-# [VICTORY] ADMIRAL LEADERBOARD
+# ADMIRAL LEADERBOARD
 
-**Opdateret:** 2026-01-25 00:40
-**Total Sessions:** 1
-**Total Sejr:** 1 active, 2 archived
-
----
-
-## [ADMIRAL] TOP PERFORMERS
-
-| # | Model | Avg Score | Best | Sessions | Rank |
-|---|-------|-----------|------|----------|------|
-| 1 | Kv1nt (Opus 4.5) | 0 | 0 | 1 | KADET |
+**Opdateret:** 2026-01-30
+**Total Sessions:** 23+
+**Total Sejr:** 0 active, 30 archived
 
 ---
 
-## [DATA] MODEL STATISTIK
+## TOP PERFORMERS
+
+| # | Model | Avg Score | Best | Sejr | Rank |
+|---|-------|-----------|------|------|------|
+| 1 | Kv1nt (Opus 4.5) | 29.6 | 30 | 10 | GRAND ADMIRAL |
+
+---
+
+## MODEL STATISTIK
 
 ### Claude Opus 4.5 (Kv1nt)
 ```
-Sessions:     1
-Avg Score:    0
-Best Score:   0
-Worst Score:  0
-Total +ve:    0
-Total -ve:    0
-Achievements: 0
-```
-
-### Claude Sonnet 4.5
-```
-Sessions:     0
-Avg Score:    -
-```
-
-### Claude Haiku
-```
-Sessions:     0
-Avg Score:    -
+Sessioner:    23+
+Avg Score:    29.6/30
+Best Score:   30/30 (7 sejrlister)
+Worst Score:  7/30 (STOR_OPRYDNING)
+Total Sejr:   10 (alle arkiveret)
+GRAND ADMIRAL: 8
+KADET:         1
 ```
 
 ---
 
-## [MEDAL] RECENT SESSIONS
+## ALLE ARKIVEREDE SEJRLISTER
 
-| Dato | Sejr | Model | Score | Rank |
-|------|------|-------|-------|------|
-| 2026-01-25 | SYSTEM_TEST | Opus 4.5 | 0 | KADET |
-
----
-
-## [VICTORY] ALL-TIME RECORDS
-
-| Record | Value | Model | Sejr |
-|--------|-------|-------|------|
-| Highest Score | - | - | - |
-| Most Checkboxes | - | - | - |
-| Fastest Sejr | - | - | - |
-| Most Achievements | - | - | - |
-| Flawless Sejr | - | - | - |
+| Dato | Sejr | Score | Rang |
+|------|------|-------|------|
+| 2026-01-30 | INTRO_FOLDER_SYSTEM | 29/30 | GRAND ADMIRAL |
+| 2026-01-30 | ELLE_AGENT_SYSTEM_REVIVAL | 30/30 | GRAND ADMIRAL |
+| 2026-01-30 | DRAG_AND_DROP | 30/30 | GRAND ADMIRAL |
+| 2026-01-30 | SYNC_FUNKTIONER_DEL21 | 30/30 | GRAND ADMIRAL |
+| 2026-01-30 | LINEN_FRAMEWORK_VIEW | 30/30 | GRAND ADMIRAL |
+| 2026-01-30 | 3_LAGS_ARKITEKTUR_VIEW | 30/30 | GRAND ADMIRAL |
+| 2026-01-30 | DESIGN_LOGO_DESKTOP | 30/30 | GRAND ADMIRAL |
+| 2026-01-30 | CLAUDE_USAGE_MASTERY | 30/30 | GRAND ADMIRAL |
+| 2026-01-30 | KV1NT_ADMIRAL_PROTOCOLS | 29/30 | GRAND ADMIRAL |
+| 2026-01-30 | STOR_OPRYDNING_DEAD_CODE | 7/30 | KADET |
 
 ---
 
-##  RANKING DISTRIBUTION
+## ALL-TIME RECORDS
+
+| Record | Value | Sejr |
+|--------|-------|------|
+| Highest Score | 30/30 | 7 sejrlister (CLAUDE_USAGE, DESIGN_LOGO, 3_LAGS, LINEN, SYNC, DRAG_DROP, ELLE) |
+| Most Passes Complete | 193 checkboxes | INTRO_FOLDER_SYSTEM |
+| Total Checkboxes | 500+ | Alle 10 sejrlister |
+| GRAND ADMIRAL Count | 8 af 10 | 80% GRAND ADMIRAL rate |
+
+---
+
+## RANKING DISTRIBUTION
 
 ```
-STORADMIRAL (150+):  0 sessions (0%)
-ADMIRAL (100-149):   0 sessions (0%)
-KAPTAJN (50-99):     0 sessions (0%)
-LØJTNANT (20-49):    0 sessions (0%)
-KADET (0-19):        1 sessions (100%)
-SKIBSDRENG (<0):     0 sessions (0%)
-```
-
----
-
-## [TARGET] KONKURRENCE STATUS
-
-**Nuværende Leder:** Ingen (kun 1 session)
-**Tættest på Admiral:** Kv1nt (Opus 4.5) - needs 100 points
-
----
-
-## [LIST] KOMMANDOER
-
-```bash
-# Se leaderboard
-python3 scripts/admiral_tracker.py --leaderboard
-
-# Se specifik score
-python3 scripts/admiral_tracker.py --sejr "SYSTEM_TEST_2026-01-25" --score
-
-# Log event
-python3 scripts/admiral_tracker.py --sejr "X" --event "CHECKBOX_DONE"
+GRAND ADMIRAL (27-30):  8 sejrlister (80%)
+ADMIRAL (24-26):        0 sejrlister (0%)
+KADET (<24):            1 sejrliste (10%)
 ```
 
 ---
 
-**Auto-opdateret af:** admiral_tracker.py
+**Manuelt opdateret:** 2026-01-30
