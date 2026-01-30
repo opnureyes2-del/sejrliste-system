@@ -1890,6 +1890,243 @@ button.action-new {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.04);
 }
+
+/* === INTRO DNA LAYER CARDS (FASE 5) === */
+
+.intro-dna-card {
+    padding: 16px 20px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-left: 4px solid rgba(99, 102, 241, 0.40);
+    transition: all 200ms ease;
+}
+
+.intro-dna-card:hover {
+    background: rgba(255, 255, 255, 0.045);
+    border-left-color: rgba(99, 102, 241, 0.70);
+    box-shadow: 0 4px 20px -6px rgba(99, 102, 241, 0.15);
+}
+
+.intro-dna-card-active {
+    border-left-color: rgba(74, 222, 128, 0.60);
+}
+
+.intro-dna-card-active:hover {
+    border-left-color: rgba(74, 222, 128, 0.85);
+    box-shadow: 0 4px 20px -6px rgba(74, 222, 128, 0.15);
+}
+
+.intro-dna-card-missing {
+    border-left-color: rgba(248, 113, 113, 0.40);
+}
+
+.intro-dna-card-missing:hover {
+    border-left-color: rgba(248, 113, 113, 0.70);
+    box-shadow: 0 4px 20px -6px rgba(248, 113, 113, 0.12);
+}
+
+.intro-dna-layer-num {
+    font-size: 20px;
+    font-weight: 800;
+    min-width: 36px;
+    min-height: 36px;
+    border-radius: 50%;
+    background: rgba(99, 102, 241, 0.15);
+    color: #a5b4fc;
+}
+
+.intro-dna-layer-num-active {
+    background: rgba(74, 222, 128, 0.15);
+    color: #4ade80;
+    box-shadow: 0 0 12px rgba(74, 222, 128, 0.25);
+}
+
+.intro-dna-layer-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.90);
+}
+
+.intro-dna-layer-detail {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.50);
+    font-family: monospace;
+}
+
+.intro-dna-layer-status {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+
+.intro-dna-status-found {
+    background: rgba(0, 255, 136, 0.12);
+    color: #4ade80;
+}
+
+.intro-dna-status-missing {
+    background: rgba(248, 113, 113, 0.12);
+    color: #f87171;
+}
+
+.intro-dna-status-partial {
+    background: rgba(250, 204, 21, 0.12);
+    color: #fbbf24;
+}
+
+.intro-dna-progress {
+    min-height: 6px;
+    border-radius: 3px;
+}
+
+.intro-dna-progress trough {
+    background: rgba(255, 255, 255, 0.08);
+    min-height: 6px;
+    border-radius: 3px;
+}
+
+.intro-dna-progress progress {
+    background: linear-gradient(90deg, rgba(99, 102, 241, 0.8), rgba(139, 92, 246, 0.8));
+    border-radius: 3px;
+}
+
+.intro-dna-progress-active progress {
+    background: linear-gradient(90deg, rgba(74, 222, 128, 0.8), rgba(34, 197, 94, 0.8));
+}
+
+.intro-dna-overall-score {
+    font-size: 42px;
+    font-weight: 900;
+    color: #a5b4fc;
+}
+
+.intro-dna-overall-pass {
+    color: #4ade80;
+}
+
+.intro-dna-overall-warn {
+    color: #fbbf24;
+}
+
+.intro-dna-overall-low {
+    color: #f87171;
+}
+
+/* FASE 6: Quick Actions Panel */
+.intro-qa-section-header {
+    font-size: 18px;
+    font-weight: 800;
+    color: #e2e8f0;
+}
+
+.intro-qa-system-label {
+    font-size: 14px;
+    font-weight: 700;
+    font-family: "JetBrains Mono", monospace;
+}
+
+.intro-qa-cmd-card {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 4px;
+}
+
+.intro-qa-cmd-card:hover {
+    background: rgba(30, 41, 59, 0.7);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.intro-qa-cmd-text {
+    font-size: 12px;
+    font-family: "JetBrains Mono", monospace;
+    color: #22d3ee;
+}
+
+.intro-qa-cmd-desc {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.intro-qa-copy-btn {
+    min-height: 28px;
+    min-width: 28px;
+    padding: 2px 8px;
+    font-size: 11px;
+}
+
+.intro-qa-run-btn {
+    min-height: 28px;
+    min-width: 28px;
+    padding: 2px 8px;
+    font-size: 11px;
+    background: rgba(74, 222, 128, 0.15);
+    color: #4ade80;
+}
+
+.intro-qa-env-card {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 12px 16px;
+}
+
+.intro-qa-env-card:hover {
+    background: rgba(30, 41, 59, 0.7);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.intro-qa-env-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #e2e8f0;
+}
+
+.intro-qa-env-detail {
+    font-size: 12px;
+    color: #94a3b8;
+    font-family: "JetBrains Mono", monospace;
+}
+
+.intro-qa-status-running {
+    color: #4ade80;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.intro-qa-status-stopped {
+    color: #f87171;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.intro-qa-status-unknown {
+    color: #fbbf24;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.intro-qa-status-configured {
+    color: #a78bfa;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.intro-qa-check-btn {
+    min-height: 28px;
+    padding: 2px 10px;
+    font-size: 11px;
+}
+
+.intro-qa-system-cirkelline { color: #f97316; }
+.intro-qa-system-cosmic { color: #a855f7; }
+.intro-qa-system-ckc { color: #22d3ee; }
+.intro-qa-system-kommandor { color: #6366f1; }
+.intro-qa-system-docker { color: #3b82f6; }
+.intro-qa-system-db { color: #f59e0b; }
 """
 
 def load_custom_css():
@@ -7372,6 +7609,8 @@ INTRO_SIDEBAR_ITEMS = [
     ("D", "Architecture", "D1-D10", "view-grid-symbolic"),
     ("structure", "Folder Structure", "Governance + Rules", "folder-symbolic"),
     ("system_functions", "System Functions", "Scripts + Automation", "system-run-symbolic"),
+    ("dna_layers", "7-DNA Layers", "INTRO DNA Analysis", "applications-science-symbolic"),
+    ("quick_actions", "Quick Actions", "Commands + Environment", "utilities-terminal-symbolic"),
     ("health", "System Health", "Live verification", "emblem-ok-symbolic"),
 ]
 
@@ -8119,7 +8358,7 @@ class IntroSystemView(Gtk.Box):
         """Display the specified INTRO category view.
 
         Args:
-            category_key: One of 'I', 'B', 'C', 'D', 'structure', 'system_functions', 'health'
+            category_key: One of 'I', 'B', 'C', 'D', 'structure', 'system_functions', 'dna_layers', 'health'
         """
         self._current_view = category_key
         self._clear()
@@ -8130,6 +8369,10 @@ class IntroSystemView(Gtk.Box):
             self._build_structure_view()
         elif category_key == "system_functions":
             self._build_system_functions_view()
+        elif category_key == "dna_layers":
+            self._build_dna_layers_view()
+        elif category_key == "quick_actions":
+            self._build_quick_actions_view()
         elif category_key == "I":
             self._build_i_files_view()
         elif category_key in ("B", "C", "D"):
@@ -8956,6 +9199,578 @@ class IntroSystemView(Gtk.Box):
         thread.start()
 
     # -----------------------------------------------------------------
+    # DNA LAYERS VIEW (FASE 5: 7-DNA with real INTRO data)
+    # -----------------------------------------------------------------
+
+    def _build_dna_layers_view(self):
+        """Build the 7-DNA Layers view with REAL data from INTRO files.
+
+        Reads actual files from MASTER FOLDERS(INTRO) to determine the
+        status and completion percentage of each of the 7 DNA layers:
+          Lag 1 SELF-AWARE       -- DNA.yaml + system identity
+          Lag 2 SELF-DOCUMENTING -- AUTO_LOG.jsonl status
+          Lag 3 SELF-VERIFYING   -- verify_master_folders.py result
+          Lag 4 SELF-IMPROVING   -- PATTERNS.yaml + learned patterns
+          Lag 5 SELF-ARCHIVING   -- ARCHIVE/ count + last archived
+          Lag 6 PREDICTIVE       -- _CURRENT/NEXT.md content
+          Lag 7 SELF-OPTIMIZING  -- 3-pass status from sejrliste data
+        """
+        intro_path = INTRO_PATH
+
+        # --- Header ---
+        header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        title = Gtk.Label(label="INTRO 7-DNA Layers")
+        title.add_css_class("intro-view-header")
+        title.set_xalign(0)
+        header_box.append(title)
+
+        subtitle = Gtk.Label(
+            label="Real-time analysis of the 7 DNA layers from MASTER FOLDERS(INTRO) -- based on actual files, not dummy data"
+        )
+        subtitle.add_css_class("intro-view-subtitle")
+        subtitle.set_xalign(0)
+        subtitle.set_wrap(True)
+        header_box.append(subtitle)
+        self._container.append(header_box)
+
+        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        sep.set_margin_top(4)
+        sep.set_margin_bottom(8)
+        self._container.append(sep)
+
+        # --- Gather real data for each layer ---
+        layer_data = self._gather_dna_layer_data(intro_path)
+
+        # --- Overall score ---
+        total_pct = sum(ld["completion"] for ld in layer_data) / len(layer_data) if layer_data else 0.0
+
+        score_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=16)
+        score_box.set_halign(Gtk.Align.CENTER)
+        score_box.set_margin_top(12)
+        score_box.set_margin_bottom(16)
+
+        score_label = Gtk.Label(label=f"{total_pct:.0f}%")
+        score_label.add_css_class("intro-dna-overall-score")
+        if total_pct >= 70:
+            score_label.add_css_class("intro-dna-overall-pass")
+        elif total_pct >= 40:
+            score_label.add_css_class("intro-dna-overall-warn")
+        else:
+            score_label.add_css_class("intro-dna-overall-low")
+        score_box.append(score_label)
+
+        score_meta = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+        score_meta.set_valign(Gtk.Align.CENTER)
+
+        active_count = sum(1 for ld in layer_data if ld["completion"] > 0)
+        meta_label = Gtk.Label(label=f"{active_count}/7 layers active")
+        meta_label.add_css_class("caption")
+        score_meta.append(meta_label)
+
+        from datetime import datetime as _dt
+        ts_label = Gtk.Label(label=f"Scanned: {_dt.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        ts_label.add_css_class("caption")
+        ts_label.add_css_class("dim-label")
+        score_meta.append(ts_label)
+
+        score_box.append(score_meta)
+        self._container.append(score_box)
+
+        # --- Refresh button ---
+        refresh_btn = Gtk.Button(label="Re-scan DNA Layers")
+        refresh_btn.add_css_class("suggested-action")
+        refresh_btn.add_css_class("pill")
+        refresh_btn.set_halign(Gtk.Align.CENTER)
+        refresh_btn.connect("clicked", lambda b: self.show_category("dna_layers"))
+        self._container.append(refresh_btn)
+
+        refresh_sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        refresh_sep.set_margin_top(12)
+        refresh_sep.set_margin_bottom(4)
+        self._container.append(refresh_sep)
+
+        # --- Layer cards ---
+        layers_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        layers_box.set_margin_top(8)
+
+        for ld in layer_data:
+            card = self._build_dna_layer_card(ld)
+            layers_box.append(card)
+
+        self._container.append(layers_box)
+
+    def _gather_dna_layer_data(self, intro_path: Path) -> list:
+        """Gather real data for each of the 7 DNA layers.
+
+        Returns a list of dicts with keys:
+            layer_num, name, icon, status, status_class,
+            detail_lines, completion
+        """
+        import json as _json
+        from datetime import datetime as _dt
+
+        layers = []
+
+        # ---------------------------------------------------------------
+        # LAG 1: SELF-AWARE -- DNA.yaml + system identity
+        # ---------------------------------------------------------------
+        dna_yaml_path = intro_path / "DNA.yaml"
+        dna_found = dna_yaml_path.exists()
+        dna_detail = []
+        dna_completion = 0.0
+
+        if dna_found:
+            try:
+                content = dna_yaml_path.read_text(encoding="utf-8", errors="replace")
+                line_count = len(content.splitlines())
+                dna_detail.append(f"DNA.yaml: {line_count} lines")
+                # Try to extract system identity from YAML
+                for line in content.splitlines()[:20]:
+                    if "name:" in line.lower() or "identity:" in line.lower() or "system:" in line.lower():
+                        dna_detail.append(line.strip()[:80])
+                        break
+                dna_completion = 100.0
+            except Exception:
+                dna_detail.append("DNA.yaml: exists but unreadable")
+                dna_completion = 50.0
+        else:
+            # Check for alternative identity files
+            alt_files = [
+                intro_path / "00_SYSTEM_GENESIS.md",
+                intro_path / "I1_ADMIRAL_PLUS_VISION.md",
+                intro_path / "I8_ADMIRAL_CENTRAL.md",
+            ]
+            found_alts = [f for f in alt_files if f.exists()]
+            if found_alts:
+                dna_detail.append(f"DNA.yaml: missing -- {len(found_alts)} identity alt(s) found")
+                for af in found_alts[:2]:
+                    dna_detail.append(f"  -> {af.name}")
+                dna_completion = 60.0
+            else:
+                dna_detail.append("DNA.yaml: missing -- no identity files found")
+                dna_completion = 0.0
+
+        layers.append({
+            "layer_num": "1",
+            "name": "SELF-AWARE",
+            "icon": "user-info-symbolic",
+            "status": "Found" if dna_found else ("Partial" if dna_completion > 0 else "Missing"),
+            "status_class": "intro-dna-status-found" if dna_found else ("intro-dna-status-partial" if dna_completion > 0 else "intro-dna-status-missing"),
+            "detail_lines": dna_detail,
+            "completion": dna_completion,
+        })
+
+        # ---------------------------------------------------------------
+        # LAG 2: SELF-DOCUMENTING -- AUTO_LOG.jsonl status
+        # ---------------------------------------------------------------
+        log_path = intro_path / "AUTO_LOG.jsonl"
+        log_found = log_path.exists()
+        log_detail = []
+        log_completion = 0.0
+
+        if log_found:
+            try:
+                content = log_path.read_text(encoding="utf-8", errors="replace")
+                lines = [l.strip() for l in content.splitlines() if l.strip()]
+                log_detail.append(f"AUTO_LOG.jsonl: {len(lines)} entries")
+                if lines:
+                    # Try to parse last entry for timestamp
+                    try:
+                        last_entry = _json.loads(lines[-1])
+                        ts = last_entry.get("timestamp", last_entry.get("ts", last_entry.get("date", "?")))
+                        log_detail.append(f"Last entry: {str(ts)[:25]}")
+                    except (_json.JSONDecodeError, KeyError):
+                        log_detail.append(f"Last line: {lines[-1][:60]}")
+                log_completion = 100.0 if len(lines) >= 5 else 50.0
+            except Exception:
+                log_detail.append("AUTO_LOG.jsonl: exists but unreadable")
+                log_completion = 25.0
+        else:
+            # Check for git log as alternative documentation
+            git_dir = intro_path / ".git"
+            if git_dir.exists():
+                try:
+                    result = subprocess.run(
+                        ["git", "log", "--oneline", "-5"],
+                        cwd=str(intro_path),
+                        capture_output=True, text=True, timeout=10,
+                    )
+                    if result.returncode == 0 and result.stdout.strip():
+                        commit_count = len(result.stdout.strip().splitlines())
+                        log_detail.append(f"AUTO_LOG.jsonl: missing -- git has {commit_count}+ commits")
+                        log_detail.append(f"Last commit: {result.stdout.strip().splitlines()[0][:60]}")
+                        log_completion = 40.0
+                    else:
+                        log_detail.append("AUTO_LOG.jsonl: missing -- git log empty")
+                        log_completion = 10.0
+                except Exception:
+                    log_detail.append("AUTO_LOG.jsonl: missing -- git check failed")
+                    log_completion = 5.0
+            else:
+                log_detail.append("AUTO_LOG.jsonl: missing -- no git repo either")
+                log_completion = 0.0
+
+        layers.append({
+            "layer_num": "2",
+            "name": "SELF-DOCUMENTING",
+            "icon": "document-edit-symbolic",
+            "status": "Found" if log_found else ("Partial" if log_completion > 0 else "Missing"),
+            "status_class": "intro-dna-status-found" if log_found else ("intro-dna-status-partial" if log_completion > 0 else "intro-dna-status-missing"),
+            "detail_lines": log_detail,
+            "completion": log_completion,
+        })
+
+        # ---------------------------------------------------------------
+        # LAG 3: SELF-VERIFYING -- verify_master_folders.py
+        # ---------------------------------------------------------------
+        verify_path = intro_path / "verify_master_folders.py"
+        verify_found = verify_path.exists()
+        verify_detail = []
+        verify_completion = 0.0
+
+        if verify_found:
+            try:
+                st = verify_path.stat()
+                size_kb = st.st_size / 1024
+                mtime = _dt.fromtimestamp(st.st_mtime).strftime("%Y-%m-%d %H:%M")
+                verify_detail.append(f"verify_master_folders.py: {size_kb:.1f} KB")
+                verify_detail.append(f"Last modified: {mtime}")
+                # Check if executable
+                import stat as _stat
+                is_exec = bool(st.st_mode & _stat.S_IXUSR)
+                verify_detail.append(f"Executable: {'Yes' if is_exec else 'No'}")
+                # Check for pre-commit hook integration
+                hook_path = intro_path / ".git" / "hooks" / "pre-commit"
+                if hook_path.exists():
+                    verify_detail.append("Pre-commit hook: Active")
+                    verify_completion = 100.0
+                else:
+                    verify_detail.append("Pre-commit hook: Not found")
+                    verify_completion = 75.0
+            except Exception:
+                verify_detail.append("verify_master_folders.py: exists but stat failed")
+                verify_completion = 50.0
+        else:
+            # Check for alternative verification scripts
+            alt_scripts = [
+                intro_path / "check_folder_health.sh",
+                intro_path / "auto_verify_hook.sh",
+            ]
+            found_alts = [s for s in alt_scripts if s.exists()]
+            if found_alts:
+                verify_detail.append(f"verify_master_folders.py: missing -- {len(found_alts)} alt script(s)")
+                for s in found_alts:
+                    verify_detail.append(f"  -> {s.name}")
+                verify_completion = 30.0
+            else:
+                verify_detail.append("verify_master_folders.py: missing")
+                verify_completion = 0.0
+
+        layers.append({
+            "layer_num": "3",
+            "name": "SELF-VERIFYING",
+            "icon": "emblem-ok-symbolic",
+            "status": "Found" if verify_found else ("Partial" if verify_completion > 0 else "Missing"),
+            "status_class": "intro-dna-status-found" if verify_found else ("intro-dna-status-partial" if verify_completion > 0 else "intro-dna-status-missing"),
+            "detail_lines": verify_detail,
+            "completion": verify_completion,
+        })
+
+        # ---------------------------------------------------------------
+        # LAG 4: SELF-IMPROVING -- PATTERNS.yaml + learned patterns
+        # ---------------------------------------------------------------
+        patterns_path = intro_path / "PATTERNS.yaml"
+        patterns_found = patterns_path.exists()
+        patterns_detail = []
+        patterns_completion = 0.0
+
+        if patterns_found:
+            try:
+                content = patterns_path.read_text(encoding="utf-8", errors="replace")
+                lines = content.splitlines()
+                # Count pattern entries (lines starting with '- ' or containing 'pattern')
+                pattern_count = sum(1 for l in lines if l.strip().startswith("- ") or "pattern" in l.lower())
+                patterns_detail.append(f"PATTERNS.yaml: {len(lines)} lines, ~{pattern_count} patterns")
+                patterns_completion = 100.0 if pattern_count >= 5 else 50.0
+            except Exception:
+                patterns_detail.append("PATTERNS.yaml: exists but unreadable")
+                patterns_completion = 25.0
+        else:
+            # Check for learning evidence in other files
+            learning_files = list(intro_path.glob("*PATTERN*")) + list(intro_path.glob("*LEARN*"))
+            if learning_files:
+                patterns_detail.append(f"PATTERNS.yaml: missing -- {len(learning_files)} learning file(s)")
+                for lf in learning_files[:2]:
+                    patterns_detail.append(f"  -> {lf.name}")
+                patterns_completion = 20.0
+            else:
+                # Check for I-files that document patterns
+                i4_path = intro_path / "I4_ADMIRAL_MORNING_BRIEFING.md"
+                if i4_path.exists():
+                    patterns_detail.append("PATTERNS.yaml: missing -- I4 briefing exists as learning proxy")
+                    patterns_completion = 15.0
+                else:
+                    patterns_detail.append("PATTERNS.yaml: missing -- no learning evidence")
+                    patterns_completion = 0.0
+
+        layers.append({
+            "layer_num": "4",
+            "name": "SELF-IMPROVING",
+            "icon": "emblem-synchronizing-symbolic",
+            "status": "Found" if patterns_found else ("Partial" if patterns_completion > 0 else "Missing"),
+            "status_class": "intro-dna-status-found" if patterns_found else ("intro-dna-status-partial" if patterns_completion > 0 else "intro-dna-status-missing"),
+            "detail_lines": patterns_detail,
+            "completion": patterns_completion,
+        })
+
+        # ---------------------------------------------------------------
+        # LAG 5: SELF-ARCHIVING -- ARCHIVE/ count + last archived
+        # ---------------------------------------------------------------
+        archive_paths = [
+            intro_path / "90_ARCHIVE",
+            intro_path / "ARCHIVE",
+            intro_path / "HISTORICAL ARCHIVE",
+        ]
+        archive_detail = []
+        archive_completion = 0.0
+        total_archive_items = 0
+        latest_archive_date = ""
+
+        for ap in archive_paths:
+            if ap.exists() and ap.is_dir():
+                try:
+                    items = list(ap.iterdir())
+                    item_count = len(items)
+                    total_archive_items += item_count
+                    archive_detail.append(f"{ap.name}/: {item_count} items")
+                    # Find latest modification
+                    if items:
+                        latest_item = max(items, key=lambda p: p.stat().st_mtime)
+                        item_date = _dt.fromtimestamp(latest_item.stat().st_mtime).strftime("%Y-%m-%d")
+                        if not latest_archive_date or item_date > latest_archive_date:
+                            latest_archive_date = item_date
+                except Exception:
+                    archive_detail.append(f"{ap.name}/: exists but scan failed")
+
+        if total_archive_items > 0:
+            archive_detail.insert(0, f"Total archived: {total_archive_items} items")
+            if latest_archive_date:
+                archive_detail.append(f"Last archived: {latest_archive_date}")
+            archive_completion = min(100.0, 40.0 + total_archive_items * 6.0)
+        else:
+            found_dirs = [ap for ap in archive_paths if ap.exists()]
+            if found_dirs:
+                archive_detail.append(f"{len(found_dirs)} archive dir(s) exist but empty")
+                archive_completion = 10.0
+            else:
+                archive_detail.append("No archive directories found (90_ARCHIVE/, ARCHIVE/, HISTORICAL ARCHIVE/)")
+                archive_completion = 0.0
+
+        layers.append({
+            "layer_num": "5",
+            "name": "SELF-ARCHIVING",
+            "icon": "folder-visiting-symbolic",
+            "status": "Found" if total_archive_items > 0 else ("Partial" if archive_completion > 0 else "Missing"),
+            "status_class": "intro-dna-status-found" if total_archive_items > 0 else ("intro-dna-status-partial" if archive_completion > 0 else "intro-dna-status-missing"),
+            "detail_lines": archive_detail,
+            "completion": archive_completion,
+        })
+
+        # ---------------------------------------------------------------
+        # LAG 6: PREDICTIVE -- _CURRENT/NEXT.md content
+        # ---------------------------------------------------------------
+        next_paths = [
+            intro_path / "_CURRENT" / "NEXT.md",
+            intro_path / "NEXT.md",
+            intro_path / "OBLIGATORISK_OPGAVER.md",
+            intro_path / "OBLIGATORISKE_ORDRER.md",
+        ]
+        predict_detail = []
+        predict_completion = 0.0
+
+        for np_path in next_paths:
+            if np_path.exists():
+                try:
+                    content = np_path.read_text(encoding="utf-8", errors="replace")
+                    lines = content.splitlines()
+                    predict_detail.append(f"{np_path.name}: {len(lines)} lines")
+                    # Show first 3 non-empty content lines
+                    content_lines = [l.strip() for l in lines if l.strip() and not l.strip().startswith("#")]
+                    for cl in content_lines[:3]:
+                        predict_detail.append(f"  {cl[:70]}")
+                    if np_path.name in ("NEXT.md",):
+                        predict_completion = max(predict_completion, 100.0)
+                    else:
+                        predict_completion = max(predict_completion, 60.0)
+                except Exception:
+                    predict_detail.append(f"{np_path.name}: exists but unreadable")
+                    predict_completion = max(predict_completion, 20.0)
+
+        if not predict_detail:
+            predict_detail.append("No predictive files found (_CURRENT/NEXT.md, OBLIGATORISK_OPGAVER.md)")
+            predict_completion = 0.0
+
+        layers.append({
+            "layer_num": "6",
+            "name": "PREDICTIVE",
+            "icon": "weather-few-clouds-symbolic",
+            "status": "Found" if predict_completion >= 60 else ("Partial" if predict_completion > 0 else "Missing"),
+            "status_class": "intro-dna-status-found" if predict_completion >= 60 else ("intro-dna-status-partial" if predict_completion > 0 else "intro-dna-status-missing"),
+            "detail_lines": predict_detail,
+            "completion": predict_completion,
+        })
+
+        # ---------------------------------------------------------------
+        # LAG 7: SELF-OPTIMIZING -- 3-pass status from sejrliste data
+        # ---------------------------------------------------------------
+        opt_detail = []
+        opt_completion = 0.0
+
+        # Check for 3-pass system evidence in sejrliste data
+        sejr_path = SYSTEM_PATH
+        active_dir = sejr_path / "10_ACTIVE"
+        three_pass_count = 0
+        total_active = 0
+
+        if active_dir.exists():
+            for item in active_dir.iterdir():
+                if item.is_dir():
+                    total_active += 1
+                    status_yaml = item / "STATUS.yaml"
+                    sejr_liste = item / "SEJR_LISTE.md"
+                    claude_md = item / "CLAUDE.md"
+                    if status_yaml.exists() or claude_md.exists():
+                        three_pass_count += 1
+
+            opt_detail.append(f"Active sejrlister: {total_active}")
+            opt_detail.append(f"With 3-pass tracking: {three_pass_count}")
+
+            if total_active > 0:
+                # Check for alternatives/optimization tracking
+                alt_count = 0
+                for item in active_dir.iterdir():
+                    if item.is_dir():
+                        alt_dir = item / "ALTERNATIVES"
+                        if alt_dir.exists():
+                            alt_count += len(list(alt_dir.iterdir()))
+                if alt_count > 0:
+                    opt_detail.append(f"Alternative evaluations: {alt_count}")
+
+                opt_completion = min(100.0, (three_pass_count / max(total_active, 1)) * 100.0)
+            else:
+                opt_detail.append("No active sejrlister for 3-pass analysis")
+                opt_completion = 0.0
+        else:
+            opt_detail.append("10_ACTIVE/ directory not found")
+            opt_completion = 0.0
+
+        # Also check for navigation index (optimization artifact)
+        nav_index = intro_path / "NAVIGATION_INDEX.md"
+        if nav_index.exists():
+            try:
+                content = nav_index.read_text(encoding="utf-8", errors="replace")
+                nav_lines = len(content.splitlines())
+                opt_detail.append(f"NAVIGATION_INDEX.md: {nav_lines} lines (optimization index)")
+                opt_completion = min(100.0, opt_completion + 15.0)
+            except Exception:
+                pass
+
+        layers.append({
+            "layer_num": "7",
+            "name": "SELF-OPTIMIZING",
+            "icon": "preferences-other-symbolic",
+            "status": "Found" if opt_completion >= 60 else ("Partial" if opt_completion > 0 else "Missing"),
+            "status_class": "intro-dna-status-found" if opt_completion >= 60 else ("intro-dna-status-partial" if opt_completion > 0 else "intro-dna-status-missing"),
+            "detail_lines": opt_detail,
+            "completion": opt_completion,
+        })
+
+        return layers
+
+    def _build_dna_layer_card(self, ld: dict) -> Gtk.Box:
+        """Build a single DNA layer card widget.
+
+        Args:
+            ld: Dict with layer_num, name, icon, status, status_class,
+                detail_lines, completion
+        """
+        is_active = ld["completion"] >= 60.0
+        is_missing = ld["completion"] == 0.0
+
+        card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        card.add_css_class("intro-dna-card")
+        if is_active:
+            card.add_css_class("intro-dna-card-active")
+        elif is_missing:
+            card.add_css_class("intro-dna-card-missing")
+
+        # --- Top row: number, name, status badge ---
+        top_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+
+        # Layer number circle
+        num_label = Gtk.Label(label=ld["layer_num"])
+        num_label.add_css_class("intro-dna-layer-num")
+        if is_active:
+            num_label.add_css_class("intro-dna-layer-num-active")
+        num_label.set_size_request(36, 36)
+        num_label.set_valign(Gtk.Align.CENTER)
+        top_row.append(num_label)
+
+        # Icon
+        icon = Gtk.Image.new_from_icon_name(ld["icon"])
+        icon.set_pixel_size(20)
+        icon.set_valign(Gtk.Align.CENTER)
+        top_row.append(icon)
+
+        # Name
+        name_label = Gtk.Label(label=f"Lag {ld['layer_num']}: {ld['name']}")
+        name_label.add_css_class("intro-dna-layer-name")
+        name_label.set_xalign(0)
+        name_label.set_hexpand(True)
+        name_label.set_valign(Gtk.Align.CENTER)
+        top_row.append(name_label)
+
+        # Completion percentage
+        pct_label = Gtk.Label(label=f"{ld['completion']:.0f}%")
+        pct_label.add_css_class("caption")
+        pct_label.add_css_class("accent")
+        pct_label.set_valign(Gtk.Align.CENTER)
+        top_row.append(pct_label)
+
+        # Status badge
+        status_badge = Gtk.Label(label=ld["status"])
+        status_badge.add_css_class("intro-dna-layer-status")
+        status_badge.add_css_class(ld["status_class"])
+        status_badge.set_valign(Gtk.Align.CENTER)
+        top_row.append(status_badge)
+
+        card.append(top_row)
+
+        # --- Progress bar ---
+        prog_bar = Gtk.ProgressBar()
+        prog_bar.set_fraction(ld["completion"] / 100.0)
+        prog_bar.add_css_class("intro-dna-progress")
+        if is_active:
+            prog_bar.add_css_class("intro-dna-progress-active")
+        card.append(prog_bar)
+
+        # --- Detail lines ---
+        if ld["detail_lines"]:
+            details_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+            details_box.set_margin_top(4)
+
+            for detail_text in ld["detail_lines"]:
+                detail_label = Gtk.Label(label=detail_text)
+                detail_label.add_css_class("intro-dna-layer-detail")
+                detail_label.set_xalign(0)
+                detail_label.set_ellipsize(Pango.EllipsizeMode.END)
+                details_box.append(detail_label)
+
+            card.append(details_box)
+
+        return card
+
+    # -----------------------------------------------------------------
     # HEALTH VIEW (Live verification status)
     # -----------------------------------------------------------------
 
@@ -9084,6 +9899,621 @@ class IntroSystemView(Gtk.Box):
             checks_box.append(check_row)
 
         self._container.append(checks_box)
+
+    # -----------------------------------------------------------------
+    # FASE 6: QUICK ACTIONS PANEL
+    # -----------------------------------------------------------------
+
+    def _build_quick_actions_view(self):
+        """Build the Quick Actions panel with Terminal Commands and Environment Config.
+
+        Terminal Commands section:
+          - Groups commands by system: Cirkelline, Cosmic, CKC, Kommandor, Docker, DB
+          - Shows command text + Copy button + Run in Terminal button
+          - Only the top 3-5 most important per category
+          - Sourced from B-files in MASTER FOLDERS(INTRO)/PROJEKTS TERMINALS/
+
+        Environment Config section:
+          - Shows environment overview: Redis, RabbitMQ, Docker, PostgreSQL, AWS
+          - Status indicator per service (checks if service is running)
+          - "Check Status" button per service
+          - Sourced from C-files in MASTER FOLDERS(INTRO)/PROJEKTS LOKAL ENV/
+        """
+
+        # --- Header ---
+        header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        title = Gtk.Label(label="Quick Actions")
+        title.add_css_class("intro-view-header")
+        title.set_xalign(0)
+        header_box.append(title)
+
+        subtitle = Gtk.Label(
+            label="Terminal commands and environment status -- sourced from B-files and C-files in MASTER FOLDERS(INTRO)"
+        )
+        subtitle.add_css_class("intro-view-subtitle")
+        subtitle.set_xalign(0)
+        subtitle.set_wrap(True)
+        header_box.append(subtitle)
+        self._container.append(header_box)
+
+        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        sep.set_margin_top(4)
+        sep.set_margin_bottom(8)
+        self._container.append(sep)
+
+        # ============================================================
+        # SECTION 1: TERMINAL COMMANDS (from B-files)
+        # ============================================================
+        term_header = Gtk.Label(label="Terminal Commands")
+        term_header.add_css_class("intro-qa-section-header")
+        term_header.set_xalign(0)
+        term_header.set_margin_top(8)
+        self._container.append(term_header)
+
+        term_desc = Gtk.Label(
+            label="Top 3-5 essential commands per system -- Copy to clipboard or run directly in terminal"
+        )
+        term_desc.add_css_class("intro-file-meta")
+        term_desc.set_xalign(0)
+        term_desc.set_margin_bottom(8)
+        self._container.append(term_desc)
+
+        # Define command groups sourced from B1-B6 files
+        command_groups = self._get_terminal_command_groups()
+
+        for group in command_groups:
+            group_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+            group_box.set_margin_top(8)
+            group_box.set_margin_bottom(4)
+
+            # System name header with color
+            sys_label = Gtk.Label()
+            sys_label.set_markup(
+                f'<span weight="bold" font_family="JetBrains Mono">{GLib.markup_escape_text(group["name"])}</span>'
+                f'  <span size="small" foreground="#64748b">({group["source"]})</span>'
+            )
+            sys_label.add_css_class("intro-qa-system-label")
+            sys_label.add_css_class(f'intro-qa-system-{group["css_class"]}')
+            sys_label.set_xalign(0)
+            group_box.append(sys_label)
+
+            # Command cards
+            for cmd in group["commands"]:
+                cmd_card = self._build_command_card(cmd["description"], cmd["command"])
+                group_box.append(cmd_card)
+
+            self._container.append(group_box)
+
+        # Separator between sections
+        mid_sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        mid_sep.set_margin_top(16)
+        mid_sep.set_margin_bottom(8)
+        self._container.append(mid_sep)
+
+        # ============================================================
+        # SECTION 2: ENVIRONMENT CONFIG (from C-files)
+        # ============================================================
+        env_header = Gtk.Label(label="Environment Status")
+        env_header.add_css_class("intro-qa-section-header")
+        env_header.set_xalign(0)
+        env_header.set_margin_top(8)
+        self._container.append(env_header)
+
+        env_desc = Gtk.Label(
+            label="Service status overview -- Redis, RabbitMQ, Docker, PostgreSQL, AWS (from C-files)"
+        )
+        env_desc.add_css_class("intro-file-meta")
+        env_desc.set_xalign(0)
+        env_desc.set_margin_bottom(8)
+        self._container.append(env_desc)
+
+        # Check All button
+        check_all_btn = Gtk.Button(label="Check All Services")
+        check_all_btn.add_css_class("suggested-action")
+        check_all_btn.add_css_class("pill")
+        check_all_btn.set_halign(Gtk.Align.START)
+        check_all_btn.set_margin_bottom(12)
+        self._container.append(check_all_btn)
+
+        # Environment service cards
+        env_services = self._get_environment_services()
+
+        self._env_status_labels = {}
+        env_grid = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+
+        for svc in env_services:
+            svc_card = self._build_env_service_card(svc)
+            env_grid.append(svc_card)
+
+        self._container.append(env_grid)
+
+        # Connect Check All button
+        check_all_btn.connect("clicked", lambda b: self._check_all_services(env_services))
+
+    def _get_terminal_command_groups(self) -> list:
+        """Return the top 3-5 essential commands per system, sourced from B-files."""
+        return [
+            {
+                "name": "Cirkelline System",
+                "source": "B1",
+                "css_class": "cirkelline",
+                "commands": [
+                    {
+                        "description": "Start backend (Port 7777)",
+                        "command": "cd /home/rasmus/Desktop/projekts/projects/cirkelline-kv1ntos && source .venv/bin/activate && python my_os.py",
+                    },
+                    {
+                        "description": "Start frontend (Port 3000)",
+                        "command": "cd /home/rasmus/Desktop/projekts/projects/cirkelline-kv1ntos/cirkelline-ui && pnpm dev",
+                    },
+                    {
+                        "description": "Health check",
+                        "command": "curl http://localhost:7777/health",
+                    },
+                    {
+                        "description": "Check port usage",
+                        "command": "lsof -i :7777",
+                    },
+                ],
+            },
+            {
+                "name": "Cosmic Library",
+                "source": "B2",
+                "css_class": "cosmic",
+                "commands": [
+                    {
+                        "description": "Start backend (Port 7778)",
+                        "command": "cd /home/rasmus/Desktop/projekts/projects/cosmic-library/backend && source venv/bin/activate && python main.py",
+                    },
+                    {
+                        "description": "Start frontend (Port 3001)",
+                        "command": "cd /home/rasmus/Desktop/projekts/projects/cosmic-library/frontend && pnpm dev",
+                    },
+                    {
+                        "description": "Health check",
+                        "command": "curl http://localhost:7778/health",
+                    },
+                    {
+                        "description": "List training rooms",
+                        "command": "curl http://localhost:7778/api/training/rooms",
+                    },
+                ],
+            },
+            {
+                "name": "CKC Gateway",
+                "source": "B3",
+                "css_class": "ckc",
+                "commands": [
+                    {
+                        "description": "Start backend (Port 7779)",
+                        "command": "cd /home/rasmus/Desktop/projekts/projects/lib-admin/backend && source venv/bin/activate && python main.py",
+                    },
+                    {
+                        "description": "Health check",
+                        "command": "curl http://localhost:7779/health",
+                    },
+                    {
+                        "description": "Agent Registry stats",
+                        "command": "curl http://localhost:7779/api/agents/registry/stats/summary",
+                    },
+                    {
+                        "description": "Event Bus health",
+                        "command": "curl http://localhost:7779/api/events/health",
+                    },
+                ],
+            },
+            {
+                "name": "Kommandor Gateway",
+                "source": "B4",
+                "css_class": "kommandor",
+                "commands": [
+                    {
+                        "description": "Start main gateway (Port 7800)",
+                        "command": "cd /home/rasmus/Desktop/projekts/projects/kommandor-og-agenter/backend && uvicorn api_gateway.main:app --host 0.0.0.0 --port 7800",
+                    },
+                    {
+                        "description": "Health check",
+                        "command": "curl http://localhost:7800/health",
+                    },
+                    {
+                        "description": "List all agents (21)",
+                        "command": "curl http://localhost:7800/api/agents/list",
+                    },
+                    {
+                        "description": "Check specialist services (8001-8009)",
+                        "command": "for port in $(seq 8001 8009); do echo -n \"Port $port: \"; lsof -i :$port > /dev/null 2>&1 && echo 'Running' || echo 'Stopped'; done",
+                    },
+                ],
+            },
+            {
+                "name": "Docker Infrastructure",
+                "source": "B5",
+                "css_class": "docker",
+                "commands": [
+                    {
+                        "description": "List all containers with status",
+                        "command": "docker ps --format 'table {{.Names}}\\t{{.Status}}\\t{{.Ports}}'",
+                    },
+                    {
+                        "description": "Start all containers",
+                        "command": "docker start $(docker ps -aq)",
+                    },
+                    {
+                        "description": "Check resource usage",
+                        "command": "docker stats --no-stream --format 'table {{.Name}}\\t{{.CPUPerc}}\\t{{.MemUsage}}'",
+                    },
+                    {
+                        "description": "Count running containers",
+                        "command": "docker ps -q | wc -l",
+                    },
+                ],
+            },
+            {
+                "name": "Database Operations",
+                "source": "B6",
+                "css_class": "db",
+                "commands": [
+                    {
+                        "description": "Check all PostgreSQL databases",
+                        "command": "for db in cirkelline-postgres cosmic-library-postgres kommandor-postgres; do echo -n \"$db: \"; docker exec $db pg_isready 2>/dev/null && echo 'Ready' || echo 'Not ready'; done",
+                    },
+                    {
+                        "description": "Check all Redis instances",
+                        "command": "for r in cirkelline-redis cosmic-library-redis cc-redis; do echo -n \"$r: \"; docker exec $r redis-cli ping 2>/dev/null || echo 'No response'; done",
+                    },
+                    {
+                        "description": "Connect to Cirkelline DB",
+                        "command": "docker exec -it cirkelline-postgres psql -U cirkelline -d cirkelline",
+                    },
+                    {
+                        "description": "Backup all PostgreSQL databases",
+                        "command": "for db in cirkelline-postgres cosmic-library-postgres kommandor-postgres; do docker exec $db pg_dump -U $(docker exec $db psql -U postgres -tAc \"SELECT usename FROM pg_user LIMIT 1;\") > backup_${db}_$(date +%Y%m%d).sql; done",
+                    },
+                ],
+            },
+        ]
+
+    def _build_command_card(self, description: str, command: str) -> Gtk.Box:
+        """Build a single command card with description, command text, Copy, and Run buttons."""
+        card = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        card.add_css_class("intro-qa-cmd-card")
+
+        # Left side: description + command text
+        info_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+        info_box.set_hexpand(True)
+
+        desc_label = Gtk.Label(label=description)
+        desc_label.add_css_class("intro-qa-cmd-desc")
+        desc_label.set_xalign(0)
+        info_box.append(desc_label)
+
+        cmd_label = Gtk.Label(label=command)
+        cmd_label.add_css_class("intro-qa-cmd-text")
+        cmd_label.set_xalign(0)
+        cmd_label.set_ellipsize(Pango.EllipsizeMode.END)
+        cmd_label.set_max_width_chars(80)
+        cmd_label.set_selectable(True)
+        info_box.append(cmd_label)
+
+        card.append(info_box)
+
+        # Right side: buttons
+        btn_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=4)
+        btn_box.set_valign(Gtk.Align.CENTER)
+
+        # Copy button
+        copy_btn = Gtk.Button()
+        copy_btn.set_icon_name("edit-copy-symbolic")
+        copy_btn.set_tooltip_text("Copy command to clipboard")
+        copy_btn.add_css_class("intro-qa-copy-btn")
+        copy_btn.add_css_class("flat")
+        copy_btn.connect("clicked", lambda b, c=command: self._copy_to_clipboard(c, b))
+        btn_box.append(copy_btn)
+
+        # Run in Terminal button
+        run_btn = Gtk.Button()
+        run_btn.set_icon_name("media-playback-start-symbolic")
+        run_btn.set_tooltip_text("Run in terminal")
+        run_btn.add_css_class("intro-qa-run-btn")
+        run_btn.add_css_class("flat")
+        run_btn.connect("clicked", lambda b, c=command: self._run_in_terminal(c))
+        btn_box.append(run_btn)
+
+        card.append(btn_box)
+
+        return card
+
+    def _copy_to_clipboard(self, text: str, button: Gtk.Button):
+        """Copy text to clipboard using Wayland-compatible method."""
+        try:
+            display = Gdk.Display.get_default()
+            clipboard = display.get_clipboard()
+            clipboard.set(text)
+            # Visual feedback -- temporarily change icon
+            button.set_icon_name("emblem-ok-symbolic")
+            GLib.timeout_add(1500, lambda: button.set_icon_name("edit-copy-symbolic") or False)
+        except Exception as e:
+            print(f"Clipboard error: {e}")
+
+    def _run_in_terminal(self, command: str):
+        """Open a terminal and run the command."""
+        try:
+            # Try various terminal emulators
+            terminals = [
+                ["gnome-terminal", "--", "bash", "-c", f"{command}; echo ''; echo 'Press Enter to close...'; read"],
+                ["kgx", "-e", f"bash -c \"{command}; echo ''; echo 'Press Enter to close...'; read\""],
+                ["xterm", "-e", f"bash -c \"{command}; echo ''; echo 'Press Enter to close...'; read\""],
+            ]
+            for term_cmd in terminals:
+                try:
+                    subprocess.Popen(term_cmd)
+                    return
+                except FileNotFoundError:
+                    continue
+            # Fallback: try xdg-open with a shell script
+            print(f"No terminal emulator found to run: {command}")
+        except Exception as e:
+            print(f"Terminal launch error: {e}")
+
+    def _get_environment_services(self) -> list:
+        """Return environment service definitions sourced from C-files."""
+        return [
+            {
+                "name": "Redis (Cirkelline)",
+                "source": "C5",
+                "port": 6379,
+                "container": "cirkelline-redis",
+                "check_cmd": ["docker", "exec", "cirkelline-redis", "redis-cli", "ping"],
+                "check_expect": "PONG",
+                "detail": "Port 6379 -- Cirkelline Cache + Event Bus",
+                "icon": "network-server-symbolic",
+            },
+            {
+                "name": "Redis (Cosmic Library)",
+                "source": "C5",
+                "port": 6381,
+                "container": "cosmic-library-redis",
+                "check_cmd": ["docker", "exec", "cosmic-library-redis", "redis-cli", "ping"],
+                "check_expect": "PONG",
+                "detail": "Port 6381 -- Cosmic Cache + Job Queue",
+                "icon": "network-server-symbolic",
+            },
+            {
+                "name": "Redis (Kommandor/CC)",
+                "source": "C5",
+                "port": 6380,
+                "container": "cc-redis",
+                "check_cmd": ["docker", "exec", "cc-redis", "redis-cli", "ping"],
+                "check_expect": "PONG",
+                "detail": "Port 6380 -- Commando Center Cache",
+                "icon": "network-server-symbolic",
+            },
+            {
+                "name": "RabbitMQ",
+                "source": "C6",
+                "port": 5672,
+                "container": "rabbitmq",
+                "check_cmd": ["docker", "ps", "--filter", "name=rabbit", "--format", "{{.Names}}"],
+                "check_expect": "rabbit",
+                "detail": "Port 5672 -- AMQP Message Queue (PLANNED, not deployed)",
+                "icon": "mail-send-symbolic",
+                "note": "Configured in .env but container not yet deployed",
+            },
+            {
+                "name": "Docker Engine",
+                "source": "C7",
+                "port": None,
+                "container": None,
+                "check_cmd": ["docker", "info", "--format", "{{.ContainersRunning}}"],
+                "check_expect": None,
+                "detail": "18 containers expected -- 7 PostgreSQL, 3 Redis, 3 Monitoring, 5 CC",
+                "icon": "application-x-executable-symbolic",
+            },
+            {
+                "name": "PostgreSQL (Cirkelline)",
+                "source": "C8",
+                "port": 5533,
+                "container": "cirkelline-postgres",
+                "check_cmd": ["docker", "exec", "cirkelline-postgres", "pg_isready", "-U", "cirkelline"],
+                "check_expect": "accepting connections",
+                "detail": "Port 5533 -- pgvector PG15 -- cirkelline_db",
+                "icon": "drive-harddisk-symbolic",
+            },
+            {
+                "name": "PostgreSQL (Cosmic Library)",
+                "source": "C8",
+                "port": 5534,
+                "container": "cosmic-library-postgres",
+                "check_cmd": ["docker", "exec", "cosmic-library-postgres", "pg_isready", "-U", "cosmic_library"],
+                "check_expect": "accepting connections",
+                "detail": "Port 5534 -- PG17 -- 53 tables",
+                "icon": "drive-harddisk-symbolic",
+            },
+            {
+                "name": "PostgreSQL (Kommandor)",
+                "source": "C8",
+                "port": 5535,
+                "container": "kommandor-postgres",
+                "check_cmd": ["docker", "exec", "kommandor-postgres", "pg_isready", "-U", "kommandor"],
+                "check_expect": "accepting connections",
+                "detail": "Port 5535 -- PG15 -- 127.0.0.1 only",
+                "icon": "drive-harddisk-symbolic",
+            },
+            {
+                "name": "AWS / LocalStack",
+                "source": "C9",
+                "port": 4566,
+                "container": "localstack",
+                "check_cmd": ["docker", "ps", "--filter", "name=localstack", "--format", "{{.Names}}"],
+                "check_expect": "localstack",
+                "detail": "Port 4566 -- Local AWS simulation (PLANNED, not deployed)",
+                "icon": "weather-overcast-symbolic",
+                "note": "Configured in .env but container not yet deployed",
+            },
+            {
+                "name": "Grafana (Monitoring)",
+                "source": "C7",
+                "port": 3030,
+                "container": "cirkelline-grafana",
+                "check_cmd": ["docker", "ps", "--filter", "name=cirkelline-grafana", "--format", "{{.Status}}"],
+                "check_expect": "Up",
+                "detail": "Port 3030 -- Metrics visualization",
+                "icon": "utilities-system-monitor-symbolic",
+            },
+            {
+                "name": "Loki (Log Aggregation)",
+                "source": "C7",
+                "port": 3100,
+                "container": "cirkelline-loki",
+                "check_cmd": ["docker", "ps", "--filter", "name=cirkelline-loki", "--format", "{{.Status}}"],
+                "check_expect": "Up",
+                "detail": "Port 3100 -- Log aggregation for all platforms",
+                "icon": "utilities-system-monitor-symbolic",
+            },
+        ]
+
+    def _build_env_service_card(self, svc: dict) -> Gtk.Box:
+        """Build an environment service card with status indicator and Check button."""
+        card = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        card.add_css_class("intro-qa-env-card")
+
+        # Icon
+        icon = Gtk.Image.new_from_icon_name(svc.get("icon", "network-server-symbolic"))
+        icon.set_pixel_size(24)
+        icon.set_valign(Gtk.Align.CENTER)
+        card.append(icon)
+
+        # Info column
+        info_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+        info_box.set_hexpand(True)
+
+        name_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+
+        name_label = Gtk.Label(label=svc["name"])
+        name_label.add_css_class("intro-qa-env-name")
+        name_label.set_xalign(0)
+        name_row.append(name_label)
+
+        source_label = Gtk.Label(label=f"({svc['source']})")
+        source_label.add_css_class("dim-label")
+        source_label.add_css_class("caption")
+        source_label.set_valign(Gtk.Align.CENTER)
+        name_row.append(source_label)
+
+        info_box.append(name_row)
+
+        detail_label = Gtk.Label(label=svc["detail"])
+        detail_label.add_css_class("intro-qa-env-detail")
+        detail_label.set_xalign(0)
+        detail_label.set_ellipsize(Pango.EllipsizeMode.END)
+        info_box.append(detail_label)
+
+        if svc.get("note"):
+            note_label = Gtk.Label(label=svc["note"])
+            note_label.add_css_class("caption")
+            note_label.add_css_class("dim-label")
+            note_label.set_xalign(0)
+            info_box.append(note_label)
+
+        card.append(info_box)
+
+        # Status indicator
+        status_label = Gtk.Label(label="--")
+        status_label.add_css_class("intro-qa-status-unknown")
+        status_label.set_valign(Gtk.Align.CENTER)
+        status_label.set_width_chars(12)
+        card.append(status_label)
+
+        # Store reference for updating
+        svc_key = svc["name"].replace(" ", "_").replace("(", "").replace(")", "").replace("/", "_")
+        self._env_status_labels[svc_key] = status_label
+
+        # Check Status button
+        check_btn = Gtk.Button(label="Check")
+        check_btn.add_css_class("intro-qa-check-btn")
+        check_btn.add_css_class("flat")
+        check_btn.set_valign(Gtk.Align.CENTER)
+        check_btn.connect("clicked", lambda b, s=svc, lbl=status_label: self._check_service_status(s, lbl, b))
+        card.append(check_btn)
+
+        return card
+
+    def _check_service_status(self, svc: dict, status_label: Gtk.Label, button: Gtk.Button):
+        """Check the status of a single service and update the label."""
+        button.set_sensitive(False)
+        status_label.set_label("Checking...")
+
+        # Run check in a thread to avoid blocking UI
+        import threading
+
+        def _do_check():
+            result_text = "Unknown"
+            result_class = "intro-qa-status-unknown"
+
+            try:
+                result = subprocess.run(
+                    svc["check_cmd"],
+                    capture_output=True, text=True, timeout=10,
+                )
+                output = result.stdout.strip()
+
+                if svc.get("check_expect") is None:
+                    # Docker Engine special case -- just check if it returned a number
+                    if output and output.isdigit():
+                        count = int(output)
+                        result_text = f"Running ({count})"
+                        result_class = "intro-qa-status-running" if count > 0 else "intro-qa-status-stopped"
+                    elif result.returncode == 0:
+                        result_text = "Running"
+                        result_class = "intro-qa-status-running"
+                    else:
+                        result_text = "Stopped"
+                        result_class = "intro-qa-status-stopped"
+                elif svc["check_expect"] in output:
+                    result_text = "Running"
+                    result_class = "intro-qa-status-running"
+                elif result.returncode == 0 and output:
+                    result_text = "Partial"
+                    result_class = "intro-qa-status-configured"
+                else:
+                    result_text = "Stopped"
+                    result_class = "intro-qa-status-stopped"
+
+            except subprocess.TimeoutExpired:
+                result_text = "Timeout"
+                result_class = "intro-qa-status-unknown"
+            except FileNotFoundError:
+                result_text = "N/A"
+                result_class = "intro-qa-status-unknown"
+            except Exception:
+                result_text = "Error"
+                result_class = "intro-qa-status-stopped"
+
+            # Update UI on main thread
+            GLib.idle_add(lambda: self._update_status_label(status_label, button, result_text, result_class) or False)
+
+        thread = threading.Thread(target=_do_check, daemon=True)
+        thread.start()
+
+    def _update_status_label(self, label: Gtk.Label, button: Gtk.Button, text: str, css_class: str):
+        """Update a status label on the main thread."""
+        # Remove old status classes
+        for old_cls in ("intro-qa-status-running", "intro-qa-status-stopped",
+                        "intro-qa-status-unknown", "intro-qa-status-configured"):
+            label.remove_css_class(old_cls)
+        label.add_css_class(css_class)
+        label.set_label(text)
+        button.set_sensitive(True)
+
+    def _check_all_services(self, services: list):
+        """Check all services sequentially."""
+        for svc in services:
+            svc_key = svc["name"].replace(" ", "_").replace("(", "").replace(")", "").replace("/", "_")
+            if svc_key in self._env_status_labels:
+                status_label = self._env_status_labels[svc_key]
+                # Create a dummy button for the callback
+                dummy_btn = Gtk.Button()
+                self._check_service_status(svc, status_label, dummy_btn)
 
     # -----------------------------------------------------------------
     # UTILITY
@@ -9379,6 +10809,8 @@ class MasterpieceWindow(Adw.ApplicationWindow):
                 date_text = f"{cat_range}"
             elif cat_key == "health":
                 date_text = f"{cat_range}"
+            elif cat_key == "dna_layers":
+                date_text = f"{cat_range}"
 
             if date_text:
                 date_label = Gtk.Label(label=date_text)
@@ -9399,6 +10831,8 @@ class MasterpieceWindow(Adw.ApplicationWindow):
                 count_text = "5"
             elif cat_key == "health":
                 count_text = "..."
+            elif cat_key == "dna_layers":
+                count_text = "7"
 
             if count_text:
                 count_label = Gtk.Label(label=count_text)
