@@ -2721,7 +2721,7 @@ class SejrRow(Adw.ActionRow):
 
         # === DRAG SOURCE (for reorder + folder-to-folder) ===
         drag_source = Gtk.DragSource()
-        drag_source.set_actions(Gdk.DragAction.MOVE)
+        drag_source.set_actions(Gdk.DragAction.MOVE | Gdk.DragAction.COPY)
         drag_source.connect("prepare", self._on_drag_prepare)
         drag_source.connect("drag-begin", self._on_drag_begin)
         drag_source.connect("drag-end", self._on_drag_end)
@@ -2775,22 +2775,39 @@ class SejrRow(Adw.ActionRow):
         return rows
 
     def _on_drag_prepare(self, source, x, y):
-        """Provide the sejr path(s) as drag data — supports multi-select"""
+        """Provide the sejr path(s) as drag data — supports multi-select + external app export"""
         window = self.get_root()
         # If multi-selected, include all selected paths
         if window and hasattr(window, '_selected_rows') and len(window._selected_rows) > 1:
             path_str = str(self.sejr_info.get("path", ""))
             if path_str in window._selected_rows:
-                # Drag all selected as pipe-separated paths
+                # Internal: pipe-separated paths for reorder
                 all_paths = "|".join(sorted(window._selected_rows))
-                value = GObject.Value(GObject.TYPE_STRING, all_paths)
-                return Gdk.ContentProvider.new_for_value(value)
+                string_value = GObject.Value(GObject.TYPE_STRING, all_paths)
+                string_provider = Gdk.ContentProvider.new_for_value(string_value)
+                # External: text/uri-list for file manager / desktop / other apps
+                try:
+                    uris = [Path(p).as_uri() for p in sorted(window._selected_rows)]
+                    uri_data = "\r\n".join(uris) + "\r\n"
+                    uri_bytes = GLib.Bytes.new(uri_data.encode("utf-8"))
+                    uri_provider = Gdk.ContentProvider.new_for_bytes("text/uri-list", uri_bytes)
+                    return Gdk.ContentProvider.new_union([string_provider, uri_provider])
+                except Exception:
+                    return string_provider
         # Single drag
         path_str = str(self.sejr_info.get("path", ""))
         if not path_str:
             return None
-        value = GObject.Value(GObject.TYPE_STRING, path_str)
-        return Gdk.ContentProvider.new_for_value(value)
+        string_value = GObject.Value(GObject.TYPE_STRING, path_str)
+        string_provider = Gdk.ContentProvider.new_for_value(string_value)
+        # External: text/uri-list for file manager / desktop / other apps
+        try:
+            uri = Path(path_str).as_uri()
+            uri_bytes = GLib.Bytes.new((uri + "\r\n").encode("utf-8"))
+            uri_provider = Gdk.ContentProvider.new_for_bytes("text/uri-list", uri_bytes)
+            return Gdk.ContentProvider.new_union([string_provider, uri_provider])
+        except Exception:
+            return string_provider
 
     def _on_drag_begin(self, source, drag):
         """Visual feedback: dim the row being dragged + show drag ghost"""
@@ -8412,6 +8429,53 @@ Du er på vej mod Admiral niveau!"""
                 self._toast_overlay.add_toast(toast)
 
     #
+    # EXPORT SEJR AS ZIP
+    #
+
+    def _export_sejr_zip(self):
+        """Export current or selected sejrliste(r) as .zip to Desktop (Ctrl+Shift+E)"""
+        desktop = Path.home() / "Desktop"
+        paths = []
+
+        # Multi-select: export all selected
+        if hasattr(self, '_selected_rows') and self._selected_rows:
+            paths = [Path(p) for p in self._selected_rows if Path(p).is_dir()]
+        # Single: export currently viewed sejr
+        elif hasattr(self, 'selected_sejr') and self.selected_sejr:
+            sp = Path(self.selected_sejr.get("path", ""))
+            if sp.is_dir():
+                paths = [sp]
+
+        if not paths:
+            if hasattr(self, '_toast_overlay'):
+                toast = Adw.Toast.new("Ingen sejrliste valgt til eksport")
+                toast.set_timeout(2)
+                self._toast_overlay.add_toast(toast)
+            return
+
+        exported = 0
+        for sejr_path in paths:
+            try:
+                zip_path = shutil.make_archive(
+                    str(desktop / sejr_path.name),
+                    'zip',
+                    str(sejr_path.parent),
+                    sejr_path.name
+                )
+                exported += 1
+            except Exception as e:
+                if hasattr(self, '_toast_overlay'):
+                    toast = Adw.Toast.new(f"Eksport fejl: {str(e)[:50]}")
+                    toast.set_timeout(3)
+                    self._toast_overlay.add_toast(toast)
+
+        if exported > 0 and hasattr(self, '_toast_overlay'):
+            msg = f"{exported} sejrliste{'r' if exported > 1 else ''} eksporteret som .zip til Desktop"
+            toast = Adw.Toast.new(msg)
+            toast.set_timeout(3)
+            self._toast_overlay.add_toast(toast)
+
+    #
     # REAL-TIME FILE MONITORING
     #
 
@@ -9264,6 +9328,12 @@ class MasterpieceApp(Adw.Application):
         undo_action.connect("activate", lambda a, p: win._undo_last_drag())
         self.add_action(undo_action)
         self.set_accels_for_action("app.undo-drag", ["<Control>z"])
+
+        # Ctrl+Shift+E for export sejr as .zip to Desktop
+        export_action = Gio.SimpleAction.new("export-zip", None)
+        export_action.connect("activate", lambda a, p: win._export_sejr_zip())
+        self.add_action(export_action)
+        self.set_accels_for_action("app.export-zip", ["<Control><Shift>e"])
 
         # Zoom shortcuts
         zoom_in_action = Gio.SimpleAction.new("zoom-in", None)
