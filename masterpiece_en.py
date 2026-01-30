@@ -1664,6 +1664,18 @@ button.action-new {
     border-left: 3px solid #f87171;
 }
 
+/* === INTRO STRUCTURE VIEW RULE CARDS (FASE 3) === */
+.intro-rule-card {
+    border-left: 3px solid rgba(251, 191, 36, 0.40);
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.intro-rule-card:hover {
+    border-left-color: rgba(251, 191, 36, 0.70);
+    box-shadow: 0 4px 20px -6px rgba(251, 191, 36, 0.15);
+}
+
 .intro-open-btn {
     font-size: 11px;
     padding: 4px 10px;
@@ -7456,6 +7468,521 @@ class IntroIFilesView(Gtk.Box):
             print(f"Could not open folder: {e}")
 
 
+class IntroStructureView(Gtk.Box):
+    """FASE 3: Full detail view for INTRO folder structure.
+
+    Displays:
+    - Tree-like view of MASTER FOLDERS(INTRO)/ directory layout
+    - File counts per directory (live from filesystem)
+    - Naming conventions reference (I/B/C/D/E/F/G/H categories)
+    - BOGFORINGSMAPPE A-F category overview from 00_HOVEDINDEKS.md
+    - 5 governance rules from FOLDER_STRUCTURE_AND_RULES.md as styled cards
+    """
+
+    def __init__(self):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+
+        # Main scrollable area
+        scroll = Gtk.ScrolledWindow()
+        scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        scroll.set_vexpand(True)
+
+        self._container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=24)
+        self._container.set_margin_start(40)
+        self._container.set_margin_end(40)
+        self._container.set_margin_top(32)
+        self._container.set_margin_bottom(40)
+
+        scroll.set_child(self._container)
+        self.append(scroll)
+
+        self._build()
+
+    def _build(self):
+        """Build the complete folder structure view."""
+        # Header
+        header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        title = Gtk.Label(label="Folder Structure & Governance")
+        title.add_css_class("intro-view-header")
+        title.set_xalign(0)
+        header_box.append(title)
+
+        subtitle = Gtk.Label(
+            label="MASTER FOLDERS(INTRO) directory layout, naming conventions, BOGFORINGSMAPPE categories, and governance rules"
+        )
+        subtitle.add_css_class("intro-view-subtitle")
+        subtitle.set_xalign(0)
+        subtitle.set_wrap(True)
+        header_box.append(subtitle)
+        self._container.append(header_box)
+
+        # Separator
+        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        sep.set_margin_top(4)
+        sep.set_margin_bottom(4)
+        self._container.append(sep)
+
+        # --- SECTION 1: TREE VIEW OF FOLDER STRUCTURE ---
+        self._build_tree_view()
+
+        # --- SECTION 2: NAMING CONVENTIONS ---
+        self._build_naming_conventions()
+
+        # --- SECTION 3: BOGFORINGSMAPPE INTEGRATION ---
+        self._build_bogforingsmappe()
+
+        # --- SECTION 4: GOVERNANCE RULES ---
+        self._build_governance_rules()
+
+    # -----------------------------------------------------------------
+    # SECTION 1: TREE VIEW
+    # -----------------------------------------------------------------
+
+    def _build_tree_view(self):
+        """Build the tree-like folder structure view with file counts."""
+        import pathlib
+        intro_path = pathlib.Path("/home/rasmus/Desktop/MASTER FOLDERS(INTRO)")
+
+        tree_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        tree_card.add_css_class("intro-category-card")
+
+        # Section title
+        section_title = Gtk.Label()
+        section_title.set_markup(
+            '<span weight="bold" font_size="large">Directory Tree</span>'
+        )
+        section_title.set_xalign(0)
+        tree_card.append(section_title)
+
+        section_desc = Gtk.Label(
+            label="Live filesystem scan of MASTER FOLDERS(INTRO)/"
+        )
+        section_desc.add_css_class("intro-file-meta")
+        section_desc.set_xalign(0)
+        section_desc.set_margin_bottom(8)
+        tree_card.append(section_desc)
+
+        # Build tree rows
+        tree_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+
+        # Root level
+        root_file_count = 0
+        root_dir_count = 0
+        subdirs = []
+        if intro_path.exists():
+            for item in sorted(intro_path.iterdir()):
+                if item.name.startswith("."):
+                    continue
+                if item.is_dir():
+                    root_dir_count += 1
+                    # Count files in subdirectory
+                    sub_count = sum(
+                        1 for f in item.iterdir()
+                        if f.is_file() and not f.name.startswith(".")
+                    )
+                    subdirs.append((item.name, sub_count))
+                elif item.is_file():
+                    root_file_count += 1
+
+        # Root entry
+        root_row = self._make_tree_row(
+            "MASTER FOLDERS(INTRO)/",
+            0,
+            f"{root_file_count} root files, {root_dir_count} subdirectories",
+            "#a855f7",
+            is_root=True,
+        )
+        tree_box.append(root_row)
+
+        # Subdirectories with indent
+        for dirname, file_count in subdirs:
+            color = self._get_dir_color(dirname)
+            count_text = f"{file_count} files" if file_count != 1 else "1 file"
+            if file_count == 0:
+                count_text = "empty"
+            dir_row = self._make_tree_row(
+                f"{dirname}/", 1, count_text, color
+            )
+            tree_box.append(dir_row)
+
+        tree_card.append(tree_box)
+
+        # Total summary at bottom
+        total_files = root_file_count + sum(c for _, c in subdirs)
+        total_label = Gtk.Label()
+        total_label.set_markup(
+            f'<span font_family="JetBrains Mono" foreground="rgba(255,255,255,0.5)" '
+            f'font_size="small">Total: {total_files} files across {root_dir_count} subdirectories + root</span>'
+        )
+        total_label.set_xalign(0)
+        total_label.set_margin_top(8)
+        tree_card.append(total_label)
+
+        self._container.append(tree_card)
+
+    def _make_tree_row(self, name, indent_level, meta_text, color, is_root=False):
+        """Create a single tree row with indent, icon, name, and file count."""
+        row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        row.set_margin_start(indent_level * 28)
+        row.set_margin_top(2)
+        row.set_margin_bottom(2)
+
+        # Tree connector character
+        if indent_level > 0:
+            connector = Gtk.Label()
+            connector.set_markup(
+                '<span font_family="JetBrains Mono" foreground="rgba(255,255,255,0.20)">+--</span>'
+            )
+            connector.set_valign(Gtk.Align.CENTER)
+            row.append(connector)
+
+        # Folder icon
+        icon = Gtk.Image.new_from_icon_name(
+            "folder-open-symbolic" if is_root else "folder-symbolic"
+        )
+        if is_root:
+            icon.add_css_class("accent")
+        else:
+            icon.add_css_class("dim-label")
+        icon.set_valign(Gtk.Align.CENTER)
+        row.append(icon)
+
+        # Directory name with color
+        name_label = Gtk.Label()
+        weight = "ultrabold" if is_root else "bold"
+        size = "medium" if is_root else "small"
+        name_label.set_markup(
+            f'<span foreground="{color}" weight="{weight}" '
+            f'font_family="JetBrains Mono" font_size="{size}">{GLib.markup_escape_text(name)}</span>'
+        )
+        name_label.set_xalign(0)
+        name_label.set_hexpand(True)
+        name_label.set_valign(Gtk.Align.CENTER)
+        row.append(name_label)
+
+        # File count badge
+        count_label = Gtk.Label(label=meta_text)
+        count_label.add_css_class("intro-file-meta")
+        count_label.set_valign(Gtk.Align.CENTER)
+        row.append(count_label)
+
+        return row
+
+    def _get_dir_color(self, dirname):
+        """Return a color for a directory name based on its purpose."""
+        color_map = {
+            "01_PRODUCTION": "#4ade80",
+            "96_ADMIRAL_HYBRID_ORGANIC": "#f59e0b",
+            "ADMIRAL FLEET COLLABORATION": "#06b6d4",
+            "ARCHIVE": "#6b7280",
+            "BOGFØRINGSMAPPE (MED INDHOLDSFORTEGNELSERNE)": "#f472b6",
+            "HISTORICAL ARCHIVE": "#9ca3af",
+            "LAPTOP KATALOG": "#8b5cf6",
+            "OLD PROJEKTS ORIGINAL": "#a78bfa",
+            "PROJEKTS ARKITEKTUR(TEMPLATES)": "#3b82f6",
+            "PROJEKTS LOKAL ENV": "#22d3ee",
+            "PROJEKTS TERMINALS": "#ef4444",
+            "STATUS PROJEKTS": "#fbbf24",
+        }
+        return color_map.get(dirname, "#a855f7")
+
+    # -----------------------------------------------------------------
+    # SECTION 2: NAMING CONVENTIONS
+    # -----------------------------------------------------------------
+
+    def _build_naming_conventions(self):
+        """Build the naming conventions reference card."""
+        conv_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        conv_card.add_css_class("intro-category-card")
+
+        section_title = Gtk.Label()
+        section_title.set_markup(
+            '<span weight="bold" font_size="large">Naming Conventions</span>'
+        )
+        section_title.set_xalign(0)
+        conv_card.append(section_title)
+
+        section_desc = Gtk.Label(
+            label="File prefix categories and their number ranges"
+        )
+        section_desc.add_css_class("intro-file-meta")
+        section_desc.set_xalign(0)
+        section_desc.set_margin_bottom(8)
+        conv_card.append(section_desc)
+
+        # Naming convention entries
+        conventions = [
+            ("I", "System Intelligence", "I1-I12", "#a855f7",
+             "Core system intelligence files: vision, orders, briefings, environments, compliance"),
+            ("B", "Terminal Commands", "B1-B10", "#ef4444",
+             "Operational terminal commands for all platforms and services"),
+            ("C", "Environment Config", "C2-C10", "#22d3ee",
+             "Configuration files, .env setups, and environment variables"),
+            ("D", "Architecture", "D1-D10", "#3b82f6",
+             "System architecture documentation and design patterns"),
+            ("E", "Templates", "E1-E4", "#f59e0b",
+             "Agent templates and patterns (structure only, NOT agent content)"),
+            ("F", "Old Projects", "F1-F10", "#a78bfa",
+             "Historical project references and original plans"),
+            ("G", "Laptop Catalog", "G0-G4", "#8b5cf6",
+             "Desktop organization catalog and complete file index"),
+            ("H", "Fleet Collaboration", "H1-H3", "#06b6d4",
+             "Multi-Admiral development workflow and collaboration guides"),
+        ]
+
+        conv_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+
+        for letter, name, file_range, color, description in conventions:
+            row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            row.add_css_class("intro-file-row")
+
+            # Letter prefix with color
+            letter_label = Gtk.Label()
+            letter_label.set_markup(
+                f'<span foreground="{color}" weight="ultrabold" '
+                f'font_family="JetBrains Mono" font_size="large">{letter}</span>'
+            )
+            letter_label.set_valign(Gtk.Align.CENTER)
+            letter_label.set_size_request(28, -1)
+            row.append(letter_label)
+
+            # Name + description + range
+            info_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+            info_box.set_hexpand(True)
+
+            name_label = Gtk.Label(label=name)
+            name_label.add_css_class("intro-file-title")
+            name_label.set_xalign(0)
+            info_box.append(name_label)
+
+            desc_label = Gtk.Label(label=description)
+            desc_label.add_css_class("intro-file-meta")
+            desc_label.set_xalign(0)
+            desc_label.set_wrap(True)
+            info_box.append(desc_label)
+
+            row.append(info_box)
+
+            # Range badge
+            range_label = Gtk.Label(label=file_range)
+            range_label.add_css_class("intro-status-badge")
+            range_label.add_css_class("intro-status-active")
+            range_label.set_valign(Gtk.Align.CENTER)
+            row.append(range_label)
+
+            conv_box.append(row)
+
+        conv_card.append(conv_box)
+        self._container.append(conv_card)
+
+    # -----------------------------------------------------------------
+    # SECTION 3: BOGFORINGSMAPPE INTEGRATION
+    # -----------------------------------------------------------------
+
+    def _build_bogforingsmappe(self):
+        """Build the BOGFORINGSMAPPE A-F category overview from 00_HOVEDINDEKS.md."""
+        bog_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        bog_card.add_css_class("intro-category-card")
+
+        section_title = Gtk.Label()
+        section_title.set_markup(
+            '<span weight="bold" font_size="large">BOGFORINGSMAPPE Categories</span>'
+        )
+        section_title.set_xalign(0)
+        bog_card.append(section_title)
+
+        section_desc = Gtk.Label(
+            label="Category overview from 00_HOVEDINDEKS.md -- the central catalog"
+        )
+        section_desc.add_css_class("intro-file-meta")
+        section_desc.set_xalign(0)
+        section_desc.set_margin_bottom(8)
+        bog_card.append(section_desc)
+
+        # A-F categories from HOVEDINDEKS
+        categories = [
+            ("A", "STATUS", "Current State", "10 files", "#4ade80",
+             "STATUS PROJEKTS/",
+             "System overview, platform status, agents, Docker, databases, integration, monitoring, ports, processes, code metrics"),
+            ("B", "COMMANDS", "Operational", "10 files", "#ef4444",
+             "PROJEKTS TERMINALS/",
+             "Terminal commands for Cirkelline, Cosmic, CKC, Kommandor, Docker, databases, monitoring, backup, deployment, troubleshooting"),
+            ("C", "ARCHITECTURE", "Configuration", "10 files", "#22d3ee",
+             "PROJEKTS LOKAL ENV/",
+             "Environment configs for all platforms, Redis, RabbitMQ, Docker, PostgreSQL, AWS LocalStack, monitoring"),
+            ("D", "TEMPLATES", "Design", "10 files", "#3b82f6",
+             "PROJEKTS ARKITEKTUR(TEMPLATES)/",
+             "System architecture, platform architectures, integration, DB schemas, API patterns, security, deployment"),
+            ("E", "INTEGRATION", "Agents", "4 files", "#f59e0b",
+             "PROJEKTS ARKITEKTUR(TEMPLATES)/",
+             "Agent templates: Kommandor (21), ELLE (26), CKC (5), Cosmic (9) -- 60+ agents documented"),
+            ("F", "HISTORY", "Original Plans", "10 files", "#a78bfa",
+             "OLD PROJEKTS ORIGINAL/",
+             "Historical documentation: original visions, development history, planning, evolution, lessons learned"),
+        ]
+
+        cat_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+
+        for letter, name, purpose, file_count, color, location, description in categories:
+            row = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+            row.add_css_class("intro-file-row")
+
+            # Top line: Letter + Name + Purpose + File count
+            top_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+
+            letter_label = Gtk.Label()
+            letter_label.set_markup(
+                f'<span foreground="{color}" weight="ultrabold" '
+                f'font_family="JetBrains Mono" font_size="large">{letter}</span>'
+            )
+            letter_label.set_valign(Gtk.Align.CENTER)
+            letter_label.set_size_request(24, -1)
+            top_row.append(letter_label)
+
+            name_label = Gtk.Label()
+            name_label.set_markup(
+                f'<span weight="bold" foreground="{color}">{GLib.markup_escape_text(name)}</span>'
+                f'  <span foreground="rgba(255,255,255,0.50)" font_size="small">({purpose})</span>'
+            )
+            name_label.set_xalign(0)
+            name_label.set_hexpand(True)
+            top_row.append(name_label)
+
+            count_badge = Gtk.Label(label=file_count)
+            count_badge.add_css_class("intro-status-badge")
+            count_badge.add_css_class("intro-status-complete")
+            count_badge.set_valign(Gtk.Align.CENTER)
+            top_row.append(count_badge)
+
+            row.append(top_row)
+
+            # Location line
+            loc_label = Gtk.Label()
+            loc_label.set_markup(
+                f'<span font_family="JetBrains Mono" font_size="small" '
+                f'foreground="rgba(255,255,255,0.35)">Location: {GLib.markup_escape_text(location)}</span>'
+            )
+            loc_label.set_xalign(0)
+            loc_label.set_margin_start(36)
+            row.append(loc_label)
+
+            # Description line
+            desc_label = Gtk.Label(label=description)
+            desc_label.add_css_class("intro-file-meta")
+            desc_label.set_xalign(0)
+            desc_label.set_margin_start(36)
+            desc_label.set_wrap(True)
+            row.append(desc_label)
+
+            cat_box.append(row)
+
+        bog_card.append(cat_box)
+        self._container.append(bog_card)
+
+    # -----------------------------------------------------------------
+    # SECTION 4: GOVERNANCE RULES
+    # -----------------------------------------------------------------
+
+    def _build_governance_rules(self):
+        """Build the 5 governance rules from FOLDER_STRUCTURE_AND_RULES.md as styled cards."""
+        rules_header = Gtk.Label()
+        rules_header.set_markup(
+            '<span weight="bold" font_size="large" foreground="#fbbf24">Governance Rules</span>'
+        )
+        rules_header.set_xalign(0)
+        rules_header.set_margin_top(8)
+        self._container.append(rules_header)
+
+        rules_desc = Gtk.Label(
+            label="From FOLDER_STRUCTURE_AND_RULES.md -- the 5 core rules that keep the system reliable"
+        )
+        rules_desc.add_css_class("intro-file-meta")
+        rules_desc.set_xalign(0)
+        rules_desc.set_margin_bottom(8)
+        self._container.append(rules_desc)
+
+        # 5 governance rules
+        rules = [
+            (
+                "Regel 1",
+                "Filnavne og indhold SKAL stemme overens",
+                "File names must match their content headers. "
+                "Example: I7_ADMIRAL_BUG_FIXES.md must have header '# I7. ADMIRAL BUG FIXES'. "
+                "Mismatch between filename number and header number is blocked by pre-commit hook.",
+                "#a855f7",
+            ),
+            (
+                "Regel 2",
+                "Status headers SKAL svare til indhold",
+                "A file marked 'COMPLETE (100%)' must not contain TODOs or unfinished sections. "
+                "A file marked 'IN PROGRESS (73%)' must not actually be 100% done. "
+                "Pre-commit hook scans headers vs. content.",
+                "#ef4444",
+            ),
+            (
+                "Regel 3",
+                "Alle filer 0% eller 100%",
+                "PRODUCTION files must be 100% complete and fully verified. "
+                "INVESTIGATION files can be 0-100% while work is in progress. "
+                "ARCHIVE files are historical, read-only references.",
+                "#22d3ee",
+            ),
+            (
+                "Regel 4",
+                "Dato-headers SKAL vaere aktuelle",
+                "Every file must have an updated date header matching its last modification. "
+                "Files older than 2 days are flagged as potentially stale. "
+                "Daily sync script synchronizes date headers with file timestamps.",
+                "#4ade80",
+            ),
+            (
+                "Regel 5",
+                "Interne referencer SKAL virke",
+                "All cross-references like '[See also I7](I7_ADMIRAL_BUG_FIXES.md)' must point to existing files. "
+                "Broken references are detected by daily sync and pre-commit hooks. "
+                "Renaming or deleting files requires updating all references.",
+                "#fbbf24",
+            ),
+        ]
+
+        for regel_num, regel_title, regel_desc, regel_color in rules:
+            rule_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+            rule_card.add_css_class("intro-category-card")
+            rule_card.add_css_class("intro-rule-card")
+
+            # Rule header row
+            rule_header_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+
+            rule_num_label = Gtk.Label()
+            rule_num_label.set_markup(
+                f'<span foreground="{regel_color}" weight="ultrabold" '
+                f'font_family="JetBrains Mono">{regel_num}</span>'
+            )
+            rule_num_label.set_valign(Gtk.Align.CENTER)
+            rule_header_row.append(rule_num_label)
+
+            rule_title_label = Gtk.Label()
+            rule_title_label.set_markup(
+                f'<span weight="bold" foreground="{regel_color}">'
+                f'{GLib.markup_escape_text(regel_title)}</span>'
+            )
+            rule_title_label.set_xalign(0)
+            rule_title_label.set_hexpand(True)
+            rule_header_row.append(rule_title_label)
+
+            rule_card.append(rule_header_row)
+
+            # Rule description
+            rule_desc_label = Gtk.Label(label=regel_desc)
+            rule_desc_label.set_xalign(0)
+            rule_desc_label.set_wrap(True)
+            rule_desc_label.add_css_class("caption")
+            rule_desc_label.set_margin_start(4)
+            rule_card.append(rule_desc_label)
+
+            self._container.append(rule_card)
+
+
 class IntroSystemView(Gtk.Box):
     """Content view for INTRO System sidebar items.
 
@@ -7651,145 +8178,24 @@ class IntroSystemView(Gtk.Box):
     # -----------------------------------------------------------------
 
     def _build_structure_view(self):
-        """Build the folder structure and governance rules view."""
-        header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
-        title = Gtk.Label(label="Folder Structure & Governance")
-        title.add_css_class("intro-view-header")
-        title.set_xalign(0)
-        header_box.append(title)
+        """Build the folder structure and governance rules view.
 
-        subtitle = Gtk.Label(label="MASTER FOLDERS(INTRO) directory layout, naming conventions, and governance rules")
-        subtitle.add_css_class("intro-view-subtitle")
-        subtitle.set_xalign(0)
-        subtitle.set_wrap(True)
-        header_box.append(subtitle)
-        self._container.append(header_box)
-
-        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
-        sep.set_margin_top(4)
-        sep.set_margin_bottom(4)
-        self._container.append(sep)
-
-        # Get full structure
-        structure = intro_integration.get_intro_structure()
-
-        if not structure["exists"]:
-            empty = Adw.StatusPage()
-            empty.set_title("INTRO Folder Not Found")
-            empty.set_description(f"Expected at: {intro_integration.INTRO_PATH}")
-            empty.set_icon_name("dialog-error-symbolic")
-            self._container.append(empty)
-            return
-
-        # Overview stats card
-        stats_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
-        stats_card.add_css_class("intro-category-card")
-
-        stats_title = Gtk.Label(label="Overview")
-        stats_title.set_xalign(0)
-        stats_title.add_css_class("heading")
-        stats_card.append(stats_title)
-
-        stats_grid = Gtk.Grid()
-        stats_grid.set_column_spacing(24)
-        stats_grid.set_row_spacing(4)
-
-        stat_items = [
-            ("Total files:", str(structure["total_files"])),
-            ("Total lines:", f"{structure['total_lines']:,}"),
-            ("Subdirectories:", str(len(structure["subdirectories"]))),
-            ("Root files:", str(len(structure["root_files"]))),
-        ]
-
-        for i, (label_text, value_text) in enumerate(stat_items):
-            key_label = Gtk.Label(label=label_text)
-            key_label.set_xalign(0)
-            key_label.add_css_class("dim-label")
-            key_label.add_css_class("caption")
-            stats_grid.attach(key_label, 0, i, 1, 1)
-
-            val_label = Gtk.Label(label=value_text)
-            val_label.set_xalign(0)
-            val_label.add_css_class("caption")
-            stats_grid.attach(val_label, 1, i, 1, 1)
-
-        stats_card.append(stats_grid)
-        self._container.append(stats_card)
-
-        # Categories overview card
-        categories = intro_integration.get_intro_categories()
-        cat_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
-        cat_card.add_css_class("intro-category-card")
-
-        cat_title = Gtk.Label(label="File Categories")
-        cat_title.set_xalign(0)
-        cat_title.add_css_class("heading")
-        cat_card.append(cat_title)
-
-        for cat in categories:
-            cat_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
-            cat_row.set_margin_top(4)
-            cat_row.set_margin_bottom(4)
-
-            letter_label = Gtk.Label()
-            letter_label.set_markup(f'<span weight="ultrabold" font_family="JetBrains Mono">[{cat.letter}]</span>')
-            letter_label.set_valign(Gtk.Align.CENTER)
-            cat_row.append(letter_label)
-
-            name_label = Gtk.Label(label=cat.name)
-            name_label.set_hexpand(True)
-            name_label.set_xalign(0)
-            name_label.add_css_class("intro-file-title")
-            cat_row.append(name_label)
-
-            count_label = Gtk.Label(label=f"{cat.file_count} files")
-            count_label.add_css_class("intro-sidebar-count")
-            count_label.set_valign(Gtk.Align.CENTER)
-            cat_row.append(count_label)
-
-            lines_label = Gtk.Label(label=f"{cat.total_lines:,} lines")
-            lines_label.add_css_class("caption")
-            lines_label.add_css_class("dim-label")
-            lines_label.set_valign(Gtk.Align.CENTER)
-            cat_row.append(lines_label)
-
-            cat_card.append(cat_row)
-
-        self._container.append(cat_card)
-
-        # Subdirectories card
-        if structure["subdirectories"]:
-            dir_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-            dir_card.add_css_class("intro-category-card")
-
-            dir_title = Gtk.Label(label="Subdirectories")
-            dir_title.set_xalign(0)
-            dir_title.add_css_class("heading")
-            dir_card.append(dir_title)
-
-            for dirname in structure["subdirectories"]:
-                dir_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
-                dir_icon = Gtk.Image.new_from_icon_name("folder-symbolic")
-                dir_icon.add_css_class("dim-label")
-                dir_row.append(dir_icon)
-
-                dir_label = Gtk.Label(label=dirname)
-                dir_label.set_xalign(0)
-                dir_label.set_hexpand(True)
-                dir_label.add_css_class("caption")
-                dir_row.append(dir_label)
-
-                # Open button
-                open_btn = Gtk.Button(icon_name="folder-open-symbolic")
-                open_btn.add_css_class("flat")
-                open_btn.set_tooltip_text(f"Open {dirname}")
-                dir_path = str(intro_integration.INTRO_PATH / dirname)
-                open_btn.connect("clicked", lambda b, p=dir_path: subprocess.Popen(["xdg-open", p]))
-                dir_row.append(open_btn)
-
-                dir_card.append(dir_row)
-
-            self._container.append(dir_card)
+        Delegates to IntroStructureView (FASE 3 widget) and embeds it
+        directly inside the IntroSystemView container.
+        """
+        struct_view = IntroStructureView()
+        # Extract the inner container content from IntroStructureView and
+        # add each child to our own container for consistent scrolling.
+        source = struct_view._container
+        children = []
+        child = source.get_first_child()
+        while child:
+            next_child = child.get_next_sibling()
+            children.append(child)
+            child = next_child
+        for ch in children:
+            source.remove(ch)
+            self._container.append(ch)
 
     # -----------------------------------------------------------------
     # HEALTH VIEW (Live verification status)

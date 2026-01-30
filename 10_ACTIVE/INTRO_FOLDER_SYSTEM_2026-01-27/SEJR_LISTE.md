@@ -75,34 +75,34 @@
 
 ### FASE 3: FOLDER STRUCTURE VIEW
 
-- [ ] Opret `IntroStructureView(Gtk.Box)` widget
-- [ ] Vis INTRO mappestruktur som trævisning:
-  - [ ] Root level: MASTER FOLDERS(INTRO)/
-  - [ ] Undermapper med indent: PROJEKTS TERMINALS/, PROJEKTS LOKAL ENV/, etc.
-  - [ ] Vis antal filer per mappe
-- [ ] Vis naming conventions:
-  - [ ] I-filer: System Intelligence (I1-I12)
-  - [ ] B-filer: Terminal Commands (B1-B10)
-  - [ ] C-filer: Environment Config (C2-C10)
-  - [ ] D-filer: Architecture (D1-D10)
-  - [ ] E-filer: Templates (E1-E4) — KUN struktur, IKKE agentindhold
-  - [ ] F-filer: Old Projects (F1-F10)
-  - [ ] G-filer: Laptop Catalog (G0-G4)
-  - [ ] H-filer: Fleet Collaboration (H1-H3)
-- [ ] BOGFØRINGSMAPPE integration:
-  - [ ] Vis A-F kategori oversigt fra 00_HOVEDINDEKS.md
-  - [ ] Kategori A: STATUS (10 filer)
-  - [ ] Kategori B: COMMANDS
-  - [ ] Kategori C: ARCHITECTURE
-  - [ ] Kategori D: TEMPLATES
-  - [ ] Kategori E: INTEGRATION
-  - [ ] Kategori F: HISTORY
-- [ ] FOLDER_STRUCTURE_AND_RULES.md regler vist som cards:
-  - [ ] Regel 1: Filnavne og indhold SKAL stemme overens
-  - [ ] Regel 2: Status headers SKAL svare til indhold
-  - [ ] Regel 3: Alle filer 0% eller 100%
-  - [ ] Regel 4: Dato-headers SKAL være aktuelle
-  - [ ] Regel 5: Interne referencer SKAL virke
+- [x] Opret `IntroStructureView(Gtk.Box)` widget
+- [x] Vis INTRO mappestruktur som trævisning:
+  - [x] Root level: MASTER FOLDERS(INTRO)/
+  - [x] Undermapper med indent: PROJEKTS TERMINALS/, PROJEKTS LOKAL ENV/, etc.
+  - [x] Vis antal filer per mappe
+- [x] Vis naming conventions:
+  - [x] I-filer: System Intelligence (I1-I12)
+  - [x] B-filer: Terminal Commands (B1-B10)
+  - [x] C-filer: Environment Config (C2-C10)
+  - [x] D-filer: Architecture (D1-D10)
+  - [x] E-filer: Templates (E1-E4) — KUN struktur, IKKE agentindhold
+  - [x] F-filer: Old Projects (F1-F10)
+  - [x] G-filer: Laptop Catalog (G0-G4)
+  - [x] H-filer: Fleet Collaboration (H1-H3)
+- [x] BOGFØRINGSMAPPE integration:
+  - [x] Vis A-F kategori oversigt fra 00_HOVEDINDEKS.md
+  - [x] Kategori A: STATUS (10 filer)
+  - [x] Kategori B: COMMANDS
+  - [x] Kategori C: ARCHITECTURE
+  - [x] Kategori D: TEMPLATES
+  - [x] Kategori E: INTEGRATION
+  - [x] Kategori F: HISTORY
+- [x] FOLDER_STRUCTURE_AND_RULES.md regler vist som cards:
+  - [x] Regel 1: Filnavne og indhold SKAL stemme overens
+  - [x] Regel 2: Status headers SKAL svare til indhold
+  - [x] Regel 3: Alle filer 0% eller 100%
+  - [x] Regel 4: Dato-headers SKAL være aktuelle
+  - [x] Regel 5: Interne referencer SKAL virke
 
 ### FASE 4: SYSTEM FUNCTIONS VIEW
 

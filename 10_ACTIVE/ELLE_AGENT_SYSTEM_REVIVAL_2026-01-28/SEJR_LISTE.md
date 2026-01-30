@@ -130,18 +130,18 @@ AGENTER SOVER (5 min timeout)
 - [x] **B6.** Test config.yaml læses korrekt
 
 ### C. IMPORTS OG PAKKESTRUKTUR
-- [ ] **C1.** base_agent importerbar af alle
-- [ ] **C2.** event_bus importerbar som kommunikation
-- [ ] **C3.** persistent_memory importerbar som hukommelse
-- [ ] **C4.** ai_backend_rotator importerbar som AI-adgang
-- [ ] **C5.** admiral_hybrid_organic kan importere alle 4
+- [x] **C1.** base_agent importerbar af alle
+- [x] **C2.** event_bus importerbar som kommunikation
+- [x] **C3.** persistent_memory importerbar som hukommelse
+- [x] **C4.** ai_backend_rotator importerbar som AI-adgang
+- [x] **C5.** admiral_hybrid_organic kan importere alle 4
 
 ### D. KONSOLIDERING (Uden At Slette Funktionel Kode)
-- [ ] **D1.** 26 identiske producers → 1 template + config
-- [ ] **D2.** 3 AGENTS-mapper → 1 (AGENTS.md primary)
-- [ ] **D3.** 48 .bak/.backup → fjern (git er versionering)
-- [ ] **D4.** 97+ root-filer → undermapper (logs/, reports/, dashboards/)
-- [ ] **D5.** 5 duplikatpar → vælg bedste (behold begge til test)
+- [x] **D1.** 26 identiske producers → 1 template + config (continuous_producer.py med --list, config.yaml produktion_dir tilfojet)
+- [ ] **D2.** 3 AGENTS-mapper → 1 (AGENTS.md primary) (AGENTS.MD har 2 filer, _OLD har 3, _LEGACY har 1 — alle legacy, primary=235 filer)
+- [x] **D3.** 48 .bak/.backup → fjern (git er versionering) (53 filer slettet, 0 remaining, git history bevaret)
+- [ ] **D4.** 97+ root-filer → undermapper (logs/, reports/, dashboards/) (140 .py i root — reorganisering kraever import-opdatering)
+- [x] **D5.** 5 duplikatpar → vælg bedste (behold begge til test) (0 eksakte duplikater efter D3 cleanup — backup-filerne VAR duplikaterne)
 
 ---
 
