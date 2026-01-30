@@ -2388,6 +2388,202 @@ button.action-new {
 
 .intro-cat-orders_tracker .intro-sidebar-icon { color: #f87171; }
 .intro-cat-orders_tracker .intro-sidebar-count { background: rgba(248, 113, 113, 0.12); color: #f87171; }
+
+/* ============================================================
+   PASS 3: OPTIMERET — ADDITIONAL CSS
+   ============================================================ */
+
+/* === FASE 0: LOADING SPINNER === */
+.intro-loading-box {
+    padding: 40px;
+    min-height: 200px;
+}
+
+.intro-loading-spinner {
+    min-width: 48px;
+    min-height: 48px;
+}
+
+.intro-loading-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.60);
+    margin-top: 12px;
+}
+
+/* === FASE 1: SMOOTH ANIMATIONS === */
+@keyframes intro-fade-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.intro-fade-in {
+    animation: intro-fade-in 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Chakra category header accent colors */
+.intro-header-i { color: #a855f7; }
+.intro-header-b { color: #00D9FF; }
+.intro-header-c { color: #f59e0b; }
+.intro-header-d { color: #6366f1; }
+.intro-header-structure { color: #10b981; }
+.intro-header-health { color: #00FF88; }
+
+/* Progress bars in health dashboard */
+.intro-health-progress-bar trough {
+    min-height: 10px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.intro-health-progress-bar progress {
+    border-radius: 5px;
+    min-height: 10px;
+}
+
+.intro-health-progress-green progress {
+    background: linear-gradient(90deg, #10b981, #4ade80);
+    box-shadow: 0 0 8px rgba(74, 222, 128, 0.40);
+}
+
+.intro-health-progress-yellow progress {
+    background: linear-gradient(90deg, #f59e0b, #fcd34d);
+    box-shadow: 0 0 8px rgba(251, 191, 36, 0.40);
+}
+
+.intro-health-progress-red progress {
+    background: linear-gradient(90deg, #ef4444, #f87171);
+    box-shadow: 0 0 8px rgba(248, 113, 113, 0.40);
+}
+
+/* === FASE 2: NAUGHTY OR NOT CARDS === */
+.intro-naughty-card {
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: rgba(239, 68, 68, 0.06);
+    border: 1px solid rgba(239, 68, 68, 0.15);
+    border-left: 4px solid #ef4444;
+    transition: all 200ms ease;
+}
+
+.intro-naughty-card:hover {
+    background: rgba(239, 68, 68, 0.10);
+    border-color: rgba(239, 68, 68, 0.25);
+    box-shadow: 0 4px 16px -4px rgba(239, 68, 68, 0.20);
+}
+
+.intro-naughty-title {
+    font-weight: 700;
+    font-size: 13px;
+    color: #f87171;
+}
+
+.intro-naughty-desc {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.intro-naughty-prevention {
+    font-size: 10px;
+    color: rgba(248, 113, 113, 0.80);
+    font-family: "JetBrains Mono", monospace;
+}
+
+.intro-not-card {
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: rgba(16, 185, 129, 0.06);
+    border: 1px solid rgba(16, 185, 129, 0.15);
+    border-left: 4px solid #10b981;
+    transition: all 200ms ease;
+}
+
+.intro-not-card:hover {
+    background: rgba(16, 185, 129, 0.10);
+    border-color: rgba(16, 185, 129, 0.25);
+    box-shadow: 0 4px 16px -4px rgba(16, 185, 129, 0.20);
+}
+
+.intro-not-title {
+    font-weight: 700;
+    font-size: 13px;
+    color: #4ade80;
+}
+
+.intro-not-desc {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.intro-not-maintain {
+    font-size: 10px;
+    color: rgba(74, 222, 128, 0.80);
+    font-family: "JetBrains Mono", monospace;
+}
+
+/* === FASE 4: GIT INTEGRATION === */
+.intro-git-card {
+    padding: 16px 20px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-left: 4px solid rgba(249, 115, 22, 0.50);
+    transition: all 200ms ease;
+}
+
+.intro-git-card:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-left-color: rgba(249, 115, 22, 0.80);
+    box-shadow: 0 4px 16px -6px rgba(249, 115, 22, 0.15);
+}
+
+.intro-git-title {
+    font-weight: 700;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.90);
+}
+
+.intro-git-detail {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.50);
+    font-family: "JetBrains Mono", monospace;
+}
+
+.intro-git-status-clean {
+    color: #4ade80;
+}
+
+.intro-git-status-dirty {
+    color: #fbbf24;
+}
+
+.intro-git-status-error {
+    color: #f87171;
+}
+
+.intro-git-push-btn {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.20), rgba(239, 68, 68, 0.15));
+    color: #fb923c;
+    border: 1px solid rgba(249, 115, 22, 0.25);
+}
+
+.intro-git-push-btn:hover {
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.30), rgba(239, 68, 68, 0.25));
+    border-color: rgba(249, 115, 22, 0.40);
+    box-shadow: 0 4px 12px -4px rgba(249, 115, 22, 0.30);
+}
+
+/* Sidebar git status item */
+.intro-cat-git_status .intro-sidebar-icon { color: #fb923c; }
+.intro-cat-git_status .intro-sidebar-count { background: rgba(249, 115, 22, 0.12); color: #fb923c; }
+
+/* Sidebar naughty/not item */
+.intro-cat-naughty_not .intro-sidebar-icon { color: #f87171; }
+.intro-cat-naughty_not .intro-sidebar-count { background: rgba(248, 113, 113, 0.12); color: #f87171; }
 """
 
 def load_custom_css():
@@ -7958,6 +8154,8 @@ INTRO_SIDEBAR_ITEMS = [
     ("nav_index", "Navigation Index", "113 Documents Searchable", "system-search-symbolic"),
     ("architecture_overview", "Architecture D1-D10", "System Design Documents", "applications-engineering-symbolic"),
     ("orders_tracker", "Obligatory Orders", "13 Admiral Orders", "security-high-symbolic"),
+    ("naughty_not", "Naughty or Not", "Mistake Prevention", "dialog-warning-symbolic"),
+    ("git_status", "Git Integration", "INTRO Repo Status", "network-transmit-symbolic"),
 ]
 
 
@@ -8730,11 +8928,11 @@ class IntroHealthDashboard(Gtk.Box):
         sep.set_margin_bottom(8)
         self.append(sep)
 
-        # --- Overall Score ---
+        # --- Overall Score with Progress Bar ---
         score_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=16)
         score_box.set_halign(Gtk.Align.CENTER)
         score_box.set_margin_top(16)
-        score_box.set_margin_bottom(16)
+        score_box.set_margin_bottom(8)
 
         score_label = Gtk.Label(label=f"{self._overall_score:.0f}%")
         score_label.add_css_class("intro-health-score")
@@ -8762,6 +8960,21 @@ class IntroHealthDashboard(Gtk.Box):
 
         score_box.append(score_meta)
         self.append(score_box)
+
+        # Overall health progress bar (replaces text-only percentage)
+        overall_progress = Gtk.ProgressBar()
+        overall_progress.set_fraction(self._overall_score / 100.0)
+        overall_progress.add_css_class("intro-health-progress-bar")
+        if self._overall_score >= 80:
+            overall_progress.add_css_class("intro-health-progress-green")
+        elif self._overall_score >= 50:
+            overall_progress.add_css_class("intro-health-progress-yellow")
+        else:
+            overall_progress.add_css_class("intro-health-progress-red")
+        overall_progress.set_margin_start(32)
+        overall_progress.set_margin_end(32)
+        overall_progress.set_margin_bottom(8)
+        self.append(overall_progress)
 
         # --- Refresh button ---
         refresh_btn = Gtk.Button(label="Re-run Health Checks")
@@ -9250,7 +9463,7 @@ class IntroSystemView(Gtk.Box):
                     Gio.FileMonitorFlags.NONE, None
                 )
                 monitor.set_rate_limit(3000)  # 3 sec debounce
-                monitor.connect("changed", self._on_intro_file_changed)
+                monitor.connect("changed", self._on_intro_file_changed_debounced)
                 self._file_monitors.append(monitor)
             except Exception:
                 pass
@@ -9357,10 +9570,13 @@ class IntroSystemView(Gtk.Box):
         Args:
             category_key: One of 'I', 'B', 'C', 'D', 'structure', 'system_functions',
                           'dna_layers', 'health', 'health_dashboard',
-                          'nav_index', 'architecture_overview', 'orders_tracker'
+                          'nav_index', 'architecture_overview', 'orders_tracker',
+                          'naughty_not', 'git_status'
         """
         self._current_view = category_key
         self._clear()
+        # Add smooth fade-in animation (PASS 3 FASE 1)
+        self._container.add_css_class("intro-fade-in")
 
         if category_key == "health":
             self._build_health_view()
@@ -9380,6 +9596,10 @@ class IntroSystemView(Gtk.Box):
             self._build_architecture_overview_view()
         elif category_key == "orders_tracker":
             self._build_orders_tracker_view()
+        elif category_key == "naughty_not":
+            self._build_naughty_not_view()
+        elif category_key == "git_status":
+            self._build_git_integration_view()
         elif category_key == "I":
             self._build_i_files_view()
         elif category_key in ("B", "C", "D"):
@@ -9433,10 +9653,13 @@ class IntroSystemView(Gtk.Box):
             self._container.append(empty)
             return
 
-        # Header
+        # Header with chakra color accent (PASS 3 FASE 1)
         header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
-        title = Gtk.Label(label=f"{target_cat.name} -- {letter}-Files")
-        title.add_css_class("intro-view-header")
+        # Chakra colors map for category headers
+        _header_colors = {"I": "#a855f7", "B": "#00D9FF", "C": "#f59e0b", "D": "#6366f1"}
+        header_color = _header_colors.get(letter, "#a855f7")
+        title = Gtk.Label()
+        title.set_markup(f'<span foreground="{header_color}" weight="ultrabold" size="x-large">{target_cat.name} \u2014 {letter}-Files</span>')
         title.set_xalign(0)
         header_box.append(title)
 
@@ -10529,12 +10752,26 @@ class IntroSystemView(Gtk.Box):
                     patterns_detail.append("PATTERNS.yaml: missing -- no learning evidence")
                     patterns_completion = 0.0
 
+        # Also check for I11 Naughty/Not list (Pass 3 integration)
+        i11_path = intro_path / "I11_NAUGHTY_OR_NOT_LIST.md"
+        if i11_path.exists():
+            try:
+                i11_content = i11_path.read_text(encoding="utf-8", errors="replace")
+                import re as _re_nn
+                naughty_count = len(_re_nn.findall(r'####\s+NAUGHTY\s+#\d+', i11_content))
+                not_count = len(_re_nn.findall(r'###\s+NOT\s+#\d+', i11_content))
+                patterns_detail.append(f"I11 Naughty/Not: {naughty_count} mistakes tracked, {not_count} patterns maintained")
+                if patterns_completion < 100.0:
+                    patterns_completion = min(100.0, patterns_completion + 25.0)
+            except Exception:
+                pass
+
         layers.append({
             "layer_num": "4",
             "name": "SELF-IMPROVING",
             "icon": "emblem-synchronizing-symbolic",
-            "status": "Found" if patterns_found else ("Partial" if patterns_completion > 0 else "Missing"),
-            "status_class": "intro-dna-status-found" if patterns_found else ("intro-dna-status-partial" if patterns_completion > 0 else "intro-dna-status-missing"),
+            "status": "Found" if patterns_found or i11_path.exists() else ("Partial" if patterns_completion > 0 else "Missing"),
+            "status_class": "intro-dna-status-found" if patterns_found or i11_path.exists() else ("intro-dna-status-partial" if patterns_completion > 0 else "intro-dna-status-missing"),
             "detail_lines": patterns_detail,
             "completion": patterns_completion,
         })
@@ -12484,6 +12721,684 @@ class IntroSystemView(Gtk.Box):
 
         return False
 
+    # =================================================================
+    # PASS 3 — FASE 0: PERFORMANCE (Lazy-load, cache, async, debounce)
+    # =================================================================
+
+    # Class-level data cache shared across instances
+    _cached_data = {}
+    _cache_valid = {}
+    _debounce_timer_id = None
+
+    def _invalidate_cache(self, category_key=None):
+        """Invalidate cached data, optionally for a specific category only."""
+        if category_key:
+            self._cached_data.pop(category_key, None)
+            self._cache_valid.pop(category_key, None)
+        else:
+            self._cached_data.clear()
+            self._cache_valid.clear()
+
+    def _get_cached_or_load(self, category_key, loader_fn):
+        """Return cached data for category_key, or call loader_fn to populate.
+
+        Implements lazy-loading: data is only loaded on first access per category.
+        """
+        if category_key in self._cached_data and self._cache_valid.get(category_key):
+            return self._cached_data[category_key]
+        data = loader_fn()
+        self._cached_data[category_key] = data
+        self._cache_valid[category_key] = True
+        return data
+
+    def _show_loading_spinner(self, message="Loading..."):
+        """Show a loading spinner in the container while async work runs."""
+        self._clear()
+        loading_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        loading_box.add_css_class("intro-loading-box")
+        loading_box.set_halign(Gtk.Align.CENTER)
+        loading_box.set_valign(Gtk.Align.CENTER)
+        loading_box.set_vexpand(True)
+
+        spinner = Gtk.Spinner()
+        spinner.add_css_class("intro-loading-spinner")
+        spinner.set_spinning(True)
+        spinner.set_halign(Gtk.Align.CENTER)
+        loading_box.append(spinner)
+
+        label = Gtk.Label(label=message)
+        label.add_css_class("intro-loading-label")
+        loading_box.append(label)
+
+        self._container.append(loading_box)
+
+    def _load_async(self, category_key, loader_fn, build_fn):
+        """Load data asynchronously in a thread, then build UI on main thread.
+
+        Used for large files (I1 is 3500+ lines) to keep UI responsive.
+        Shows a spinner while loading.
+        """
+        import threading
+
+        self._show_loading_spinner(f"Loading {category_key}...")
+
+        def _worker():
+            try:
+                data = loader_fn()
+                self._cached_data[category_key] = data
+                self._cache_valid[category_key] = True
+            except Exception as e:
+                data = None
+                print(f"Async load error for {category_key}: {e}")
+            GLib.idle_add(_on_done, data)
+
+        def _on_done(data):
+            self._clear()
+            if data is not None:
+                build_fn(data)
+            else:
+                empty = Adw.StatusPage()
+                empty.set_title("Load Error")
+                empty.set_description(f"Could not load data for {category_key}")
+                empty.set_icon_name("dialog-error-symbolic")
+                self._container.append(empty)
+            return False
+
+        t = threading.Thread(target=_worker, daemon=True)
+        t.start()
+
+    def _debounced_refresh(self):
+        """Debounce file monitor refresh: wait 2 seconds of quiet before refreshing.
+
+        Cancels any pending refresh and starts a new 2-second timer.
+        """
+        if self._debounce_timer_id is not None:
+            GLib.source_remove(self._debounce_timer_id)
+            self._debounce_timer_id = None
+
+        def _do_refresh():
+            self._debounce_timer_id = None
+            self._invalidate_cache()
+            if self._current_view:
+                self.show_category(self._current_view)
+            return False
+
+        self._debounce_timer_id = GLib.timeout_add(2000, _do_refresh)
+
+    # Override the file change handler to use debounced refresh
+    def _on_intro_file_changed_debounced(self, monitor, file, other_file, event_type):
+        """Handle file changes with 2-second debounce."""
+        if event_type not in (
+            Gio.FileMonitorEvent.CHANGED,
+            Gio.FileMonitorEvent.CREATED,
+            Gio.FileMonitorEvent.DELETED,
+        ):
+            return
+
+        fname = file.get_basename() if file else "unknown"
+        event_names = {
+            Gio.FileMonitorEvent.CHANGED: "changed",
+            Gio.FileMonitorEvent.CREATED: "created",
+            Gio.FileMonitorEvent.DELETED: "deleted",
+        }
+        event_str = event_names.get(event_type, "modified")
+
+        if self._activity_monitor and hasattr(self._activity_monitor, 'log_event'):
+            self._activity_monitor.log_event("INTRO", f"{fname} {event_str}", "")
+
+        import re as _re
+        m = _re.match(r'^([A-Z])\d+[_\-]', fname)
+        if m:
+            self._section_mtimes[m.group(1)] = datetime.now()
+
+        # Invalidate cache for the changed category
+        if m:
+            self._invalidate_cache(m.group(1))
+
+        # Use debounced refresh instead of immediate
+        self._debounced_refresh()
+
+    # =================================================================
+    # PASS 3 — FASE 2: NAUGHTY OR NOT INTEGRATION
+    # =================================================================
+
+    def _parse_naughty_or_not(self):
+        """Parse I11_NAUGHTY_OR_NOT_LIST.md and return structured data.
+
+        Returns dict with:
+            naughty: list of {number, title, violation, prevention}
+            not_items: list of {number, title, pattern, maintain}
+            stats: {naughty_count, not_count}
+        """
+        import re as _re
+        intro_path = INTRO_PATH
+        i11_path = intro_path / "I11_NAUGHTY_OR_NOT_LIST.md"
+
+        result = {"naughty": [], "not_items": [], "stats": {"naughty_count": 0, "not_count": 0}}
+
+        if not i11_path.exists():
+            return result
+
+        try:
+            content = i11_path.read_text(encoding="utf-8", errors="replace")
+        except Exception:
+            return result
+
+        # Parse NAUGHTY items: "#### NAUGHTY #N: Title"
+        naughty_pattern = _re.compile(
+            r'####\s+NAUGHTY\s+#(\d+):\s*(.+?)(?:\n|\r)',
+            _re.IGNORECASE
+        )
+        for match in naughty_pattern.finditer(content):
+            num = int(match.group(1))
+            title = match.group(2).strip()
+            # Extract some context after the match
+            start_pos = match.end()
+            chunk = content[start_pos:start_pos + 600]
+
+            # Get violation info
+            violation = ""
+            v_match = _re.search(r'\*\*(?:What I Did Wrong|Violation):\*\*\s*\n((?:- .+\n?)+)', chunk)
+            if v_match:
+                violation = v_match.group(1).strip()[:200]
+
+            # Get prevention info
+            prevention = ""
+            p_match = _re.search(r'\*\*Prevention:\*\*\s*\n((?:- .+\n?)+)', chunk)
+            if p_match:
+                prevention = p_match.group(1).strip()[:200]
+
+            result["naughty"].append({
+                "number": num,
+                "title": title,
+                "violation": violation,
+                "prevention": prevention,
+            })
+
+        # Parse NOT items: "### NOT #N: Title"
+        not_pattern = _re.compile(
+            r'###\s+NOT\s+#(\d+):\s*(.+?)(?:\n|\r)',
+            _re.IGNORECASE
+        )
+        for match in not_pattern.finditer(content):
+            num = int(match.group(1))
+            title = match.group(2).strip()
+            start_pos = match.end()
+            chunk = content[start_pos:start_pos + 600]
+
+            # Get what was done right
+            pattern_text = ""
+            p_match = _re.search(r'\*\*What I Did Right:\*\*\s*\n((?:- .+\n?)+)', chunk)
+            if p_match:
+                pattern_text = p_match.group(1).strip()[:200]
+
+            # Get maintain info
+            maintain = ""
+            m_match = _re.search(r'\*\*Maintain(?:ed)? This:\*\*\s*\n((?:- .+\n?)+)', chunk)
+            if m_match:
+                maintain = m_match.group(1).strip()[:200]
+
+            result["not_items"].append({
+                "number": num,
+                "title": title,
+                "pattern": pattern_text,
+                "maintain": maintain,
+            })
+
+        result["stats"]["naughty_count"] = len(result["naughty"])
+        result["stats"]["not_count"] = len(result["not_items"])
+
+        return result
+
+    def _build_naughty_not_view(self):
+        """Build the NAUGHTY OR NOT view with parsed I11 data."""
+        data = self._get_cached_or_load("naughty_not", self._parse_naughty_or_not)
+
+        # Header
+        header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        header_box.add_css_class("intro-fade-in")
+        title = Gtk.Label(label="Naughty or Not \u2014 Mistake Prevention")
+        title.add_css_class("intro-view-header")
+        title.set_xalign(0)
+        header_box.append(title)
+
+        subtitle = Gtk.Label(
+            label="Parsed from I11_NAUGHTY_OR_NOT_LIST.md \u2014 Mistakes to avoid and patterns to maintain"
+        )
+        subtitle.add_css_class("intro-view-subtitle")
+        subtitle.set_xalign(0)
+        subtitle.set_wrap(True)
+        header_box.append(subtitle)
+        self._container.append(header_box)
+
+        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        sep.set_margin_top(4)
+        sep.set_margin_bottom(8)
+        self._container.append(sep)
+
+        # Stats summary
+        stats = data["stats"]
+        summary = Gtk.Label(
+            label=f"{stats['naughty_count']} NAUGHTY items (avoid)  |  {stats['not_count']} NOT items (maintain)"
+        )
+        summary.add_css_class("caption")
+        summary.add_css_class("dim-label")
+        summary.set_xalign(0)
+        self._container.append(summary)
+
+        # --- NAUGHTY section ---
+        naughty_header = Gtk.Label(label="NAUGHTY \u2014 Things to NEVER Do Again")
+        naughty_header.add_css_class("intro-view-subtitle")
+        naughty_header.add_css_class("intro-naughty-title")
+        naughty_header.set_xalign(0)
+        naughty_header.set_margin_top(16)
+        self._container.append(naughty_header)
+
+        naughty_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        naughty_box.set_margin_top(8)
+
+        for item in data["naughty"]:
+            card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+            card.add_css_class("intro-naughty-card")
+            card.add_css_class("intro-fade-in")
+
+            title_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+
+            warning_icon = Gtk.Image.new_from_icon_name("dialog-warning-symbolic")
+            warning_icon.set_pixel_size(16)
+            title_row.append(warning_icon)
+
+            title_lbl = Gtk.Label(label=f"NAUGHTY #{item['number']}: {item['title']}")
+            title_lbl.add_css_class("intro-naughty-title")
+            title_lbl.set_xalign(0)
+            title_lbl.set_hexpand(True)
+            title_lbl.set_ellipsize(Pango.EllipsizeMode.END)
+            title_row.append(title_lbl)
+
+            card.append(title_row)
+
+            if item["violation"]:
+                vio_lines = item["violation"].split("\n")
+                for vl in vio_lines[:3]:
+                    vl_clean = vl.strip().lstrip("- ")
+                    if vl_clean:
+                        vio_lbl = Gtk.Label(label=f"  {vl_clean}")
+                        vio_lbl.add_css_class("intro-naughty-desc")
+                        vio_lbl.set_xalign(0)
+                        vio_lbl.set_ellipsize(Pango.EllipsizeMode.END)
+                        card.append(vio_lbl)
+
+            if item["prevention"]:
+                prev_lines = item["prevention"].split("\n")
+                for pl in prev_lines[:2]:
+                    pl_clean = pl.strip().lstrip("- ")
+                    if pl_clean:
+                        prev_lbl = Gtk.Label(label=f"  Prevention: {pl_clean}")
+                        prev_lbl.add_css_class("intro-naughty-prevention")
+                        prev_lbl.set_xalign(0)
+                        prev_lbl.set_ellipsize(Pango.EllipsizeMode.END)
+                        card.append(prev_lbl)
+
+            naughty_box.append(card)
+
+        self._container.append(naughty_box)
+
+        # --- NOT section ---
+        not_sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        not_sep.set_margin_top(16)
+        not_sep.set_margin_bottom(8)
+        self._container.append(not_sep)
+
+        not_header = Gtk.Label(label="NOT \u2014 Best Practices to Maintain")
+        not_header.add_css_class("intro-view-subtitle")
+        not_header.add_css_class("intro-not-title")
+        not_header.set_xalign(0)
+        self._container.append(not_header)
+
+        not_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        not_box.set_margin_top(8)
+
+        for item in data["not_items"]:
+            card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+            card.add_css_class("intro-not-card")
+            card.add_css_class("intro-fade-in")
+
+            title_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+
+            check_icon = Gtk.Image.new_from_icon_name("emblem-ok-symbolic")
+            check_icon.set_pixel_size(16)
+            title_row.append(check_icon)
+
+            title_lbl = Gtk.Label(label=f"NOT #{item['number']}: {item['title']}")
+            title_lbl.add_css_class("intro-not-title")
+            title_lbl.set_xalign(0)
+            title_lbl.set_hexpand(True)
+            title_lbl.set_ellipsize(Pango.EllipsizeMode.END)
+            title_row.append(title_lbl)
+
+            card.append(title_row)
+
+            if item["pattern"]:
+                pat_lines = item["pattern"].split("\n")
+                for pl in pat_lines[:3]:
+                    pl_clean = pl.strip().lstrip("- ")
+                    if pl_clean:
+                        pat_lbl = Gtk.Label(label=f"  {pl_clean}")
+                        pat_lbl.add_css_class("intro-not-desc")
+                        pat_lbl.set_xalign(0)
+                        pat_lbl.set_ellipsize(Pango.EllipsizeMode.END)
+                        card.append(pat_lbl)
+
+            if item["maintain"]:
+                mnt_lines = item["maintain"].split("\n")
+                for ml in mnt_lines[:2]:
+                    ml_clean = ml.strip().lstrip("- ")
+                    if ml_clean:
+                        mnt_lbl = Gtk.Label(label=f"  Maintain: {ml_clean}")
+                        mnt_lbl.add_css_class("intro-not-maintain")
+                        mnt_lbl.set_xalign(0)
+                        mnt_lbl.set_ellipsize(Pango.EllipsizeMode.END)
+                        card.append(mnt_lbl)
+
+            not_box.append(card)
+
+        self._container.append(not_box)
+
+        # Open source file button
+        open_btn = Gtk.Button(label="Open I11_NAUGHTY_OR_NOT_LIST.md")
+        open_btn.add_css_class("intro-open-btn")
+        open_btn.set_halign(Gtk.Align.START)
+        open_btn.set_margin_top(16)
+        i11_path = str(INTRO_PATH / "I11_NAUGHTY_OR_NOT_LIST.md")
+        open_btn.connect("clicked", lambda b, p=i11_path: self._open_file(p))
+        self._container.append(open_btn)
+
+    # =================================================================
+    # PASS 3 — FASE 4: GIT INTEGRATION
+    # =================================================================
+
+    def _fetch_git_data(self):
+        """Fetch git status, ahead/behind, and last push for INTRO repo.
+
+        Returns dict with:
+            status_lines: list of (status_code, filename)
+            clean: bool
+            ahead: int
+            behind: int
+            last_push: str (timestamp)
+            branch: str
+            error: str or None
+        """
+        intro_path = str(INTRO_PATH)
+        result = {
+            "status_lines": [],
+            "clean": True,
+            "ahead": 0,
+            "behind": 0,
+            "last_push": "Unknown",
+            "branch": "unknown",
+            "error": None,
+        }
+
+        # 1. Git status --porcelain
+        try:
+            status_result = subprocess.run(
+                ["git", "-C", intro_path, "status", "--porcelain"],
+                capture_output=True, text=True, timeout=10,
+            )
+            if status_result.returncode == 0:
+                lines = [l for l in status_result.stdout.strip().split("\n") if l.strip()]
+                result["status_lines"] = [(l[:2].strip(), l[3:].strip()) for l in lines]
+                result["clean"] = len(result["status_lines"]) == 0
+            else:
+                result["error"] = status_result.stderr.strip()[:200]
+        except Exception as e:
+            result["error"] = str(e)
+
+        # 2. Current branch
+        try:
+            branch_result = subprocess.run(
+                ["git", "-C", intro_path, "branch", "--show-current"],
+                capture_output=True, text=True, timeout=10,
+            )
+            if branch_result.returncode == 0:
+                result["branch"] = branch_result.stdout.strip() or "HEAD"
+        except Exception:
+            pass
+
+        # 3. Commits ahead/behind
+        try:
+            rev_result = subprocess.run(
+                ["git", "-C", intro_path, "rev-list", "--left-right", "--count", "HEAD...@{u}"],
+                capture_output=True, text=True, timeout=10,
+            )
+            if rev_result.returncode == 0:
+                parts = rev_result.stdout.strip().split()
+                if len(parts) == 2:
+                    result["ahead"] = int(parts[0])
+                    result["behind"] = int(parts[1])
+        except Exception:
+            pass
+
+        # 4. Last push timestamp (last push via reflog)
+        try:
+            push_result = subprocess.run(
+                ["git", "-C", intro_path, "log", "-1", "--format=%ci", "@{push}"],
+                capture_output=True, text=True, timeout=10,
+            )
+            if push_result.returncode == 0 and push_result.stdout.strip():
+                result["last_push"] = push_result.stdout.strip()[:19]
+            else:
+                # Fallback: last commit on remote tracking branch
+                remote_result = subprocess.run(
+                    ["git", "-C", intro_path, "log", "-1", "--format=%ci", "origin/main"],
+                    capture_output=True, text=True, timeout=10,
+                )
+                if remote_result.returncode == 0 and remote_result.stdout.strip():
+                    result["last_push"] = remote_result.stdout.strip()[:19]
+        except Exception:
+            pass
+
+        return result
+
+    def _build_git_integration_view(self):
+        """Build the Git Integration view showing repo status, ahead/behind, push button."""
+        import threading
+
+        def _loader():
+            return self._fetch_git_data()
+
+        def _builder(data):
+            self._build_git_view_ui(data)
+
+        # Use async loading for git commands
+        self._load_async("git_status", _loader, _builder)
+
+    def _build_git_view_ui(self, data):
+        """Build the Git integration UI from fetched data."""
+        # Header with fade-in
+        header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        header_box.add_css_class("intro-fade-in")
+        title = Gtk.Label(label="Git Integration \u2014 MASTER FOLDERS(INTRO)")
+        title.add_css_class("intro-view-header")
+        title.set_xalign(0)
+        header_box.append(title)
+
+        subtitle = Gtk.Label(
+            label=f"Repository status for MASTER FOLDERS(INTRO) \u2014 Branch: {data['branch']}"
+        )
+        subtitle.add_css_class("intro-view-subtitle")
+        subtitle.set_xalign(0)
+        subtitle.set_wrap(True)
+        header_box.append(subtitle)
+        self._container.append(header_box)
+
+        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        sep.set_margin_top(4)
+        sep.set_margin_bottom(8)
+        self._container.append(sep)
+
+        if data["error"]:
+            err_label = Gtk.Label(label=f"Git Error: {data['error']}")
+            err_label.add_css_class("intro-git-status-error")
+            err_label.set_xalign(0)
+            err_label.set_wrap(True)
+            self._container.append(err_label)
+
+        # --- Status Card ---
+        status_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        status_card.add_css_class("intro-git-card")
+        status_card.add_css_class("intro-fade-in")
+
+        status_title_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        status_icon_name = "emblem-ok-symbolic" if data["clean"] else "dialog-warning-symbolic"
+        status_icon = Gtk.Image.new_from_icon_name(status_icon_name)
+        status_icon.set_pixel_size(20)
+        status_title_row.append(status_icon)
+
+        status_text = "Working Tree Clean" if data["clean"] else f"{len(data['status_lines'])} Uncommitted Changes"
+        status_label = Gtk.Label(label=status_text)
+        status_label.add_css_class("intro-git-title")
+        if data["clean"]:
+            status_label.add_css_class("intro-git-status-clean")
+        else:
+            status_label.add_css_class("intro-git-status-dirty")
+        status_label.set_xalign(0)
+        status_label.set_hexpand(True)
+        status_title_row.append(status_label)
+
+        status_card.append(status_title_row)
+
+        # Show individual file changes
+        if data["status_lines"]:
+            for code, fname in data["status_lines"][:15]:
+                file_lbl = Gtk.Label(label=f"  [{code}] {fname}")
+                file_lbl.add_css_class("intro-git-detail")
+                file_lbl.set_xalign(0)
+                file_lbl.set_ellipsize(Pango.EllipsizeMode.END)
+                status_card.append(file_lbl)
+
+            if len(data["status_lines"]) > 15:
+                more_lbl = Gtk.Label(label=f"  ... and {len(data['status_lines']) - 15} more")
+                more_lbl.add_css_class("intro-git-detail")
+                more_lbl.add_css_class("dim-label")
+                more_lbl.set_xalign(0)
+                status_card.append(more_lbl)
+
+        self._container.append(status_card)
+
+        # --- Ahead/Behind Card ---
+        sync_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        sync_card.add_css_class("intro-git-card")
+        sync_card.add_css_class("intro-fade-in")
+
+        sync_title = Gtk.Label(label="Sync Status")
+        sync_title.add_css_class("intro-git-title")
+        sync_title.set_xalign(0)
+        sync_card.append(sync_title)
+
+        ahead_text = f"Commits ahead of remote: {data['ahead']}"
+        ahead_label = Gtk.Label(label=ahead_text)
+        ahead_label.add_css_class("intro-git-detail")
+        if data["ahead"] > 0:
+            ahead_label.add_css_class("intro-git-status-dirty")
+        else:
+            ahead_label.add_css_class("intro-git-status-clean")
+        ahead_label.set_xalign(0)
+        sync_card.append(ahead_label)
+
+        behind_text = f"Commits behind remote: {data['behind']}"
+        behind_label = Gtk.Label(label=behind_text)
+        behind_label.add_css_class("intro-git-detail")
+        if data["behind"] > 0:
+            behind_label.add_css_class("intro-git-status-dirty")
+        else:
+            behind_label.add_css_class("intro-git-status-clean")
+        behind_label.set_xalign(0)
+        sync_card.append(behind_label)
+
+        # Last pushed timestamp
+        push_text = f"Last pushed: {data['last_push']}"
+        push_label = Gtk.Label(label=push_text)
+        push_label.add_css_class("intro-git-detail")
+        push_label.set_xalign(0)
+        sync_card.append(push_label)
+
+        self._container.append(sync_card)
+
+        # --- Git Push Button (only if unpushed commits) ---
+        if data["ahead"] > 0:
+            push_btn_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            push_btn_box.set_margin_top(12)
+            push_btn_box.set_halign(Gtk.Align.START)
+
+            push_btn = Gtk.Button(label=f"Git Push ({data['ahead']} commits)")
+            push_btn.add_css_class("intro-git-push-btn")
+            push_btn.set_tooltip_text(f"Push {data['ahead']} local commit(s) to remote")
+            push_btn.connect("clicked", self._on_git_push_clicked)
+            push_btn_box.append(push_btn)
+
+            self._container.append(push_btn_box)
+
+        # --- Refresh button ---
+        refresh_btn = Gtk.Button(label="Refresh Git Status")
+        refresh_btn.add_css_class("suggested-action")
+        refresh_btn.add_css_class("pill")
+        refresh_btn.set_halign(Gtk.Align.CENTER)
+        refresh_btn.set_margin_top(16)
+        refresh_btn.connect("clicked", lambda b: self._on_git_refresh())
+        self._container.append(refresh_btn)
+
+    def _on_git_push_clicked(self, button):
+        """Execute git push for INTRO repo in a background thread."""
+        import threading
+
+        button.set_sensitive(False)
+        button.set_label("Pushing...")
+
+        def _push():
+            try:
+                result = subprocess.run(
+                    ["git", "-C", str(INTRO_PATH), "push"],
+                    capture_output=True, text=True, timeout=60,
+                )
+                success = result.returncode == 0
+                msg = result.stdout.strip() or result.stderr.strip()
+            except Exception as e:
+                success = False
+                msg = str(e)
+
+            GLib.idle_add(_on_push_done, success, msg)
+
+        def _on_push_done(success, msg):
+            button.set_sensitive(True)
+            if success:
+                button.set_label("Push Complete!")
+                button.add_css_class("success")
+                # Invalidate cache and refresh
+                self._invalidate_cache("git_status")
+            else:
+                button.set_label(f"Push Failed: {msg[:40]}")
+                button.add_css_class("error")
+            return False
+
+        t = threading.Thread(target=_push, daemon=True)
+        t.start()
+
+    def _on_git_refresh(self):
+        """Refresh git integration view with fresh data."""
+        self._invalidate_cache("git_status")
+        self.show_category("git_status")
+
+    # =================================================================
+    # PASS 3 — DNA Layer 4 Naughty/Not integration
+    # =================================================================
+
+    def _get_naughty_not_summary_for_dna(self):
+        """Get a short summary of naughty/not data for DNA Layer 4 (SELF-IMPROVING)."""
+        data = self._get_cached_or_load("naughty_not", self._parse_naughty_or_not)
+        return data
+
     # -----------------------------------------------------------------
     # UTILITY
     # -----------------------------------------------------------------
@@ -12782,6 +13697,10 @@ class MasterpieceWindow(Adw.ApplicationWindow):
                 date_text = f"{cat_range}"
             elif cat_key == "health_dashboard":
                 date_text = f"{cat_range}"
+            elif cat_key == "naughty_not":
+                date_text = f"{cat_range}"
+            elif cat_key == "git_status":
+                date_text = f"{cat_range}"
 
             if date_text:
                 date_label = Gtk.Label(label=date_text)
@@ -12806,6 +13725,10 @@ class MasterpieceWindow(Adw.ApplicationWindow):
                 count_text = "7"
             elif cat_key == "health_dashboard":
                 count_text = "6"
+            elif cat_key == "naughty_not":
+                count_text = "I11"
+            elif cat_key == "git_status":
+                count_text = "git"
 
             if count_text:
                 count_label = Gtk.Label(label=count_text)
@@ -13634,6 +14557,18 @@ class MasterpieceWindow(Adw.ApplicationWindow):
                 self.sync_score_label.add_css_class("error")
         except Exception:
             self.sync_score_label.set_label("?")
+
+    def _navigate_intro(self, category_key):
+        """Navigate to an INTRO view via keyboard shortcut.
+
+        Only activates if search entry is NOT focused (to avoid capturing
+        typing in search).
+        """
+        # Check if search entry is focused — if so, don't intercept the key
+        focus_widget = self.get_focus()
+        if focus_widget and isinstance(focus_widget, (Gtk.SearchEntry, Gtk.Entry, Gtk.TextView, Gtk.Text)):
+            return
+        self._on_intro_sidebar_clicked(None, category_key)
 
     def _on_intro_sidebar_clicked(self, button, category_key):
         """Navigate to an INTRO system view for the given category."""
@@ -14664,6 +15599,12 @@ V         Kør verifikation
 A         Arkivér sejr
 P         Generer forudsigelser
 
+<b>INTRO System</b>
+I         System Intelligence (I-files)
+S         Folder Structure
+H         Health Dashboard
+F         System Functions
+
 <b>Zoom</b>
 Ctrl++    Zoom ind
 Ctrl+-    Zoom ud
@@ -15110,6 +16051,31 @@ class MasterpieceApp(Adw.Application):
         help_action.connect("activate", lambda a, p: win._show_help_dialog())
         self.add_action(help_action)
         self.set_accels_for_action("app.help", ["question", "F1"])
+
+        # --- PASS 3: INTRO KEYBOARD SHORTCUTS ---
+        # I → INTRO System Intelligence view
+        intro_i_action = Gio.SimpleAction.new("intro-i-view", None)
+        intro_i_action.connect("activate", lambda a, p: win._navigate_intro("I"))
+        self.add_action(intro_i_action)
+        self.set_accels_for_action("app.intro-i-view", ["i"])
+
+        # S → INTRO Structure view
+        intro_s_action = Gio.SimpleAction.new("intro-s-view", None)
+        intro_s_action.connect("activate", lambda a, p: win._navigate_intro("structure"))
+        self.add_action(intro_s_action)
+        self.set_accels_for_action("app.intro-s-view", ["s"])
+
+        # H → INTRO Health Dashboard
+        intro_h_action = Gio.SimpleAction.new("intro-h-view", None)
+        intro_h_action.connect("activate", lambda a, p: win._navigate_intro("health_dashboard"))
+        self.add_action(intro_h_action)
+        self.set_accels_for_action("app.intro-h-view", ["h"])
+
+        # F → INTRO Functions view
+        intro_f_action = Gio.SimpleAction.new("intro-f-view", None)
+        intro_f_action.connect("activate", lambda a, p: win._navigate_intro("system_functions"))
+        self.add_action(intro_f_action)
+        self.set_accels_for_action("app.intro-f-view", ["f"])
 
 
 # 
