@@ -148,20 +148,20 @@ AGENTER SOVER (5 min timeout)
 ## PASS 2: VERIFICATION (Bevis At Det Virker)
 
 ### E. TEST-SUITE
-- [ ] **E1.** Test base_agent.py (init, caching, pooling)
-- [ ] **E2.** Test event_bus.py (publish, subscribe, reconnect)
-- [ ] **E3.** Test persistent_memory.py (save, load, query)
-- [ ] **E4.** Test ai_backend_rotator.py (rotation, failover)
-- [ ] **E5.** Test hybrid_worker.py (syntax check, analyse)
-- [ ] **E6.** Kør pytest, dokumentér resultater
+- [x] **E1.** Test base_agent.py (init, caching, pooling) -- 14/14 passed: init (name, path, config, embedder, pool), metrics (initialized, dict), caching (deterministic keys, agent-scoped, miss/hit), pooling (none start, config preserved)
+- [x] **E2.** Test event_bus.py (publish, subscribe, reconnect) -- 9/9 passed: metrics init + to_dict, EventBusOptimized init/connect/health_check/publish/subscribe/start_consuming, publish_file_changed
+- [x] **E3.** Test persistent_memory.py (save, load, query) -- 19/19 passed: dataclasses (ConversationMessage, Decision, Learning), init (dirs, db, tables), save (single, multiple, daily log), load (empty, returns saved, filters session, respects limit), query/search (empty, finds match, respects limit)
+- [x] **E4.** Test ai_backend_rotator.py (rotation, failover) -- 21/21 passed: BackendStatus (init, rate limits, accept/reject, reset after minute, record request/error/success, disable after 3 errors), AIBackendRotator init (6 backends, key-based enable), rotation (none available, returns enabled, prefers least loaded), failover (disables after errors, skips disabled, ollama health check)
+- [x] **E5.** Test hybrid_worker.py (syntax check, analyse) -- 14/14 passed: check_python_syntax (valid, error, empty, comments-only), analyze_python_file (line count, code lines, docstring detect, main block, imports, functions, classes, TODOs, error handling)
+- [x] **E6.** Koer pytest, dokumenter resultater -- 739 passed, 27 failed (alle failures i ikke-kerne tests: admiral_kommando_hq, benchmark_all_models, cross_project_service, task_executor_v2, technology_scanner, unified_eagle_view), 30 warnings. Alle 5 kerne-moduler 77/77 PASSED.
 
 ### F. KERNESYSTEM OPSTART
-- [ ] **F1.** Start event_bus + verificér
-- [ ] **F2.** Start persistent_memory + verificér SQLite
-- [ ] **F3.** Start ai_backend_rotator + test 1 backend
-- [ ] **F4.** Start hybrid_worker + kør reel analyse
-- [ ] **F5.** Start organic_spawner + verificér log-læsning
-- [ ] **F6.** Dokumentér hvad kører vs. mangler
+- [x] **F1.** Start event_bus + verificer -- REQUIRES_SERVICE: EventBusOptimized instantiates OK, health_check/get_metrics works, men connect() fejler — kraever RabbitMQ paa localhost:5672 (ikke installeret). Klasse, metrics, circuit breaker virker uden server.
+- [x] **F2.** Start persistent_memory + verificer SQLite -- RUNS: PersistentMemory instantierer OK, SQLite DB oprettes (32KB), save_conversation/save_decision/save_learning/get_statistics alle OK. Fuld CRUD verificeret med tempdir.
+- [x] **F3.** Start ai_backend_rotator + test 1 backend -- RUNS: AIBackendRotator instantierer OK, 1/6 backends enabled (Ollama, 14 modeller). 5 cloud backends DISABLED (ingen API keys sat). get_available_backend(), get_status_report(), rate limit tracking alle OK. Ollama svarer paa localhost:11434.
+- [x] **F4.** Start hybrid_worker + koer reel analyse -- RUNS: Alle funktioner OK — check_python_syntax (parser 114 filer), analyze_python_file (236 linjer, 9 funktioner), get_codebase_stats (114 filer, 36848 linjer, 408 funktioner, 85 klasser, 100% docstring), find_issues (22 MEDIUM, 0 HIGH), check_git_status (3 uncommitted), run_real_work (health=HEALTHY).
+- [x] **F5.** Start organic_spawner + verificer log-laesning -- RUNS: Importerer OK, analyze_failures() laeser EXECUTION_LOG (100 entries, 1 failure pattern: FAILED_SERVICE 44x), check_existing_systems() finder 114 systemer (2 spawned_*), get_solution_for_type() og generate_check_logic() virker. spawn_system/activate_spawned ikke testet (ville skrive filer).
+- [x] **F6.** Dokumenter hvad koerer vs. mangler -- SUMMARY: 4/5 kernesystemer RUNS, 1/5 REQUIRES_SERVICE. .venv MANGLER (brugte system python3). Se tabel: event_bus=REQUIRES_SERVICE(RabbitMQ), persistent_memory=RUNS, ai_backend_rotator=RUNS(1/6 backends), hybrid_worker=RUNS(fuld analyse), organic_spawner=RUNS(log-laesning OK).
 
 ---
 
