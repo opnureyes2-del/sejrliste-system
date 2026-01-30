@@ -54,24 +54,24 @@
 
 ### FASE 2: I-FILES DETAIL VIEW (System Intelligence)
 
-- [ ] Opret `IntroIFilesView(Gtk.Box)` widget
-- [ ] Header: "System Intelligence — I1-I12"
-- [ ] Liste af alle I-filer med:
-  - [ ] I-nummer + titel (fra filheader)
-  - [ ] Status badge ([OK] FÆRDIG / [PENDING] IN PROGRESS)
-  - [ ] Størrelse + antal linjer
-  - [ ] Sidst modificeret dato
-  - [ ] Klik → åben fil i editor
-- [ ] Vis I-fil indhold med kategori-farver:
-  - [ ] I1 (Vision) → Divine violet
-  - [ ] I2 (Orders) → Error red
-  - [ ] I3 (Hybrids) → Heart emerald
-  - [ ] I4-I5 (Operations) → Wisdom gold
-  - [ ] I6-I9 (Technical) → Intuition indigo
-  - [ ] I10 (Ecosystem) → Success green
-  - [ ] I11 (Prevention) → Warning orange
-  - [ ] I12 (Sejrliste) → Primary orange
-- [ ] "Open in Files" knap for hver fil
+- [x] Opret `IntroIFilesView(Gtk.Box)` widget
+- [x] Header: "System Intelligence — I1-I12"
+- [x] Liste af alle I-filer med:
+  - [x] I-nummer + titel (fra filheader)
+  - [x] Status badge ([OK] FÆRDIG / [PENDING] IN PROGRESS)
+  - [x] Størrelse + antal linjer
+  - [x] Sidst modificeret dato
+  - [x] Klik → åben fil i editor
+- [x] Vis I-fil indhold med kategori-farver:
+  - [x] I1 (Vision) → Divine violet
+  - [x] I2 (Orders) → Error red
+  - [x] I3 (Hybrids) → Heart emerald
+  - [x] I4-I5 (Operations) → Wisdom gold
+  - [x] I6-I9 (Technical) → Intuition indigo
+  - [x] I10 (Ecosystem) → Success green
+  - [x] I11 (Prevention) → Warning orange
+  - [x] I12 (Sejrliste) → Primary orange
+- [x] "Open in Files" knap for hver fil
 
 ### FASE 3: FOLDER STRUCTURE VIEW
 

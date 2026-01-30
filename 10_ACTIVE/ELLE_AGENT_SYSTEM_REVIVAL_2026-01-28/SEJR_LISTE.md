@@ -119,15 +119,15 @@ AGENTER SOVER (5 min timeout)
 - [x] **A2.** Opret fungerende `.venv` med alle deps installeret
 - [x] **A3.** Opret `pyproject.toml` for proper pakke
 - [x] **A4.** Opret `__init__.py` i alle mapper
-- [ ] **A5.** Test at top-5 kernefiler kan importeres
+- [x] **A5.** Test at top-5 kernefiler kan importeres (4/5 OK: event_bus, persistent_memory, ai_backend_rotator, hybrid_worker. base_agent FAILS: missing local module `shared_embedder` -- exists in archive/ but not in agents/)
 
 ### B. CONFIG I STEDET FOR HARDCODED PATHS
 - [x] **B1.** Opret `config.yaml` med alle paths samlet
-- [ ] **B2.** Erstat hardcoded i admiral_genesis.py
-- [ ] **B3.** Erstat hardcoded i organic_spawner.py
-- [ ] **B4.** Erstat hardcoded i hybrid_worker.py
-- [ ] **B5.** Erstat hardcoded i admiral_hybrid_organic.py
-- [ ] **B6.** Test config.yaml læses korrekt
+- [x] **B2.** Erstat hardcoded i admiral_genesis.py
+- [x] **B3.** Erstat hardcoded i organic_spawner.py
+- [x] **B4.** Erstat hardcoded i hybrid_worker.py
+- [x] **B5.** Erstat hardcoded i admiral_hybrid_organic.py
+- [x] **B6.** Test config.yaml læses korrekt
 
 ### C. IMPORTS OG PAKKESTRUKTUR
 - [ ] **C1.** base_agent importerbar af alle

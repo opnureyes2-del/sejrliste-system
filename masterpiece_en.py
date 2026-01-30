@@ -1677,6 +1677,106 @@ button.action-new {
     background: rgba(168, 85, 247, 0.20);
     border-color: rgba(168, 85, 247, 0.30);
 }
+
+/* === INTRO I-FILE CATEGORY COLOR ROWS (FASE 2) === */
+.intro-i-row-vision {
+    border-left: 3px solid #a855f7;
+}
+.intro-i-row-vision:hover {
+    background: rgba(168, 85, 247, 0.08);
+    border-color: rgba(168, 85, 247, 0.15);
+    border-left: 3px solid #a855f7;
+}
+
+.intro-i-row-orders {
+    border-left: 3px solid #ef4444;
+}
+.intro-i-row-orders:hover {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.15);
+    border-left: 3px solid #ef4444;
+}
+
+.intro-i-row-hybrids {
+    border-left: 3px solid #10b981;
+}
+.intro-i-row-hybrids:hover {
+    background: rgba(16, 185, 129, 0.08);
+    border-color: rgba(16, 185, 129, 0.15);
+    border-left: 3px solid #10b981;
+}
+
+.intro-i-row-operations {
+    border-left: 3px solid #f59e0b;
+}
+.intro-i-row-operations:hover {
+    background: rgba(245, 158, 11, 0.08);
+    border-color: rgba(245, 158, 11, 0.15);
+    border-left: 3px solid #f59e0b;
+}
+
+.intro-i-row-technical {
+    border-left: 3px solid #6366f1;
+}
+.intro-i-row-technical:hover {
+    background: rgba(99, 102, 241, 0.08);
+    border-color: rgba(99, 102, 241, 0.15);
+    border-left: 3px solid #6366f1;
+}
+
+.intro-i-row-ecosystem {
+    border-left: 3px solid #00FF88;
+}
+.intro-i-row-ecosystem:hover {
+    background: rgba(0, 255, 136, 0.08);
+    border-color: rgba(0, 255, 136, 0.15);
+    border-left: 3px solid #00FF88;
+}
+
+.intro-i-row-prevention {
+    border-left: 3px solid #f97316;
+}
+.intro-i-row-prevention:hover {
+    background: rgba(249, 115, 22, 0.08);
+    border-color: rgba(249, 115, 22, 0.15);
+    border-left: 3px solid #f97316;
+}
+
+.intro-i-row-sejrliste {
+    border-left: 3px solid #ff9f43;
+}
+.intro-i-row-sejrliste:hover {
+    background: rgba(255, 159, 67, 0.08);
+    border-color: rgba(255, 159, 67, 0.15);
+    border-left: 3px solid #ff9f43;
+}
+
+.intro-i-status-ok {
+    background: rgba(0, 255, 136, 0.12);
+    color: #4ade80;
+}
+
+.intro-i-status-pending {
+    background: rgba(245, 158, 11, 0.12);
+    color: #fcd34d;
+}
+
+.intro-i-open-files-btn {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    margin-left: 4px;
+}
+
+.intro-i-open-files-btn:hover {
+    background: rgba(255, 255, 255, 0.10);
+    color: rgba(255, 255, 255, 0.80);
+    border-color: rgba(255, 255, 255, 0.18);
+}
 """
 
 def load_custom_css():
@@ -7119,10 +7219,10 @@ class SyncDashboardView(Gtk.Box):
 # INTRO SYSTEM VIEW — FASE 1 SIDEBAR INTEGRATION
 #
 
-# I-file color mapping (chakra-aligned)
+# I-file color mapping (chakra-aligned, FASE 2 spec)
 INTRO_I_FILE_COLORS = {
     1: "#a855f7",   # I1 Vision — Divine violet
-    2: "#f87171",   # I2 Orders — Error red
+    2: "#ef4444",   # I2 Orders — Error red
     3: "#10b981",   # I3 Hybrids — Heart emerald
     4: "#f59e0b",   # I4 Operations — Wisdom gold
     5: "#f59e0b",   # I5 Operations — Wisdom gold
@@ -7131,8 +7231,24 @@ INTRO_I_FILE_COLORS = {
     8: "#6366f1",   # I8 Technical — Intuition indigo
     9: "#6366f1",   # I9 Technical — Intuition indigo
     10: "#00FF88",  # I10 Ecosystem — Success green
-    11: "#fbbf24",  # I11 Prevention — Warning orange
-    12: "#F97316",  # I12 Sejrliste — Primary orange
+    11: "#f97316",  # I11 Prevention — Warning orange
+    12: "#ff9f43",  # I12 Sejrliste — Primary orange
+}
+
+# I-file category name mapping for CSS classes
+INTRO_I_FILE_CATEGORY_NAMES = {
+    1: "vision",       # I1 — Divine violet
+    2: "orders",       # I2 — Error red
+    3: "hybrids",      # I3 — Heart emerald
+    4: "operations",   # I4 — Wisdom gold
+    5: "operations",   # I5 — Wisdom gold
+    6: "technical",    # I6 — Intuition indigo
+    7: "technical",    # I7 — Intuition indigo
+    8: "technical",    # I8 — Intuition indigo
+    9: "technical",    # I9 — Intuition indigo
+    10: "ecosystem",   # I10 — Success green
+    11: "prevention",  # I11 — Warning orange
+    12: "sejrliste",   # I12 — Primary orange
 }
 
 # Sidebar item definitions for INTRO categories
@@ -7144,6 +7260,200 @@ INTRO_SIDEBAR_ITEMS = [
     ("structure", "Folder Structure", "Governance + Rules", "folder-symbolic"),
     ("health", "System Health", "Live verification", "emblem-ok-symbolic"),
 ]
+
+
+class IntroIFilesView(Gtk.Box):
+    """FASE 2: Full detail view for I1-I12 System Intelligence files.
+
+    Displays all I-files with:
+    - I-number + title (from file header via intro_integration)
+    - Status badge ([OK] or [PENDING])
+    - Size + line count
+    - Last modified date
+    - Click to open file in editor
+    - Category colors per I-file (vision, orders, hybrids, etc.)
+    - "Open in Files" button for each file
+    """
+
+    def __init__(self):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+
+        # Main scrollable area
+        scroll = Gtk.ScrolledWindow()
+        scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        scroll.set_vexpand(True)
+
+        self._container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=24)
+        self._container.set_margin_start(40)
+        self._container.set_margin_end(40)
+        self._container.set_margin_top(32)
+        self._container.set_margin_bottom(40)
+
+        scroll.set_child(self._container)
+        self.append(scroll)
+
+        self._build()
+
+    def _build(self):
+        """Build the complete I-files detail view."""
+        # Header: "System Intelligence -- I1-I12"
+        header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        title = Gtk.Label(label="System Intelligence \u2014 I1-I12")
+        title.add_css_class("intro-view-header")
+        title.set_xalign(0)
+        header_box.append(title)
+
+        subtitle = Gtk.Label(
+            label="Core system intelligence files: vision, orders, briefings, environments, compliance, and more"
+        )
+        subtitle.add_css_class("intro-view-subtitle")
+        subtitle.set_xalign(0)
+        subtitle.set_wrap(True)
+        header_box.append(subtitle)
+        self._container.append(header_box)
+
+        # Separator
+        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        sep.set_margin_top(4)
+        sep.set_margin_bottom(4)
+        self._container.append(sep)
+
+        # Load I-files from real filesystem
+        i_files = intro_integration.get_intro_i_files()
+
+        if not i_files:
+            empty = Adw.StatusPage()
+            empty.set_title("No I-Files Found")
+            empty.set_description(f"Could not find I-files in {intro_integration.INTRO_PATH}")
+            empty.set_icon_name("dialog-warning-symbolic")
+            self._container.append(empty)
+            return
+
+        # Summary bar
+        total_lines = sum(f.lines for f in i_files)
+        total_size = sum(f.size for f in i_files)
+        size_kb = total_size / 1024
+        complete_count = sum(
+            1 for f in i_files
+            if f.status in ("COMPLETE", "VERIFIED", "ALL_WORKING", "OPERATIONAL", "ESTABLISHED", "STABLE")
+        )
+        summary_text = (
+            f"{len(i_files)} files  |  {total_lines:,} lines  |  {size_kb:.0f} KB total  |  "
+            f"{complete_count} OK / {len(i_files) - complete_count} pending"
+        )
+        summary = Gtk.Label(label=summary_text)
+        summary.add_css_class("caption")
+        summary.add_css_class("dim-label")
+        summary.set_xalign(0)
+        self._container.append(summary)
+
+        # File rows
+        files_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+
+        for ifile in i_files:
+            row = self._build_i_file_row(ifile)
+            files_box.append(row)
+
+        self._container.append(files_box)
+
+    def _build_i_file_row(self, ifile):
+        """Build a single I-file row with category color, status badge, meta, and buttons."""
+        num = ifile.category_number or 0
+        color = INTRO_I_FILE_COLORS.get(num, "#a855f7")
+        cat_name = INTRO_I_FILE_CATEGORY_NAMES.get(num, "vision")
+        i_title = intro_integration.get_i_file_title(num)
+        i_desc = intro_integration.get_i_file_description(num)
+
+        # Row container with category color CSS class
+        row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        row.add_css_class("intro-file-row")
+        row.add_css_class(f"intro-i-row-{cat_name}")
+
+        # I-number with color (Pango markup for foreground)
+        number_label = Gtk.Label(label=f"I{num}")
+        number_label.add_css_class("intro-file-number")
+        number_label.set_markup(f'<span foreground="{color}" weight="ultrabold">I{num}</span>')
+        number_label.set_valign(Gtk.Align.CENTER)
+        row.append(number_label)
+
+        # Title, description, and meta info
+        info_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+        info_box.set_hexpand(True)
+
+        title = Gtk.Label(label=i_title)
+        title.add_css_class("intro-file-title")
+        title.set_xalign(0)
+        title.set_ellipsize(Pango.EllipsizeMode.END)
+        info_box.append(title)
+
+        # Description line
+        if i_desc:
+            desc = Gtk.Label(label=i_desc)
+            desc.add_css_class("intro-file-meta")
+            desc.set_xalign(0)
+            desc.set_ellipsize(Pango.EllipsizeMode.END)
+            info_box.append(desc)
+
+        # Meta: size + lines + date
+        mod_date = ifile.last_modified[:10] if ifile.last_modified else "?"
+        meta_text = f"{ifile.size_human}  |  {ifile.lines:,} lines  |  {mod_date}"
+        meta = Gtk.Label(label=meta_text)
+        meta.add_css_class("intro-file-meta")
+        meta.set_xalign(0)
+        info_box.append(meta)
+
+        row.append(info_box)
+
+        # Status badge: [OK] or [PENDING]
+        is_ok = ifile.status in ("COMPLETE", "VERIFIED", "ALL_WORKING", "OPERATIONAL", "ESTABLISHED", "STABLE")
+        badge_text = "[OK]" if is_ok else "[PENDING]"
+        status_label = Gtk.Label(label=badge_text)
+        status_label.add_css_class("intro-status-badge")
+        if is_ok:
+            status_label.add_css_class("intro-i-status-ok")
+        else:
+            status_label.add_css_class("intro-i-status-pending")
+        status_label.set_valign(Gtk.Align.CENTER)
+        status_label.set_tooltip_text(f"Status: {ifile.status}")
+        row.append(status_label)
+
+        # Buttons box
+        btn_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=4)
+        btn_box.set_valign(Gtk.Align.CENTER)
+
+        # "Open" button (opens in default text editor)
+        open_btn = Gtk.Button(label="Open")
+        open_btn.add_css_class("intro-open-btn")
+        file_path = str(ifile.path)
+        open_btn.connect("clicked", lambda b, p=file_path: self._open_file(p))
+        open_btn.set_tooltip_text("Open in default text editor")
+        btn_box.append(open_btn)
+
+        # "Open in Files" button (opens containing folder in file manager)
+        files_btn = Gtk.Button(label="Files")
+        files_btn.add_css_class("intro-i-open-files-btn")
+        folder_path = str(ifile.path.parent)
+        files_btn.connect("clicked", lambda b, p=folder_path: self._open_folder(p))
+        files_btn.set_tooltip_text("Open in Files (file manager)")
+        btn_box.append(files_btn)
+
+        row.append(btn_box)
+
+        return row
+
+    def _open_file(self, path: str):
+        """Open a file in the default system editor."""
+        try:
+            subprocess.Popen(["xdg-open", path])
+        except Exception as e:
+            print(f"Could not open file: {e}")
+
+    def _open_folder(self, path: str):
+        """Open a folder in the system file manager."""
+        try:
+            subprocess.Popen(["xdg-open", path])
+        except Exception as e:
+            print(f"Could not open folder: {e}")
 
 
 class IntroSystemView(Gtk.Box):
@@ -7201,124 +7511,26 @@ class IntroSystemView(Gtk.Box):
     # -----------------------------------------------------------------
 
     def _build_i_files_view(self):
-        """Build the I1-I12 System Intelligence file listing."""
-        # Header
-        header_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
-        title = Gtk.Label(label="System Intelligence -- I1-I12")
-        title.add_css_class("intro-view-header")
-        title.set_xalign(0)
-        header_box.append(title)
+        """Build the I1-I12 System Intelligence file listing.
 
-        subtitle = Gtk.Label(label="Core system intelligence files: vision, orders, briefings, environments, compliance, and more")
-        subtitle.add_css_class("intro-view-subtitle")
-        subtitle.set_xalign(0)
-        subtitle.set_wrap(True)
-        header_box.append(subtitle)
-        self._container.append(header_box)
-
-        # Separator
-        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
-        sep.set_margin_top(4)
-        sep.set_margin_bottom(4)
-        self._container.append(sep)
-
-        # I-files list
-        i_files = intro_integration.get_intro_i_files()
-
-        if not i_files:
-            empty = Adw.StatusPage()
-            empty.set_title("No I-Files Found")
-            empty.set_description(f"Could not find I-files in {intro_integration.INTRO_PATH}")
-            empty.set_icon_name("dialog-warning-symbolic")
-            self._container.append(empty)
-            return
-
-        # Summary bar
-        total_lines = sum(f.lines for f in i_files)
-        total_size = sum(f.size for f in i_files)
-        size_kb = total_size / 1024
-        summary = Gtk.Label(label=f"{len(i_files)} files  |  {total_lines:,} lines  |  {size_kb:.0f} KB total")
-        summary.add_css_class("caption")
-        summary.add_css_class("dim-label")
-        summary.set_xalign(0)
-        self._container.append(summary)
-
-        # File rows
-        files_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-
-        for ifile in i_files:
-            row = self._build_i_file_row(ifile)
-            files_box.append(row)
-
-        self._container.append(files_box)
-
-    def _build_i_file_row(self, ifile):
-        """Build a single I-file row widget."""
-        row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
-        row.add_css_class("intro-file-row")
-
-        # I-number with color
-        num = ifile.category_number or 0
-        color = INTRO_I_FILE_COLORS.get(num, "#a855f7")
-        i_title = intro_integration.get_i_file_title(num)
-        i_desc = intro_integration.get_i_file_description(num)
-
-        number_label = Gtk.Label(label=f"I{num}")
-        number_label.add_css_class("intro-file-number")
-        # Apply color via inline CSS markup
-        number_label.set_markup(f'<span foreground="{color}" weight="ultrabold">I{num}</span>')
-        number_label.set_valign(Gtk.Align.CENTER)
-        row.append(number_label)
-
-        # Title and meta info
-        info_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
-        info_box.set_hexpand(True)
-
-        title = Gtk.Label(label=i_title)
-        title.add_css_class("intro-file-title")
-        title.set_xalign(0)
-        title.set_ellipsize(Pango.EllipsizeMode.END)
-        info_box.append(title)
-
-        # Description
-        if i_desc:
-            desc = Gtk.Label(label=i_desc)
-            desc.add_css_class("intro-file-meta")
-            desc.set_xalign(0)
-            desc.set_ellipsize(Pango.EllipsizeMode.END)
-            info_box.append(desc)
-
-        # Meta: size + lines + date
-        mod_date = ifile.last_modified[:10] if ifile.last_modified else "?"
-        meta_text = f"{ifile.size_human}  |  {ifile.lines:,} lines  |  {mod_date}"
-        meta = Gtk.Label(label=meta_text)
-        meta.add_css_class("intro-file-meta")
-        meta.set_xalign(0)
-        info_box.append(meta)
-
-        row.append(info_box)
-
-        # Status badge
-        status_label = Gtk.Label(label=ifile.status)
-        status_label.add_css_class("intro-status-badge")
-        if ifile.status in ("COMPLETE", "VERIFIED", "ALL_WORKING", "OPERATIONAL", "ESTABLISHED", "STABLE"):
-            status_label.add_css_class("intro-status-complete")
-        elif ifile.status in ("ACTIVE", "IN_PROGRESS"):
-            status_label.add_css_class("intro-status-active")
-        else:
-            status_label.add_css_class("intro-status-unknown")
-        status_label.set_valign(Gtk.Align.CENTER)
-        row.append(status_label)
-
-        # Open button
-        open_btn = Gtk.Button(label="Open")
-        open_btn.add_css_class("intro-open-btn")
-        open_btn.set_valign(Gtk.Align.CENTER)
-        file_path = str(ifile.path)
-        open_btn.connect("clicked", lambda b, p=file_path: self._open_file(p))
-        row.append(open_btn)
-
-        return row
+        Delegates to IntroIFilesView (FASE 2 widget) and embeds it
+        directly inside the IntroSystemView container.
+        """
+        i_view = IntroIFilesView()
+        # Extract the inner container content from IntroIFilesView and
+        # add each child to our own container for consistent scrolling.
+        # IntroIFilesView builds into its own _container, so we read
+        # children from there.
+        source = i_view._container
+        children = []
+        child = source.get_first_child()
+        while child:
+            next_child = child.get_next_sibling()
+            children.append(child)
+            child = next_child
+        for ch in children:
+            source.remove(ch)
+            self._container.append(ch)
 
     # -----------------------------------------------------------------
     # CATEGORY VIEW (B, C, D files)
