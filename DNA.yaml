@@ -218,18 +218,27 @@ status:
 
 files:
   root:
-    - "ARBEJDSFORHOLD.md - KOMPLET MODEL VEJLEDNING (læs først!)"
-    - "SYSTEM_REGLER.md - Obligatoriske AI regler"
-    - "ADMIRAL_KONKURRENCE.md - Score system dokumentation"
-    - "LOG_FORMAT.md - Log format specifikation (ADMIRAL STANDARD)"
-    - "PLAN_STATUS.md - Plan vs implementering oversigt"
-    - "README.md - Overblik (v2.0.0)"
-    - "QUICK_START.md - 30-sekunders guide"
-    - "MANUAL.md - Komplet manual (390 linjer)"
-    - "ENFORCEMENT_RULES.md - 3-pass forklaring"
+    - "README.md - Overblik (v3.0.0)"
     - "DNA.yaml - Denne fil"
-    - "view.py - Terminal viewer (simpel)"
+    - "enforcement_engine.py - 3-pass enforcement"
+    - "intro_integration.py - INTRO integration"
+    - "masterpiece_en.py - GTK4 desktop app (English)"
+    - "masterpiece.py - GTK4 desktop app (Danish)"
+    - "web_app.py - Streamlit web app (Danish)"
+    - "web_app_en.py - Streamlit web app (English)"
+    - "start-web.sh - Systemd startup script"
     - "app/sejr_app.py - TUI app (Textual)"
+  docs:
+    - "docs/ARBEJDSFORHOLD.md - KOMPLET MODEL VEJLEDNING"
+    - "docs/MANUAL.md - Komplet manual (390 linjer)"
+    - "docs/ARKITEKTUR.md - System arkitektur"
+    - "docs/LOG_FORMAT.md - Log format specifikation (ADMIRAL STANDARD)"
+    - "docs/ADMIRAL.md - Admiral standard"
+    - "docs/EKSEMPLER.md - Eksempler"
+    - "docs/SCRIPT_REFERENCE.md - Script reference"
+    - "docs/MODEL_ONBOARDING.md - Model onboarding"
+    - "docs/PREVENTION_RULES.md - Forebyggelsesregler"
+    - "docs/INCOMPLETE_CHECK.md - Ufuldendt-check"
 
   templates:
     - "00_TEMPLATES/SEJR_TEMPLATE.md - Master template med 3-pass"

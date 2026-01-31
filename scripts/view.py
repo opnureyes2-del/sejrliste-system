@@ -10,46 +10,27 @@ Brug: python view.py
 """
 
 import os
+import sys
 import json
 import re
 from pathlib import Path
 from datetime import datetime
 
-# Paths
+# Import centralized YAML parser
+sys.path.insert(0, str(Path(__file__).parent))
+from yaml_utils import parse_yaml_simple
+
+# Paths — project root is one level up from scripts/
 SCRIPT_DIR = Path(__file__).parent
-ACTIVE_DIR = SCRIPT_DIR / "10_ACTIVE"
-CURRENT_DIR = SCRIPT_DIR / "_CURRENT"
+PROJECT_DIR = SCRIPT_DIR.parent
+ACTIVE_DIR = PROJECT_DIR / "10_ACTIVE"
+CURRENT_DIR = PROJECT_DIR / "_CURRENT"
 
 def clear_screen():
     """Clear terminal screen."""
     os.system('clear' if os.name != 'nt' else 'cls')
 
-def parse_yaml_simple(filepath: Path) -> dict:
-    """Parse simple YAML without PyYAML dependency."""
-    if not filepath.exists():
-        return {}
-
-    result = {}
-    content = filepath.read_text(encoding="utf-8")
-
-    for line in content.split("\n"):
-        if ":" in line and not line.strip().startswith("#"):
-            key, value = line.split(":", 1)
-            key = key.strip()
-            value = value.strip().strip('"').strip("'")
-
-            # Convert booleans
-            if value.lower() == "true":
-                value = True
-            elif value.lower() == "false":
-                value = False
-            # Convert numbers
-            elif value.isdigit():
-                value = int(value)
-
-            result[key] = value
-
-    return result
+# parse_yaml_simple imported from yaml_utils (centralized PyYAML parser)
 
 def parse_checkboxes(filepath: Path) -> tuple:
     """Parse checkboxes from SEJR_LISTE.md. Returns (done, total)."""
@@ -255,7 +236,7 @@ def main():
     print(" python scripts/generate_sejr.py --name \"Navn\"  # Ny sejr")
     print(" python scripts/auto_verify.py --all            # Verificer")
     print(" python scripts/auto_archive.py --list          # Se færdige")
-    print(" python view.py                                 # Denne visning")
+    print(" python scripts/view.py                         # Denne visning")
     print("-" * 60)
     print()
 

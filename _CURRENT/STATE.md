@@ -1,6 +1,6 @@
 # CURRENT STATE - Hvor Er Vi NU?
 
-**Opdateret:** 2026-01-31 15:18
+**Opdateret:** 2026-01-31 19:07
 
 ---
 

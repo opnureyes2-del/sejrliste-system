@@ -207,50 +207,49 @@ NY SEJR starter med VIDEN fra ALLE tidligere sejre
 
 ---
 
-## ALLE SCRIPTS (25 stk)
+## SCRIPTS (scripts/)
 
-### Kvalitet og Laering (7 scripts)
+### Kvalitet og Laering (6 scripts)
 | Script | Funktion |
 |--------|----------|
 | `auto_verify.py` | 3-pass verifikation + blocker-check |
 | `auto_archive.py` | Arkivering (blokeret til done) + trigger laering |
 | `auto_learn.py` | Pattern-ekstraktion fra alle sejre |
-| `auto_optimize.py` | Template-forbedring baseret paa patterns |
 | `auto_track.py` | Live state tracking til _CURRENT/ |
-| `auto_live_status.py` | LIVE_STATUS.md dashboard (--watch mode) |
 | `auto_predict.py` | Forudsigelser for naeste skridt |
+| `auto_health_check.py` | Permanent systemintegritetsvagt (41 checks, daglig cron) |
 
-### AI Integration (6 scripts)
+### AI Integration (3 scripts)
 | Script | Funktion |
 |--------|----------|
-| `ai_assistant.py` | Unified task router (Opus/Sonnet/Haiku/Ollama) |
-| `model_router.py` | Intelligent model-valg baseret paa opgavetype |
 | `token_tools.py` | Token-taelling + cost-estimering |
-| `hybrid_generate.py` | Ollama draft + Claude finish (sparer 70% tokens) |
-| `dna_model_enforcer.py` | Verificer at rette model bruges til rette DNA-lag |
-| `automation_pipeline.py` | Syntax → Lint → Security → Rapport |
+| `automation_pipeline.py` | Syntax → Lint → Security → Rapport (pre-commit) |
+| `admiral_tracker.py` | AI model score leaderboard |
 
-### Generation og Kontekst (4 scripts)
+### Generation og Kontekst (3 scripts)
 | Script | Funktion |
 |--------|----------|
-| `generate_sejr.py` | Opret ny sejr (5 filer + pattern injection) |
+| `generate_sejr.py` | Opret ny sejr (5 filer + atomisk + pattern injection) |
 | `build_claude_context.py` | Dynamisk CLAUDE.md builder |
 | `update_claude_focus.py` | Opdater fokus-state |
-| `build_knowledge_base.py` | ChromaDB indeksering af al dokumentation |
 
-### Dashboard og Monitoring (3 scripts)
+### Dashboard og Monitoring (4 scripts)
 | Script | Funktion |
 |--------|----------|
 | `sejrliste_status.sh` | System status overblik (symlinked til `sejrliste`) |
 | `sejr_dashboard.sh` | Terminal enforcement dashboard |
 | `show_phone_url.sh` | QR kode til telefon-adgang |
+| `view.py` | Terminal viewer (simpel sejr-status) |
 
-### Utility (3 scripts)
+### Cron og Utility (5 scripts)
 | Script | Funktion |
 |--------|----------|
-| `admiral_tracker.py` | AI model score leaderboard |
-| `timestamp_utils.py` | Timestamp-formattering |
+| `cron_health_check.sh` | Cron wrapper — daglig health check kl 07:55 |
+| `cron_auto_learn.sh` | Cron wrapper — daglig laering kl 08:00 |
+| `sejr-terminal.sh` | Terminal launcher |
+| `sejr-watch.sh` | File watcher |
 | `generate_icon_sizes.py` | Desktop app ikon-generering |
+| `yaml_utils.py` | Delt YAML parser modul (PyYAML) |
 
 ---
 
@@ -316,15 +315,19 @@ sejrliste systemet/
 |-- start-web.sh                # Wrapper for systemd service
 |-- enforcement_engine.py       # Kvalitets-enforcement
 |-- intro_integration.py        # INTRO folder integration
+|-- sejr                        # Global launcher (dashboard)
+|-- DNA.yaml                    # System DNA konfiguration (7 lag)
 |
 |-- app/                        # TUI terminal app
 |   |-- sejr_app.py             # Hoved TUI (Textual, Steam-style)
+|   |-- model_router.py         # AI model routing (ModelType enum)
 |   |-- widgets/                # UI komponenter
-|   |-- integrations/           # Git, INTRO, context sync
+|   |-- models/                 # Model handler
 |   |-- utils/                  # Utilities
-|   +-- watcher.py              # Filesystem overvagning
+|   +-- tests/                  # Test suite (77 tests)
 |
-|-- scripts/                    # 25 automation scripts
+|-- scripts/                    # 22 automation scripts + shell scripts
+|-- docs/                       # 20 dokumentations-filer (DK + EN)
 |
 |-- pages/                      # Streamlit web pages
 |   |-- 1_Aktiv_Sejr.py
@@ -337,7 +340,9 @@ sejrliste systemet/
 |-- 10_ACTIVE/                  # Aktive sejre (arbejd her)
 |-- 90_ARCHIVE/                 # Arkiverede sejre (31 stk, 100% Grand Admiral)
 |-- _CURRENT/                   # System state (live status, patterns, leaderboard)
-+-- assets/                     # Ikoner og grafik
+|-- DROP_HER/                   # Drop zone (drag-and-drop sejr-oprettelse)
+|-- assets/                     # Ikoner og grafik
++-- _unused/                    # Inaktiv kode (gitignored)
 ```
 
 ---
@@ -350,7 +355,7 @@ sejrliste systemet/
 | Gennemsnitlig score | 29.9/30 (99.7%) |
 | Grand Admiral rate | 100% |
 | Laerte patterns | 52 |
-| Scripts | 25 |
+| Scripts | 22 (aktive) |
 | Brugerflader | 3 (GTK4 + Web + TUI) |
 | Adgangsmetoder | 6 |
 | DNA lag | 7 |
@@ -358,22 +363,23 @@ sejrliste systemet/
 
 ---
 
-## DOKUMENTATION
+## DOKUMENTATION (docs/)
 
 | Fil | Indhold |
 |-----|---------|
-| `README.md` | Denne fil — komplet overblik |
-| `MANUAL.md` | Fuld dokumentation (3-pass + score) |
-| `ADMIRAL.md` | Hvad er en Admiral? (5 kvaliteter) |
-| `MODEL_ONBOARDING.md` | AI onboarding (laes foerst som ny model) |
-| `SCRIPT_REFERENCE.md` | Alle scripts dokumenteret |
-| `EKSEMPLER.md` | 10+ konkrete eksempler |
-| `ARBEJDSFORHOLD.md` | Komplet vejledning (AI regler) |
-| `ARKITEKTUR.md` | System arkitektur |
-| `LOG_FORMAT.md` | Log format specifikation |
-| `PREVENTION_RULES.md` | Forebyggelsesregler |
+| `README.md` | Denne fil — komplet overblik (root) |
+| `docs/MANUAL.md` | Fuld dokumentation (3-pass + score) |
+| `docs/ADMIRAL.md` | Hvad er en Admiral? (5 kvaliteter) |
+| `docs/MODEL_ONBOARDING.md` | AI onboarding (laes foerst som ny model) |
+| `docs/SCRIPT_REFERENCE.md` | Alle scripts dokumenteret |
+| `docs/EKSEMPLER.md` | 10+ konkrete eksempler |
+| `docs/ARBEJDSFORHOLD.md` | Komplet vejledning (AI regler) |
+| `docs/ARKITEKTUR.md` | System arkitektur |
+| `docs/LOG_FORMAT.md` | Log format specifikation |
+| `docs/PREVENTION_RULES.md` | Forebyggelsesregler |
+| `docs/INCOMPLETE_CHECK.md` | Ufuldendt-check |
 
-Alle dokumenter findes paa baade dansk og engelsk (*_EN.md).
+Alle dokumenter findes paa baade dansk og engelsk (*_EN.md) i `docs/` mappen.
 
 ---
 

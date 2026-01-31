@@ -35,6 +35,9 @@ Thumbs.db
 !10_ACTIVE/.gitkeep
 !90_ARCHIVE/.gitkeep
 
+# Sync state
+.sync_state.json
+
 # Unused code + virtual environments
 _unused/
 venv/
