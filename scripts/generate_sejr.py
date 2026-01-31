@@ -19,6 +19,85 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
+# ============================================================================
+# PATTERN APPLICATION (DNA Layer 7 - SELF-OPTIMIZING feedback loop)
+# ============================================================================
+
+def load_learned_patterns(system_path: Path, max_patterns: int = 5) -> list:
+    """Load top patterns from PATTERNS.json, sorted by confidence.
+
+    This CLOSES the feedback loop:
+    auto_learn.py WRITES patterns → generate_sejr.py READS them → new sejr benefits
+    """
+    patterns_file = system_path / "_CURRENT" / "PATTERNS.json"
+    if not patterns_file.exists():
+        return []
+
+    try:
+        data = json.loads(patterns_file.read_text(encoding="utf-8"))
+        patterns = data.get("learned_patterns", [])
+        # Sort by confidence (highest first), then by least-applied (fairness)
+        patterns.sort(key=lambda p: (-p.get("confidence", 0), p.get("applied_count", 0)))
+        return patterns[:max_patterns]
+    except (json.JSONDecodeError, KeyError):
+        return []
+
+
+def mark_patterns_applied(system_path: Path, applied_indices: list):
+    """Increment applied_count for patterns that were injected into a new sejr."""
+    patterns_file = system_path / "_CURRENT" / "PATTERNS.json"
+    if not patterns_file.exists():
+        return
+
+    try:
+        data = json.loads(patterns_file.read_text(encoding="utf-8"))
+        patterns = data.get("learned_patterns", [])
+        now = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+        for idx in applied_indices:
+            if 0 <= idx < len(patterns):
+                patterns[idx]["applied_count"] = patterns[idx].get("applied_count", 0) + 1
+                patterns[idx]["last_applied"] = now
+
+        data["learned_patterns"] = patterns
+        patterns_file.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+    except (json.JSONDecodeError, KeyError):
+        pass
+
+
+def format_patterns_for_claude(patterns: list) -> str:
+    """Format learned patterns as wisdom for CLAUDE.md."""
+    if not patterns:
+        return ""
+
+    lines = [
+        "",
+        "## LEARNED WISDOM (fra tidligere sejre)",
+        "",
+        "> Disse patterns er automatisk hentet fra PATTERNS.json.",
+        "> Systemet laerer af HVER afsluttet sejr og injicerer visdommen her.",
+        "",
+    ]
+
+    for i, p in enumerate(patterns, 1):
+        pattern = p.get("pattern", "")
+        prevention = p.get("prevention", "")
+        optimization = p.get("optimization", "")
+        confidence = p.get("confidence", 0)
+
+        lines.append(f"### Pattern {i} (confidence: {confidence:.0%})")
+        lines.append(f"**Observation:** {pattern}")
+        if prevention:
+            lines.append(f"**Prevention:** {prevention}")
+        if optimization:
+            lines.append(f"**Optimization:** {optimization}")
+        lines.append("")
+
+    lines.append("---")
+    lines.append("")
+    return "\n".join(lines)
+
+
 def get_timestamp():
     """Get ISO 8601 timestamp with timezone."""
     return datetime.now(timezone.utc).astimezone().isoformat()
@@ -116,7 +195,31 @@ def generate_sejr(name: str, system_path: Path, goal: str = None, tech: str = No
     # ═══════════════════════════════════════════════════════════
 
     claude_file = generate_claude_md(sejr_path, name)
-    print(f"[OK] File 2/4: {claude_file.name}")
+
+    # FEEDBACK LOOP: Inject learned patterns into CLAUDE.md
+    patterns = load_learned_patterns(system_path)
+    if patterns:
+        wisdom = format_patterns_for_claude(patterns)
+        existing = claude_file.read_text(encoding="utf-8")
+        claude_file.write_text(existing + wisdom, encoding="utf-8")
+        # Track which patterns were applied (by index in the full list)
+        patterns_file = system_path / "_CURRENT" / "PATTERNS.json"
+        if patterns_file.exists():
+            try:
+                all_data = json.loads(patterns_file.read_text(encoding="utf-8"))
+                all_patterns = all_data.get("learned_patterns", [])
+                applied_indices = []
+                for p in patterns:
+                    for idx, ap in enumerate(all_patterns):
+                        if ap.get("pattern") == p.get("pattern"):
+                            applied_indices.append(idx)
+                            break
+                mark_patterns_applied(system_path, applied_indices)
+            except (json.JSONDecodeError, KeyError):
+                pass
+        print(f"[OK] File 2/4: {claude_file.name} (+{len(patterns)} learned patterns)")
+    else:
+        print(f"[OK] File 2/4: {claude_file.name}")
 
     # ═══════════════════════════════════════════════════════════
     # FILE 3: STATUS.yaml (UNIFIED - erstatter 3 filer)

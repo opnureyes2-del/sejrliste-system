@@ -17,6 +17,7 @@ Kan KUN arkivere når:
 import argparse
 import shutil
 import re
+import subprocess
 from pathlib import Path
 from datetime import datetime
 
@@ -677,6 +678,27 @@ def archive_sejr(sejr_name: str, system_path: Path, force: bool = False):
     # Update archive index
     print(f"\n Updating archive index...")
     update_archive_index(system_path)
+
+    # FEEDBACK LOOP: Trigger auto_learn after archive to update patterns
+    learn_script = system_path / "scripts" / "auto_learn.py"
+    if learn_script.exists():
+        print(f"\n Learning from completed sejr...")
+        try:
+            result = subprocess.run(
+                ["python3", str(learn_script)],
+                cwd=str(system_path),
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            if result.returncode == 0:
+                print(f"[OK] Patterns updated (auto_learn.py)")
+            else:
+                print(f"[WARN] auto_learn.py exit code {result.returncode}")
+        except subprocess.TimeoutExpired:
+            print(f"[WARN] auto_learn.py timed out (30s)")
+        except Exception as e:
+            print(f"[WARN] auto_learn.py error: {e}")
 
     return True
 

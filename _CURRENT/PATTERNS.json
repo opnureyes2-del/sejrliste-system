@@ -1,8 +1,8 @@
 {
   "system": {
     "version": "1.0.0",
-    "last_learned": "2026-01-28 00:55",
-    "total_patterns": 48
+    "last_learned": "2026-01-31 15:44",
+    "total_patterns": 52
   },
   "learned_patterns": [
     {
@@ -483,6 +483,46 @@
       "time_saved_total": "0 min",
       "confidence": 0.9,
       "first_seen": "2026-01-28",
+      "last_applied": null
+    },
+    {
+      "pattern": "SUCCESS RATE: 30/31 sejr opnår GRAND ADMIRAL (96%)",
+      "prevention": "Bevar 3-pass system med obligatorisk review",
+      "optimization": "Fokusér på Pass 1 kvalitet for at reducere Pass 2-3 arbejde",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.98,
+      "first_seen": "2026-01-31",
+      "last_applied": null
+    },
+    {
+      "pattern": "FREQUENT ACTION: sejr_created (23x across sejr)",
+      "prevention": "Consider automating sejr_created",
+      "optimization": "Create script/hotkey for sejr_created",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.9,
+      "first_seen": "2026-01-31",
+      "last_applied": null
+    },
+    {
+      "pattern": "FREQUENT ACTION: created (8x across sejr)",
+      "prevention": "Consider automating created",
+      "optimization": "Create script/hotkey for created",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.4,
+      "first_seen": "2026-01-31",
+      "last_applied": null
+    },
+    {
+      "pattern": "FREQUENT ACTION: scope (7x across sejr)",
+      "prevention": "Consider automating scope",
+      "optimization": "Create script/hotkey for scope",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.35000000000000003,
+      "first_seen": "2026-01-31",
       "last_applied": null
     }
   ]
