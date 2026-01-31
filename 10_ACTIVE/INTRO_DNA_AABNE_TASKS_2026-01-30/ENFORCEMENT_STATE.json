@@ -1,0 +1,678 @@
+{
+  "current_checkpoint_id": "CP_001",
+  "skipped_checkpoints": [],
+  "enforcement_log": [],
+  "checkpoints": [
+    {
+      "id": "CP_000",
+      "name": "[UNKNOWN] **A1.** Undersoeeg nuvaerende betalingssetup i cirkelline-co",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-01-31T16:57:17.870320",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_001",
+      "name": "[UNKNOWN] **A2.** Opret Stripe-konto (Rasmus' haender) ELLER verificer",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_000"
+      ],
+      "state": " AVAILABLE",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_002",
+      "name": "[UNKNOWN] **A3.** Implementer Stripe integration",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_001"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_003",
+      "name": "[UNKNOWN] **A4.** Test betaling med Stripe test-mode",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_002"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_004",
+      "name": "[UNKNOWN] **A5.** Dokumenter i MASTER FOLDERS(INTRO)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_003"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_005",
+      "name": "[UNKNOWN] **B1.** Find CLE Engine lokation og laes kildekode",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_004"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-01-31T16:57:17.870345",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_006",
+      "name": "[UNKNOWN] **B2.** Identificer dependencies og manglende setup",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_005"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-01-31T16:57:17.870349",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_007",
+      "name": "[UNKNOWN] **B3.** Opret venv og installer dependencies",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_006"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-01-31T16:57:17.870352",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_008",
+      "name": "[UNKNOWN] **B4.** Start CLE Engine og verificer funktionalitet",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_007"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-01-31T16:57:17.870356",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_009",
+      "name": "[UNKNOWN] **B5.** Dokumenter i MASTER FOLDERS(INTRO)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_008"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-01-31T16:57:17.870358",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_010",
+      "name": "[UNKNOWN] **C1.** Verificer at blocker stadig gaelder",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_009"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-01-31T16:57:17.870361",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_011",
+      "name": "[UNKNOWN] **C2.** Naar unblocked: Genaktiver GraphQL service",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_010"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_012",
+      "name": "[UNKNOWN] **C3.** Implementer Federation gateway",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_011"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_013",
+      "name": "[UNKNOWN] **C4.** Test med real queries",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_012"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_014",
+      "name": "[UNKNOWN] **C5.** Dokumenter i MASTER FOLDERS(INTRO)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_013"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_015",
+      "name": "[UNKNOWN] **D1.** Scan for duplikater i ELLE.md (25 GB)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_014"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-01-31T16:57:17.870372",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_016",
+      "name": "[UNKNOWN] **D2.** Scan for duplikater i Desktop generelt",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_015"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-01-31T16:57:17.870375",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_017",
+      "name": "[UNKNOWN] **D3.** Kategoriser: SLET vs ARKIVER",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_016"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_018",
+      "name": "[UNKNOWN] **D4.** Eksekverer sletning/arkivering",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_017"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_019",
+      "name": "[UNKNOWN] **D5.** Dokumenter hvad der blev ryddet",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_018"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_020",
+      "name": "[UNKNOWN] Alle A1-A5 checkboxes afkrydset (Stripe) — A1 DONE, A2-A5 kr",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_019"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_021",
+      "name": "[UNKNOWN] Alle B1-B5 checkboxes afkrydset (CLE Engine) — KOMPLET",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_020"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-01-31T16:57:17.870392",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_022",
+      "name": "[UNKNOWN] C1 verificeret (GraphQL blocker status) — BLOCKER GAELDER ST",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_021"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-01-31T16:57:17.870397",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_023",
+      "name": "[UNKNOWN] Alle D1-D5 checkboxes afkrydset (Duplikater) — D1+D2 DONE, D",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_022"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_024",
+      "name": "[PHASE_4] Git committed med \"PASS 1:\" prefix",
+      "verification_type": "command",
+      "verification_command": "git status",
+      "expected_result": null,
+      "manual_confirm": false,
+      "dependencies": [
+        "CP_023"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_025",
+      "name": "[PHASE_4] Alle Pass 1 fund reviewed",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_024"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_026",
+      "name": "[PHASE_4] Forbedringer fra review implementeret",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_025"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_027",
+      "name": "[PHASE_4] Ekstra tests tilfojet",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_026"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_028",
+      "name": "[PHASE_4] Dokumentation opdateret",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_027"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_029",
+      "name": "[PHASE_4] Git committed med \"PASS 2:\" prefix",
+      "verification_type": "command",
+      "verification_command": "git status",
+      "expected_result": null,
+      "manual_confirm": false,
+      "dependencies": [
+        "CP_028"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_030",
+      "name": "[PHASE_4] Lag 1: SELF-AWARE — Ved vi hvad vi har?",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_029"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_031",
+      "name": "[PHASE_4] Lag 2: SELF-DOCUMENTING — Er alt logget?",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_030"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_032",
+      "name": "[PHASE_4] Lag 3: SELF-VERIFYING — Er alt testet?",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_031"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_033",
+      "name": "[PHASE_4] Lag 4: SELF-IMPROVING — Har vi laert noget?",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_032"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_034",
+      "name": "[PHASE_4] Lag 5: SELF-ARCHIVING — Kun essens bevaret?",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_033"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_035",
+      "name": "[PHASE_4] Lag 6: PREDICTIVE — Hvad er naeste skridt?",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_034"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_036",
+      "name": "[PHASE_4] Lag 7: SELF-OPTIMIZING — Kunne vi goere det bedre?",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_035"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_037",
+      "name": "[PHASE_4] Pass 1 complete + reviewed",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_036"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_038",
+      "name": "[PHASE_4] Pass 2 complete + reviewed (score > Pass 1)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_037"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_039",
+      "name": "[PHASE_4] Pass 3 complete + final verification (score > Pass 2)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_038"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_040",
+      "name": "[PHASE_4] Total score >= 24/30",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_039"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_041",
+      "name": "[PHASE_4] All 5+ final tests passed",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_040"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    }
+  ],
+  "last_updated": "2026-01-31T16:57:17.870475"
+}

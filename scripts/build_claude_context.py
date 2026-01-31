@@ -14,35 +14,21 @@ DETTE ER IKKE EN TEMPLATE - DET ER LEVENDE KONTEKST.
 
 import re
 import json
+import yaml
 from pathlib import Path
 from datetime import datetime, timezone
 
 
 def parse_yaml_simple(filepath: Path) -> dict:
-    """Parse simple YAML."""
+    """Parse YAML using PyYAML (handles nested structures correctly)."""
     if not filepath.exists():
         return {}
-    result = {}
     try:
         content = filepath.read_text(encoding="utf-8")
-        for line in content.split("\n"):
-            if ":" in line and not line.strip().startswith("#"):
-                parts = line.split(":", 1)
-                if len(parts) == 2:
-                    key = parts[0].strip()
-                    value = parts[1].strip().strip('"').strip("'")
-                    if value.lower() == "true":
-                        value = True
-                    elif value.lower() == "false":
-                        value = False
-                    elif value == "null":
-                        value = None
-                    elif value.replace(".", "").replace("-", "").isdigit():
-                        value = float(value) if "." in value else int(value)
-                    result[key] = value
-    except:
-        pass
-    return result
+        result = yaml.safe_load(content)
+        return result if isinstance(result, dict) else {}
+    except (yaml.YAMLError, UnicodeDecodeError):
+        return {}
 
 
 def extract_task_name(sejr_file: Path) -> str:

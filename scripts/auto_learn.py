@@ -8,6 +8,7 @@ INGEN EXTERNAL DEPENDENCIES - Kun Python standard library
 
 import json
 import re
+import yaml
 from pathlib import Path
 from datetime import datetime
 from collections import Counter
@@ -44,75 +45,25 @@ GENERIC_ACTIONS = {
 
 
 # ============================================================================
-# SIMPLE YAML PARSING (No PyYAML dependency)
+# YAML PARSING — Uses PyYAML (preserves nested structures correctly)
 # ============================================================================
 
 def parse_yaml_simple(filepath: Path) -> dict:
-    """Parse simple YAML without PyYAML."""
+    """Parse YAML using PyYAML (handles nested structures correctly)."""
     if not filepath.exists():
         return {}
-
-    result = {}
     try:
         content = filepath.read_text(encoding="utf-8")
-        for line in content.split("\n"):
-            if ":" in line and not line.strip().startswith("#"):
-                parts = line.split(":", 1)
-                if len(parts) == 2:
-                    key = parts[0].strip()
-                    value = parts[1].strip().strip('"').strip("'")
-                    if value.lower() == "true":
-                        value = True
-                    elif value.lower() == "false":
-                        value = False
-                    elif value.replace(".", "").isdigit():
-                        value = float(value) if "." in value else int(value)
-                    result[key] = value
-    except:
-        pass
-    return result
+        result = yaml.safe_load(content)
+        return result if isinstance(result, dict) else {}
+    except (yaml.YAMLError, UnicodeDecodeError):
+        return {}
 
 
 def write_yaml_simple(filepath: Path, data: dict, indent: int = 0):
-    """Write simple YAML without PyYAML. Supports nested dicts and lists."""
-    def _to_yaml_lines(obj, level=0):
-        lines = []
-        prefix = "  " * level
-
-        if isinstance(obj, dict):
-            for key, value in obj.items():
-                if isinstance(value, dict):
-                    lines.append(f"{prefix}{key}:")
-                    lines.extend(_to_yaml_lines(value, level + 1))
-                elif isinstance(value, list):
-                    lines.append(f"{prefix}{key}:")
-                    for item in value:
-                        if isinstance(item, dict):
-                            lines.append(f"{prefix}  -")
-                            for k, v in item.items():
-                                if isinstance(v, bool):
-                                    v_str = "true" if v else "false"
-                                elif v is None:
-                                    v_str = "null"
-                                else:
-                                    v_str = f'"{v}"' if isinstance(v, str) else str(v)
-                                lines.append(f"{prefix}    {k}: {v_str}")
-                        else:
-                            lines.append(f"{prefix}  - {item}")
-                else:
-                    if isinstance(value, bool):
-                        value_str = "true" if value else "false"
-                    elif value is None:
-                        value_str = "null"
-                    elif isinstance(value, str):
-                        value_str = f'"{value}"'
-                    else:
-                        value_str = str(value)
-                    lines.append(f"{prefix}{key}: {value_str}")
-        return lines
-
-    yaml_lines = _to_yaml_lines(data)
-    filepath.write_text("\n".join(yaml_lines) + "\n", encoding="utf-8")
+    """Write YAML using PyYAML (preserves nested structures)."""
+    yaml_content = yaml.dump(data, default_flow_style=False, allow_unicode=True, sort_keys=False, width=120)
+    filepath.write_text(yaml_content, encoding="utf-8")
 
 def extract_learnings_from_sejr(sejr_path: Path):
     """Extract semantic learnings from archived sejr (reads CONCLUSION.md)"""

@@ -914,6 +914,307 @@ section[data-testid="stSidebar"] .stMarkdown h3 {
         opacity: 0;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   RESPONSIVE DESIGN — Mobile + Tablet Breakpoints
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── TABLET (≤1024px) ────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+    .premium-header {
+        padding: 1rem 1.25rem;
+        margin: -0.5rem -0.5rem 1rem -0.5rem;
+    }
+
+    .premium-header h1 {
+        font-size: 1.4rem;
+    }
+
+    .workspace-section {
+        padding: 1.25rem 1.25rem;
+        border-radius: 16px;
+    }
+
+    .stat-card {
+        padding: 1rem;
+    }
+
+    .stat-value {
+        font-size: 1.75rem;
+    }
+
+    .sejr-card {
+        padding: 1rem 1.25rem;
+    }
+
+    .file-manager {
+        padding: 1.5rem;
+        min-height: 160px;
+    }
+
+    .log-stream {
+        max-height: 250px;
+    }
+}
+
+/* ── MOBILE (≤768px) ─────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    /* Force Streamlit columns to stack vertically on mobile */
+    [data-testid="stHorizontalBlock"] {
+        flex-wrap: wrap !important;
+    }
+
+    [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
+        flex: 1 1 100% !important;
+        min-width: 100% !important;
+        width: 100% !important;
+    }
+
+    /* Allow 2-column grid for stat cards and small items */
+    [data-testid="stHorizontalBlock"]:has(> [data-testid="stColumn"]:nth-child(4)) > [data-testid="stColumn"],
+    [data-testid="stHorizontalBlock"]:has(> [data-testid="stColumn"]:nth-child(5)) > [data-testid="stColumn"],
+    [data-testid="stHorizontalBlock"]:has(> [data-testid="stColumn"]:nth-child(6)) > [data-testid="stColumn"] {
+        flex: 1 1 48% !important;
+        min-width: 48% !important;
+        width: 48% !important;
+    }
+
+    .premium-header {
+        padding: 0.75rem 1rem;
+        margin: -0.25rem -0.25rem 0.75rem -0.25rem;
+        border-radius: 0 0 14px 14px;
+    }
+
+    .premium-header h1 {
+        font-size: 1.2rem;
+        letter-spacing: -0.02em;
+    }
+
+    .workspace-section {
+        padding: 1rem;
+        margin: 0.75rem 0;
+        border-radius: 14px;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+    .workspace-header {
+        font-size: 1rem;
+        padding-bottom: 0.75rem;
+        margin-bottom: 0.75rem;
+        gap: 0.5rem;
+    }
+
+    .sejr-card {
+        padding: 0.75rem 1rem;
+        margin: 0.5rem 0;
+        border-radius: 12px;
+    }
+
+    .stat-card {
+        padding: 0.75rem;
+        border-radius: 12px;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.65rem;
+    }
+
+    .file-manager {
+        padding: 1rem;
+        min-height: 120px;
+        border-radius: 12px;
+    }
+
+    .file-item {
+        min-width: 70px;
+        padding: 0.5rem;
+        margin: 0.25rem;
+        font-size: 0.7rem;
+    }
+
+    .file-item .icon {
+        font-size: 1.5rem;
+    }
+
+    .log-stream {
+        max-height: 200px;
+        font-size: 0.7rem;
+        padding: 0.75rem;
+    }
+
+    .score-badge {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.75rem;
+    }
+
+    .dna-layer {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.7rem;
+    }
+
+    .action-btn {
+        padding: 0.5rem 0.8rem !important;
+        font-size: 0.8rem !important;
+        border-radius: 8px !important;
+    }
+
+    /* Streamlit button override for mobile */
+    .stButton > button {
+        padding: 0.5rem 1rem !important;
+        font-size: 0.8rem !important;
+        border-radius: 10px !important;
+    }
+
+    /* Streamlit metrics on mobile */
+    [data-testid="stMetric"] {
+        padding: 0.75rem !important;
+        border-radius: 12px !important;
+    }
+
+    [data-testid="stMetricValue"] {
+        font-size: 1.25rem !important;
+    }
+
+    /* Tabs on mobile */
+    .stTabs [data-baseweb="tab"] {
+        padding: 0.4rem 0.8rem !important;
+        font-size: 0.8rem !important;
+    }
+
+    /* Disable particles on mobile for performance */
+    .floating-particles,
+    .particles-container {
+        display: none !important;
+    }
+
+    /* Sidebar auto-collapse hint */
+    section[data-testid="stSidebar"] {
+        box-shadow: 2px 0 15px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    /* Reduce backdrop-filter for mobile performance */
+    .sejr-card,
+    .stat-card {
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+    }
+}
+
+/* ── SMALL MOBILE (≤480px) ───────────────────────────────────────────────── */
+@media (max-width: 480px) {
+    /* All columns fully stack */
+    [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
+        flex: 1 1 100% !important;
+        min-width: 100% !important;
+        width: 100% !important;
+    }
+
+    .premium-header {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .premium-header h1 {
+        font-size: 1rem;
+    }
+
+    .workspace-section {
+        padding: 0.75rem;
+        margin: 0.5rem 0;
+        border-radius: 12px;
+    }
+
+    .workspace-header {
+        font-size: 0.9rem;
+    }
+
+    .stat-value {
+        font-size: 1.25rem;
+    }
+
+    .stat-label {
+        font-size: 0.6rem;
+    }
+
+    .sejr-card {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .file-manager {
+        min-height: 80px;
+        padding: 0.75rem;
+    }
+
+    .log-stream {
+        max-height: 150px;
+        font-size: 0.65rem;
+    }
+
+    /* Reduce heavy box shadows on small screens */
+    .workspace-section,
+    .sejr-card,
+    .stat-card {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+
+    /* Full width buttons */
+    .stButton > button {
+        width: 100% !important;
+    }
+}
+
+/* ── TOUCH-FRIENDLY ENHANCEMENTS ─────────────────────────────────────────── */
+@media (pointer: coarse) {
+    /* Larger touch targets */
+    .stButton > button {
+        min-height: 44px !important;
+    }
+
+    .file-item {
+        min-width: 80px;
+        min-height: 80px;
+    }
+
+    .action-btn {
+        min-height: 44px !important;
+    }
+
+    .stTabs [data-baseweb="tab"] {
+        min-height: 44px !important;
+    }
+
+    /* Disable hover effects on touch devices */
+    .sejr-card:hover,
+    .stat-card:hover {
+        transform: none;
+    }
+}
+
+/* ── LANDSCAPE MOBILE ────────────────────────────────────────────────────── */
+@media (max-width: 768px) and (orientation: landscape) {
+    .premium-header {
+        padding: 0.5rem 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .workspace-section {
+        margin: 0.5rem 0;
+        padding: 0.75rem 1rem;
+    }
+
+    /* Allow 2 columns in landscape */
+    [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
+        flex: 1 1 48% !important;
+        min-width: 48% !important;
+        width: 48% !important;
+    }
+}
 </style>
 
 <script>

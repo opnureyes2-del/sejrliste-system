@@ -7,38 +7,25 @@ INGEN EXTERNAL DEPENDENCIES - Kun Python standard library
 """
 
 import json
+import yaml
 from pathlib import Path
 from datetime import datetime
 
 
 # ============================================================================
-# SIMPLE YAML PARSING (No PyYAML dependency)
+# YAML PARSING — Uses PyYAML (preserves nested structures correctly)
 # ============================================================================
 
 def parse_yaml_simple(filepath: Path) -> dict:
-    """Parse simple YAML without PyYAML."""
+    """Parse YAML using PyYAML (handles nested structures correctly)."""
     if not filepath.exists():
         return {}
-
-    result = {}
     try:
         content = filepath.read_text(encoding="utf-8")
-        for line in content.split("\n"):
-            if ":" in line and not line.strip().startswith("#"):
-                parts = line.split(":", 1)
-                if len(parts) == 2:
-                    key = parts[0].strip()
-                    value = parts[1].strip().strip('"').strip("'")
-                    if value.lower() == "true":
-                        value = True
-                    elif value.lower() == "false":
-                        value = False
-                    elif value.replace(".", "").isdigit():
-                        value = float(value) if "." in value else int(value)
-                    result[key] = value
-    except:
-        pass
-    return result
+        result = yaml.safe_load(content)
+        return result if isinstance(result, dict) else {}
+    except (yaml.YAMLError, UnicodeDecodeError):
+        return {}
 
 def load_patterns(system_path: Path):
     """Load learned patterns from PATTERNS.json or PATTERNS.yaml"""

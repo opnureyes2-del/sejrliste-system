@@ -1,37 +1,75 @@
+# Sejrliste System v3.0.0 — Complete Dependencies
+# Generated from venv/bin/pip freeze on 2026-01-31
+
+# Core — Streamlit Web App
+streamlit==1.53.1
 altair==6.0.0
-attrs==25.4.0
-blinker==1.9.0
-cachetools==6.2.5
+pandas==2.3.3
+numpy==2.4.1
+pyarrow==23.0.0
+pillow==12.1.0
+pydeck==0.9.1
+protobuf==6.33.4
+tornado==6.5.4
+watchdog==6.0.0
+toml==0.10.2
+
+# TUI — Terminal App (Textual)
+textual==7.4.0
+rich==14.3.1
+Pygments==2.19.2
+markdown-it-py==4.0.0
+mdit-py-plugins==0.5.0
+mdurl==0.1.2
+linkify-it-py==2.0.3
+uc-micro-py==1.0.3
+
+# YAML — Config and Status files
+PyYAML==6.0.3
+
+# Git Integration
+GitPython==3.1.46
+gitdb==4.0.12
+smmap==5.0.2
+
+# Phone Access — QR Code
+qrcode==8.2
+
+# System Integration
+mss==10.1.0
+python-xlib==0.33
+platformdirs==4.5.1
+
+# Web/Network
+requests==2.32.5
+urllib3==2.6.3
 certifi==2026.1.4
 charset-normalizer==3.4.4
-click==8.3.1
-gitdb==4.0.12
-GitPython==3.1.46
 idna==3.11
-Jinja2==3.1.6
+
+# Data/Schema
 jsonschema==4.26.0
 jsonschema-specifications==2025.9.1
-MarkupSafe==3.0.3
+referencing==0.37.0
+rpds-py==0.30.0
+attrs==25.4.0
 narwhals==2.15.0
-numpy==2.4.1
+
+# Utilities
+click==8.3.1
+Jinja2==3.1.6
+MarkupSafe==3.0.3
+blinker==1.9.0
+cachetools==6.2.5
 packaging==26.0
-pandas==2.3.3
-pillow==12.1.0
-protobuf==6.33.4
-pyarrow==23.0.0
-pydeck==0.9.1
 python-dateutil==2.9.0.post0
 pytz==2025.2
-referencing==0.37.0
-requests==2.32.5
-rpds-py==0.30.0
-six==1.17.0
-smmap==5.0.2
-streamlit==1.53.1
-tenacity==9.1.2
-toml==0.10.2
-tornado==6.5.4
-typing_extensions==4.15.0
 tzdata==2025.3
-urllib3==2.6.3
-watchdog==6.0.0
+six==1.17.0
+tenacity==9.1.2
+typing_extensions==4.15.0
+
+# Optional — Install separately if needed:
+# chromadb  — for build_knowledge_base.py (vector search)
+# ollama    — for hybrid_generate.py (local AI)
+# tiktoken  — for token_tools.py (token counting)

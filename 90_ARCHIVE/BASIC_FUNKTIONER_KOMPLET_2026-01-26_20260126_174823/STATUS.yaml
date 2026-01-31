@@ -1,0 +1,52 @@
+# STATUS.yaml - REPAIRED by auto_health_check.py
+# Repaired: 2026-01-31T17:11:21.350211
+
+meta:
+  sejr_name: BASIC_FUNKTIONER_KOMPLET_2026-01-26
+  folder: BASIC_FUNKTIONER_KOMPLET_2026-01-26
+  created: '2026-01-26T14:09:05.725408+01:00'
+  created_by: generate_sejr.py
+  session_id: sess_f489bad04f61
+  last_updated: '2026-01-31T17:11:21.350201'
+pass_tracking:
+  current_pass: 3
+  can_archive: true
+  archive_blocker: null
+  pass_1:
+    name: Planlægning
+    status: pass_3_in_progress
+    complete: true
+    score: 8
+    percentage: 100
+  pass_2:
+    name: Eksekvering
+    complete: true
+    score: 9
+    percentage: 100
+  pass_3:
+    name: 7-DNA Review
+    complete: true
+    score: 10
+    percentage: 100
+score_tracking:
+  positive:
+    checkbox_done: 60
+    pass_complete: 3
+    verified_working: 5
+    admiral_moment: 1
+    sejr_archived: 0
+  negative:
+    token_waste: 0
+    memory_loss: 0
+    lie_detected: 0
+    rule_break: 0
+    focus_lost: 0
+  totals:
+    total_score: 27
+    rank: ADMIRAL
+model_tracking:
+  sessions: []
+statistics:
+  total_sessions: 1
+  total_actions: 60
+  completion_percentage: 100

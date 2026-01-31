@@ -1,0 +1,21 @@
+# STATUS - Single Source of Truth
+sejr_name: APP_INTEGRATION_TEST
+current_pass: 3
+status: COMPLETE
+
+pass_1_complete: true
+pass_1_score: 8
+pass_2_complete: true
+pass_2_score: 9
+pass_3_complete: true
+pass_3_score: 10
+
+final_verification_done: true
+tests_passed: 5
+total_tests: 5
+
+can_archive: true
+total_score: 27
+rank: ADMIRAL
+
+completed_at: "2026-01-25T04:00:00"

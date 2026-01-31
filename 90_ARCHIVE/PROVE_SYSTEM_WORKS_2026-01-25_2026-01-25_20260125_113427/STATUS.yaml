@@ -1,0 +1,102 @@
+# STATUS.yaml - REPAIRED from corrupted flat format
+# Repaired: 2026-01-31T17:08:54.599276
+# Original was corrupted by buggy parse_yaml_simple/write_yaml_simple
+
+meta:
+  sejr_name: PROVE_SYSTEM_WORKS_2026-01-25_2026-01-25
+  folder: PROVE_SYSTEM_WORKS_2026-01-25_2026-01-25
+  created: '2026-01-25T11:26:49.584504+01:00'
+  created_by: generate_sejr.py
+  session_id: sess_98e72d2cac97
+  last_updated: '2026-01-31T17:08:54.599264'
+pass_tracking:
+  current_pass: 3
+  can_archive: true
+  archive_blocker: Pass 1 ikke færdig
+  pass_1:
+    name: Planlægning
+    status: ready_to_archive
+    complete: false
+    score: 0
+    checkboxes_done: 0
+    checkboxes_total: 0
+    percentage: 0
+    review_done: false
+  pass_2:
+    name: Eksekvering
+    status: pending
+    complete: false
+    score: 0
+    checkboxes_done: 0
+    checkboxes_total: 0
+    percentage: 0
+    review_done: false
+  pass_3:
+    name: 7-DNA Review
+    status: pending
+    complete: false
+    score: 0
+    checkboxes_done: 0
+    checkboxes_total: 0
+    percentage: 0
+    final_verification: false
+  totals:
+    score: 0
+    max_score: 30
+    required_score: 24
+    tests_passed: 0
+    tests_required: 5
+score_tracking:
+  positive:
+    checkbox_done: 0
+    pass_complete: 0
+    verified_working: 0
+    test_passed: 0
+    admiral_moment: 0
+    sejr_archived: 0
+  negative:
+    token_waste: 0
+    memory_loss: 0
+    lie_detected: 0
+    rule_break: 0
+    focus_lost: 0
+  totals:
+    positive_points: 0
+    negative_points: 0
+    total_score: 27
+    rank: KADET
+model_tracking:
+  current_model: null
+  models_used: []
+  human_activity:
+    approvals: 0
+    corrections: 0
+  sessions:
+  - id: sess_98e72d2cac97
+    started: '2026-01-25T11:26:49.584504+01:00'
+    actor: generate_sejr.py
+    action: SEJR_CREATED
+    statistics: ''
+    total_sessions: '1'
+    total_actions: '1'
+    total_time_minutes: '0'
+    unique_models: '0'
+    last_verification: '2026-01-25T11:33:58.669148'
+    pass_1_complete: 'true'
+    pass_1_score: '8'
+    pass_1_pct: '100'
+    pass_2_complete: 'true'
+    pass_2_score: '9'
+    pass_2_pct: '100'
+    pass_3_complete: 'true'
+    pass_3_score: '10'
+    pass_3_pct: '100'
+    final_verification_complete: 'true'
+    completion_percentage: '100'
+statistics:
+  total_sessions: 1
+  total_actions: 1
+  total_time_minutes: 0
+  unique_models: 0
+  last_verification: ''
+  completion_percentage: 0

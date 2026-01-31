@@ -1,0 +1,103 @@
+# STATUS.yaml - REPAIRED from corrupted flat format
+# Repaired: 2026-01-31T17:08:54.616833
+# Original was corrupted by buggy parse_yaml_simple/write_yaml_simple
+
+meta:
+  sejr_name: SYSTEM_TEST_2026-01-25
+  folder: SYSTEM_TEST_2026-01-25
+  created: '2026-01-25T12:00:00+01:00'
+  created_by: generate_sejr.py
+  session_id: opus-session-20260125
+  last_updated: '2026-01-31T17:08:54.616796'
+pass_tracking:
+  current_pass: 3
+  can_archive: true
+  archive_blocker: null
+  pass_1:
+    name: Planlægning
+    status: ready_to_archive
+    complete: false
+    score: 27
+    checkboxes_done: 49
+    checkboxes_total: 49
+    percentage: 100
+    review_done: true
+  pass_2:
+    name: Eksekvering
+    status: pending
+    complete: false
+    score: 0
+    checkboxes_done: 0
+    checkboxes_total: 0
+    percentage: 0
+    review_done: false
+  pass_3:
+    name: 7-DNA Review
+    status: pending
+    complete: false
+    score: 0
+    checkboxes_done: 0
+    checkboxes_total: 0
+    percentage: 0
+    final_verification: true
+  totals:
+    score: 0
+    max_score: 30
+    required_score: 24
+    tests_passed: 7
+    tests_required: 5
+score_tracking:
+  positive:
+    checkbox_done: 49
+    pass_complete: 3
+    verified_working: 7
+    test_passed: 7
+    admiral_moment: 1
+    sejr_archived: 0
+  negative:
+    token_waste: 0
+    memory_loss: 0
+    lie_detected: 0
+    rule_break: 0
+    focus_lost: 0
+  totals:
+    positive_points: 120
+    negative_points: 0
+    total_score: 27
+    rank: ADMIRAL
+model_tracking:
+  current_model: null
+  models_used: []
+  human_activity:
+    approvals: 5
+    corrections: 1
+  sessions:
+  - id: sess_streamline_20260125
+    started: '2026-01-25T16:00:00+01:00'
+    actor: Claude Opus 4.5
+    action: SYSTEM_STREAMLINED
+    statistics: ''
+    total_sessions: '3'
+    total_actions: '20'
+    total_time_minutes: '240'
+    unique_models: '1'
+    human_sessions: '3'
+    last_verification: '2026-01-25T03:03:42.488614'
+    pass_1_complete: 'true'
+    pass_1_score: '8'
+    pass_1_pct: '100'
+    pass_2_complete: 'true'
+    pass_2_score: '9'
+    pass_2_pct: '100'
+    pass_3_complete: 'true'
+    pass_3_score: '10'
+    pass_3_pct: '100'
+    final_verification_complete: 'true'
+    completion_percentage: '100'
+statistics:
+  total_sessions: 1
+  total_actions: 1
+  total_time_minutes: 0
+  unique_models: 0
+  last_verification: ''
+  completion_percentage: 0

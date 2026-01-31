@@ -18,57 +18,32 @@ import argparse
 import shutil
 import re
 import subprocess
+import yaml
 from pathlib import Path
 from datetime import datetime
 
 
 # ============================================================================
-# SIMPLE YAML PARSING (No PyYAML dependency)
+# YAML PARSING — Uses PyYAML (preserves nested structures correctly)
 # ============================================================================
 
 def parse_yaml_simple(filepath: Path) -> dict:
-    """Parse simple YAML without PyYAML."""
+    """Parse YAML using PyYAML (handles nested structures correctly)."""
     if not filepath.exists():
         return {}
-
-    result = {}
     try:
         content = filepath.read_text(encoding="utf-8")
-        for line in content.split("\n"):
-            if ":" in line and not line.strip().startswith("#"):
-                parts = line.split(":", 1)
-                if len(parts) == 2:
-                    key = parts[0].strip()
-                    value = parts[1].strip().strip('"').strip("'")
-                    if value.lower() == "true":
-                        value = True
-                    elif value.lower() == "false":
-                        value = False
-                    elif value == "null":
-                        value = None
-                    elif value.replace(".", "").replace("-", "").isdigit():
-                        value = float(value) if "." in value else int(value)
-                    result[key] = value
-    except:
-        pass
-    return result
+        result = yaml.safe_load(content)
+        return result if isinstance(result, dict) else {}
+    except (yaml.YAMLError, UnicodeDecodeError):
+        return {}
 
 
 def write_yaml_simple(filepath: Path, data: dict):
-    """Write simple YAML without PyYAML."""
-    lines = [f"# Archive metadata - {datetime.now().isoformat()}"]
-    for key, value in data.items():
-        if isinstance(value, bool):
-            value_str = "true" if value else "false"
-        elif isinstance(value, (int, float)):
-            value_str = str(value)
-        elif value is None:
-            value_str = "null"
-        else:
-            value_str = f'"{value}"'
-        lines.append(f"{key}: {value_str}")
-
-    filepath.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    """Write YAML using PyYAML (preserves nested structures)."""
+    header = f"# Archive metadata - {datetime.now().isoformat()}\n\n"
+    yaml_content = yaml.dump(data, default_flow_style=False, allow_unicode=True, sort_keys=False, width=120)
+    filepath.write_text(header + yaml_content, encoding="utf-8")
 
 
 # ============================================================================
@@ -638,13 +613,16 @@ def archive_sejr(sejr_name: str, system_path: Path, force: bool = False):
         print(f"   Archive continues without SEJR_DIPLOM.md")
         rank_name, rank_emoji = get_rank_from_score(status.get('total_score', 0))
 
-    # Copy important files (including SEJR_LISTE.md for reference)
-    for file_name in ["STATUS.yaml", "AUTO_LOG.jsonl", "SEJR_LISTE.md"]:
-        src = sejr_path / file_name
-        if src.exists():
-            dst = archive_path / file_name
-            shutil.copy2(src, dst)
-            print(f"[OK] Copied: {file_name}")
+    # Copy ALL files from active sejr to archive (preserves complete history)
+    copied_count = 0
+    for src_file in sorted(sejr_path.iterdir()):
+        if src_file.is_file():
+            dst = archive_path / src_file.name
+            if not dst.exists():  # Don't overwrite conclusion/diplom/metadata
+                shutil.copy2(src_file, dst)
+                copied_count += 1
+                print(f"[OK] Copied: {src_file.name}")
+    print(f"[OK] Total files copied: {copied_count}")
 
     # Create archive metadata
     metadata = {

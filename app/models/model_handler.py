@@ -26,7 +26,7 @@ from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from app.model_router import Model, ModelRouter, get_model_for_script
+from app.model_router import ModelType, ModelRouter
 
 
 # Configure logging

@@ -1,7 +1,7 @@
 # LÆRTE TIPS - Baseret på tidligere sejr
 
-*Genereret: 2026-01-28 00:55*
-*Baseret på: 48 mønstre fra 48 sejr*
+*Genereret: 2026-01-31 16:57*
+*Baseret på: 52 mønstre fra 52 sejr*
 
 ## SUCCESS RATE
 - SUCCESS RATE: 9/11 sejr opnår GRAND ADMIRAL (81%)

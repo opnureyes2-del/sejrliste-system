@@ -151,22 +151,33 @@ Læs SEJR_LISTE.md og start med PHASE 0: Research
 
 
 def generate_sejr(name: str, system_path: Path, goal: str = None, tech: str = None, scope: str = None):
-    """Generate new sejr with 5 files (Single Source of Truth + PROJECT_BRIEF)."""
+    """Generate new sejr with 5 files (Single Source of Truth + PROJECT_BRIEF).
+
+    Uses ATOMIC CREATION: All files are written to a temp directory first,
+    then renamed to final location. If anything fails mid-way, no orphaned
+    folder is left in 10_ACTIVE.
+    """
+    import re
+    import tempfile
 
     # Create folder - don't add date if name already contains it
     date = datetime.now().strftime("%Y-%m-%d")
     clean_name = name.replace(' ', '_').upper()
 
     # Check if name already ends with a date pattern (YYYY-MM-DD)
-    import re
     if re.search(r'\d{4}-\d{2}-\d{2}$', clean_name):
         folder_name = clean_name  # Don't add date again
     else:
         folder_name = f"{clean_name}_{date}"
 
-    sejr_path = system_path / "10_ACTIVE" / folder_name
-    sejr_path.mkdir(parents=True, exist_ok=True)
-    print(f"[OK] Created: {sejr_path}")
+    final_path = system_path / "10_ACTIVE" / folder_name
+
+    # ATOMIC: Create in temp dir first, rename to final when ALL files are written
+    active_dir = system_path / "10_ACTIVE"
+    active_dir.mkdir(parents=True, exist_ok=True)
+    temp_dir = Path(tempfile.mkdtemp(prefix=f".tmp_{folder_name}_", dir=active_dir))
+    sejr_path = temp_dir  # All file writes go to temp dir
+    print(f"[..] Creating sejr atomically: {folder_name}")
 
     # Generate IDs
     session_id = generate_session_id()
@@ -441,6 +452,22 @@ Vi ved det virker fordi:
 """
     brief_file.write_text(brief_content, encoding="utf-8")
     print(f"[OK] File 5/5: {brief_file.name}")
+
+    # ═══════════════════════════════════════════════════════════
+    # ATOMIC COMMIT: Rename temp dir → final location
+    # ═══════════════════════════════════════════════════════════
+
+    try:
+        temp_dir.rename(final_path)
+        sejr_path = final_path  # Update reference for summary
+        print(f"[OK] Atomic commit: {final_path.name}")
+    except OSError:
+        # If rename fails (cross-device), fall back to copy + delete
+        import shutil
+        shutil.copytree(temp_dir, final_path, dirs_exist_ok=True)
+        shutil.rmtree(temp_dir)
+        sejr_path = final_path
+        print(f"[OK] Atomic commit (copy): {final_path.name}")
 
     # ═══════════════════════════════════════════════════════════
     # SUMMARY

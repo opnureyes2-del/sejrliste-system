@@ -1,60 +1,72 @@
-# LIVE STATUS
+# [ERROR] LIVE STATUS - Opdateres Automatisk
 
-> Sidst opdateret: 2026-01-30 (verificeret via `sejr verify`)
+> Sidste opdatering: 2026-01-31 16:57:05
 
 ---
 
-## HVAD SKER DER NU?
+## [TARGET] HVAD SKER DER NU?
 
 | Aspekt | Status |
 |--------|--------|
-| **HVAD** | 2 AKTIVE sejrlister + 10 arkiverede (original batch) |
-| **AKTIVE** | `10_ACTIVE/` — INTRO_DNA + OPTIMERINGER |
-| **ARKIV** | `90_ARCHIVE/` — 30+ sejrlister inkl. STOR_OPRYDNING (fikset til 30/30) |
-| **FOKUS** | Disse koerer i baggrunden — ikke blokerende |
+| **HVAD** | INTRO DNA AABNE TASKS 2026-01-30 - Pass 3/3 |
+| **HVOR** | /home/rasmus/Desktop/sejrliste systemet/10_ACTIVE/INTRO_DNA_AABNE_TASKS_2026-01-30/ |
+| **HVORFOR** | Opnå GRAND ADMIRAL status |
+| **HVORDAN** | 20-skridt workflow med 3-pass system |
+| **HVORNÅR** | Nu → Snart |
 
 ---
 
-## AKTIVE SEJRLISTER
+##  AKTIVE PROCESSER
 
-| Sejr | Pass | Score | Checkboxes | Status |
-|------|------|-------|------------|--------|
-| INTRO_DNA_AABNE_TASKS | 1/3 | 0/30 | 0/42 (0%) | Pass 1 — 4 aabne tasks (Stripe, CLE, GraphQL, Duplikater) |
-| OPTIMERINGER_O4_O15 | 1/3 | 4/30 | 12/30 (40%) | Pass 1 — 3 done (INTRO/ELLE/Scripts), 4 aabne (D-G) |
-
----
-
-## ARKIVEREDE SEJRLISTER (Original 10)
-
-| Sejr | Score | Rang | Status |
-|------|-------|------|--------|
-| KV1NT_ADMIRAL_PROTOCOLS | 29/30 | GRAND ADMIRAL | ARKIVERET |
-| CLAUDE_USAGE_MASTERY | 30/30 | GRAND ADMIRAL | ARKIVERET |
-| DESIGN_LOGO_DESKTOP | 30/30 | GRAND ADMIRAL | ARKIVERET |
-| 3_LAGS_ARKITEKTUR_VIEW | 30/30 | GRAND ADMIRAL | ARKIVERET |
-| LINEN_FRAMEWORK_VIEW | 30/30 | GRAND ADMIRAL | ARKIVERET |
-| SYNC_FUNKTIONER_DEL21 | 30/30 | GRAND ADMIRAL | ARKIVERET |
-| STOR_OPRYDNING_DEAD_CODE | 30/30 | GRAND ADMIRAL | ARKIVERET (fikset fra 7/30 KADET) |
-| DRAG_AND_DROP | 30/30 | GRAND ADMIRAL | ARKIVERET |
-| ELLE_AGENT_SYSTEM_REVIVAL | 30/30 | GRAND ADMIRAL | ARKIVERET |
-| INTRO_FOLDER_SYSTEM | 29/30 | GRAND ADMIRAL | ARKIVERET |
-
-**Korrigeret total:** 299/300 (gennemsnit 29.9/30)
+```
+Web App         http://localhost:8501 [KØRER]
+Desktop App     Klar til brug
+Timeline Services services/ [AKTIV]
+Sync Service    unified_sync.py [AKTIV]
+```
 
 ---
 
-## FILER I DENNE MAPPE
+## [DATA] PROGRESS
 
-| Fil | Formaal |
-|-----|---------|
-| `STATE.md` | System state overview |
-| `LIVE_STATUS.md` | Live status (denne fil) |
-| `LEADERBOARD.md` | Score leaderboard |
-| `LEARNED_TIPS.md` | Tips fra tidligere sejrs |
-| `NEXT.md` | Forudsagte naeste skridt |
-| `PATTERNS.json` | Laerte moenstre fra sejrs |
+| Sejr | Progress | Skridt | Status |
+|------|----------|--------|--------|
+| INTRO_DNA_AABNE_TASKS_2026-01- | 26% | 11/42 | Pass 3/3 |
 
 ---
 
-**Verificeret via:** `sejr verify` 2026-01-30
-**STOR_OPRYDNING bug fikset:** Score var 7/30 KADET trods 100% completion — rettet til 30/30 GRAND ADMIRAL
+##  NÆSTE SKRIDT
+
+1. **Færdiggør INTRO DNA AABNE TASKS** ← NU
+2. **Fortsæt med checkboxes** 
+3. **Kør verification for status-check** 
+
+---
+
+## [DIR] FILER I DENNE MAPPE
+
+| Fil | Formål | Sidst Ændret |
+|-----|--------|--------------|
+| `DELTA.md` | Hvad er ændret siden sidst | 22:29 |
+| `LEADERBOARD.md` | System fil | 14:30 |
+| `LEARNED_TIPS.md` | Tips fra tidligere sejrs | 00:55 |
+| `LIVE_STATUS.md` | Live status (denne fil) | 18:13 |
+| `NEXT.md` | Forudsagte næste skridt | 18:13 |
+| `OPTIMIZED_PROMPT.md` | Optimeret prompt template | 00:55 |
+| `PATTERNS.json` | Lærte mønstre fra sejrs | 16:57 |
+| `PATTERNS.yaml` | System fil | 16:57 |
+| `SESSION_2026-01-26_ENTERPRISE_POLISH.md` | System fil | 00:00 |
+| `STATE.md` | System state overview | 15:18 |
+
+---
+
+## [LINK] DIREKTE LINKS
+
+- **Web App:** [http://localhost:8501](http://localhost:8501)
+- **Aktiv Sejr:** [10_ACTIVE/INTRO_DNA_AABNE_TASKS_2026-01-30/](../10_ACTIVE/INTRO_DNA_AABNE_TASKS_2026-01-30/)
+- **Tidslinjer:** `python services/complete_timeline.py --all`
+- **Workflow:** `python services/active_workflow.py`
+
+---
+
+*Auto-genereret af auto_live_status.py*

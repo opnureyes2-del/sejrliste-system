@@ -21,6 +21,7 @@ RANKINGS:
 
 import argparse
 import json
+import yaml
 from datetime import datetime
 from pathlib import Path
 
@@ -72,79 +73,22 @@ RANKS = [
 
 
 def parse_yaml_simple(filepath: Path) -> dict:
-    """Parse simple YAML without PyYAML."""
+    """Parse YAML using PyYAML (handles nested structures correctly)."""
     if not filepath.exists():
         return {}
-
-    result = {}
-    current_section = None
-
     try:
         content = filepath.read_text(encoding="utf-8")
-        for line in content.split("\n"):
-            # Skip comments and empty lines
-            if not line.strip() or line.strip().startswith("#"):
-                continue
-
-            # Check for section
-            if line.endswith(":") and not line.startswith(" "):
-                current_section = line.rstrip(":")
-                result[current_section] = {}
-                continue
-
-            # Parse key-value
-            if ":" in line:
-                parts = line.split(":", 1)
-                if len(parts) == 2:
-                    key = parts[0].strip()
-                    value = parts[1].strip().strip('"').strip("'")
-
-                    # Convert types
-                    if value.lower() == "true":
-                        value = True
-                    elif value.lower() == "false":
-                        value = False
-                    elif value.replace(".", "").replace("-", "").lstrip("-").isdigit():
-                        value = float(value) if "." in value else int(value)
-                    elif value == "[]":
-                        value = []
-
-                    if current_section and key.startswith("  "):
-                        result[current_section][key.strip()] = value
-                    else:
-                        result[key] = value
-    except Exception as e:
-        print(f"Error parsing YAML: {e}")
-
-    return result
+        result = yaml.safe_load(content)
+        return result if isinstance(result, dict) else {}
+    except (yaml.YAMLError, UnicodeDecodeError):
+        return {}
 
 
 def write_yaml_simple(filepath: Path, data: dict):
-    """Write simple YAML without PyYAML."""
-    lines = ["# ADMIRAL SCORE - Auto-updated"]
-    lines.append(f"# Updated: {datetime.now().isoformat()}")
-    lines.append("")
-
-    for key, value in data.items():
-        if isinstance(value, dict):
-            lines.append(f"{key}:")
-            for k, v in value.items():
-                if isinstance(v, bool):
-                    v = "true" if v else "false"
-                elif isinstance(v, str) and " " in v:
-                    v = f'"{v}"'
-                lines.append(f"  {k}: {v}")
-            lines.append("")
-        elif isinstance(value, list):
-            lines.append(f"{key}: []")
-        else:
-            if isinstance(value, bool):
-                value = "true" if value else "false"
-            elif isinstance(value, str) and " " in value:
-                value = f'"{value}"'
-            lines.append(f"{key}: {value}")
-
-    filepath.write_text("\n".join(lines), encoding="utf-8")
+    """Write YAML using PyYAML (preserves nested structures)."""
+    header = f"# ADMIRAL SCORE - Auto-updated\n# Updated: {datetime.now().isoformat()}\n\n"
+    yaml_content = yaml.dump(data, default_flow_style=False, allow_unicode=True, sort_keys=False, width=120)
+    filepath.write_text(header + yaml_content, encoding="utf-8")
 
 
 def get_rank(score: int) -> str:

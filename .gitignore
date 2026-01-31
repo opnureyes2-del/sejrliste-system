@@ -43,6 +43,6 @@ venv/
 # OS files
 .directory
 
-# Archive folders — full ignore (archived sejrlister are complete)
-90_ARCHIVE/*/
-!90_ARCHIVE/.gitkeep
+# Archive folders — track important files, ignore logs
+90_ARCHIVE/*/AUTO_LOG.jsonl
+90_ARCHIVE/*/VERIFY_STATUS.yaml

@@ -1,0 +1,132 @@
+# STATUS.yaml - UNIFIED STATUS (Single Source of Truth)
+# Alt status data i ÉN fil - ingen redundans
+# Sejr: ENGELSK_VERSION_KOMPLET
+
+# ═══════════════════════════════════════════════════════════
+# META
+# ═══════════════════════════════════════════════════════════
+
+meta:
+  sejr_name: "ENGELSK_VERSION_KOMPLET"
+  folder: "ENGELSK_VERSION_KOMPLET_2026-01-26"
+  created: "2026-01-26T03:24:12.427961+01:00"
+  created_by: "generate_sejr.py"
+  session_id: "sess_e8a334046a06"
+  last_updated: "2026-01-26T08:40:00+01:00"
+
+# ═══════════════════════════════════════════════════════════
+# 3-PASS TRACKING
+# ═══════════════════════════════════════════════════════════
+
+pass_tracking:
+  current_pass: 3
+  can_archive: true
+  archive_blocker: null
+
+  pass_1:
+    name: "Planlægning"
+    status: "complete"
+    complete: true
+    score: 8
+    checkboxes_done: 23
+    checkboxes_total: 23
+    percentage: 100
+    review_done: true
+    git_commit: "9f27b77"
+
+  pass_2:
+    name: "Eksekvering"
+    status: "complete"
+    complete: true
+    score: 9
+    checkboxes_done: 15
+    checkboxes_total: 15
+    percentage: 100
+    review_done: true
+    git_commit: "9dffaed"
+
+  pass_3:
+    name: "7-DNA Review"
+    status: "complete"
+    complete: true
+    score: 10
+    checkboxes_done: 20
+    checkboxes_total: 20
+    percentage: 100
+    final_verification: true
+
+  totals:
+    score: 27
+    required_score: 24
+    tests_passed: 7
+    tests_required: 5
+
+# ═══════════════════════════════════════════════════════════
+# SCORE TRACKING
+# ═══════════════════════════════════════════════════════════
+
+score_tracking:
+  positive:
+    checkbox_done: 58
+    pass_complete: 3
+    verified_working: 7
+    test_passed: 7
+    admiral_moment: 1
+    sejr_archived: 0
+
+  negative:
+    token_waste: 0
+    memory_loss: 0
+    lie_detected: 0
+    rule_break: 0
+    focus_lost: 0
+
+  totals:
+    positive_points: 76
+    negative_points: 0
+    total_score: 76
+    rank: "CAPTAIN"
+
+# ═══════════════════════════════════════════════════════════
+# MODEL TRACKING
+# ═══════════════════════════════════════════════════════════
+
+model_tracking:
+  current_model: "claude-opus-4-5-20251101"
+  models_used:
+    - id: "claude-opus-4-5-20251101"
+      name: "Claude Opus 4.5"
+      sessions: 1
+      checkboxes: 58
+      passes_completed: 3
+  human_activity:
+    sessions: 1
+    approvals: 0
+    corrections: 0
+  sessions:
+    - id: "sess_e8a334046a06"
+      started: "2026-01-26T03:24:12.427961+01:00"
+      actor: "generate_sejr.py"
+      action: "SEJR_CREATED"
+    - id: "sess_pass1"
+      started: "2026-01-26T04:00:00+01:00"
+      actor: "claude-opus-4-5-20251101"
+      action: "PASS_1_COMPLETE"
+    - id: "sess_pass2"
+      started: "2026-01-26T07:00:00+01:00"
+      actor: "claude-opus-4-5-20251101"
+      action: "PASS_2_COMPLETE"
+    - id: "sess_pass3"
+      started: "2026-01-26T08:00:00+01:00"
+      actor: "claude-opus-4-5-20251101"
+      action: "PASS_3_COMPLETE"
+
+# ═══════════════════════════════════════════════════════════
+# STATISTICS
+# ═══════════════════════════════════════════════════════════
+
+statistics:
+  total_sessions: 4
+  total_actions: 58
+  total_time_minutes: 55
+  unique_models: 1

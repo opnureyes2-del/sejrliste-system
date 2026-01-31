@@ -22,6 +22,10 @@ PASS 3: OPTIMERET      — "Make it best"        — FINAL VERIFICATION
 
 ---
 
+
+
+> **TIP:** Check `_CURRENT/LEARNED_TIPS.md` for advice baseret på tidligere sejr!
+
 ## PASS 1: FUNGERENDE ("Get It Working")
 
 ### PHASE 0: OPTIMIZATION (Foer Bygning)
