@@ -746,6 +746,47 @@ class HealthCheck:
             self.ok(f"All shell scripts hardened", f"{count} scripts have set -euo pipefail")
 
     # ══════════════════════════════════════════════════════════════════════
+    # CHECK 12: Shared module enforcement — no duplicate functions
+    # ══════════════════════════════════════════════════════════════════════
+
+    def check_shared_modules(self):
+        """Ensure centralized functions are imported, not copy-pasted."""
+        print("\n── SHARED MODULES ──")
+        import re as _re
+
+        # Functions that MUST come from shared modules (not local defs)
+        centralized_functions = {
+            "count_checkboxes": {
+                "module": "checkbox_utils.py",
+                "allowed_in": {"checkbox_utils.py"},  # Only the module itself may define it
+            },
+        }
+
+        py_files = list(SYSTEM_PATH.glob("*.py"))
+        py_files += list(SCRIPTS_DIR.glob("*.py"))
+        py_files += list((SYSTEM_PATH / "app").rglob("*.py"))
+        py_files += list((SYSTEM_PATH / "pages").rglob("*.py"))
+
+        duplicates = []
+        for pyfile in sorted(py_files):
+            if any(x in str(pyfile) for x in ["__pycache__", "_unused", "venv", ".venv"]):
+                continue
+
+            content = pyfile.read_text(encoding="utf-8")
+            rel = pyfile.relative_to(SYSTEM_PATH)
+
+            for func_name, info in centralized_functions.items():
+                pattern = _re.compile(rf'^def {func_name}\s*\(', _re.MULTILINE)
+                if pattern.search(content) and pyfile.name not in info["allowed_in"]:
+                    duplicates.append(f"{rel} defines {func_name}() locally — must import from {info['module']}")
+
+        if duplicates:
+            for d in duplicates:
+                self.fail(f"Duplicate: {d}")
+        else:
+            self.ok("No duplicate shared functions", "All centralized modules used correctly")
+
+    # ══════════════════════════════════════════════════════════════════════
     # RUN ALL
     # ══════════════════════════════════════════════════════════════════════
 
@@ -766,6 +807,7 @@ class HealthCheck:
         self.check_code_references()
         self.check_bare_except()
         self.check_shell_standards()
+        self.check_shared_modules()
         self.check_services()
 
         total = self.passed + self.failed

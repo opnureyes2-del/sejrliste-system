@@ -9,6 +9,7 @@ from datetime import datetime
 import json
 import re
 import subprocess
+import sys
 
 st.set_page_config(page_title="Aktiv Sejr", page_icon="[LIST]", layout="wide")
 
@@ -16,15 +17,13 @@ SYSTEM_PATH = Path(__file__).parent.parent
 ACTIVE_DIR = SYSTEM_PATH / "10_ACTIVE"
 SCRIPTS_DIR = SYSTEM_PATH / "scripts"
 
+sys.path.insert(0, str(SYSTEM_PATH))
+from checkbox_utils import count_checkboxes  # Centralized — no more duplicates
+
 def get_active_sejr():
     if ACTIVE_DIR.exists():
         return sorted([f for f in ACTIVE_DIR.iterdir() if f.is_dir()], reverse=True)
     return []
-
-def count_checkboxes(content: str):
-    checked = len(re.findall(r'- \[[xX]\]', content))
-    unchecked = len(re.findall(r'- \[ \]', content))
-    return checked, checked + unchecked
 
 def run_script(script_name: str, args=None):
     script_path = SCRIPTS_DIR / script_name

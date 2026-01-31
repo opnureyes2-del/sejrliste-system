@@ -160,6 +160,7 @@ auto_health_check.py ──→ scanner alle YAML, scripts, docs, services
 | README.md | Dok | — | — |
 | README_EN.md | Dok | — | — |
 | requirements.txt | Config | pip install | — |
+| checkbox_utils.py | Python modul | web_app, masterpiece, auto_verify, pages/ | re |
 | .gitignore | Config | git | — |
 
 ### scripts/ (18 Python + 8 Shell)
@@ -239,15 +240,15 @@ victorylist.desktop (3 actions)
 
 ## KENDTE SVAGHEDER
 
-| Problem | Placering | Risiko |
-|---------|-----------|--------|
-| 8× duplicate count_checkboxes() | masterpiece, web_app, pages, scripts | Vedligeholdelse |
-| Hardcoded absolute paths i shell scripts | Alle .sh filer | Portabilitet (lav risiko — kun 1 maskine) |
-| app/sessions/ aldrig brugt | app/sessions/__init__.py | Dead code |
-| app/integrations/ kun brugt af tests | app/integrations/*.py | Dead code |
-| masterpiece.py har 117 funktioner vs masterpiece_en.py har 313 | GTK4 apps | DK version mangler features |
+| Problem | Placering | Risiko | Status |
+|---------|-----------|--------|--------|
+| ~~8× duplicate count_checkboxes()~~ | ~~masterpiece, web_app, pages, scripts~~ | ~~Vedligeholdelse~~ | **FIKSET:** checkbox_utils.py (1 modul, 6 importerer) |
+| Hardcoded absolute paths i shell scripts | Alle .sh filer | Portabilitet (lav risiko — kun 1 maskine) | Accepteret |
+| ~~app/sessions/ aldrig brugt~~ | ~~app/sessions/__init__.py~~ | ~~Dead code~~ | **FIKSET:** Flyttet til _unused/ |
+| app/integrations/ kun brugt af tests | app/integrations/*.py | Dead code (lav risiko) | Accepteret |
+| masterpiece.py har 117 funktioner vs masterpiece_en.py har 313 | GTK4 apps | DK version mangler features | Accepteret |
 
 ---
 
-**Verificeret af:** auto_health_check.py (49 checks)
+**Verificeret af:** auto_health_check.py (52 checks, 12 CHECK-kategorier)
 **Sidst opdateret:** 2026-01-31

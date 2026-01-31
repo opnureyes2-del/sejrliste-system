@@ -1279,10 +1279,7 @@ document.addEventListener('DOMContentLoaded', function() {
 # DATA MODELS
 # ═══════════════════════════════════════════════════════════════════════════════
 
-def count_checkboxes(content: str) -> tuple:
-    checked = len(re.findall(r'- \[[xX]\]', content))
-    unchecked = len(re.findall(r'- \[ \]', content))
-    return checked, checked + unchecked
+from checkbox_utils import count_checkboxes  # Centralized — no more duplicates
 
 def get_sejr_status(sejr_path: Path) -> dict:
     """Get complete status for a sejr"""

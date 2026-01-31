@@ -22,7 +22,9 @@ from pathlib import Path
 from datetime import datetime, timezone
 
 sys.path.insert(0, str(Path(__file__).parent))
+sys.path.insert(0, str(Path(__file__).parent.parent))
 from yaml_utils import parse_yaml_simple
+from checkbox_utils import count_checkboxes  # Centralized — no more duplicates
 
 
 def write_yaml_simple(filepath: Path, data: dict):
@@ -147,13 +149,6 @@ def extract_section_flexible(content: str, pass_num: int, review: bool = False) 
             return content[start_idx:best_end]
 
     return ""
-
-
-def count_checkboxes(content: str) -> tuple:
-    """Count checkboxes in content. Returns (checked, total)."""
-    checked = len(re.findall(r'- \[[xX]\]', content))
-    unchecked = len(re.findall(r'- \[ \]', content))
-    return checked, checked + unchecked
 
 
 def extract_score(content: str, pass_num: int, checkboxes_done: int = 0, checkboxes_total: int = 0) -> int:

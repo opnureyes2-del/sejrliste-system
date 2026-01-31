@@ -3374,11 +3374,7 @@ class SyncStatus:
 # HELPERS
 # 
 
-def count_checkboxes(content: str) -> tuple:
-    """Count checked and total checkboxes"""
-    checked = len(re.findall(r'- \[[xX]\]', content))
-    unchecked = len(re.findall(r'- \[ \]', content))
-    return checked, checked + unchecked
+from checkbox_utils import count_checkboxes  # Centralized — no more duplicates
 
 def get_sejr_info(path: Path) -> dict:
     """Get comprehensive info about a victory"""
