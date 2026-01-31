@@ -217,7 +217,7 @@ NY SEJR starter med VIDEN fra ALLE tidligere sejre
 | `auto_learn.py` | Pattern-ekstraktion fra alle sejre |
 | `auto_track.py` | Live state tracking til _CURRENT/ |
 | `auto_predict.py` | Forudsigelser for naeste skridt |
-| `auto_health_check.py` | Permanent systemintegritetsvagt (51 checks, 12 kategorier, daglig cron) |
+| `auto_health_check.py` | Permanent systemintegritetsvagt (52 checks, 12 kategorier, daglig cron) |
 
 ### AI Integration (3 scripts)
 | Script | Funktion |
