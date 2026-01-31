@@ -1,22 +1,98 @@
 # SEJR LISTE SYSTEM
 
-**Version:** 2.1.0 - SINGLE SOURCE OF TRUTH
-**Opdateret:** 2026-01-25
+**Version:** 3.0.0 - UNIFIED CROSS-DEVICE APP
+**Opdateret:** 2026-01-31
 **DNA Lag:** 7 (SELF-AWARE → SELF-OPTIMIZING)
+**Bygget af:** Kv1nt + Rasmus
 
 ---
 
 ## HVAD ER DET?
 
-Et **TVUNGET FORBEDRINGSSYSTEM** der sikrer at HVER opgave gennemgås 3 gange med stigende kvalitet:
+Et **TVUNGET FORBEDRINGSSYSTEM** med 3 brugerflader (desktop, web, terminal) der sikrer at HVER opgave gennemgaas 3 gange med stigende kvalitet — og at systemet LAERER af HVER afsluttet opgave.
 
 | Pass | Fokus | Krav |
 |------|-------|------|
-| **Pass 1** | Planlægning | Baseline score |
+| **Pass 1** | Planlaegning | Baseline score |
 | **Pass 2** | Eksekvering | Score > Pass 1 |
-| **Pass 3** | 7-DNA Review | Score > Pass 2, Total ≥ 24/30 |
+| **Pass 3** | 7-DNA Review | Score > Pass 2, Total >= 24/30 |
 
-**ARKIVERING ER BLOKERET** indtil alle 3 passes er færdige med tilstrækkelig score.
+**ARKIVERING ER BLOKERET** indtil alle 3 passes er faerdige med tilstraekkelig score.
+
+---
+
+## HVAD SKAL DET BRUGES TIL?
+
+### For Rasmus (daglig brug)
+- **Planlaeg opgaver systematisk** — aldrig start uden research og plan
+- **Tving dig selv til at forbedre** — Pass 2 SKAL vaere bedre end Pass 1
+- **Laer af dine fejl permanent** — systemet husker alle patterns
+- **Arbejd fra alle enheder** — desktop, telefon, terminal
+- **Se din fremgang** — leaderboard, statistik, laering
+
+### For AI-modeller (Claude, Gemini, etc.)
+- **Fokus lock** — CLAUDE.md tvinger modellen til EN opgave ad gangen
+- **Verificering** — kan ikke lyve om fremgang (auto_verify checker)
+- **Score system** — objektiv maaling af AI performance
+- **Pattern injection** — laeringer fra tidligere sejre injiceres automatisk
+
+### For systemet selv (automatisk)
+- **Daglig laering** — kl 08:00 scanner den alle arkiverede sejre for patterns
+- **Feedback loop** — nye sejre faar automatisk top-5 patterns injiceret
+- **Self-archiving** — blokerer arkivering indtil kvalitetskrav er opfyldt
+- **Self-optimizing** — templates forbedres loebende baseret paa data
+
+---
+
+## ADGANG — 6 MAADER AT BRUGE SYSTEMET
+
+### 1. Desktop App (GTK4 Native)
+```bash
+# Dobbeltklik "Sejrliste" paa desktop
+# Eller:
+python3 masterpiece_en.py   # English
+python3 masterpiece.py       # Dansk
+```
+- Fuld GNOME-integration med Libadwaita
+- Sidebar navigation, real-time opdatering
+- 7 DNA lag visualisering
+
+### 2. Web App (Browser)
+```
+http://localhost:8501
+```
+- Starter AUTOMATISK ved login (systemd service)
+- 5 sider: Aktive Sejre, Arkiv, Ny Sejr, Statistik, Indstillinger
+- Koer scripts direkte fra UI
+
+### 3. Telefon (via Tailscale HTTPS)
+```
+https://rog.tailc9c1c5.ts.net
+```
+- Sikker forbindelse via Tailscale mesh VPN
+- Samme web app som localhost
+- Virker OVERALT (ikke kun lokal WiFi)
+
+### 4. Telefon (lokal WiFi)
+```
+http://10.168.6.233:8501
+```
+- Direkte adgang paa samme netvaerk
+- QR kode: `bash scripts/show_phone_url.sh`
+
+### 5. Terminal Dashboard
+```bash
+sejrliste                    # Global kommando — fuld system status
+bash scripts/sejr_dashboard.sh  # Detaljeret enforcement dashboard
+```
+
+### 6. TUI App (Textual)
+```bash
+python3 app/sejr_app.py
+```
+- Steam-style terminal brugerflade
+- Keyboard-drevet (j/k navigation, Enter for aabning)
+- Real-time fil-overvagning
 
 ---
 
@@ -26,208 +102,161 @@ Et **TVUNGET FORBEDRINGSSYSTEM** der sikrer at HVER opgave gennemgås 3 gange me
 cd "/home/rasmus/Desktop/sejrliste systemet"
 
 # 1. Opret ny sejr
-python3 scripts/generate_sejr.py --name "Min Opgave"
+python3 scripts/generate_sejr.py --name "Min Opgave" --goal "Hvad bygger vi" --tech "Python"
 
-# 2. Byg DYNAMISK CLAUDE.md
-python3 scripts/build_claude_context.py --all
+# 2. Arbejd med sejr i 10_ACTIVE/
 
-# 3. Arbejd med sejr i 10_ACTIVE/
-
-# 4. Verificer progress (kør ofte!)
+# 3. Verificer progress (koer ofte!)
 python3 scripts/auto_verify.py --all
 
-# 5. Arkiver når færdig (blokeret til 3-pass done)
-python3 scripts/auto_archive.py --sejr "MIN_OPGAVE_2026-01-25"
-```
+# 4. Arkiver naar faerdig (blokeret til 3-pass done)
+python3 scripts/auto_archive.py --sejr "MIN_OPGAVE_2026-01-31"
 
----
-
-## KOMPLET MAPPE STRUKTUR
-
-```
-sejrliste systemet/
-│
-├── README.md ← Du læser denne (inkl. Quick Start)
-├── ADMIRAL.md ← 🆕 HVAD ER EN ADMIRAL? (5 kvaliteter)
-├── MODEL_ONBOARDING.md ← 🆕 AI ONBOARDING (læs først som ny model!)
-├── SCRIPT_REFERENCE.md ← 🆕 Alle 11 scripts dokumenteret
-├── EKSEMPLER.md ← 🆕 10+ konkrete eksempler
-├── ARBEJDSFORHOLD.md ← KOMPLET VEJLEDNING (AI regler inkluderet)
-├── MANUAL.md ← Fuld dokumentation (3-pass + score system)
-├── LOG_FORMAT.md ← Log format specifikation
-├── DNA.yaml ← System identitet
-├── ARKITEKTUR.md ← System arkitektur
-├── view.py ← Terminal viewer (simpel)
-├── app/sejr_app.py ← TUI app (Textual - avanceret)
-│
-├── scripts/ ← Automatisering (9 scripts)
-│ ├── generate_sejr.py → Opret ny sejr + CLAUDE.md
-│ ├── build_claude_context.py → DYNAMISK CLAUDE.md builder
-│ ├── update_claude_focus.py → Opdater fokus state
-│ ├── auto_verify.py → 3-pass verification
-│ ├── auto_archive.py → Arkivering (blokeret til done)
-│ ├── auto_track.py → State tracking
-│ ├── auto_learn.py → Pattern learning
-│ ├── auto_predict.py → Predictions
-│ └── admiral_tracker.py → Score tracking + leaderboard
-│
-├── 00_TEMPLATES/ ← Skabeloner (4 stk)
-│ ├── SEJR_TEMPLATE.md → Master template med 3-pass
-│ ├── CLAUDE.md → Fokus lock template
-│ ├── STATUS_TEMPLATE.yaml → Unified status template
-│ └── SESSION_TJEK.md → Session start tjekliste
-│
-├── 10_ACTIVE/ ← AKTIVE SEJR (arbejd her)
-│ └── {OPGAVE_DATO}/
-│ ├── SEJR_LISTE.md → Hovedopgave med checkboxes
-│ ├── CLAUDE.md → AI FOKUS LOCK (genereret)
-│ ├── STATUS.yaml → UNIFIED (pass + score + model)
-│ └── AUTO_LOG.jsonl → MASTER (alt logging)
-│
-├── 90_ARCHIVE/ ← FÆRDIGE SEJR (kun konklusion)
-│ └── {OPGAVE_DATO_TID}/
-│ └── CONCLUSION.md → Semantisk essens
-│
-└── _CURRENT/ ← System state (5 filer)
- ├── STATE.md → Current state
- ├── DELTA.md → Hvad er nyt
- ├── NEXT.md → Predictions
- ├── PATTERNS.yaml → Lærte mønstre
- └── LEADERBOARD.md → Global konkurrence leaderboard
+# 5. Se systemstatus
+sejrliste
 ```
 
 ---
 
 ## EN SEJR MAPPE INDEHOLDER
 
-Når du opretter en ny sejr, får du disse **4 filer** (Single Source of Truth):
+Naar du opretter en ny sejr, faar du disse **5 filer** (Single Source of Truth):
 
-### 1. SEJR_LISTE.md
+### 1. PROJECT_BRIEF.md
+> LAES DENNE FOERST. 30 sekunder. Komplet forstaaelse.
+- Maal, success criteria, scope, teknologi
+
+### 2. SEJR_LISTE.md
 Hovedopgaven med alle checkboxes organiseret i 3 passes:
-- **Pass 1:** PHASE 0-1-2 (Research, Planlægning, Verificering)
+- **Pass 1:** PHASE 0-1-2 (Research, Planlaegning, Verificering)
 - **Pass 2:** PHASE 2-3-4 (Udvikling, Test, Git)
 - **Pass 3:** 7-DNA Gennemgang (alle 7 lag checkes)
 
-### 2. CLAUDE.md
-**DYNAMISK** fokus lock (genereret fra STATUS.yaml):
-- Præcis hvilken checkbox der er næste
-- Progress bars for hver pass
-- Scores og krav
+### 3. CLAUDE.md
+**DYNAMISK** fokus lock (genereret + pattern-injiceret):
+- Praecis hvilken checkbox der er naeste
+- Top 5 laerte patterns fra PATTERNS.json
 - Anti-dum checkpoints
 
-### 3. STATUS.yaml (UNIFIED)
+### 4. STATUS.yaml (UNIFIED)
 **Single Source of Truth** for ALT status:
 - **Pass tracking:** Completion %, scores, checkboxes
 - **Score tracking:** Positive/negative events, rank
 - **Model tracking:** Hvilke modeller arbejdede, sessions
-- **Statistics:** Total tid, actions, models
 
-### 4. AUTO_LOG.jsonl (MASTER)
+### 5. AUTO_LOG.jsonl (MASTER)
 **Single Source of Truth** for ALT logging:
 - Alle handlinger med ISO 8601 timestamps
-- Actor info (model_id, model_name, type)
-- Terminal output (command, exit_code, stdout/stderr)
+- Actor info (model_id, type)
 - Session tracking
 
-**Se `LOG_FORMAT.md` for komplet specifikation.**
-
-> **INGEN REDUNDANS:** Alt data eksisterer KUN ét sted!
+> **INGEN REDUNDANS:** Alt data eksisterer KUN et sted!
 
 ---
 
 ## 3-PASS KONKURRENCE SYSTEM
 
-### Pass 1: PLANLÆGNING
+### Pass 1: PLANLAEGNING
 - Research 3 alternativer (PHASE 0)
 - Definer opgaven (PHASE 1)
 - Plan verificering (PHASE 2)
 - **Giv score og udfyld REVIEW**
 
 ### Pass 2: EKSEKVERING
-- Implementer løsning
-- Kør tests (minimum 3)
+- Implementer loesning
+- Koer tests (minimum 3)
 - Git workflow
-- **Score SKAL være højere end Pass 1**
+- **Score SKAL vaere hoejere end Pass 1**
 
 ### Pass 3: 7-DNA GENNEMGANG
-- Gennemgå ALLE 7 DNA lag:
- 1. SELF-AWARE - Kender systemet sig selv?
- 2. SELF-DOCUMENTING - Er alt logget?
- 3. SELF-VERIFYING - Er alt testet?
- 4. SELF-IMPROVING - Har vi lært noget?
- 5. SELF-ARCHIVING - Kun essens bevaret?
- 6. PREDICTIVE - Hvad er næste skridt?
- 7. SELF-OPTIMIZING - Kunne vi have gjort det bedre?
-- Kør 5+ tests
-- **Score SKAL være højere end Pass 2**
-- **Total score SKAL være ≥ 24/30**
+- Gennemgaa ALLE 7 DNA lag:
+  1. SELF-AWARE — Kender systemet sig selv?
+  2. SELF-DOCUMENTING — Er alt logget?
+  3. SELF-VERIFYING — Er alt testet?
+  4. SELF-IMPROVING — Har vi laert noget?
+  5. SELF-ARCHIVING — Kun essens bevaret?
+  6. PREDICTIVE — Hvad er naeste skridt?
+  7. SELF-OPTIMIZING — Kunne vi have gjort det bedre?
+- Koer 5+ tests
+- **Score SKAL vaere hoejere end Pass 2**
+- **Total score SKAL vaere >= 24/30**
 
 ---
 
-## ARKIVERING KRAV
+## LAERINGS-SYSTEMET (FEEDBACK LOOP)
 
-Du kan IKKE arkivere før:
-- [ ] Alle 3 passes complete
-- [ ] Pass 2 score > Pass 1 score
-- [ ] Pass 3 score > Pass 2 score
-- [ ] Total score ≥ 24/30
-- [ ] 5+ tests passed
-- [ ] 7-DNA gennemgang udført
-
----
-
-## CLAUDE FOKUS SYSTEM
-
-### For AI Modeller
-Når Claude åbner en sejr mappe:
-1. **LÆS** `ARBEJDSFORHOLD.md` (obligatorisk)
-2. **LÆS** `CLAUDE.md` i sejr mappen
-3. **BEKRÆFT** forståelse til bruger
-4. **ARBEJD** KUN på current task
-5. **AFKRYDS** checkbox når færdig
-6. **OPDATER** CLAUDE.md og fortsæt
-
-### Anti-Dum Checkpoints
-Hver 5 handlinger:
-- Genlæs CLAUDE.md
-- Bekræft task og pass
-- Find næste unchecked checkbox
-- Fortsæt
-
----
-
-## SCRIPTS REFERENCE
-
-| Script | Kommando | Funktion |
-|--------|----------|----------|
-| Opret sejr | `python3 scripts/generate_sejr.py --name "X"` | Ny sejr + alle filer |
-| Byg context | `python3 scripts/build_claude_context.py --all` | Dynamisk CLAUDE.md |
-| Verificer | `python3 scripts/auto_verify.py --all` | Check 3-pass status |
-| Arkiver | `python3 scripts/auto_archive.py --sejr "X"` | Arkiver (hvis allowed) |
-| Track | `python3 scripts/auto_track.py` | Opdater STATE.md |
-| Learn | `python3 scripts/auto_learn.py` | Opdater PATTERNS.yaml |
-| Predict | `python3 scripts/auto_predict.py` | Generer NEXT.md |
-| Score | `python3 scripts/admiral_tracker.py --sejr "X"` | Score tracking |
-
----
-
-## VIEWS (Terminal)
-
-```bash
-# Simpel terminal viewer
-python3 view.py
-
-# Avanceret TUI app (Textual)
-python3 app/sejr_app.py
+```
+Sejr FAERDIG
+    |
+    v
+auto_archive.py → flytter til 90_ARCHIVE/
+    |
+    v
+auto_learn.py → scanner ALLE arkiverede sejre
+    |                → identificerer patterns, bugs, workflows
+    |                → gemmer i PATTERNS.json (52 patterns, stigende)
+    v
+generate_sejr.py → laeser top-5 patterns
+    |             → injicerer i ny CLAUDE.md som "LEARNED WISDOM"
+    |             → tracker applied_count for fair rotation
+    v
+NY SEJR starter med VIDEN fra ALLE tidligere sejre
 ```
 
+**Cron job:** Daglig laering kl 08:00 (uanset om der er nye sejre)
+
 ---
 
-## [ADMIRAL] ADMIRAL KONKURRENCE SYSTEM
+## ALLE SCRIPTS (25 stk)
 
-Et **SCORE SYSTEM** der måler AI modellers performance objektivt!
+### Kvalitet og Laering (7 scripts)
+| Script | Funktion |
+|--------|----------|
+| `auto_verify.py` | 3-pass verifikation + blocker-check |
+| `auto_archive.py` | Arkivering (blokeret til done) + trigger laering |
+| `auto_learn.py` | Pattern-ekstraktion fra alle sejre |
+| `auto_optimize.py` | Template-forbedring baseret paa patterns |
+| `auto_track.py` | Live state tracking til _CURRENT/ |
+| `auto_live_status.py` | LIVE_STATUS.md dashboard (--watch mode) |
+| `auto_predict.py` | Forudsigelser for naeste skridt |
 
-### Positive Points (Belønning)
+### AI Integration (6 scripts)
+| Script | Funktion |
+|--------|----------|
+| `ai_assistant.py` | Unified task router (Opus/Sonnet/Haiku/Ollama) |
+| `model_router.py` | Intelligent model-valg baseret paa opgavetype |
+| `token_tools.py` | Token-taelling + cost-estimering |
+| `hybrid_generate.py` | Ollama draft + Claude finish (sparer 70% tokens) |
+| `dna_model_enforcer.py` | Verificer at rette model bruges til rette DNA-lag |
+| `automation_pipeline.py` | Syntax → Lint → Security → Rapport |
+
+### Generation og Kontekst (4 scripts)
+| Script | Funktion |
+|--------|----------|
+| `generate_sejr.py` | Opret ny sejr (5 filer + pattern injection) |
+| `build_claude_context.py` | Dynamisk CLAUDE.md builder |
+| `update_claude_focus.py` | Opdater fokus-state |
+| `build_knowledge_base.py` | ChromaDB indeksering af al dokumentation |
+
+### Dashboard og Monitoring (3 scripts)
+| Script | Funktion |
+|--------|----------|
+| `sejrliste_status.sh` | System status overblik (symlinked til `sejrliste`) |
+| `sejr_dashboard.sh` | Terminal enforcement dashboard |
+| `show_phone_url.sh` | QR kode til telefon-adgang |
+
+### Utility (3 scripts)
+| Script | Funktion |
+|--------|----------|
+| `admiral_tracker.py` | AI model score leaderboard |
+| `timestamp_utils.py` | Timestamp-formattering |
+| `generate_icon_sizes.py` | Desktop app ikon-generering |
+
+---
+
+## ADMIRAL KONKURRENCE SYSTEM
+
+### Positive Points (Beloennning)
 | Event | Points |
 |-------|--------|
 | CHECKBOX_DONE | +1 |
@@ -236,7 +265,7 @@ Et **SCORE SYSTEM** der måler AI modellers performance objektivt!
 | ADMIRAL_MOMENT | +10 |
 | SEJR_ARCHIVED | +20 |
 
-### Negative Points (Straf × 2!)
+### Negative Points (Straf x2!)
 | Event | Points |
 |-------|--------|
 | TOKEN_WASTE | -6 |
@@ -247,29 +276,106 @@ Et **SCORE SYSTEM** der måler AI modellers performance objektivt!
 ### Rankings
 | Rang | Score |
 |------|-------|
-| [ADMIRAL] STORADMIRAL | 150+ |
+| STORADMIRAL | 150+ |
 | ADMIRAL | 100-149 |
-| [MEDAL] KAPTAJN | 50-99 |
-| LØJTNANT | 20-49 |
+| KAPTAJN | 50-99 |
+| LOEJTNANT | 20-49 |
 | KADET | 0-19 |
-| [DEAD] SKIBSDRENG | < 0 |
-
-### Kommandoer
-```bash
-# Se leaderboard
-python3 scripts/admiral_tracker.py --leaderboard
-
-# Log event
-python3 scripts/admiral_tracker.py --sejr "X" --event "CHECKBOX_DONE"
-
-# Se score
-python3 scripts/admiral_tracker.py --sejr "X" --score
-```
-
-Se MANUAL.md for fuld dokumentation af score systemet.
+| SKIBSDRENG | < 0 |
 
 ---
 
-**Bygget af:** Kv1nt + Rasmus
-**Dato:** 2026-01-25
-**Status:** [OK] OPERATIONEL
+## INFRASTRUKTUR
+
+### Automatisk
+- **systemd service:** `sejrliste-web.service` — auto-start Streamlit ved login
+- **Cron kl 08:00:** Daglig pattern-laering
+- **Cron soendag 03:00:** Git maintenance
+
+### Tailscale
+- **Desktop ROG:** 100.86.106.42
+- **Telefon Pixel 9 Pro:** 100.84.174.88
+- **HTTPS:** https://rog.tailc9c1c5.ts.net (via Tailscale Serve)
+- **Konto:** opnureyes2@gmail.com
+
+### Desktop
+- **Launcher:** victorylist.desktop (1 fil, 3 actions: GTK4 / Web / TUI)
+- **Global kommando:** `sejrliste` (symlinked)
+
+---
+
+## MAPPE STRUKTUR
+
+```
+sejrliste systemet/
+|
+|-- masterpiece.py              # GTK4 desktop app (Dansk)
+|-- masterpiece_en.py           # GTK4 desktop app (English)
+|-- web_app.py                  # Streamlit web app (Dansk)
+|-- web_app_en.py               # Streamlit web app (English)
+|-- start-web.sh                # Wrapper for systemd service
+|-- enforcement_engine.py       # Kvalitets-enforcement
+|-- intro_integration.py        # INTRO folder integration
+|
+|-- app/                        # TUI terminal app
+|   |-- sejr_app.py             # Hoved TUI (Textual, Steam-style)
+|   |-- widgets/                # UI komponenter
+|   |-- integrations/           # Git, INTRO, context sync
+|   |-- utils/                  # Utilities
+|   +-- watcher.py              # Filesystem overvagning
+|
+|-- scripts/                    # 25 automation scripts
+|
+|-- pages/                      # Streamlit web pages
+|   |-- 1_Aktiv_Sejr.py
+|   |-- 2_Arkiv.py
+|   |-- 3_Ny_Sejr.py
+|   |-- 4_Statistik.py
+|   +-- 5_Indstillinger.py
+|
+|-- 00_TEMPLATES/               # Skabeloner (5 stk)
+|-- 10_ACTIVE/                  # Aktive sejre (arbejd her)
+|-- 90_ARCHIVE/                 # Arkiverede sejre (31 stk, 100% Grand Admiral)
+|-- _CURRENT/                   # System state (live status, patterns, leaderboard)
++-- assets/                     # Ikoner og grafik
+```
+
+---
+
+## STATISTIK
+
+| Metric | Vaerdi |
+|--------|--------|
+| Arkiverede sejre | 31 |
+| Gennemsnitlig score | 29.9/30 (99.7%) |
+| Grand Admiral rate | 100% |
+| Laerte patterns | 52 |
+| Scripts | 25 |
+| Brugerflader | 3 (GTK4 + Web + TUI) |
+| Adgangsmetoder | 6 |
+| DNA lag | 7 |
+| Aktive sejre | 1 |
+
+---
+
+## DOKUMENTATION
+
+| Fil | Indhold |
+|-----|---------|
+| `README.md` | Denne fil — komplet overblik |
+| `MANUAL.md` | Fuld dokumentation (3-pass + score) |
+| `ADMIRAL.md` | Hvad er en Admiral? (5 kvaliteter) |
+| `MODEL_ONBOARDING.md` | AI onboarding (laes foerst som ny model) |
+| `SCRIPT_REFERENCE.md` | Alle scripts dokumenteret |
+| `EKSEMPLER.md` | 10+ konkrete eksempler |
+| `ARBEJDSFORHOLD.md` | Komplet vejledning (AI regler) |
+| `ARKITEKTUR.md` | System arkitektur |
+| `LOG_FORMAT.md` | Log format specifikation |
+| `PREVENTION_RULES.md` | Forebyggelsesregler |
+
+Alle dokumenter findes paa baade dansk og engelsk (*_EN.md).
+
+---
+
+**Status:** OPERATIONEL — Cross-device, self-learning, 100% Grand Admiral rate
+**Git:** github.com/opnureyes2-del/sejrliste-system
