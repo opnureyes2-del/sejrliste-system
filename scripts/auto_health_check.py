@@ -670,6 +670,82 @@ class HealthCheck:
             self.ok("No dead file references in code", "All .py files clean")
 
     # ══════════════════════════════════════════════════════════════════════
+    # CHECK 10: Python code quality — bare except: is forbidden
+    # ══════════════════════════════════════════════════════════════════════
+
+    def check_bare_except(self):
+        """Detect bare except: statements — must always specify exception type."""
+        print("\n── CODE QUALITY ──")
+        import re as _re
+
+        # Scan all Python files (except venv, _unused, __pycache__, health check itself)
+        py_files = list(SYSTEM_PATH.glob("*.py"))
+        py_files += list(SCRIPTS_DIR.glob("*.py"))
+        py_files += list((SYSTEM_PATH / "app").rglob("*.py"))
+        py_files += list((SYSTEM_PATH / "pages").rglob("*.py"))
+
+        bare_except_files = []
+        total_bare = 0
+
+        for pyfile in sorted(py_files):
+            if any(x in str(pyfile) for x in ["__pycache__", "_unused", "venv", ".venv"]):
+                continue
+            # Don't flag auto_health_check.py itself (it lists "except:" as a search pattern)
+            if pyfile.name == "auto_health_check.py":
+                continue
+
+            content = pyfile.read_text(encoding="utf-8")
+            rel = pyfile.relative_to(SYSTEM_PATH)
+
+            # Find bare except: (not "except SomeException:" and not "except Exception:")
+            pattern = _re.compile(r'^\s*except\s*:\s*$', _re.MULTILINE)
+            matches = pattern.findall(content)
+            if matches:
+                count = len(matches)
+                total_bare += count
+                bare_except_files.append(f"{rel} ({count}×)")
+
+        if bare_except_files:
+            for bf in bare_except_files:
+                self.fail(f"Bare except: in {bf}", "Must specify exception type (e.g. except Exception:)")
+            self.fail(f"Total bare except:", f"{total_bare} found — all must be except Exception: or more specific")
+        else:
+            self.ok("No bare except: statements", "All exceptions are typed")
+
+    # ══════════════════════════════════════════════════════════════════════
+    # CHECK 11: Shell script standards — error handling mandatory
+    # ══════════════════════════════════════════════════════════════════════
+
+    def check_shell_standards(self):
+        """Ensure all shell scripts have set -euo pipefail for error handling."""
+        print("\n── SHELL STANDARDS ──")
+
+        sh_files = list(SYSTEM_PATH.glob("*.sh"))
+        sh_files += list(SCRIPTS_DIR.glob("*.sh"))
+
+        missing_safety = []
+        for shfile in sorted(sh_files):
+            if any(x in str(shfile) for x in ["_unused", "venv"]):
+                continue
+            content = shfile.read_text(encoding="utf-8")
+            rel = shfile.relative_to(SYSTEM_PATH)
+
+            has_set_e = "set -e" in content or "set -euo" in content
+            has_shebang = content.startswith("#!/bin/bash") or content.startswith("#!/usr/bin/env bash")
+
+            if not has_shebang:
+                missing_safety.append(f"{rel}: Missing #!/bin/bash shebang")
+            if not has_set_e:
+                missing_safety.append(f"{rel}: Missing 'set -euo pipefail' (errors silently ignored)")
+
+        if missing_safety:
+            for m in missing_safety:
+                self.fail(f"Shell: {m}")
+        else:
+            count = len(sh_files)
+            self.ok(f"All shell scripts hardened", f"{count} scripts have set -euo pipefail")
+
+    # ══════════════════════════════════════════════════════════════════════
     # RUN ALL
     # ══════════════════════════════════════════════════════════════════════
 
@@ -688,6 +764,8 @@ class HealthCheck:
         self.check_documentation()
         self.check_doc_content_accuracy()
         self.check_code_references()
+        self.check_bare_except()
+        self.check_shell_standards()
         self.check_services()
 
         total = self.passed + self.failed

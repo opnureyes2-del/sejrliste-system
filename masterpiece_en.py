@@ -2618,7 +2618,7 @@ def send_notification(title: str, body: str, icon: str = "emblem-ok-symbolic"):
             title,
             body
         ], check=False)
-    except:
+    except Exception:
         pass
 
 def get_system_stats() -> dict:
@@ -2742,7 +2742,7 @@ class SejrConverter:
                     for line in content.split("\n"):
                         if line.startswith("# ") or line.startswith("## "):
                             analysis["detected_sections"].append(line.strip("#").strip())
-                except:
+                except Exception:
                     pass
 
         elif input_type == "text":
@@ -3041,7 +3041,7 @@ class IntelligentSearch:
                         try:
                             data = json.loads(line)
                             context = f"{data.get('action', 'unknown')}: {data.get('detail', line[:50])}"
-                        except:
+                        except Exception:
                             context = line[:100]
 
                         results.append({
@@ -3403,7 +3403,7 @@ def get_sejr_info(path: Path) -> dict:
         try:
             date_part = path.name.split("2026-01-")[1][:2]
             info["date"] = f"Yesn {date_part}, 2026"
-        except:
+        except Exception:
             pass
 
     # Count checkboxes
@@ -4307,7 +4307,7 @@ class ChatMessage(Gtk.Box):
         if self.file_link:
             try:
                 subprocess.Popen(["xdg-open", self.file_link])
-            except:
+            except Exception:
                 pass
 
 
@@ -5343,7 +5343,7 @@ class Vindertavle(Gtk.Box):
                                     victory_data["pass_level"] = data["pass_tracking"].get("current_pass", 1)
                                 else:
                                     victory_data["pass_level"] = data.get("current_pass", 1)
-                        except:
+                        except Exception:
                             pass
 
                     victories.append(victory_data)
@@ -15593,7 +15593,7 @@ Du er på vej mod Admiral niveau!"""
             overlay = self.get_content()
             if hasattr(overlay, 'add_toast'):
                 overlay.add_toast(toast)
-        except:
+        except Exception:
             print(f"Toast: {message}")
 
     # 

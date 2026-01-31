@@ -61,5 +61,5 @@ def get_git_status(sejr_path: Path) -> dict:
             "clean": len(result.stdout.strip()) == 0,
             "changes": len(result.stdout.strip().split("\n")) if result.stdout.strip() else 0,
         }
-    except:
+    except Exception:
         return {"clean": False, "changes": -1}

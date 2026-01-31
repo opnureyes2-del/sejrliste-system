@@ -268,7 +268,7 @@ class StatisticsView:
         try:
             content = self.patterns_file.read_text()
             return content.count("pattern:")
-        except:
+        except Exception:
             return 0
 
     def _estimate_time_saved(self) -> str:

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # Show the phone access URL and QR code for the Sejrliste web app
 LOCAL_IP=$(hostname -I | awk '{print $1}')
 URL="http://${LOCAL_IP}:8501"

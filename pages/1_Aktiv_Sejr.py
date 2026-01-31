@@ -94,7 +94,7 @@ else:
                     ts = entry.get("timestamp", "")[:19]
                     action = entry.get("action", "")
                     st.code(f"[{ts}] {action}")
-                except:
+                except Exception:
                     pass
 
     with col2:

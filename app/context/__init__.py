@@ -61,7 +61,7 @@ def load_constraints() -> dict:
                 elif value.isdigit():
                     value = int(value)
                 result[current_section][key] = value
-    except:
+    except Exception:
         pass
     return result
 

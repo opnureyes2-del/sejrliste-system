@@ -51,7 +51,7 @@ try:
         st.warning(f"Uncommitted changes:\n{result.stdout}")
     else:
         st.success("[OK] Git clean - all committed")
-except:
+except Exception:
     st.error("Git not available")
 
 # Maintenance

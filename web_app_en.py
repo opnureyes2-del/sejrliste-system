@@ -1332,7 +1332,7 @@ def get_sejr_status(sejr_path: Path) -> dict:
                 result["phase"] = "PASS 2"
             else:
                 result["phase"] = "PASS 1"
-        except:
+        except Exception:
             pass
 
     # List files in folder
@@ -2003,7 +2003,7 @@ else:
                     <span class="action">{action}</span>
                 </div>
                 """, unsafe_allow_html=True)
-            except:
+            except Exception:
                 pass
         st.markdown('</div>', unsafe_allow_html=True)
     else:
@@ -2062,7 +2062,7 @@ else:
             from datetime import datetime
             est = datetime.fromisoformat(timeline.estimated_completion)
             st.info(f"⏱ Estimated completion: **{est.strftime('%Y-%m-%d %H:%M')}**")
-        except:
+        except Exception:
             pass
 
         # Final outcome
@@ -2104,7 +2104,7 @@ with col_realtime1:
                                 entry = json.loads(line)
                                 entry['sejr'] = folder.name[:15]
                                 live_actions.append(entry)
-                    except:
+                    except Exception:
                         pass
 
     # Sort by timestamp and show latest

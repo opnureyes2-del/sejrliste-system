@@ -125,7 +125,7 @@ def extract_learnings_from_sejr(sejr_path: Path):
                 for line in f:
                     if line.strip():
                         actions.append(json.loads(line))
-        except:
+        except Exception:
             pass
 
     return {
@@ -412,7 +412,7 @@ def update_patterns_yaml(system_path: Path, new_patterns: list):
                         data['system'] = loaded['system']
                     if 'learned_patterns' in loaded and isinstance(loaded['learned_patterns'], list):
                         data['learned_patterns'] = loaded['learned_patterns']
-        except:
+        except Exception:
             pass  # Use fresh data if JSON is corrupt
 
     # Add new patterns (avoid duplicates)

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Cron wrapper for health check — log rotation + desktop notification
 cd "/home/rasmus/Desktop/sejrliste systemet"
 

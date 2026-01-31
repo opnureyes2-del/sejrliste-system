@@ -58,7 +58,7 @@ def parse_log(filepath: Path) -> list:
             try:
                 entry = json.loads(line)
                 entries.append(entry)
-            except:
+            except Exception:
                 pass
 
     return entries[-5:]  # Last 5
@@ -68,7 +68,7 @@ def format_timestamp(ts: str) -> str:
     try:
         dt = datetime.fromisoformat(ts.replace("Z", "+00:00"))
         return dt.strftime("%H:%M")
-    except:
+    except Exception:
         return ts[:5] if ts else "??:??"
 
 def print_box(title: str, content: list, width: int = 50):
@@ -130,7 +130,7 @@ def display_sejr(sejr_path: Path):
     if isinstance(completion, str):
         try:
             completion = int(float(completion))
-        except:
+        except Exception:
             completion = 0
 
     status_text = status.get("status", "unknown")
