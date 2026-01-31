@@ -146,7 +146,7 @@ class TestStatusIndicator(unittest.TestCase):
     def test_get_icon_blocked(self):
         """Test blocked status icon."""
         icon = StatusIndicator.get_icon("blocked")
-        self.assertIn("[ERROR]", icon)
+        self.assertIn("[BLOCKED]", icon)
 
     def test_get_icon_unknown(self):
         """Test unknown status returns default."""

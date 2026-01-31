@@ -63,6 +63,7 @@ class ModelRouter:
         self.api_key = os.environ.get("ANTHROPIC_API_KEY")
         self.current_model: Optional[ModelType] = None
         self.tokens_used = 0
+        self._usage_stats: dict = {}
 
     def get_model_for_task(self, task_type: str) -> ModelType:
         return MODEL_ROUTING.get(task_type, ModelType.HAIKU)
@@ -80,6 +81,27 @@ class ModelRouter:
             self.current_model = self.get_model_for_task(task_type)
         return self.current_model
 
+    def track_usage(self, model: Optional[ModelType]):
+        """Track model usage for statistics."""
+        if model is None:
+            return
+        key = model.value
+        self._usage_stats[key] = self._usage_stats.get(key, 0) + 1
+        self.tokens_used += 1
+
+    def get_usage_stats(self) -> dict:
+        """Get model usage statistics."""
+        return self._usage_stats.copy()
+
+    def get_model_info(self, model: ModelType) -> dict:
+        """Get information about a model."""
+        info = {
+            ModelType.OPUS: {"name": "Claude Opus 4.5", "tier": "premium"},
+            ModelType.SONNET: {"name": "Claude Sonnet 4", "tier": "standard"},
+            ModelType.HAIKU: {"name": "Claude Haiku 3.5", "tier": "fast"},
+        }
+        return info.get(model, {"name": "Unknown", "tier": "unknown"})
+
     def get_model_short_name(self) -> str:
         if self.current_model == ModelType.OPUS:
             return "Opus"
@@ -88,5 +110,19 @@ class ModelRouter:
         elif self.current_model == ModelType.HAIKU:
             return "Haiku"
         return "None"
+
+# Script to model mapping
+SCRIPT_MODELS = {
+    "auto_verify": ModelType.HAIKU,
+    "auto_learn": ModelType.OPUS,
+    "auto_archive": ModelType.SONNET,
+    "auto_predict": ModelType.OPUS,
+    "auto_health_check": ModelType.HAIKU,
+    "generate_sejr": ModelType.SONNET,
+}
+
+def get_model_for_script(script_name: str) -> ModelType:
+    """Get the recommended model for a script."""
+    return SCRIPT_MODELS.get(script_name, ModelType.HAIKU)
 
 router = ModelRouter()

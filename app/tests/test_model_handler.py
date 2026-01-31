@@ -20,7 +20,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 import unittest
 from app.models.model_handler import ModelHandler, ModelConfig, ModelResponse
-from app.model_router import Model
+from app.model_router import ModelType
 
 
 class TestModelHandler(unittest.TestCase):
@@ -46,8 +46,10 @@ class TestModelHandler(unittest.TestCase):
 
     def test_dna_lag_model_selection(self):
         """Test model selection for DNA lags."""
-        # Lag 1-3 should use Haiku
+        # Lag 1 = None in router, defaults to haiku in handler
         self.assertEqual(self.handler.get_model_for_dna_lag(1), "haiku")
+
+        # Lag 2-3 should use Haiku
         self.assertEqual(self.handler.get_model_for_dna_lag(2), "haiku")
         self.assertEqual(self.handler.get_model_for_dna_lag(3), "haiku")
 
@@ -88,7 +90,8 @@ class TestModelHandler(unittest.TestCase):
         )
         self.assertIsInstance(response, ModelResponse)
         self.assertTrue(response.success)
-        self.assertIn("HAIKU", response.content)  # Lag 3 uses Haiku
+        # Mock response uses model.name which is enum name e.g. "HAIKU"
+        self.assertIn("HAIKU", response.content)
 
     def test_request_logging(self):
         """Test that requests are logged."""
@@ -110,8 +113,8 @@ class TestModelHandler(unittest.TestCase):
         stats = self.handler.get_usage_stats()
         self.assertIsInstance(stats, dict)
         # Stats should have entries for models used
-        self.assertGreaterEqual(stats.get(Model.HAIKU.value, 0), 1)
-        self.assertGreaterEqual(stats.get(Model.OPUS.value, 0), 1)
+        self.assertGreaterEqual(stats.get(ModelType.HAIKU.value, 0), 1)
+        self.assertGreaterEqual(stats.get(ModelType.OPUS.value, 0), 1)
 
     def test_render_status(self):
         """Test status rendering."""

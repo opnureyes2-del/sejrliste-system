@@ -124,9 +124,9 @@ class StatusIndicator:
         icons = {
             "done": f"{Colors.GREEN}[OK]{Colors.RESET}",
             "complete": f"{Colors.GREEN}[OK]{Colors.RESET}",
-            "in_progress": f"{Colors.BLUE}{Colors.RESET}",
+            "in_progress": f"{Colors.BLUE}[ACTIVE]{Colors.RESET}",
             "at_risk": f"{Colors.YELLOW}[WARN]{Colors.RESET}",
-            "blocked": f"{Colors.RED}{Colors.RESET}",
+            "blocked": f"{Colors.RED}[BLOCKED]{Colors.RESET}",
             "pending": "⏳",
             "error": f"{Colors.RED}[FAIL]{Colors.RESET}",
         }

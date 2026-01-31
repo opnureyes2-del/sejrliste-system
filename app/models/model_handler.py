@@ -26,7 +26,7 @@ from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from app.model_router import ModelType, ModelRouter
+from app.model_router import ModelType, ModelRouter, get_model_for_script
 
 
 # Configure logging
@@ -173,7 +173,7 @@ class ModelHandler:
 
     def get_available_models(self) -> List[str]:
         """Get list of available model names."""
-        return [m.name.lower() for m in Model]
+        return [m.name.lower() for m in ModelType]
 
     def get_model_for_dna_lag(self, lag_number: int) -> str:
         """
@@ -183,9 +183,11 @@ class ModelHandler:
             lag_number: DNA lag number (1-7)
 
         Returns:
-            Model name (opus, sonnet, or haiku)
+            Model name (opus, sonnet, or haiku). Defaults to haiku for unknown/None lags.
         """
         model = self.router.get_model_for_dna_lag(lag_number)
+        if model is None:
+            return "haiku"
         return model.name.lower()
 
     def get_model_for_script(self, script_name: str) -> str:
@@ -244,7 +246,7 @@ class ModelHandler:
 
     def send_request(self,
                      prompt: str,
-                     model: Optional[Model] = None,
+                     model: Optional[ModelType] = None,
                      dna_lag: Optional[int] = None,
                      config: Optional[ModelConfig] = None) -> ModelResponse:
         """
@@ -276,7 +278,11 @@ class ModelHandler:
         elif dna_lag:
             selected_model = self.router.get_model_for_dna_lag(dna_lag)
         else:
-            selected_model = Model.SONNET  # Default
+            selected_model = None
+
+        # Fallback to SONNET if no model selected (e.g. DNA lag 1 = None)
+        if selected_model is None:
+            selected_model = ModelType.SONNET
 
         # Track usage
         self.router.track_usage(selected_model)
@@ -316,7 +322,7 @@ class ModelHandler:
 
         return response
 
-    def _mock_response(self, prompt: str, model: Model) -> str:
+    def _mock_response(self, prompt: str, model: ModelType) -> str:
         """
         Generate a mock response for testing.
 
@@ -386,7 +392,7 @@ class ModelHandler:
 
     async def send_request_async(self,
                                   prompt: str,
-                                  model: Optional[Model] = None,
+                                  model: Optional[ModelType] = None,
                                   dna_lag: Optional[int] = None,
                                   config: Optional[ModelConfig] = None) -> ModelResponse:
         """
@@ -415,7 +421,11 @@ class ModelHandler:
         elif dna_lag:
             selected_model = self.router.get_model_for_dna_lag(dna_lag)
         else:
-            selected_model = Model.SONNET  # Default
+            selected_model = None
+
+        # Fallback to SONNET if no model selected (e.g. DNA lag 1 = None)
+        if selected_model is None:
+            selected_model = ModelType.SONNET
 
         # Track usage
         self.router.track_usage(selected_model)
@@ -474,7 +484,7 @@ class ModelHandler:
 
         # Available models
         lines.append("\nAvailable Models:")
-        for model in Model:
+        for model in ModelType:
             info = self.router.get_model_info(model)
             lines.append(f"  {model.name}: {info.get('name', 'Unknown')} ({info.get('tier', 'unknown')})")
 

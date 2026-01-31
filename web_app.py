@@ -1601,6 +1601,8 @@ with st.sidebar:
     try:
         import sys
         timeline_path = SYSTEM_PATH / "services"
+        if not timeline_path.exists():
+            timeline_path = SYSTEM_PATH / "_unused" / "services"
         if str(timeline_path) not in sys.path:
             sys.path.insert(0, str(timeline_path))
 
@@ -2286,6 +2288,8 @@ else:
     try:
         import sys
         timeline_path = SYSTEM_PATH / "services"
+        if not timeline_path.exists():
+            timeline_path = SYSTEM_PATH / "_unused" / "services"
         if str(timeline_path) not in sys.path:
             sys.path.insert(0, str(timeline_path))
 
