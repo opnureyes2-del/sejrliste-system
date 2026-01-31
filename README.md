@@ -217,7 +217,7 @@ NY SEJR starter med VIDEN fra ALLE tidligere sejre
 | `auto_learn.py` | Pattern-ekstraktion fra alle sejre |
 | `auto_track.py` | Live state tracking til _CURRENT/ |
 | `auto_predict.py` | Forudsigelser for naeste skridt |
-| `auto_health_check.py` | Permanent systemintegritetsvagt (41 checks, daglig cron) |
+| `auto_health_check.py` | Permanent systemintegritetsvagt (51 checks, 12 kategorier, daglig cron) |
 
 ### AI Integration (3 scripts)
 | Script | Funktion |
@@ -326,7 +326,7 @@ sejrliste systemet/
 |   |-- utils/                  # Utilities
 |   +-- tests/                  # Test suite (77 tests)
 |
-|-- scripts/                    # 22 automation scripts + shell scripts
+|-- scripts/                    # 23 scripts (15 Python + 8 shell)
 |-- docs/                       # 20 dokumentations-filer (DK + EN)
 |
 |-- pages/                      # Streamlit web pages
@@ -355,7 +355,7 @@ sejrliste systemet/
 | Gennemsnitlig score | 29.9/30 (99.7%) |
 | Grand Admiral rate | 100% |
 | Laerte patterns | 52 |
-| Scripts | 22 (aktive) |
+| Scripts | 23 (15 Python + 8 shell) |
 | Brugerflader | 3 (GTK4 + Web + TUI) |
 | Adgangsmetoder | 6 |
 | DNA lag | 7 |

@@ -49,7 +49,7 @@ BRUGER INTERAKTION
 ┌────────────────────────────────────────────────────────────────┐
 │                     DAGLIG VEDLIGEHOLDELSE                     │
 │                                                                │
-│  07:55  auto_health_check.py (49 checks + auto-repair)        │
+│  07:55  auto_health_check.py (51 checks + auto-repair)        │
 │  08:00  auto_learn.py (pattern extraction → PATTERNS.json)    │
 └────────────────────────────────────────────────────────────────┘
 ```
@@ -142,7 +142,7 @@ build_claude_context.py ──→ CLAUDE.md opdateret ──→ AI har aktuel ko
 ```
 auto_health_check.py ──→ scanner alle YAML, scripts, docs, services
        │
-       ├─ OK: 49/49 PASSED → desktop notification: alt godt
+       ├─ OK: 51/51 PASSED → desktop notification: alt godt
        └─ FAIL: auto-repair + desktop notification: fejl fundet
 ```
 

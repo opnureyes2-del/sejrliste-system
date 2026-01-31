@@ -36,7 +36,7 @@
 
 | Script | Formål | Hvornår Bruges | Status |
 |--------|--------|----------------|--------|
-| `auto_health_check.py` | System integritets-vagt (45 checks) | Daglig cron 07:55 + manuelt | [OK] |
+| `auto_health_check.py` | System integritets-vagt (51 checks, 12 kategorier) | Daglig cron 07:55 + manuelt | [OK] |
 | `yaml_utils.py` | Centraliseret YAML parsing (PyYAML) | Importeret af alle scripts | [OK] |
 | `view.py` | Sejrliste viewer (terminal) | Manuel status check | [OK] |
 
@@ -349,7 +349,7 @@ Suggestions for:
 ## 16. auto_health_check.py
 
 ### Formål
-Permanent system integritets-vagt. Kører 45 automatiserede checks på tværs af 7 kategorier. Daglig cron kl 07:55.
+Permanent system integritets-vagt. Kører 51 automatiserede checks på tværs af 12 kategorier. Daglig cron kl 07:55.
 
 ### Brug
 ```bash

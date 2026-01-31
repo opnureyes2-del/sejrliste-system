@@ -36,7 +36,7 @@
 
 | Script | Purpose | When Used | Status |
 |--------|---------|-----------|--------|
-| `auto_health_check.py` | System integrity guard (45 checks) | Daily cron 07:55 + manual | [OK] |
+| `auto_health_check.py` | System integrity guard (51 checks, 12 categories) | Daily cron 07:55 + manual | [OK] |
 | `yaml_utils.py` | Centralized YAML parsing (PyYAML) | Imported by all scripts | [OK] |
 | `view.py` | Victory list viewer (terminal) | Manual status check | [OK] |
 
@@ -454,7 +454,7 @@ Reports:
 ## 16. auto_health_check.py
 
 ### Purpose
-Permanent system integrity guard. Runs 45 automated checks across 7 categories. Daily cron at 07:55.
+Permanent system integrity guard. Runs 51 automated checks across 12 categories. Daily cron at 07:55.
 
 ### Usage
 ```bash

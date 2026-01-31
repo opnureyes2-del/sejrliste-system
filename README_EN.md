@@ -252,7 +252,7 @@ All documents available in both Danish and English (*_EN.md) in the `docs/` fold
 
 ### Automatic
 - **systemd service:** `sejrliste-web.service` — auto-start Streamlit at login
-- **Cron 07:55:** Daily health check + repair (41 checks)
+- **Cron 07:55:** Daily health check + repair (51 checks, 12 categories)
 - **Cron 08:00:** Daily pattern learning
 
 ### Tailscale
