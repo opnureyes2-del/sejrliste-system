@@ -16,7 +16,6 @@ Tilpasset til lokalt system (ingen Docker, ingen API keys nødvendige).
 import subprocess
 import sys
 import os
-import json
 from datetime import datetime
 
 # Farver for terminal output

@@ -59,14 +59,16 @@ BRUGER INTERAKTION
 ## IMPORT GRAF
 
 ```
-masterpiece_en.py
+masterpiece_en.py / masterpiece.py
 ├─ gi (GTK4/Adw)
 ├─ cairo
+├─ checkbox_utils.py ─→ count_checkboxes (DELT MODUL)
 ├─ intro_integration.py ─→ Scanner INTRO mapper
 └─ subprocess ─→ scripts/
 
 web_app.py / web_app_en.py
 ├─ streamlit
+├─ checkbox_utils.py ─→ count_checkboxes (DELT MODUL)
 ├─ enforcement_engine.py ─→ 3-pass kvalitets-gate
 └─ subprocess ─→ scripts/
 
@@ -77,7 +79,11 @@ generate_sejr.py
 ├─ yaml_utils.py (PyYAML)
 └─ _CURRENT/PATTERNS.json (feedback loop input)
 
-auto_verify.py, auto_archive.py, auto_learn.py,
+auto_verify.py
+├─ yaml_utils.py (PyYAML)
+└─ checkbox_utils.py ─→ count_checkboxes (DELT MODUL)
+
+auto_archive.py, auto_learn.py,
 build_claude_context.py, admiral_tracker.py
 └─ yaml_utils.py (PyYAML) ← DELT MODUL, 6 scripts importerer
 
@@ -144,7 +150,7 @@ auto_health_check.py ──→ scanner alle YAML, scripts, docs, services
 
 ## FIL PER MAPPE
 
-### Root (13 filer)
+### Root (14 filer)
 
 | Fil | Type | Importeret af | Importerer |
 |-----|------|--------------|------------|
