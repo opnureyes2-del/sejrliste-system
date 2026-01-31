@@ -47,7 +47,7 @@ active_sejr = get_active_sejr()
 if not active_sejr:
     st.warning("Ingen aktive sejr. Opret en ny!")
     if st.button("+ Opret Ny Sejr"):
-        st.switch_page("pages/3_+_Ny_Sejr.py")
+        st.switch_page("pages/3_Ny_Sejr.py")
 else:
     # Sejr selector
     sejr_names = [s.name for s in active_sejr]

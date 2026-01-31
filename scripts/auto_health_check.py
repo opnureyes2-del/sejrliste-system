@@ -430,10 +430,10 @@ class HealthCheck:
         else:
             self.ok("No buggy YAML parsers", "All scripts use PyYAML")
 
-        # Check for orphan .venv
+        # Check for orphan .venv (deleted 2026-01-31, cairosvg moved to venv/)
         dotenv = SYSTEM_PATH / ".venv"
         if dotenv.exists():
-            self.warn("Duplicate .venv/ exists", "Consider removing (venv/ is the primary)")
+            self.warn("Orphan .venv/ found", "Should not exist — cairosvg is in venv/")
 
     # ══════════════════════════════════════════════════════════════════════
     # CHECK 6: systemd + services

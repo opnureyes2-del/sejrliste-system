@@ -16,25 +16,13 @@ REGEL: Kan IKKE arkiveres før alle 3 passes er gennemført og verificeret.
 import argparse
 import subprocess
 import re
+import sys
 import yaml
 from pathlib import Path
 from datetime import datetime, timezone
 
-
-# ============================================================================
-# YAML PARSING — Uses PyYAML (preserves nested structures correctly)
-# ============================================================================
-
-def parse_yaml_simple(filepath: Path) -> dict:
-    """Parse YAML using PyYAML (handles nested structures correctly)."""
-    if not filepath.exists():
-        return {}
-    try:
-        content = filepath.read_text(encoding="utf-8")
-        result = yaml.safe_load(content)
-        return result if isinstance(result, dict) else {}
-    except (yaml.YAMLError, UnicodeDecodeError):
-        return {}
+sys.path.insert(0, str(Path(__file__).parent))
+from yaml_utils import parse_yaml_simple
 
 
 def write_yaml_simple(filepath: Path, data: dict):

@@ -8,10 +8,14 @@ INGEN EXTERNAL DEPENDENCIES - Kun Python standard library
 
 import json
 import re
+import sys
 import yaml
 from pathlib import Path
 from datetime import datetime
 from collections import Counter
+
+sys.path.insert(0, str(Path(__file__).parent))
+from yaml_utils import parse_yaml_simple
 
 
 # ============================================================================
@@ -42,22 +46,6 @@ DANISH_STOPWORDS = {
 GENERIC_ACTIONS = {
     'unknown', 'model_request', 'log', 'info', 'debug', 'trace'
 }
-
-
-# ============================================================================
-# YAML PARSING — Uses PyYAML (preserves nested structures correctly)
-# ============================================================================
-
-def parse_yaml_simple(filepath: Path) -> dict:
-    """Parse YAML using PyYAML (handles nested structures correctly)."""
-    if not filepath.exists():
-        return {}
-    try:
-        content = filepath.read_text(encoding="utf-8")
-        result = yaml.safe_load(content)
-        return result if isinstance(result, dict) else {}
-    except (yaml.YAMLError, UnicodeDecodeError):
-        return {}
 
 
 def write_yaml_simple(filepath: Path, data: dict, indent: int = 0):

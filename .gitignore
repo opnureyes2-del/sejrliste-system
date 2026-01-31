@@ -13,6 +13,7 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+.pytest_cache/
 
 # Logs
 *.log
@@ -21,6 +22,7 @@ __pycache__/
 # OS files
 .DS_Store
 Thumbs.db
+.directory
 
 # Editor files
 .vscode/
@@ -33,16 +35,7 @@ Thumbs.db
 !10_ACTIVE/.gitkeep
 !90_ARCHIVE/.gitkeep
 
-# Ignore _unused folder contents
+# Unused code + virtual environments
 _unused/
 venv/
-
-# Virtual environments
 .venv/
-
-# OS files
-.directory
-
-# Archive folders — track important files, ignore logs
-90_ARCHIVE/*/AUTO_LOG.jsonl
-90_ARCHIVE/*/VERIFY_STATUS.yaml

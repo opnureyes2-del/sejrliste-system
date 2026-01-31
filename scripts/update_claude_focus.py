@@ -13,21 +13,13 @@ Kør automatisk efter verify eller manuelt.
 """
 
 import re
+import sys
 import yaml
 from pathlib import Path
 from datetime import datetime
 
-
-def parse_yaml_simple(filepath: Path) -> dict:
-    """Parse YAML using PyYAML (handles nested structures correctly)."""
-    if not filepath.exists():
-        return {}
-    try:
-        content = filepath.read_text(encoding="utf-8")
-        result = yaml.safe_load(content)
-        return result if isinstance(result, dict) else {}
-    except (yaml.YAMLError, UnicodeDecodeError):
-        return {}
+sys.path.insert(0, str(Path(__file__).parent))
+from yaml_utils import parse_yaml_simple
 
 
 def find_next_action(sejr_path: Path, current_pass: int) -> str:
