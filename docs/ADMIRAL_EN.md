@@ -226,5 +226,5 @@ The official Admiral logo contains:
 ---
 
 **Built by:** Kv1nt + Rasmus
-**Version:** 1.0.0
-**Last updated:** 2026-01-26
+**Version:** 3.0.0
+**Last updated:** 2026-01-31

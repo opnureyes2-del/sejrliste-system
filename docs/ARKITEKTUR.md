@@ -1,4 +1,4 @@
-# SEJRLISTE SYSTEM - ARKITEKTUR v2.1.0
+# SEJRLISTE SYSTEM - ARKITEKTUR v3.0.0
 
 > **SINGLE SOURCE OF TRUTH - INGEN REDUNDANS**
 > **ADMIRAL STANDARD BEVIST**
@@ -178,7 +178,7 @@ head -1 AUTO_LOG.jsonl | python3 -c "import sys,json; json.load(sys.stdin)"
 
 ---
 
-**Version:** 2.1.0
-**Dato:** 2026-01-25
+**Version:** 3.0.0
+**Dato:** 2026-01-31
 **Verificeret af:** Kv1nt (Claude Opus 4.5)
 

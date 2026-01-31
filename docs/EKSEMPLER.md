@@ -394,5 +394,5 @@ Pass 2: 7/10  ← UACCEPTABELT
 
 ---
 
-**Sidst opdateret:** 2026-01-26
-**Version:** 1.1.0 (PASS 2 - tilføjet Anti-Patterns)
+**Sidst opdateret:** 2026-01-31
+**Version:** 3.0.0 (PASS 2 - tilføjet Anti-Patterns)

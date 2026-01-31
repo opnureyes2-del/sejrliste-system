@@ -455,6 +455,86 @@ class HealthCheck:
             self.warn("sejrliste-web.service", "Cannot check")
 
     # ══════════════════════════════════════════════════════════════════════
+    # CHECK 7: Documentation freshness — versions must match
+    # ══════════════════════════════════════════════════════════════════════
+
+    def check_documentation(self):
+        """Ensure documentation versions match system version."""
+        print("\n── DOCUMENTATION ──")
+
+        # Get system version from README.md
+        readme = SYSTEM_PATH / "README.md"
+        system_version = None
+        if readme.exists():
+            for line in readme.read_text(encoding="utf-8").split("\n")[:5]:
+                if "Version:" in line:
+                    # Extract version like "3.0.0"
+                    import re as _re
+                    match = _re.search(r'(\d+\.\d+\.\d+)', line)
+                    if match:
+                        system_version = match.group(1)
+                        break
+
+        if not system_version:
+            self.warn("Cannot detect system version from README.md")
+            return
+
+        # Check README_EN.md matches
+        readme_en = SYSTEM_PATH / "README_EN.md"
+        if readme_en.exists():
+            content = readme_en.read_text(encoding="utf-8")
+            if system_version in content[:200]:
+                self.ok("README_EN.md version", f"Matches {system_version}")
+            else:
+                self.fail("README_EN.md version", f"Does not match system version {system_version}")
+
+        # Check DNA.yaml matches
+        dna = SYSTEM_PATH / "DNA.yaml"
+        if dna.exists():
+            content = dna.read_text(encoding="utf-8")
+            if f'version: "{system_version}"' in content:
+                self.ok("DNA.yaml version", f"Matches {system_version}")
+            else:
+                self.fail("DNA.yaml version", f"Does not match system version {system_version}")
+
+        # Check root Python files have docstrings with WHAT/WHY/WHO/HOW
+        root_py_files = ["enforcement_engine.py", "intro_integration.py",
+                         "web_app.py", "web_app_en.py"]
+        missing_docs = []
+        for name in root_py_files:
+            fpath = SYSTEM_PATH / name
+            if fpath.exists():
+                content = fpath.read_text(encoding="utf-8")[:2000]
+                has_what = "WHAT:" in content or "What:" in content
+                has_why = "WHY:" in content or "Why:" in content
+                if not (has_what and has_why):
+                    missing_docs.append(name)
+
+        if missing_docs:
+            for f in missing_docs:
+                self.fail(f"Missing WHAT/WHY in {f}", "All root .py files need WHAT/WHY/WHO/HOW headers")
+        else:
+            self.ok("Root file docstrings", "All have WHAT/WHY headers")
+
+        # Check docs/ for outdated version references
+        docs_dir = SYSTEM_PATH / "docs"
+        if docs_dir.exists():
+            stale_docs = []
+            for doc in sorted(docs_dir.glob("*.md")):
+                content = doc.read_text(encoding="utf-8")[:500]
+                # Check if doc mentions an OLD version
+                for old_ver in ["2.1.0", "2.0.0", "1.0.0"]:
+                    if f"Version:" in content and old_ver in content:
+                        stale_docs.append(f"{doc.name} (still v{old_ver})")
+                        break
+
+            if stale_docs:
+                for s in stale_docs:
+                    self.fail(f"Stale doc: {s}", f"Must be updated to v{system_version}")
+            else:
+                self.ok("docs/ freshness", f"No stale version references found")
+
+    # ══════════════════════════════════════════════════════════════════════
     # RUN ALL
     # ══════════════════════════════════════════════════════════════════════
 
@@ -470,6 +550,7 @@ class HealthCheck:
         self.check_web_app()
         self.check_data_integrity()
         self.check_prevention()
+        self.check_documentation()
         self.check_services()
 
         total = self.passed + self.failed

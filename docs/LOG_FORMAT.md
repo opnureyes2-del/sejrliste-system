@@ -1,8 +1,8 @@
 # LOG FORMAT SPECIFIKATION
 
 > **ADMIRAL STANDARD - Komplet Sporbarhed**
-> **Version:** 1.0.0
-> **Dato:** 2026-01-25
+> **Version:** 3.0.0
+> **Dato:** 2026-01-31
 
 ---
 

@@ -504,5 +504,5 @@ Rapporterer:
 
 ---
 
-**Sidst opdateret:** 2026-01-28
-**Version:** 2.0.0 (Komplet - alle 15 scripts dokumenteret + verificeret)
+**Sidst opdateret:** 2026-01-31
+**Version:** 3.0.0 (Komplet - alle 15 scripts dokumenteret + verificeret)

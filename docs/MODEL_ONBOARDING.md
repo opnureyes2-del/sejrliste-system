@@ -350,5 +350,5 @@ python3 view.py
 ---
 
 **Denne fil er OBLIGATORISK læsning for ALLE AI modeller.**
-**Sidst opdateret:** 2026-01-26
-**Version:** 1.0.0
+**Sidst opdateret:** 2026-01-31
+**Version:** 3.0.0

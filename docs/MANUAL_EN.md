@@ -1,7 +1,7 @@
 # VICTORY LIST SYSTEM - COMPLETE MANUAL
 
-**Version:** 2.0.0 - 3-PASS COMPETITION
-**Updated:** 2026-01-25
+**Version:** 3.0.0 - UNIFIED CROSS-DEVICE APP
+**Updated:** 2026-01-31
 **Built by:** Kv1nt + Rasmus
 
 > **This system works 100% MANUALLY. No app required.**

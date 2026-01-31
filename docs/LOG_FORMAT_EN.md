@@ -1,8 +1,8 @@
 # LOG FORMAT SPECIFICATION
 
 > **ADMIRAL STANDARD - Complete Traceability**
-> **Version:** 1.0.0
-> **Date:** 2026-01-26
+> **Version:** 3.0.0
+> **Date:** 2026-01-31
 
 ---
 

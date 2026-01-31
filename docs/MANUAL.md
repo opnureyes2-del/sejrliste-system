@@ -1,7 +1,7 @@
 # SEJRLISTE SYSTEM - KOMPLET MANUAL
 
-**Version:** 2.0.0 - 3-PASS KONKURRENCE
-**Opdateret:** 2026-01-25
+**Version:** 3.0.0 - UNIFIED CROSS-DEVICE APP
+**Opdateret:** 2026-01-31
 **Bygget af:** Kv1nt + Rasmus
 
 > **Dette system virker 100% MANUELT. Ingen app krævet.**
