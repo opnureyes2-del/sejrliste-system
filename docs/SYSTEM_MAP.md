@@ -256,5 +256,5 @@ victorylist.desktop (3 actions)
 
 ---
 
-**Verificeret af:** auto_health_check.py (52 checks, 12 CHECK-kategorier)
+**Verificeret af:** auto_health_check.py (51 checks, 12 CHECK-kategorier)
 **Sidst opdateret:** 2026-01-31

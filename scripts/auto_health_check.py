@@ -623,6 +623,35 @@ class HealthCheck:
                 else:
                     self.fail("Script count DK/EN mismatch", f"DK={dk_count}, EN={en_count}")
 
+        # Check health check count consistency across all docs
+        # The ACTUAL count is whatever this run produces (self.passed + self.failed at end)
+        # For now, check that all docs that mention "X checks" use the SAME number
+        import re as _re2
+        check_count_pattern = _re2.compile(r'(\d+)\s+checks')
+        found_counts = {}
+        docs_to_scan = list((SYSTEM_PATH / "docs").glob("*.md")) + [
+            SYSTEM_PATH / "README.md",
+            SYSTEM_PATH / "README_EN.md",
+        ]
+        for doc in docs_to_scan:
+            if not doc.exists():
+                continue
+            content = doc.read_text(encoding="utf-8")
+            matches = check_count_pattern.findall(content)
+            for m in matches:
+                count = int(m)
+                if count >= 20:  # Only care about health check numbers (not "5 checks" in css etc)
+                    if count not in found_counts:
+                        found_counts[count] = []
+                    found_counts[count].append(doc.name)
+
+        if len(found_counts) > 1:
+            details = "; ".join(f"{c} in {', '.join(fs)}" for c, fs in found_counts.items())
+            self.fail("Health check count inconsistency", f"Different values: {details}")
+        elif found_counts:
+            count_val = list(found_counts.keys())[0]
+            self.ok("Health check count sync", f"All docs say {count_val} checks")
+
     # ══════════════════════════════════════════════════════════════════════
     # CHECK 9: Code references — no dead filenames in Python source
     # ══════════════════════════════════════════════════════════════════════
