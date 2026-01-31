@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # SEJRLISTE TERMINAL - Direkte forbindelse til systemet
 
 cd "/home/rasmus/Desktop/sejrliste systemet"

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # REALTIDS OVERVÅGNING - Følg med i ændringer
 
 cd "/home/rasmus/Desktop/sejrliste systemet"

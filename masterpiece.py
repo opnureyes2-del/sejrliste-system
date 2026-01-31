@@ -3193,7 +3193,7 @@ class Vindertavle(Gtk.Box):
             for folder in sorted(ARCHIVE_DIR.iterdir(), key=lambda x: x.name):
                 if folder.is_dir() and not folder.name.startswith('.'):
                     sejr_liste = folder / "SEJR_LISTE.md"
-                    verify_status = folder / "VERIFY_STATUS.yaml"
+                    status_file = folder / "STATUS.yaml"
 
                     victory_data = {
                         "name": folder.name.split("_2026")[0].replace("_", " "),
@@ -3204,14 +3204,21 @@ class Vindertavle(Gtk.Box):
                         "chakra": self._determine_chakra(folder.name)
                     }
 
-                    # Try to get score from VERIFY_STATUS.yaml
-                    if verify_status.exists():
+                    # Try to get score from STATUS.yaml (unified v3.0.0)
+                    if status_file.exists():
                         try:
                             import yaml
-                            with open(verify_status) as f:
+                            with open(status_file) as f:
                                 data = yaml.safe_load(f) or {}
-                                victory_data["score"] = data.get("current_score", 0)
-                                victory_data["pass_level"] = data.get("current_pass", 1)
+                                # Handle both nested (v3.0.0) and flat (legacy) formats
+                                if isinstance(data.get("score_tracking"), dict):
+                                    victory_data["score"] = data["score_tracking"].get("totals", {}).get("total_score", 0)
+                                else:
+                                    victory_data["score"] = data.get("current_score", data.get("total_score", 0))
+                                if isinstance(data.get("pass_tracking"), dict):
+                                    victory_data["pass_level"] = data["pass_tracking"].get("current_pass", 1)
+                                else:
+                                    victory_data["pass_level"] = data.get("current_pass", 1)
                         except:
                             pass
 
@@ -3860,8 +3867,8 @@ class PrioritetsOverblik(Gtk.Box):
                 if not sejr_dir.is_dir():
                     continue
 
-                verify_file = sejr_dir / "VERIFY_STATUS.yaml"
-                if not verify_file.exists():
+                status_file = sejr_dir / "STATUS.yaml"
+                if not status_file.exists():
                     priorities["opmaerksomhed"].append({
                         "title": f"Mangler verifikation: {sejr_dir.name}",
                         "subtitle": "Kør verifikation for at spore fremskridt",

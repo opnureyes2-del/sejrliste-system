@@ -624,6 +624,52 @@ class HealthCheck:
                     self.fail("Script count DK/EN mismatch", f"DK={dk_count}, EN={en_count}")
 
     # ══════════════════════════════════════════════════════════════════════
+    # CHECK 9: Code references — no dead filenames in Python source
+    # ══════════════════════════════════════════════════════════════════════
+
+    def check_code_references(self):
+        """Ensure Python source code doesn't reference dead filenames."""
+        print("\n── CODE REFERENCES ──")
+
+        dead_filenames = [
+            "VERIFY_STATUS.yaml",
+            "ADMIRAL_SCORE.yaml",
+            "TERMINAL_LOG.md",
+            "MODEL_HISTORY.yaml",
+        ]
+
+        # Scan root .py files + app/ .py files (not scripts/ — health check itself lists these)
+        py_files = list(SYSTEM_PATH.glob("*.py"))
+        py_files += list((SYSTEM_PATH / "app").rglob("*.py"))
+        py_files += list((SYSTEM_PATH / "pages").rglob("*.py"))
+
+        issues = []
+        for pyfile in sorted(py_files):
+            if "__pycache__" in str(pyfile):
+                continue
+            content = pyfile.read_text(encoding="utf-8")
+            rel = pyfile.relative_to(SYSTEM_PATH)
+            for dead in dead_filenames:
+                if dead in content:
+                    # Exclude comments that say "FIXED: Was VERIFY_STATUS"
+                    lines = [
+                        i + 1 for i, line in enumerate(content.split("\n"))
+                        if dead in line
+                        and "FIXED:" not in line
+                        and "# Was" not in line
+                        and "dead_references" not in line
+                        and "dead_filenames" not in line
+                    ]
+                    if lines:
+                        issues.append(f"{rel}:{lines[0]} references {dead}")
+
+        if issues:
+            for issue in issues:
+                self.fail(f"Dead reference: {issue}")
+        else:
+            self.ok("No dead file references in code", "All .py files clean")
+
+    # ══════════════════════════════════════════════════════════════════════
     # RUN ALL
     # ══════════════════════════════════════════════════════════════════════
 
@@ -641,6 +687,7 @@ class HealthCheck:
         self.check_prevention()
         self.check_documentation()
         self.check_doc_content_accuracy()
+        self.check_code_references()
         self.check_services()
 
         total = self.passed + self.failed

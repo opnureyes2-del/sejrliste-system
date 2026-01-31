@@ -3,7 +3,7 @@
 FILE WATCHER - Real-time updates for Sejrliste
 Watches for changes in:
 - 10_ACTIVE/*/SEJR_LISTE.md
-- 10_ACTIVE/*/VERIFY_STATUS.yaml
+- 10_ACTIVE/*/STATUS.yaml
 - 10_ACTIVE/*/AUTO_LOG.jsonl
 - _CURRENT/STATE.md
 - _CURRENT/PATTERNS.yaml
@@ -35,7 +35,7 @@ class SejrFileHandler(FileSystemEventHandler):
         # Match against watched patterns
         if filename == "SEJR_LISTE.md":
             self._call("update_task_list", path)
-        elif filename == "VERIFY_STATUS.yaml":
+        elif filename == "STATUS.yaml":
             self._call("update_progress", path)
         elif filename == "AUTO_LOG.jsonl":
             self._call("append_log_stream", path)

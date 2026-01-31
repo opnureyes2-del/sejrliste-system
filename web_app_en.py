@@ -53,7 +53,7 @@ except ImportError:
 def parse_yaml_simple(content: str) -> dict:
     """
     Simple YAML parser for key: value files.
-    Handles VERIFY_STATUS.yaml format - NO external dependencies.
+    Handles STATUS.yaml format (unified v3.0.0) - NO external dependencies.
     """
     result = {}
     for line in content.split('\n'):

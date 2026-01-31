@@ -289,15 +289,25 @@ class Sejr:
         self.load_status()
     
     def load_status(self):
-        """Load status from VERIFY_STATUS.yaml"""
-        status_file = self.path / "VERIFY_STATUS.yaml"
+        """Load status from STATUS.yaml (unified v3.0.0)"""
+        status_file = self.path / "STATUS.yaml"
         if status_file.exists():
             try:
                 with open(status_file) as f:
                     data = yaml.safe_load(f) or {}
-                    self.progress = data.get("completion_percentage", 0)
-                    self.score = f"{data.get('current_score', 0)}/30"
-                    self.phase = data.get("current_phase", "UNKNOWN")
+                    # Handle both nested (v3.0.0) and flat (legacy) formats
+                    if isinstance(data.get("statistics"), dict):
+                        self.progress = data["statistics"].get("completion_percentage", 0)
+                    else:
+                        self.progress = data.get("completion_percentage", 0)
+                    if isinstance(data.get("score_tracking"), dict):
+                        self.score = f"{data['score_tracking'].get('totals', {}).get('total_score', 0)}/30"
+                    else:
+                        self.score = f"{data.get('current_score', 0)}/30"
+                    if isinstance(data.get("pass_tracking"), dict):
+                        self.phase = f"Pass {data['pass_tracking'].get('current_pass', 1)}"
+                    else:
+                        self.phase = data.get("current_phase", "UNKNOWN")
             except Exception:
                 pass
         

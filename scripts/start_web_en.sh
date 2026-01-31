@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Start Victory List Web App (English - Mobile Support)
 cd "/home/rasmus/Desktop/sejrliste systemet"
 source venv/bin/activate
