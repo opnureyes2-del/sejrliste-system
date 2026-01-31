@@ -1,11 +1,13 @@
-#  SCRIPT REFERENCE - Alle 15 Scripts Dokumenteret
+#  SCRIPT REFERENCE - Alle 18 Scripts Dokumenteret
 
 > **LÆS DETTE** for at forstå hvad hvert script gør og hvornår du bruger det.
-> **Sidst verificeret:** 2026-01-28 (alle 15 testet og virker)
+> **Sidst verificeret:** 2026-01-31 (alle 18 testet og virker)
 
 ---
 
 ## OVERSIGT
+
+### Kerne Automation (11 scripts)
 
 | Script | Formål | Hvornår Bruges | Status |
 |--------|--------|----------------|--------|
@@ -20,10 +22,23 @@
 | `admiral_tracker.py` | Track scores + leaderboard | Ved events | [OK] |
 | `auto_live_status.py` | Live status display | For real-time view | [OK] |
 | `auto_optimize.py` | Auto-optimering | Ved PHASE 0 | [OK] |
+
+### AI & Kvalitets Værktøjer (4 scripts)
+
+| Script | Formål | Hvornår Bruges | Status |
+|--------|--------|----------------|--------|
 | `model_router.py` | Vælg AI model per opgave | Ved model-valg | [OK] |
 | `token_tools.py` | Tæl tokens + estimer pris | Før API kald | [OK] |
 | `build_knowledge_base.py` | Byg ChromaDB søge-index | Ved ny dokumentation | [OK] |
 | `automation_pipeline.py` | Pre-commit kvalitets-check | Ved git commit | [OK] |
+
+### System Integritet (3 scripts)
+
+| Script | Formål | Hvornår Bruges | Status |
+|--------|--------|----------------|--------|
+| `auto_health_check.py` | System integritets-vagt (45 checks) | Daglig cron 07:55 + manuelt | [OK] |
+| `yaml_utils.py` | Centraliseret YAML parsing (PyYAML) | Importeret af alle scripts | [OK] |
+| `view.py` | Sejrliste viewer (terminal) | Manuel status check | [OK] |
 
 ---
 
@@ -222,7 +237,7 @@ python3 scripts/auto_learn.py --sejr "MIN_OPGAVE_2026-01-26"  # Learn fra specif
 | `--sejr` | Nej | Lær fra specifik sejr (default: alle i archive) |
 
 ### Output
-Opdaterer `_CURRENT/PATTERNS.yaml` med:
+Opdaterer `_CURRENT/PATTERNS.json` med:
 - Genbrugelige patterns
 - Lærte tips
 - Common mistakes to avoid
@@ -331,12 +346,86 @@ Suggestions for:
 
 ---
 
+## 16. auto_health_check.py
+
+### Formål
+Permanent system integritets-vagt. Kører 45 automatiserede checks på tværs af 7 kategorier. Daglig cron kl 07:55.
+
+### Brug
+```bash
+# Kør alle checks
+python3 scripts/auto_health_check.py
+
+# Kør med auto-reparation
+python3 scripts/auto_health_check.py --repair
+```
+
+### Check Kategorier
+| Kategori | Checks | Hvad Verificeres |
+|----------|--------|-----------------|
+| FIL INTEGRITET | Filer eksisterer, ingen korruption | Kernefiler tilstede |
+| YAML SUNDHED | STATUS.yaml kan parses | Ingen korrupt YAML |
+| ARKIV KOMPLETHED | Alle filer kopieret | 31/31 arkiver komplet |
+| FORÆLDRELØS DETEKTION | Ingen tabte sejre | 4-lags beskyttelse |
+| FOREBYGGELSE | Crash-sikker oprettelse | Atomiske operationer |
+| DOKUMENTATION | Version sync, headers | Ingen forældede docs |
+| SERVICES | systemd, cron | Infrastruktur kører |
+
+### Cron
+```bash
+# Kører dagligt kl 07:55 via cron_health_check.sh
+55 7 * * * /home/rasmus/Desktop/sejrliste\ systemet/scripts/cron_health_check.sh
+```
+
+---
+
+## 17. yaml_utils.py
+
+### Formål
+Centraliseret YAML parsing modul. ALLE scripts importerer herfra — ingen copy-paste parsere.
+
+### Brug
+```python
+from yaml_utils import parse_yaml_simple, load_yaml, save_yaml
+
+# Indlæs YAML fil
+data = load_yaml("STATUS.yaml")
+
+# Gem YAML fil
+save_yaml("STATUS.yaml", data)
+```
+
+### Hvorfor Det Eksisterer
+Før v3.0.0 havde hvert script sin egen buggy flat YAML parser. Det forårsagede 14 korrupte STATUS.yaml filer. Nu bruger alle scripts PyYAML via dette ene modul.
+
+---
+
+## 18. view.py
+
+### Formål
+Terminal-baseret sejrliste viewer. Viser alle aktive sejre med status.
+
+### Brug
+```bash
+python3 scripts/view.py
+python3 scripts/view.py --verbose
+```
+
+### Output
+Viser for hver aktiv sejr:
+- Navn og oprettelsesdato
+- Nuværende pass og komplethed %
+- Score
+- Seneste aktivitet
+
+---
+
 ## WORKFLOW: Normal Dag
 
 ```bash
 # 1. Start dagen - se status
 python3 scripts/auto_track.py
-python3 view.py
+python3 scripts/view.py
 
 # 2. Find aktiv sejr eller opret ny
 python3 scripts/generate_sejr.py --name "Dagens Opgave"
@@ -393,7 +482,7 @@ python3 scripts/auto_learn.py
 ```
 [FAIL] ModuleNotFoundError: No module named 'yaml'
 ```
-**Løsning:** Scripts bruger ikke PyYAML - de har simple YAML parser indbygget. Check fil paths.
+**Løsning:** Alle scripts bruger PyYAML via `yaml_utils.py`. Kør: `pip install pyyaml` i venv, eller aktivér venv først: `source venv/bin/activate`
 
 ---
 
@@ -505,4 +594,4 @@ Rapporterer:
 ---
 
 **Sidst opdateret:** 2026-01-31
-**Version:** 3.0.0 (Komplet - alle 15 scripts dokumenteret + verificeret)
+**Version:** 3.0.0 (Komplet - alle 18 scripts dokumenteret + verificeret)

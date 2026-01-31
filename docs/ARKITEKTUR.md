@@ -85,7 +85,7 @@
 
 ### Test 3: Før vs Efter
 
-| Metric | FØR (v2.0) | EFTER (v2.1) | Reduktion |
+| Metric | FØR (v2.0) | EFTER (v3.0.0) | Reduktion |
 |--------|------------|--------------|-----------|
 | Filer per sejr | 7 | 4 | **-43%** |
 | Redundante data points | 12+ | 0 | **-100%** |
@@ -164,6 +164,106 @@ grep -c "pass_tracking\|score_tracking\|model_tracking" STATUS.yaml
 head -1 AUTO_LOG.jsonl | python3 -c "import sys,json; json.load(sys.stdin)"
 # Expected: No error
 ```
+
+---
+
+## SYSTEM ARKITEKTUR (v3.0.0)
+
+### 3 Brugerflader
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                   SEJRLISTE SYSTEM                       │
+├─────────────────┬──────────────────┬────────────────────┤
+│  GTK4 Desktop   │  Streamlit Web   │   TUI Terminal     │
+│  masterpiece_   │  web_app.py      │   app/sejr_app.py  │
+│  en.py (586KB)  │  (port 8501)     │   (Textual)        │
+│                 │                  │                    │
+│  Dobbeltklik    │  Auto-start via  │  `sejrliste` cmd   │
+│  "Sejrliste"    │  systemd service │  i terminal        │
+└─────────────────┴──────────────────┴────────────────────┘
+```
+
+### Adgang (6 metoder)
+
+| Metode | URL / Kommando | Enhed |
+|--------|---------------|-------|
+| Desktop app | Dobbeltklik "Sejrliste" | ROG desktop |
+| Browser lokal | http://localhost:8501 | ROG desktop |
+| Telefon HTTPS | https://rog.tailc9c1c5.ts.net | Pixel 9 Pro |
+| Telefon HTTP | http://100.86.106.42:8501 | Via Tailscale |
+| Telefon lokal | http://10.168.6.233:8501 | Samme WiFi |
+| Terminal | `sejrliste` | ROG desktop |
+
+### Infrastruktur
+
+```
+┌── systemd ──────────────────────────────────────────────┐
+│  sejrliste-web.service (auto-start ved login)           │
+│  → start-web.sh → streamlit run web_app.py :8501        │
+└─────────────────────────────────────────────────────────┘
+
+┌── Tailscale Mesh VPN ───────────────────────────────────┐
+│  ROG desktop (100.86.106.42) ←→ Pixel 9 Pro             │
+│  HTTPS via Tailscale Serve: rog.tailc9c1c5.ts.net       │
+└─────────────────────────────────────────────────────────┘
+
+┌── Cron Jobs ────────────────────────────────────────────┐
+│  07:55  auto_health_check.py --repair (45 checks)       │
+│  08:00  auto_learn.py (pattern learning)                 │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Feedback Loop (Selvlærende)
+
+```
+ arkiveret sejr
+      │
+      ▼
+ auto_learn.py ──→ PATTERNS.json (52 patterns)
+                        │
+                        ▼
+                   generate_sejr.py ──→ nye sejre med lærte patterns
+```
+
+### Mappestruktur
+
+```
+sejrliste systemet/
+├── 10_ACTIVE/          ← Aktive sejre (4 filer hver)
+├── 90_ARCHIVE/         ← Arkiverede sejre (31 komplet)
+├── _CURRENT/           ← System state (STATE.md, PATTERNS.json)
+├── _unused/            ← Døde scripts (bevist inaktive)
+├── app/                ← TUI app (Textual)
+├── docs/               ← 21 dokumentations-filer (DK+EN)
+├── scripts/            ← 18 automation scripts + shell wrappers
+├── tests/              ← 5 testfiler (77 tests)
+├── venv/               ← Python virtual environment
+├── .streamlit/         ← Streamlit config
+├── web_app.py          ← Streamlit web (DK)
+├── web_app_en.py       ← Streamlit web (EN)
+├── masterpiece.py      ← GTK4 desktop (DK)
+├── masterpiece_en.py   ← GTK4 desktop (EN) — default
+├── enforcement_engine.py  ← Scoring motor
+├── intro_integration.py   ← Intro/onboarding
+├── DNA.yaml            ← 7-lags DNA konfiguration
+├── start-web.sh        ← systemd launcher
+├── sejr                ← Global kommando (bash)
+├── README.md           ← System dokumentation (DK)
+├── README_EN.md        ← System dokumentation (EN)
+├── requirements.txt    ← 53 Python pakker
+└── .gitignore          ← Git ignore regler
+```
+
+### Kvalitetssikring
+
+| System | Antal | Frekvens |
+|--------|-------|----------|
+| pytest tests | 77/77 | Ved ændringer |
+| Health checks | 45/45 | Daglig kl 07:55 |
+| Pre-commit hook | auto_verify.py | Ved git commit |
+| Orphan protection | 4 lag | Permanent |
+| Atomic creation | temp → rename | Permanent |
 
 ---
 

@@ -1,24 +1,44 @@
-# SCRIPT REFERENCE - All 11 Scripts Documented
+# SCRIPT REFERENCE - All 18 Scripts Documented
 
 > **READ THIS** to understand what each script does and when to use it.
+> **Last verified:** 2026-01-31 (all 18 tested and working)
 
 ---
 
 ## OVERVIEW
 
-| Script | Purpose | When Used |
-|--------|---------|-----------|
-| `generate_sejr.py` | Create new victory | When starting new task |
-| `auto_verify.py` | Verify progress | After EVERY change |
-| `auto_archive.py` | Archive finished victory | When 3-pass is done |
-| `build_claude_context.py` | Build CLAUDE.md | After checkbox changes |
-| `update_claude_focus.py` | Update focus state | When task changes |
-| `auto_track.py` | Update STATE.md | On state changes |
-| `auto_learn.py` | Learn patterns | On victory completion |
-| `auto_predict.py` | Generate predictions | On phase completion |
-| `admiral_tracker.py` | Track scores | On events |
-| `auto_live_status.py` | Live status display | For real-time view |
-| `auto_optimize.py` | Auto-optimization | On PHASE 0 |
+### Core Automation (11 scripts)
+
+| Script | Purpose | When Used | Status |
+|--------|---------|-----------|--------|
+| `generate_sejr.py` | Create new victory | When starting new task | [OK] |
+| `auto_verify.py` | Verify progress | After EVERY change | [OK] |
+| `auto_archive.py` | Archive finished victory | When 3-pass is done | [OK] |
+| `build_claude_context.py` | Build CLAUDE.md | After checkbox changes | [OK] |
+| `update_claude_focus.py` | Update focus state | When task changes | [OK] |
+| `auto_track.py` | Update STATE.md | On state changes | [OK] |
+| `auto_learn.py` | Learn patterns | On victory completion | [OK] |
+| `auto_predict.py` | Generate predictions | On phase completion | [OK] |
+| `admiral_tracker.py` | Track scores | On events | [OK] |
+| `auto_live_status.py` | Live status display | For real-time view | [OK] |
+| `auto_optimize.py` | Auto-optimization | On PHASE 0 | [OK] |
+
+### AI & Quality Tools (4 scripts)
+
+| Script | Purpose | When Used | Status |
+|--------|---------|-----------|--------|
+| `model_router.py` | Choose AI model per task | On model selection | [OK] |
+| `token_tools.py` | Count tokens + estimate cost | Before API calls | [OK] |
+| `build_knowledge_base.py` | Build ChromaDB search index | On new documentation | [OK] |
+| `automation_pipeline.py` | Pre-commit quality check | On git commit | [OK] |
+
+### System Integrity (3 scripts)
+
+| Script | Purpose | When Used | Status |
+|--------|---------|-----------|--------|
+| `auto_health_check.py` | System integrity guard (45 checks) | Daily cron 07:55 + manual | [OK] |
+| `yaml_utils.py` | Centralized YAML parsing (PyYAML) | Imported by all scripts | [OK] |
+| `view.py` | Victory list viewer (terminal) | Manual status check | [OK] |
 
 ---
 
@@ -217,7 +237,7 @@ python3 scripts/auto_learn.py --sejr "MY_TASK_2026-01-26"  # Learn from specific
 | `--sejr` | No | Learn from specific victory (default: all in archive) |
 
 ### Output
-Updates `_CURRENT/PATTERNS.yaml` with:
+Updates `_CURRENT/PATTERNS.json` with:
 - Reusable patterns
 - Learned tips
 - Common mistakes to avoid
@@ -326,12 +346,191 @@ Suggestions for:
 
 ---
 
+## 12. model_router.py
+
+### Purpose
+Selects the right AI model based on task type (Opus/Sonnet/Haiku/Ollama).
+
+### Usage
+```bash
+# Classify a task
+python3 scripts/model_router.py --classify "Design the architecture for login"
+
+# Test routing with all examples
+python3 scripts/model_router.py --test
+
+# Run locally with Ollama (FREE)
+python3 scripts/model_router.py --local "Explain what a variable is"
+```
+
+### Routing Rules
+| Model | Task Type | Price |
+|-------|-----------|-------|
+| Opus | Architecture, strategy, patterns, complex decisions | $$$ |
+| Sonnet | Code, refactoring, git, implementation | $$ |
+| Haiku | Verification, checks, logging, simple questions | $ |
+| Ollama | Explanations, brainstorm, simple formatting | FREE |
+
+---
+
+## 13. token_tools.py
+
+### Purpose
+Counts tokens, estimates cost, and caches Ollama responses.
+
+### Usage
+```bash
+# Count tokens in text OR file (auto-detect)
+python3 scripts/token_tools.py count "Your text here"
+python3 scripts/token_tools.py count masterpiece_en.py
+
+# Count tokens in file (explicit)
+python3 scripts/token_tools.py count-file masterpiece_en.py
+
+# Estimate cost
+python3 scripts/token_tools.py cost "Your text" --model opus --max-tokens 2000
+
+# See cache statistics
+python3 scripts/token_tools.py cache-stats
+```
+
+### Cost Overview
+| Model | Input/1M tokens | Output/1M tokens |
+|-------|-----------------|------------------|
+| Opus | $15.00 | $75.00 |
+| Sonnet | $3.00 | $15.00 |
+| Haiku | $0.25 | $1.25 |
+| Ollama | FREE | FREE |
+
+---
+
+## 14. build_knowledge_base.py
+
+### Purpose
+Builds a ChromaDB-based search index over all documentation.
+
+### Usage
+```bash
+# Build/rebuild knowledge base
+python3 scripts/build_knowledge_base.py
+
+# Search knowledge base
+python3 scripts/build_knowledge_base.py --query "What is the DNA layer system?"
+
+# See statistics
+python3 scripts/build_knowledge_base.py --stats
+```
+
+### Output
+- 82+ documents indexed
+- Semantic search with relevance scores
+- Token estimate for context
+
+---
+
+## 15. automation_pipeline.py
+
+### Purpose
+Pre-commit quality pipeline. Runs syntax, flake8, and bandit checks.
+
+### Usage
+```bash
+# Quick check (syntax + critical errors only)
+python3 scripts/automation_pipeline.py --quick
+
+# Full pipeline with reporting
+python3 scripts/automation_pipeline.py masterpiece_en.py
+```
+
+### Output
+Reports:
+- Syntax errors (BLOCKING)
+- Flake8 critical errors (BLOCKING)
+- Style warnings (INFORMATIONAL)
+- Bandit security issues (INFORMATIONAL)
+
+---
+
+## 16. auto_health_check.py
+
+### Purpose
+Permanent system integrity guard. Runs 45 automated checks across 7 categories. Daily cron at 07:55.
+
+### Usage
+```bash
+# Run all checks
+python3 scripts/auto_health_check.py
+
+# Run with auto-repair
+python3 scripts/auto_health_check.py --repair
+```
+
+### Check Categories
+| Category | Checks | What It Verifies |
+|----------|--------|-----------------|
+| FILE INTEGRITY | Files exist, no corruption | Core files present |
+| YAML HEALTH | STATUS.yaml parseable | No corrupt YAML |
+| ARCHIVE COMPLETENESS | All files copied | 31/31 archives complete |
+| ORPHAN DETECTION | No lost victories | 4-layer protection |
+| PREVENTION | Crash-safe creation | Atomic operations |
+| DOCUMENTATION | Version sync, headers | No stale docs |
+| SERVICES | systemd, cron | Infrastructure running |
+
+### Cron
+```bash
+# Runs daily at 07:55 via cron_health_check.sh
+55 7 * * * /home/rasmus/Desktop/sejrliste\ systemet/scripts/cron_health_check.sh
+```
+
+---
+
+## 17. yaml_utils.py
+
+### Purpose
+Centralized YAML parsing module. ALL scripts import from here — no copy-paste parsers.
+
+### Usage
+```python
+from yaml_utils import parse_yaml_simple, load_yaml, save_yaml
+
+# Load YAML file
+data = load_yaml("STATUS.yaml")
+
+# Save YAML file
+save_yaml("STATUS.yaml", data)
+```
+
+### Why It Exists
+Before v3.0.0, each script had its own buggy flat YAML parser. This caused 14 corrupt STATUS.yaml files. Now all scripts use PyYAML via this single module.
+
+---
+
+## 18. view.py
+
+### Purpose
+Terminal-based victory list viewer. Shows all active victories with status.
+
+### Usage
+```bash
+python3 scripts/view.py
+python3 scripts/view.py --verbose
+```
+
+### Output
+Shows for each active victory:
+- Name and creation date
+- Current pass and completion %
+- Score
+- Last activity
+
+---
+
 ## WORKFLOW: Normal Day
 
 ```bash
 # 1. Start the day - see status
 python3 scripts/auto_track.py
-python3 view.py
+python3 scripts/view.py
 
 # 2. Find active victory or create new
 python3 scripts/generate_sejr.py --name "Today's Task"
@@ -388,9 +587,9 @@ python3 scripts/auto_learn.py
 ```
 [FAIL] ModuleNotFoundError: No module named 'yaml'
 ```
-**Solution:** Scripts don't use PyYAML - they have simple YAML parser built-in. Check file paths.
+**Solution:** All scripts use PyYAML via `yaml_utils.py`. Run: `pip install pyyaml` in venv, or activate venv first: `source venv/bin/activate`
 
 ---
 
 **Last updated:** 2026-01-31
-**Version:** 3.0.0 (PASS 2 - added Common Errors)
+**Version:** 3.0.0 (Complete - all 18 scripts documented + verified)

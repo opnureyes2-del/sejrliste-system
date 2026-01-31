@@ -25,8 +25,10 @@ Hver sejr mappe har disse log filer:
 | Fil | Formål | Format |
 |-----|--------|--------|
 | `AUTO_LOG.jsonl` | Alle handlinger | JSON Lines |
-| `TERMINAL_LOG.md` | Terminal output | Markdown |
-| `MODEL_HISTORY.yaml` | Hvilke modeller arbejdede | YAML |
+| `STATUS.yaml` | Status + model history | YAML |
+
+> **Note:** Tidligere versioner (v2.0) havde også `TERMINAL_LOG.md` og `MODEL_HISTORY.yaml`.
+> Disse er nu samlet i `STATUS.yaml` (unified) og `AUTO_LOG.jsonl` (alle handlinger inkl. terminal).
 
 ---
 
@@ -150,105 +152,34 @@ Hver sejr mappe har disse log filer:
 
 ---
 
-## TERMINAL_LOG.md FORMAT
+## STATUS.yaml MODEL TRACKING
 
-Human-readable log af alle terminal kommandoer:
-
-```markdown
-# TERMINAL LOG - {SEJR_NAVN}
-
----
-
-## Session: {SESSION_ID}
-**Startet:** {TIMESTAMP}
-**Model:** {MODEL_NAME}
-
-### Kommando 1
-```bash
-$ python3 test.py
-```
-**Exit code:** 0
-**Tid:** 1.234s
-**Output:**
-```
-Test passed
-All 5 tests OK
-```
-
-### Kommando 2
-```bash
-$ git status
-```
-**Exit code:** 0
-**Tid:** 0.045s
-**Output:**
-```
-On branch main
-nothing to commit, working tree clean
-```
-
----
-```
-
----
-
-## MODEL_HISTORY.yaml FORMAT
-
-Tracker hvilke modeller arbejdede på denne sejr:
+Model tracking er nu integreret i STATUS.yaml under `model_tracking`:
 
 ```yaml
-# MODEL HISTORY - Auto-generated
-# DO NOT EDIT MANUALLY
+model_tracking:
+  models_used:
+    - model_id: "claude-opus-4-5-20251101"
+      model_name: "Claude Opus 4.5"
+      first_seen: "2026-01-25T14:00:00+01:00"
+      last_seen: "2026-01-25T16:30:00+01:00"
+      sessions: 3
+      actions_count: 45
+      checkboxes_completed: 12
 
-sejr_navn: "Min Opgave"
-created: "2026-01-25T14:00:00+01:00"
-
-models_used:
-  - model_id: "claude-opus-4-5-20251101"
-    model_name: "Claude Opus 4.5"
+  human_activity:
     first_seen: "2026-01-25T14:00:00+01:00"
     last_seen: "2026-01-25T16:30:00+01:00"
-    sessions: 3
-    actions_count: 45
-    checkboxes_completed: 12
+    approvals: 5
+    corrections: 2
 
-  - model_id: "claude-sonnet-4-20250514"
-    model_name: "Claude Sonnet 4"
-    first_seen: "2026-01-25T15:00:00+01:00"
-    last_seen: "2026-01-25T15:45:00+01:00"
-    sessions: 1
-    actions_count: 23
-    checkboxes_completed: 8
-
-human_activity:
-  first_seen: "2026-01-25T14:00:00+01:00"
-  last_seen: "2026-01-25T16:30:00+01:00"
-  sessions: 2
-  approvals: 5
-  corrections: 2
-
-sessions:
-  - id: "sess_abc123"
-    started: "2026-01-25T14:00:00+01:00"
-    ended: "2026-01-25T14:30:00+01:00"
-    model: "claude-opus-4-5-20251101"
-    pass: 1
-    checkboxes_done: 5
-
-  - id: "sess_def456"
-    started: "2026-01-25T15:00:00+01:00"
-    ended: "2026-01-25T15:45:00+01:00"
-    model: "claude-sonnet-4-20250514"
-    pass: 2
-    checkboxes_done: 8
-
-statistics:
-  total_sessions: 4
-  total_actions: 68
-  total_commands: 23
-  total_time_minutes: 120
-  models_count: 2
+  statistics:
+    total_sessions: 4
+    total_actions: 68
+    total_time_minutes: 120
 ```
+
+> **Terminal output** logges nu i AUTO_LOG.jsonl (`.terminal` feltet) — se eksempler nedenfor.
 
 ---
 

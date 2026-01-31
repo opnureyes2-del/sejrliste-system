@@ -535,6 +535,95 @@ class HealthCheck:
                 self.ok("docs/ freshness", f"No stale version references found")
 
     # ══════════════════════════════════════════════════════════════════════
+    # CHECK 8: Documentation content accuracy — no dead references
+    # ══════════════════════════════════════════════════════════════════════
+
+    def check_doc_content_accuracy(self):
+        """Ensure documentation doesn't reference dead files or contain known falsehoods."""
+        print("\n── CONTENT ACCURACY ──")
+
+        docs_dir = SYSTEM_PATH / "docs"
+        if not docs_dir.exists():
+            self.warn("docs/ directory missing")
+            return
+
+        # Dead files that should NEVER be referenced (removed in v3.0.0)
+        dead_references = [
+            "TERMINAL_LOG.md",
+            "MODEL_HISTORY.yaml",
+            "VERIFY_STATUS.yaml",
+            "ADMIRAL_SCORE.yaml",
+        ]
+
+        # Known false claims that must never appear
+        false_claims = [
+            "bruger ikke PyYAML",       # DK: scripts DO use PyYAML now
+            "don't use PyYAML",          # EN: scripts DO use PyYAML now
+            "simple YAML parser built-in",  # EN variant
+        ]
+
+        dead_found = []
+
+        # Skip audit/historical files entirely (they document past state)
+        skip_files = {"STATUS_AUDIT_2026-01-28.md"}
+
+        for doc in sorted(docs_dir.glob("*.md")):
+            if doc.name in skip_files:
+                continue
+
+            content = doc.read_text(encoding="utf-8")
+
+            # Check for dead file references — exclude legitimate historical context
+            for dead in dead_references:
+                lines_with_ref = [
+                    i for i, line in enumerate(content.split("\n"))
+                    if dead in line
+                    and "delete" not in line.lower()
+                    and "old" not in line.lower()
+                    and "replace" not in line.lower()
+                    and "erstatter" not in line.lower()   # DK: "replaces"
+                    and "earlier" not in line.lower()
+                    and "tidligere" not in line.lower()    # DK: "earlier"
+                    and "note:" not in line.lower()
+                    and "samlet" not in line.lower()       # DK: "unified"
+                    and "unified" not in line.lower()
+                    and "rm " not in line                  # Migration rm commands
+                    and "before" not in line.lower()       # Before/After comparison
+                    and "før" not in line.lower()          # DK: "before"
+                    and "| " not in line[:5]               # Table "Before" columns
+                ]
+                if lines_with_ref:
+                    dead_found.append(f"{doc.name} references {dead} (line {lines_with_ref[0]+1})")
+
+            # Check for false claims
+            for claim in false_claims:
+                if claim.lower() in content.lower():
+                    dead_found.append(f"{doc.name} contains false claim: '{claim}'")
+
+        if dead_found:
+            for d in dead_found:
+                self.fail(f"Content error: {d}")
+        else:
+            self.ok("No dead file references", "All docs accurate")
+
+        # Check SCRIPT_REFERENCE DK/EN script count sync
+        ref_dk = docs_dir / "SCRIPT_REFERENCE.md"
+        ref_en = docs_dir / "SCRIPT_REFERENCE_EN.md"
+        if ref_dk.exists() and ref_en.exists():
+            import re as _re
+            dk_content = ref_dk.read_text(encoding="utf-8")
+            en_content = ref_en.read_text(encoding="utf-8")
+            dk_match = _re.search(r'All[e]?\s+(\d+)\s+[Ss]cripts', dk_content)
+            en_match = _re.search(r'All\s+(\d+)\s+[Ss]cripts', en_content)
+            if dk_match and en_match:
+                dk_count = int(dk_match.group(1))
+                en_count = int(en_match.group(1))
+                if dk_count == en_count:
+                    self.ok("Script count DK/EN sync", f"Both say {dk_count}")
+                else:
+                    self.fail("Script count DK/EN mismatch", f"DK={dk_count}, EN={en_count}")
+
+    # ══════════════════════════════════════════════════════════════════════
     # RUN ALL
     # ══════════════════════════════════════════════════════════════════════
 
@@ -551,6 +640,7 @@ class HealthCheck:
         self.check_data_integrity()
         self.check_prevention()
         self.check_documentation()
+        self.check_doc_content_accuracy()
         self.check_services()
 
         total = self.passed + self.failed
