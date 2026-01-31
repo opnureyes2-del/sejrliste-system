@@ -1,22 +1,75 @@
 # VICTORY LIST SYSTEM (Sejr Liste System)
 
-**Version:** 2.1.0 - SINGLE SOURCE OF TRUTH
-**Updated:** 2026-01-25
+**Version:** 3.0.0 - UNIFIED CROSS-DEVICE APP
+**Updated:** 2026-01-31
 **DNA Layers:** 7 (SELF-AWARE → SELF-OPTIMIZING)
+**Built by:** Kv1nt + Rasmus
 
 ---
 
 ## WHAT IS IT?
 
-A **FORCED IMPROVEMENT SYSTEM** that ensures EVERY task goes through 3 passes with increasing quality:
+A **FORCED IMPROVEMENT SYSTEM** with 3 interfaces (desktop, web, terminal) that ensures EVERY task goes through 3 passes with increasing quality — and the system LEARNS from EVERY completed task.
 
 | Pass | Focus | Requirements |
 |------|-------|--------------|
 | **Pass 1** | Planning | Baseline score |
 | **Pass 2** | Execution | Score > Pass 1 |
-| **Pass 3** | 7-DNA Review | Score > Pass 2, Total ≥ 24/30 |
+| **Pass 3** | 7-DNA Review | Score > Pass 2, Total >= 24/30 |
 
 **ARCHIVING IS BLOCKED** until all 3 passes are complete with sufficient score.
+
+---
+
+## ACCESS — 6 WAYS TO USE THE SYSTEM
+
+### 1. Desktop App (GTK4 Native)
+```bash
+# Double-click "Sejrliste" on desktop
+# Or:
+python3 masterpiece_en.py   # English
+python3 masterpiece.py       # Danish
+```
+- Full GNOME integration with Libadwaita
+- Sidebar navigation, real-time updates
+- 7 DNA layer visualization
+
+### 2. Web App (Browser)
+```
+http://localhost:8501
+```
+- Auto-starts at login (systemd service)
+- 5 pages: Active Projects, Archive, New Project, Statistics, Settings
+- Run scripts directly from UI
+
+### 3. Phone (Tailscale HTTPS)
+```
+https://rog.tailc9c1c5.ts.net
+```
+- Secure connection via Tailscale mesh VPN
+- Same web app as localhost
+- Works EVERYWHERE (not just local WiFi)
+
+### 4. Phone (Local WiFi)
+```
+http://10.168.6.233:8501
+```
+- Direct access on same network
+- QR code: `bash scripts/show_phone_url.sh`
+
+### 5. Terminal Dashboard
+```bash
+sejrliste                          # Global command — full system status
+bash scripts/sejr_dashboard.sh     # Detailed enforcement dashboard
+```
+
+### 6. TUI App (Textual)
+```bash
+python3 app/sejr_app.py
+```
+- Steam-style terminal interface
+- Keyboard-driven (j/k navigation, Enter to open)
+- Real-time file monitoring
 
 ---
 
@@ -26,111 +79,53 @@ A **FORCED IMPROVEMENT SYSTEM** that ensures EVERY task goes through 3 passes wi
 cd "/home/rasmus/Desktop/sejrliste systemet"
 
 # 1. Create new victory
-python3 scripts/generate_sejr.py --name "My Task"
+python3 scripts/generate_sejr.py --name "My Task" --goal "What we're building" --tech "Python"
 
-# 2. Build DYNAMIC CLAUDE.md
-python3 scripts/build_claude_context.py --all
+# 2. Work on victory in 10_ACTIVE/
 
-# 3. Work on victory in 10_ACTIVE/
-
-# 4. Verify progress (run often!)
+# 3. Verify progress (run often!)
 python3 scripts/auto_verify.py --all
 
-# 5. Archive when done (blocked until 3-pass complete)
-python3 scripts/auto_archive.py --sejr "MY_TASK_2026-01-25"
-```
+# 4. Archive when done (blocked until 3-pass complete)
+python3 scripts/auto_archive.py --sejr "MY_TASK_2026-01-31"
 
----
-
-## COMPLETE FOLDER STRUCTURE
-
-```
-sejrliste systemet/
-│
-├── README.md ← Danish version (Quick Start)
-├── README_EN.md ← You are reading this (English)
-├── ADMIRAL.md ← WHAT IS AN ADMIRAL? (5 qualities)
-├── MODEL_ONBOARDING.md ← AI ONBOARDING (read first as new model!)
-├── SCRIPT_REFERENCE.md ← All 11 scripts documented
-├── EKSEMPLER.md ← 10+ concrete examples
-├── ARBEJDSFORHOLD.md ← COMPLETE GUIDE (AI rules included)
-├── MANUAL.md ← Full documentation (3-pass + score system)
-├── LOG_FORMAT.md ← Log format specification
-├── DNA.yaml ← System identity
-├── ARKITEKTUR.md ← System architecture
-├── view.py ← Terminal viewer (simple)
-├── app/sejr_app.py ← TUI app (Textual - advanced)
-│
-├── scripts/ ← Automation (9 scripts)
-│ ├── generate_sejr.py → Create new victory + CLAUDE.md
-│ ├── build_claude_context.py → DYNAMIC CLAUDE.md builder
-│ ├── update_claude_focus.py → Update focus state
-│ ├── auto_verify.py → 3-pass verification
-│ ├── auto_archive.py → Archiving (blocked until done)
-│ ├── auto_track.py → State tracking
-│ ├── auto_learn.py → Pattern learning
-│ ├── auto_predict.py → Predictions
-│ └── admiral_tracker.py → Score tracking + leaderboard
-│
-├── 00_TEMPLATES/ ← Templates (4 items)
-│ ├── SEJR_TEMPLATE.md → Master template with 3-pass
-│ ├── CLAUDE.md → Focus lock template
-│ ├── STATUS_TEMPLATE.yaml → Unified status template
-│ └── SESSION_TJEK.md → Session start checklist
-│
-├── 10_ACTIVE/ ← ACTIVE VICTORIES (work here)
-│ └── {TASK_DATE}/
-│ ├── SEJR_LISTE.md → Main task with checkboxes
-│ ├── CLAUDE.md → AI FOCUS LOCK (generated)
-│ ├── STATUS.yaml → UNIFIED (pass + score + model)
-│ └── AUTO_LOG.jsonl → MASTER (all logging)
-│
-├── 90_ARCHIVE/ ← COMPLETED VICTORIES (conclusion only)
-│ └── {TASK_DATE_TIME}/
-│ └── CONCLUSION.md → Semantic essence
-│
-└── _CURRENT/ ← System state (5 files)
- ├── STATE.md → Current state
- ├── DELTA.md → What's new
- ├── NEXT.md → Predictions
- ├── PATTERNS.yaml → Learned patterns
- └── LEADERBOARD.md → Global competition leaderboard
+# 5. Check system status
+sejrliste
 ```
 
 ---
 
 ## A VICTORY FOLDER CONTAINS
 
-When you create a new victory, you get these **4 files** (Single Source of Truth):
+When you create a new victory, you get these **5 files** (Single Source of Truth):
 
-### 1. SEJR_LISTE.md (Victory List)
+### 1. PROJECT_BRIEF.md
+> READ THIS FIRST. 30 seconds. Complete understanding.
+- Goal, success criteria, scope, technology
+
+### 2. SEJR_LISTE.md (Victory List)
 The main task with all checkboxes organized in 3 passes:
 - **Pass 1:** PHASE 0-1-2 (Research, Planning, Verification)
 - **Pass 2:** PHASE 2-3-4 (Development, Test, Git)
 - **Pass 3:** 7-DNA Review (all 7 layers checked)
 
-### 2. CLAUDE.md
-**DYNAMIC** focus lock (generated from STATUS.yaml):
+### 3. CLAUDE.md
+**DYNAMIC** focus lock (generated + pattern-injected):
 - Exactly which checkbox is next
-- Progress bars for each pass
-- Scores and requirements
+- Top 5 learned patterns from PATTERNS.json
 - Anti-drift checkpoints
 
-### 3. STATUS.yaml (UNIFIED)
+### 4. STATUS.yaml (UNIFIED)
 **Single Source of Truth** for ALL status:
 - **Pass tracking:** Completion %, scores, checkboxes
 - **Score tracking:** Positive/negative events, rank
 - **Model tracking:** Which models worked, sessions
-- **Statistics:** Total time, actions, models
 
-### 4. AUTO_LOG.jsonl (MASTER)
+### 5. AUTO_LOG.jsonl (MASTER)
 **Single Source of Truth** for ALL logging:
 - All actions with ISO 8601 timestamps
-- Actor info (model_id, model_name, type)
-- Terminal output (command, exit_code, stdout/stderr)
+- Actor info (model_id, type)
 - Session tracking
-
-**See `LOG_FORMAT.md` for complete specification.**
 
 > **NO REDUNDANCY:** All data exists in ONLY one place!
 
@@ -152,81 +147,144 @@ The main task with all checkboxes organized in 3 passes:
 
 ### Pass 3: 7-DNA REVIEW
 - Review ALL 7 DNA layers:
- 1. SELF-AWARE - Does the system know itself?
- 2. SELF-DOCUMENTING - Is everything logged?
- 3. SELF-VERIFYING - Is everything tested?
- 4. SELF-IMPROVING - Did we learn something?
- 5. SELF-ARCHIVING - Only essence preserved?
- 6. PREDICTIVE - What is the next step?
- 7. SELF-OPTIMIZING - Could we have done better?
+  1. SELF-AWARE — Does the system know itself?
+  2. SELF-DOCUMENTING — Is everything logged?
+  3. SELF-VERIFYING — Is everything tested?
+  4. SELF-IMPROVING — Did we learn something?
+  5. SELF-ARCHIVING — Only essence preserved?
+  6. PREDICTIVE — What is the next step?
+  7. SELF-OPTIMIZING — Could we have done better?
 - Run 5+ tests
 - **Score MUST be higher than Pass 2**
-- **Total score MUST be ≥ 24/30**
+- **Total score MUST be >= 24/30**
 
 ---
 
-## ARCHIVING REQUIREMENTS
+## LEARNING SYSTEM (FEEDBACK LOOP)
 
-You CANNOT archive until:
-- [ ] All 3 passes complete
-- [ ] Pass 2 score > Pass 1 score
-- [ ] Pass 3 score > Pass 2 score
-- [ ] Total score ≥ 24/30
-- [ ] 5+ tests passed
-- [ ] 7-DNA review completed
+```
+Victory COMPLETE
+    |
+    v
+auto_archive.py → moves to 90_ARCHIVE/
+    |
+    v
+auto_learn.py → scans ALL archived victories
+    |           → identifies patterns, bugs, workflows
+    |           → stores in PATTERNS.json (52 patterns, growing)
+    v
+generate_sejr.py → reads top-5 patterns
+    |             → injects into new CLAUDE.md as "LEARNED WISDOM"
+    |             → tracks applied_count for fair rotation
+    v
+NEW VICTORY starts with KNOWLEDGE from ALL previous victories
+```
 
----
-
-## CLAUDE FOCUS SYSTEM
-
-### For AI Models
-When Claude opens a victory folder:
-1. **READ** `ARBEJDSFORHOLD.md` or `WORKING_CONDITIONS_EN.md` (mandatory)
-2. **READ** `CLAUDE.md` in the victory folder
-3. **CONFIRM** understanding to user
-4. **WORK** ONLY on current task
-5. **CHECK** checkbox when done
-6. **UPDATE** CLAUDE.md and continue
-
-### Anti-Drift Checkpoints
-Every 5 actions:
-- Re-read CLAUDE.md
-- Confirm task and pass
-- Find next unchecked checkbox
-- Continue
+**Cron job:** Daily learning at 08:00 (regardless of new victories)
 
 ---
 
-## SCRIPTS REFERENCE
+## FOLDER STRUCTURE
 
-| Script | Command | Function |
-|--------|---------|----------|
-| Create victory | `python3 scripts/generate_sejr.py --name "X"` | New victory + all files |
-| Build context | `python3 scripts/build_claude_context.py --all` | Dynamic CLAUDE.md |
-| Verify | `python3 scripts/auto_verify.py --all` | Check 3-pass status |
-| Archive | `python3 scripts/auto_archive.py --sejr "X"` | Archive (if allowed) |
-| Track | `python3 scripts/auto_track.py` | Update STATE.md |
-| Learn | `python3 scripts/auto_learn.py` | Update PATTERNS.yaml |
-| Predict | `python3 scripts/auto_predict.py` | Generate NEXT.md |
-| Score | `python3 scripts/admiral_tracker.py --sejr "X"` | Score tracking |
-
----
-
-## VIEWS (Terminal)
-
-```bash
-# Simple terminal viewer
-python3 view.py
-
-# Advanced TUI app (Textual)
-python3 app/sejr_app.py
+```
+sejrliste systemet/
+|
+|-- masterpiece.py              # GTK4 desktop app (Danish)
+|-- masterpiece_en.py           # GTK4 desktop app (English)
+|-- web_app.py                  # Streamlit web app (Danish)
+|-- web_app_en.py               # Streamlit web app (English)
+|-- start-web.sh                # Wrapper for systemd service
+|-- enforcement_engine.py       # Quality enforcement
+|-- intro_integration.py        # INTRO folder integration
+|-- sejr                        # Global launcher (dashboard)
+|-- DNA.yaml                    # System DNA configuration (7 layers)
+|
+|-- app/                        # TUI terminal app
+|   |-- sejr_app.py             # Main TUI (Textual, Steam-style)
+|   |-- model_router.py         # AI model routing (ModelType enum)
+|   |-- widgets/                # UI components
+|   |-- models/                 # Model handler
+|   |-- utils/                  # Utilities
+|   +-- tests/                  # Test suite (77 tests)
+|
+|-- scripts/                    # 22 automation scripts + shell scripts
+|-- docs/                       # 20 documentation files (DK + EN)
+|
+|-- pages/                      # Streamlit web pages
+|   |-- 1_Aktiv_Sejr.py
+|   |-- 2_Arkiv.py
+|   |-- 3_Ny_Sejr.py
+|   |-- 4_Statistik.py
+|   +-- 5_Indstillinger.py
+|
+|-- 00_TEMPLATES/               # Templates (5 items)
+|-- 10_ACTIVE/                  # Active victories (work here)
+|-- 90_ARCHIVE/                 # Archived victories (31, 100% Grand Admiral)
+|-- _CURRENT/                   # System state (live status, patterns, leaderboard)
+|-- DROP_HER/                   # Drop zone (drag-and-drop victory creation)
+|-- assets/                     # Icons and graphics
++-- _unused/                    # Inactive code (gitignored)
 ```
 
 ---
 
-## [ADMIRAL] ADMIRAL COMPETITION SYSTEM
+## DOCUMENTATION (docs/)
 
-A **SCORE SYSTEM** that measures AI model performance objectively!
+| File | Content |
+|------|---------|
+| `README.md` | This file — complete overview (root) |
+| `docs/MANUAL.md` | Full documentation (3-pass + score) |
+| `docs/ADMIRAL.md` | What is an Admiral? (5 qualities) |
+| `docs/MODEL_ONBOARDING.md` | AI onboarding (read first as new model) |
+| `docs/SCRIPT_REFERENCE.md` | All scripts documented |
+| `docs/EKSEMPLER.md` | 10+ concrete examples |
+| `docs/ARBEJDSFORHOLD.md` | Complete guide (AI rules) |
+| `docs/ARKITEKTUR.md` | System architecture |
+| `docs/LOG_FORMAT.md` | Log format specification |
+| `docs/PREVENTION_RULES.md` | Prevention rules |
+| `docs/INCOMPLETE_CHECK.md` | Incompleteness check |
+
+All documents available in both Danish and English (*_EN.md) in the `docs/` folder.
+
+---
+
+## INFRASTRUCTURE
+
+### Automatic
+- **systemd service:** `sejrliste-web.service` — auto-start Streamlit at login
+- **Cron 07:55:** Daily health check + repair (41 checks)
+- **Cron 08:00:** Daily pattern learning
+
+### Tailscale
+- **Desktop ROG:** 100.86.106.42
+- **Phone Pixel 9 Pro:** 100.84.174.88
+- **HTTPS:** https://rog.tailc9c1c5.ts.net (via Tailscale Serve)
+- **Account:** opnureyes2@gmail.com
+
+### Desktop
+- **Launcher:** victorylist.desktop (1 file, 3 actions: GTK4 / Web / TUI)
+- **Global command:** `sejrliste` (symlinked)
+
+---
+
+## STATISTICS
+
+| Metric | Value |
+|--------|-------|
+| Archived victories | 31 |
+| Average score | 29.9/30 (99.7%) |
+| Grand Admiral rate | 100% |
+| Learned patterns | 52 |
+| Scripts | 22 (active) |
+| Interfaces | 3 (GTK4 + Web + TUI) |
+| Access methods | 6 |
+| DNA layers | 7 |
+| Tests | 77/77 PASSED |
+| Health checks | 41/41 PASSED |
+
+---
+
+## ADMIRAL COMPETITION SYSTEM
 
 ### Positive Points (Reward)
 | Event | Points |
@@ -237,7 +295,7 @@ A **SCORE SYSTEM** that measures AI model performance objectively!
 | ADMIRAL_MOMENT | +10 |
 | SEJR_ARCHIVED | +20 |
 
-### Negative Points (Penalty × 2!)
+### Negative Points (Penalty x2!)
 | Event | Points |
 |-------|--------|
 | TOKEN_WASTE | -6 |
@@ -248,29 +306,15 @@ A **SCORE SYSTEM** that measures AI model performance objectively!
 ### Rankings
 | Rank | Score |
 |------|-------|
-| [ADMIRAL] GRAND ADMIRAL | 150+ |
+| GRAND ADMIRAL | 150+ |
 | ADMIRAL | 100-149 |
-| [MEDAL] CAPTAIN | 50-99 |
+| CAPTAIN | 50-99 |
 | LIEUTENANT | 20-49 |
 | CADET | 0-19 |
-| [DEAD] DECKHAND | < 0 |
-
-### Commands
-```bash
-# See leaderboard
-python3 scripts/admiral_tracker.py --leaderboard
-
-# Log event
-python3 scripts/admiral_tracker.py --sejr "X" --event "CHECKBOX_DONE"
-
-# See score
-python3 scripts/admiral_tracker.py --sejr "X" --score
-```
-
-See MANUAL.md for full documentation of the score system.
+| DECKHAND | < 0 |
 
 ---
 
-**Built by:** Kv1nt + Rasmus
-**Date:** 2026-01-25
-**Status:** [OK] OPERATIONAL
+**Status:** OPERATIONAL — Cross-device, self-learning, 100% Grand Admiral rate
+**Git:** github.com/opnureyes2-del/sejrliste-system
+**Test suite:** 77/77 PASSED | **Health check:** 41/41 PASSED

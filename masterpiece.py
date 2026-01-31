@@ -1,21 +1,28 @@
 #!/usr/bin/env python3
 """
-╔═══════════════════════════════════════════════════════════════════════════════╗
-║             SEJRLISTE MESTERVÆRK - GTK4 + LIBADWAITA NATIVE                   ║
-║                                                                               ║
-║   A modern, native GNOME application for the Sejrliste system                 ║
-║   Built with GTK4 and Libadwaita for a truly contemporary look                ║
-║                                                                               ║
-║   Features:                                                                   ║
-║   • AdwNavigationSplitView - Modern sidebar navigation                        ║
-║   • AdwStatusPage - Beautiful empty/welcome states                            ║
-║   • AdwActionRow - Polished list items with progress                          ║
-║   • 7 DNA Layers - Visual status indicators                                   ║
-║   • Real-time updates - Auto-refresh from filesystem                          ║
-║                                                                               ║
-║   Author: Kv1nt (Claude Opus 4.5) for Rasmus                                  ║
-║   Date: 2026-01-25                                                            ║
-╚═══════════════════════════════════════════════════════════════════════════════╝
+═══════════════════════════════════════════════════════════════════════════════
+          SEJRLISTE MESTERVAERK - GTK4 + LIBADWAITA NATIVE (DANSK)
+═══════════════════════════════════════════════════════════════════════════════
+
+WHAT:  GTK4 native desktop app (dansk) — fuld GNOME-integration.
+       Sidebar navigation, real-time opdatering, 7 DNA lag visualisering.
+
+WHY:   Dansk alternativ til masterpiece_en.py (samme features, dansk UI).
+
+WHO:   Kan startes fra terminal: python3 masterpiece.py
+       Ikke koblet til desktop launcher (den bruger _en.py versionen)
+
+HOW:   python3 masterpiece.py
+
+Features:
+  - AdwNavigationSplitView — Modern sidebar navigation
+  - AdwStatusPage — Beautiful empty/welcome states
+  - AdwActionRow — Polished list items with progress
+  - 7 DNA Layers — Visual status indicators
+  - Real-time updates — Auto-refresh from filesystem
+
+Version: 3.0.0 | Author: Kv1nt (Claude Opus 4.5) | Opdateret: 2026-01-31
+═══════════════════════════════════════════════════════════════════════════════
 """
 
 import gi

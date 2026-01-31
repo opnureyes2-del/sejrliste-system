@@ -1,21 +1,32 @@
 #!/usr/bin/env python3
 """
+═══════════════════════════════════════════════════════════════════════════════
+        VICTORY LIST MASTERPIECE - GTK4 + LIBADWAITA NATIVE (ENGLISH)
+═══════════════════════════════════════════════════════════════════════════════
 
-             VICTORY LIST MASTERPIECE - GTK4 + LIBADWAITA NATIVE (ENGLISH)                   
-                                                                               
-   A modern, native GNOME application for the Sejrliste system                 
-   Built with GTK4 and Libadwaita for a truly contemporary look                
-                                                                               
-   Features:                                                                   
-   • AdwNavigationSplitView - Modern sidebar navigation                        
-   • AdwStatusPage - Beautiful empty/welcome states                            
-   • AdwActionRow - Polished list items with progress                          
-   • 7 DNA Layers - Visual status indicators                                   
-   • Real-time updates - Auto-refresh from filesystem                          
-                                                                               
-   Author: Kv1nt (Claude Opus 4.5) for Rasmus                                  
-   Date: 2026-01-25                                                            
+WHAT:  GTK4 native desktop app — fuld GNOME-integration med Libadwaita.
+       Sidebar navigation, real-time opdatering, 7 DNA lag visualisering.
 
+WHY:   Primaer desktop-brugerflade. Startes fra victorylist.desktop launcher.
+       Importerer intro_integration.py for INTRO-data.
+
+WHO:   Startet af: victorylist.desktop (Exec=python3 masterpiece_en.py)
+       Importerer: intro_integration.py (fra samme mappe)
+       VIGTIG: Denne fil SKAL ligge i project root (desktop launcher peger her)
+
+HOW:   python3 masterpiece_en.py
+       Eller: dobbeltklik "Sejrliste" paa desktop
+
+Features:
+  - AdwNavigationSplitView — Modern sidebar navigation
+  - AdwStatusPage — Beautiful empty/welcome states
+  - AdwActionRow — Polished list items with progress
+  - 7 DNA Layers — Visual status indicators
+  - Real-time updates — Auto-refresh from filesystem
+  - INTRO integration — Viser MASTER FOLDERS indhold
+
+Version: 3.0.0 | Author: Kv1nt (Claude Opus 4.5) | Opdateret: 2026-01-31
+═══════════════════════════════════════════════════════════════════════════════
 """
 
 import gi

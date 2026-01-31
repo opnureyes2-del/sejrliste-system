@@ -1,5 +1,9 @@
+# ═══════════════════════════════════════════════════════════════
 # Sejrliste System v3.0.0 — Complete Dependencies
-# Generated from venv/bin/pip freeze on 2026-01-31
+# ═══════════════════════════════════════════════════════════════
+# WHAT:  Alle Python pakker som systemet kraever
+# HOW:   pip install -r requirements.txt (i venv/)
+# OPDATERET: 2026-01-31 (genereret fra venv/bin/pip freeze)
 
 # Core — Streamlit Web App
 streamlit==1.53.1

@@ -1,12 +1,23 @@
 #!/usr/bin/env python3
 """
-INTRO FOLDER SYSTEM - DATA MODEL AND INTEGRATION LAYER
+═══════════════════════════════════════════════════════════════════════════════
+              INTRO FOLDER SYSTEM - DATA MODEL AND INTEGRATION LAYER
+═══════════════════════════════════════════════════════════════════════════════
 
-This module provides the data model and scanning functions for integrating
-the MASTER FOLDERS (INTRO) system into the Victory List GTK4 application.
+WHAT:  Data model og scanning af MASTER FOLDERS (INTRO) systemet.
+       Laesere det reelle filsystem og returnerer strukturerede dataclasses.
 
-It reads the real filesystem at /home/rasmus/Desktop/MASTER FOLDERS(INTRO)/
-and provides structured Python dataclasses for all INTRO content:
+WHY:   GTK4 app'en (masterpiece_en.py) bruger dette til at vise INTRO indhold.
+       Uden dette modul kan desktop-appen IKKE vise INTRO data.
+
+WHO:   Importeret af: masterpiece_en.py (GTK4 desktop app)
+       VIGTIG: Denne fil SKAL ligge i project root (samme dir som masterpiece_en.py)
+
+HOW:   from intro_integration import scan_intro_system, IntroSystem
+       system = scan_intro_system()
+       for category in system.categories: ...
+
+INTRO Kategorier:
   - I1-I12 System Intelligence files
   - B1-B10 Terminal Commands
   - C1-C10 Environment Configuration
@@ -16,9 +27,10 @@ and provides structured Python dataclasses for all INTRO content:
   - G0-G4 Laptop Catalog
   - H1-H3 Fleet Collaboration
 
-FASE 0: Data Model for Sejrliste INTRO Integration
-Author: Kv1nt (Claude Opus 4.5) for Rasmus
-Date: 2026-01-30
+Kilde: /home/rasmus/Desktop/MASTER FOLDERS(INTRO)/
+
+Version: 3.0.0 | Author: Kv1nt (Claude Opus 4.5) | Opdateret: 2026-01-31
+═══════════════════════════════════════════════════════════════════════════════
 """
 
 from __future__ import annotations

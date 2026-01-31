@@ -1,8 +1,21 @@
 #!/usr/bin/env python3
 """
 ═══════════════════════════════════════════════════════════════════════════════
-              SEJRLISTE ENTERPRISE - PROFESSIONAL PROJECT TRACKING
+        SEJRLISTE ENTERPRISE - PROFESSIONAL PROJECT TRACKING (DANSK)
 ═══════════════════════════════════════════════════════════════════════════════
+
+WHAT:  Streamlit web app — dansk brugerflade for Sejrliste systemet.
+       5 sider: Aktive Sejre, Arkiv, Ny Sejr, Statistik, Indstillinger.
+
+WHY:   Hoved-webinterface — tilgaengelig fra desktop, telefon, tablet.
+       Auto-startes af systemd (sejrliste-web.service via start-web.sh).
+
+WHO:   Startet af: start-web.sh (systemd ExecStart)
+       Importerer: enforcement_engine.py (fra samme mappe)
+       Sider: pages/1_Aktiv_Sejr.py ... pages/5_Indstillinger.py
+
+HOW:   streamlit run web_app.py --server.port 8501 --server.address 0.0.0.0
+       Adgang: http://localhost:8501 | https://rog.tailc9c1c5.ts.net
 
 FEATURES:
   - Project Library: All projects with status tracking
@@ -10,13 +23,9 @@ FEATURES:
   - File Management: Browse, view, copy files
   - 7 DNA Layers: Automated quality processes
   - 3-Pass System: Planning → Execution → Review
+  - Mobilresponsiv CSS: 5 breakpoints (tablet, mobil, lille mobil, touch, landscape)
 
-PROFESSIONAL DESIGN:
-  - Clean enterprise aesthetics
-  - Minimal visual noise
-  - Focus on data and metrics
-  - Accessibility-compliant
-
+Version: 3.0.0 | Port: 8501 | Opdateret: 2026-01-31
 ═══════════════════════════════════════════════════════════════════════════════
 """
 

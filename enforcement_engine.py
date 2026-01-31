@@ -4,14 +4,28 @@
                     ENFORCEMENT ENGINE - UMULIG AT FEJLE
 ═══════════════════════════════════════════════════════════════════════════════
 
-Dette modul TVINGER korrekt arbejde. Det er UMULIGT at:
-- [FAIL] Gøre samme opgave forkert
+WHAT:  Kvalitets-enforcement for 3-pass konkurrence systemet.
+       TVINGER korrekt arbejde — BLOKERER indtil bevis er leveret.
+
+WHY:   Kerne-modul importeret af web_app.py og web_app_en.py.
+       Uden dette modul kan brugere springe passes over.
+
+WHO:   Importeret af: web_app.py, web_app_en.py (Streamlit web apps)
+       VIGTIG: Denne fil SKAL ligge i project root (samme dir som web_app.py)
+
+HOW:   import enforcement_engine
+       engine = enforcement_engine.EnforcementEngine(sejr_path)
+       engine.check_pass_requirements()
+
+Det er UMULIGT at:
+- [FAIL] Goere samme opgave forkert
 - [FAIL] Springe punkter over
 - [FAIL] Overse hvor vi er
-- [FAIL] Færdiggøre noget der ikke er gjort rigtigt
+- [FAIL] Faerdiggoere noget der ikke er gjort rigtigt
 
 FILOSOFI: Systemet BLOKERER indtil bevis er leveret.
 
+Version: 3.0.0 | Opdateret: 2026-01-31
 ═══════════════════════════════════════════════════════════════════════════════
 """
 

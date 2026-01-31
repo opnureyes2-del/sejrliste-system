@@ -1,16 +1,28 @@
 #!/usr/bin/env python3
 """
-SEJRLISTE DAILY LAUNCHER
-=========================
+═══════════════════════════════════════════════════════════════════════════════
+                     SEJRLISTE DAILY LAUNCHER
+═══════════════════════════════════════════════════════════════════════════════
 
-USAGE:
+WHAT:  Global kommando — system dashboard og genveje til alle scripts.
+       Viser aktive sejre, arkiv-statistik, og hurtige handlinger.
+
+WHY:   En enkelt indgang til hele systemet fra terminalen.
+       Symlinked til /usr/local/bin/sejrliste for global adgang.
+
+WHO:   Kaldt af: brugeren direkte (./sejr eller `sejrliste`)
+       Kalder: scripts/generate_sejr.py, scripts/auto_verify.py,
+               scripts/auto_archive.py, app/sejr_app.py
+
+HOW:
   ./sejr              # Show dashboard
   ./sejr new "NAME"   # Create new sejr
   ./sejr verify       # Run verification
   ./sejr status       # Quick status
   ./sejr app          # Launch TUI app
 
-ADMIRAL NIVEAU - Alt i én kommando
+Version: 3.0.0 | Opdateret: 2026-01-31
+═══════════════════════════════════════════════════════════════════════════════
 """
 
 import sys

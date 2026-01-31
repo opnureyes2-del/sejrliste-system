@@ -1,8 +1,21 @@
 #!/usr/bin/env python3
 """
 ═══════════════════════════════════════════════════════════════════════════════
-              SEJRLISTE ENTERPRISE - PROFESSIONAL PROJECT TRACKING
+       SEJRLISTE ENTERPRISE - PROFESSIONAL PROJECT TRACKING (ENGLISH)
 ═══════════════════════════════════════════════════════════════════════════════
+
+WHAT:  Streamlit web app — English interface for the Victory List system.
+       5 pages: Active Projects, Archive, New Project, Statistics, Settings.
+
+WHY:   English alternative to web_app.py (same features, different language).
+       Run manually when English interface is preferred.
+
+WHO:   Run manually: streamlit run web_app_en.py
+       Imports: enforcement_engine.py (from same directory)
+       Pages: pages/1_Aktiv_Sejr.py ... pages/5_Indstillinger.py
+
+HOW:   streamlit run web_app_en.py --server.port 8501 --server.address 0.0.0.0
+       Note: Cannot run simultaneously with web_app.py (same port)
 
 FEATURES:
   - Project Library: All projects with status tracking
@@ -10,13 +23,9 @@ FEATURES:
   - File Management: Browse, view, copy files
   - 7 DNA Layers: Automated quality processes
   - 3-Pass System: Planning → Execution → Review
+  - Mobile responsive CSS: 5 breakpoints
 
-PROFESSIONAL DESIGN:
-  - Clean enterprise aesthetics
-  - Minimal visual noise
-  - Focus on data and metrics
-  - Accessibility-compliant
-
+Version: 3.0.0 | Port: 8501 | Updated: 2026-01-31
 ═══════════════════════════════════════════════════════════════════════════════
 """
 

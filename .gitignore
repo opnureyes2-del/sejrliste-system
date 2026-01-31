@@ -1,44 +1,49 @@
-# SEJR LISTE SYSTEM - Git Ignore
+# ═══════════════════════════════════════════════════════════════
+# SEJR LISTE SYSTEM v3.0.0 — Git Ignore
+# ═══════════════════════════════════════════════════════════════
+# Opdateret: 2026-01-31
+# Princip: Track KILDE-filer, ignorer GENEREREDE filer
 
-# Active work folders — ignore generated files, track essential ones
+# Sejr-mapper — genererede status/log filer ignoreres
+# (SEJR_LISTE.md, STATUS.yaml, CONCLUSION.md TRACKES — de er kilde)
 10_ACTIVE/*/AUTO_LOG.jsonl
 10_ACTIVE/*/VERIFY_STATUS.yaml
-
-# Archive folders — ignore generated files, track essential ones
 90_ARCHIVE/*/AUTO_LOG.jsonl
 90_ARCHIVE/*/VERIFY_STATUS.yaml
 
-# Python cache
+# Python — kompilerede filer, cache
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 .pytest_cache/
 
-# Logs
+# Logs — runtime output, ikke kilde
 *.log
 *.jsonl
 
-# OS files
+# OS — desktop manager metadata
 .DS_Store
 Thumbs.db
 .directory
 
-# Editor files
+# Editors — IDE/editor konfiguration
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# Keep folder structure
+# Folder structure — bevar tomme mapper i git
 !10_ACTIVE/.gitkeep
 !90_ARCHIVE/.gitkeep
 
-# Sync state
+# Sync state — genereret af auto_track.py
 .sync_state.json
 
-# Unused code + virtual environments
+# Inaktiv kode — alt i _unused/ er arkiveret, ikke slettet
 _unused/
+
+# Virtual environments — lokale Python pakker (115+ pakker)
 venv/
 .venv/

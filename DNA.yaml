@@ -1,15 +1,25 @@
+# ═══════════════════════════════════════════════════════════════
 # SEJR LISTE SYSTEM - DNA
-# System selvbevidsthed og metadata
-# Version 2.1.0 - SINGLE SOURCE OF TRUTH
+# ═══════════════════════════════════════════════════════════════
+#
+# WHAT:  System DNA — selvbevidsthed, metadata, og konfiguration
+#        Definerer 7 DNA lag, scoring, og filstruktur
+# WHY:   Single Source of Truth for systemets identitet og regler
+# WHO:   Laest af: enforcement_engine.py, build_claude_context.py
+#        Refereret af: generate_sejr.py, auto_verify.py
+# HOW:   YAML format — redigeres manuelt, ALDRIG auto-genereret
+#
+# Version: 3.0.0 - UNIFIED CROSS-DEVICE APP
+# ═══════════════════════════════════════════════════════════════
 
 meta:
   created: "2026-01-23T06:30:00+01:00"
   created_by: "Kv1nt (Claude Sonnet 4.5)"
-  updated: "2026-01-25T16:00:00+01:00"
+  updated: "2026-01-31T19:00:00+01:00"
   updated_by: "Kv1nt (Claude Opus 4.5)"
-  version: "2.1.0"
-  version_name: "SINGLE SOURCE OF TRUTH"
-  purpose: "Strømlinet system UDEN redundans - 4 filer per sejr"
+  version: "3.0.0"
+  version_name: "UNIFIED CROSS-DEVICE APP"
+  purpose: "3 brugerflader (GTK4 + Web + TUI), cross-device, self-learning"
 
 # ═══════════════════════════════════════════════════════════
 # SINGLE SOURCE OF TRUTH PRINCIP (NYHED i v2.1.0)
