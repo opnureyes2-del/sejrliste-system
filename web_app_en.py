@@ -1567,6 +1567,39 @@ with st.sidebar:
     if st.button(" Refresh", use_container_width=True):
         st.rerun()
 
+    st.markdown("---")
+
+    # MENU ITEMS - Orange-red text
+    st.markdown("""
+    <style>
+    .menu-item { color: #ff6b35 !important; font-weight: 600; font-size: 1.1rem; }
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown("** MENU**")
+
+    if st.button(" Active Victories", use_container_width=True, key="menu_active"):
+        st.session_state.view = 'library'
+        st.session_state.filter = 'active'
+        st.rerun()
+
+    if st.button(" Archive", use_container_width=True, key="menu_archive"):
+        st.session_state.view = 'library'
+        st.session_state.filter = 'archived'
+        st.rerun()
+
+    if st.button(" New Victory", use_container_width=True, key="menu_new"):
+        st.session_state.view = 'create'
+        st.rerun()
+
+    if st.button(" Statistics", use_container_width=True, key="menu_statistics"):
+        st.session_state.view = 'statistics'
+        st.rerun()
+
+    if st.button(" Settings", use_container_width=True, key="menu_settings"):
+        st.session_state.view = 'settings'
+        st.rerun()
+
     # 7 Days Ahead - KLARSYN
     st.markdown("---")
     st.markdown("** 7 Dage Frem**")
@@ -1608,72 +1641,316 @@ with st.sidebar:
 # MAIN CONTENT
 # ═══════════════════════════════════════════════════════════════════════════════
 
-if st.session_state.view == 'library' or st.session_state.selected_sejr is None:
-    # LIBRARY VIEW - Grid of sejr cards
+if st.session_state.view == 'statistics':
+    # ═══════════════════════════════════════════════════════════════════════════════
+    #  STATISTICS VIEW
+    # ═══════════════════════════════════════════════════════════════════════════════
     st.markdown("""
-    <div class="production-room">
-        <div class="production-header">Select Project</div>
+    <h1 style="color: var(--text-primary); font-family: 'Space Grotesk', sans-serif;">
+         STATISTICS
+    </h1>
+    """, unsafe_allow_html=True)
+
+    total_sejrs = len(sejrs)
+    total_archived = len(archived_sejrs)
+    total_active = len(active_sejrs)
+    total_checkboxes_done = sum(s['checkboxes_done'] for s in sejrs)
+    total_checkboxes = sum(s['checkboxes_total'] for s in sejrs)
+    avg_score = sum(int(s['score'].split('/')[0]) for s in archived_sejrs) / len(archived_sejrs) if archived_sejrs else 0
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("Total Victories", total_sejrs)
+        st.metric("Active", total_active)
+        st.metric("Archived", total_archived)
+    with col2:
+        st.metric("Checkboxes Done", total_checkboxes_done)
+        st.metric("Total Checkboxes", total_checkboxes)
+        completion = int(total_checkboxes_done / total_checkboxes * 100) if total_checkboxes > 0 else 0
+        st.metric("Completion Rate", f"{completion}%")
+    with col3:
+        st.metric("Average Score", f"{avg_score:.1f}/30")
+        grand_admirals = len([s for s in archived_sejrs if int(s['score'].split('/')[0]) >= 27])
+        st.metric("Grand Admirals", grand_admirals)
+        st.metric("Admiral Rate", f"{int(grand_admirals/len(archived_sejrs)*100) if archived_sejrs else 0}%")
+
+elif st.session_state.view == 'settings':
+    # ═══════════════════════════════════════════════════════════════════════════════
+    #  SETTINGS VIEW
+    # ═══════════════════════════════════════════════════════════════════════════════
+    st.markdown("""
+    <h1 style="color: var(--text-primary); font-family: 'Space Grotesk', sans-serif;">
+         SETTINGS
+    </h1>
+    """, unsafe_allow_html=True)
+
+    st.subheader("System Paths")
+    st.code(f"SYSTEM_PATH: {SYSTEM_PATH}\nACTIVE_DIR: {ACTIVE_DIR}\nARCHIVE_DIR: {ARCHIVE_DIR}")
+
+    st.subheader("Scripts Status")
+    scripts = list(SCRIPTS_DIR.glob("*.py"))
+    for script in scripts:
+        col1, col2, col3 = st.columns([3, 1, 1])
+        with col1:
+            st.text(script.name)
+        with col2:
+            if st.button("Test", key=f"test_{script.name}"):
+                with st.spinner(f"Testing {script.name}..."):
+                    success, output = run_script(script.name)
+                    st.success("OK") if success else st.error("ERROR")
+        with col3:
+            if st.button("Run", key=f"run_{script.name}"):
+                with st.spinner(f"Running {script.name}..."):
+                    success, output = run_script(script.name)
+                    if success:
+                        st.success("Done!")
+                    else:
+                        st.error(f"Error: {output}")
+
+elif st.session_state.view == 'create':
+    # ═══════════════════════════════════════════════════════════════════════════════
+    #  CREATE NEW VICTORY VIEW
+    # ═══════════════════════════════════════════════════════════════════════════════
+    st.markdown("""
+    <h1 style="color: var(--text-primary); font-family: 'Space Grotesk', sans-serif;">
+         CREATE NEW VICTORY
+    </h1>
+    """, unsafe_allow_html=True)
+
+    with st.form("new_sejr_form"):
+        name = st.text_input("Victory Name", placeholder="E.g. FIX_BUG_AUTHENTICATION")
+        goal = st.text_area("Goal", placeholder="What should be achieved?")
+        tech = st.text_input("Technology", placeholder="Python, Streamlit, etc.")
+        submitted = st.form_submit_button("Create Victory")
+        if submitted and name:
+            try:
+                with st.spinner(f"Creating victory '{name}'..."):
+                    cmd = f'python3 {SCRIPTS_DIR}/generate_sejr.py --name "{name}"'
+                    if goal:
+                        cmd += f' --goal "{goal}"'
+                    if tech:
+                        cmd += f' --tech "{tech}"'
+                    result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=SYSTEM_PATH, timeout=30)
+                    if result.returncode == 0:
+                        st.success(f"Victory '{name}' created!")
+                        st.session_state.view = 'library'
+                        st.rerun()
+                    else:
+                        st.error(f"Script error: {result.stderr}")
+            except subprocess.TimeoutExpired:
+                st.error("Timeout: Script took too long (>30s)")
+            except Exception as e:
+                st.error(f"Unexpected error: {str(e)}")
+
+elif st.session_state.view == 'library' or st.session_state.selected_sejr is None:
+    # ═══════════════════════════════════════════════════════════════════════════════
+    #  COMPLETE OVERVIEW DASHBOARD - SEE EVERYTHING!
+    # ═══════════════════════════════════════════════════════════════════════════════
+
+    # Calculate totals
+    total_active_checkboxes = sum(s['checkboxes_total'] - s['checkboxes_done'] for s in active_sejrs)
+    total_done_checkboxes = sum(s['checkboxes_done'] for s in active_sejrs)
+    total_archived_score = sum(int(s['score'].split('/')[0]) for s in archived_sejrs)
+    max_possible_score = len(archived_sejrs) * 30
+
+    # ═══════════════════════════════════════════════════════════════════════════════
+    #  SCOREBOARD - TOTAL STATUS AT A GLANCE
+    # ═══════════════════════════════════════════════════════════════════════════════
+    st.markdown("""
+    <div style="
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(99, 102, 241, 0.1) 100%);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        padding: 1.5rem 2rem;
+        margin-bottom: 1.5rem;
+    ">
+        <h2 style="
+            color: var(--text-primary);
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0 0 1rem 0;
+            font-size: 1.5rem;
+        "> SCOREBOARD - COMPLETE OVERVIEW</h2>
     </div>
     """, unsafe_allow_html=True)
 
-    # Stats row
-    col1, col2, col3, col4 = st.columns(4)
+    # BIG NUMBERS - 6 columns
+    col1, col2, col3, col4, col5, col6 = st.columns(6)
+
     with col1:
         st.markdown(f"""
-        <div class="stat-card">
-            <div class="stat-value">{len(active_sejrs)}</div>
-            <div class="stat-label">Active</div>
+        <div style="text-align: center; padding: 1rem; background: var(--glass-bg); border-radius: 12px; border: 1px solid var(--glass-border);">
+            <div style="font-size: 2.5rem; font-weight: bold; color: var(--accent-orange);">{len(active_sejrs)}</div>
+            <div style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">ACTIVE</div>
         </div>
         """, unsafe_allow_html=True)
+
     with col2:
         st.markdown(f"""
-        <div class="stat-card">
-            <div class="stat-value">{len(archived_sejrs)}</div>
-            <div class="stat-label">Archived</div>
+        <div style="text-align: center; padding: 1rem; background: var(--glass-bg); border-radius: 12px; border: 1px solid var(--glass-border);">
+            <div style="font-size: 2.5rem; font-weight: bold; color: var(--accent-emerald);">{len(archived_sejrs)}</div>
+            <div style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">ARCHIVED</div>
         </div>
         """, unsafe_allow_html=True)
+
     with col3:
-        avg_progress = sum(s['progress'] for s in active_sejrs) // len(active_sejrs) if active_sejrs else 0
         st.markdown(f"""
-        <div class="stat-card">
-            <div class="stat-value">{avg_progress}%</div>
-            <div class="stat-label">Avg Progress</div>
+        <div style="text-align: center; padding: 1rem; background: var(--glass-bg); border-radius: 12px; border: 1px solid var(--accent-red); border-width: 2px;">
+            <div style="font-size: 2.5rem; font-weight: bold; color: var(--accent-red);">{total_active_checkboxes}</div>
+            <div style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">REMAINING</div>
         </div>
         """, unsafe_allow_html=True)
+
     with col4:
         st.markdown(f"""
-        <div class="stat-card">
-            <div class="stat-value">{get_session_duration()}</div>
-            <div class="stat-label">Session</div>
+        <div style="text-align: center; padding: 1rem; background: var(--glass-bg); border-radius: 12px; border: 1px solid var(--glass-border);">
+            <div style="font-size: 2.5rem; font-weight: bold; color: var(--accent-cyan);">{total_done_checkboxes}</div>
+            <div style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">COMPLETED</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col5:
+        st.markdown(f"""
+        <div style="text-align: center; padding: 1rem; background: var(--glass-bg); border-radius: 12px; border: 1px solid var(--glass-border);">
+            <div style="font-size: 2.5rem; font-weight: bold; color: var(--accent-gold);">{total_archived_score}</div>
+            <div style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">TOTAL SCORE</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col6:
+        score_percent = int(total_archived_score / max_possible_score * 100) if max_possible_score > 0 else 0
+        st.markdown(f"""
+        <div style="text-align: center; padding: 1rem; background: var(--glass-bg); border-radius: 12px; border: 1px solid var(--glass-border);">
+            <div style="font-size: 2.5rem; font-weight: bold; color: var(--accent-violet);">{score_percent}%</div>
+            <div style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">QUALITY</div>
         </div>
         """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # Sejr grid
-    cols = st.columns(3)
-    for i, sejr in enumerate(active_sejrs):
-        with cols[i % 3]:
-            progress_bar = f"{'█' * (sejr['progress'] // 10)}{'░' * (10 - sejr['progress'] // 10)}"
-            status_color = "#5ba32b" if sejr['progress'] >= 80 else "#f7b93e" if sejr['progress'] >= 50 else "#c23b23"
+    # ═══════════════════════════════════════════════════════════════════════════════
+    #  UPCOMING VICTORIES - YOUR WORK NOW
+    # ═══════════════════════════════════════════════════════════════════════════════
+    st.markdown("""
+    <div style="
+        background: linear-gradient(135deg, rgba(249, 115, 22, 0.15) 0%, rgba(239, 68, 68, 0.1) 100%);
+        border: 2px solid var(--accent-orange);
+        border-radius: 16px;
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1rem;
+    ">
+        <h3 style="color: var(--accent-orange); margin: 0;"> UPCOMING VICTORIES - YOUR WORK NOW</h3>
+    </div>
+    """, unsafe_allow_html=True)
 
-            st.markdown(f"""
-            <div class="sejr-card" onclick="selectSejr('{sejr['name']}')">
-                <div class="sejr-title">{sejr['name']}</div>
-                <div class="progress-bar-container">
-                    <div class="progress-bar-container-bar" style="width: {sejr['progress']}%"></div>
+    for sejr in active_sejrs:
+        remaining = sejr['checkboxes_total'] - sejr['checkboxes_done']
+        progress_color = "var(--accent-emerald)" if sejr['progress'] >= 80 else "var(--accent-orange)" if sejr['progress'] >= 50 else "var(--accent-red)"
+
+        st.markdown(f"""
+        <div style="
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-left: 4px solid {progress_color};
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin: 0.75rem 0;
+        ">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <div style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary);">
+                         {sejr['name']}
+                    </div>
+                    <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">
+                        Phase: {sejr['phase']} | Score: {sejr['score']}
+                    </div>
                 </div>
-                <div class="sejr-meta">
-                    <span style="color: {status_color}">■</span> {sejr['progress']}% | Score: {sejr['score']}
+                <div style="display: flex; gap: 1.5rem; align-items: center;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: {progress_color};">{sejr['progress']}%</div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted);">PROGRESS</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: var(--accent-cyan);">{sejr['checkboxes_done']}</div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted);">DONE</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: var(--accent-red);">{remaining}</div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted);">REMAINING</div>
+                    </div>
                 </div>
-                <div class="sejr-meta">Phase: {sejr['phase']} | Tasks: {sejr['checkboxes_done']}/{sejr['checkboxes_total']}</div>
             </div>
-            """, unsafe_allow_html=True)
+            <div style="margin-top: 0.75rem;">
+                <div style="
+                    background: rgba(15, 20, 36, 0.8);
+                    border-radius: 8px;
+                    height: 8px;
+                    overflow: hidden;
+                ">
+                    <div style="
+                        width: {sejr['progress']}%;
+                        height: 100%;
+                        background: linear-gradient(90deg, {progress_color} 0%, var(--accent-cyan) 100%);
+                        border-radius: 8px;
+                    "></div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
-            if st.button(f"▶ Open", key=f"open_{sejr['name']}", use_container_width=True):
-                st.session_state.selected_sejr = sejr
-                st.session_state.view = 'production'
-                st.rerun()
+        if st.button(f"▶ Open {sejr['name'][:25]}", key=f"open_{sejr['name']}", use_container_width=True):
+            st.session_state.selected_sejr = sejr
+            st.session_state.view = 'production'
+            st.rerun()
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # ═══════════════════════════════════════════════════════════════════════════════
+    #  ARCHIVE COMPLETE - ALL FINISHED VICTORIES
+    # ═══════════════════════════════════════════════════════════════════════════════
+    st.markdown(f"""
+    <div style="
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(34, 211, 238, 0.1) 100%);
+        border: 2px solid var(--accent-emerald);
+        border-radius: 16px;
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1rem;
+    ">
+        <h3 style="color: var(--accent-emerald); margin: 0;"> ARCHIVE COMPLETE - {len(archived_sejrs)} FINISHED VICTORIES</h3>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Archive as grid
+    if archived_sejrs:
+        # 3 columns for compact view
+        cols = st.columns(3)
+        for i, sejr in enumerate(archived_sejrs):
+            with cols[i % 3]:
+                score_val = int(sejr['score'].split('/')[0])
+                score_color = "var(--accent-emerald)" if score_val >= 27 else "var(--accent-orange)" if score_val >= 20 else "var(--accent-red)"
+
+                st.markdown(f"""
+                <div style="
+                    background: var(--glass-bg);
+                    border: 1px solid var(--glass-border);
+                    border-radius: 10px;
+                    padding: 0.75rem 1rem;
+                    margin: 0.4rem 0;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                ">
+                    <div style="font-size: 0.85rem; color: var(--text-primary); max-width: 70%;">
+                        [OK] {sejr['name'][:25]}{'...' if len(sejr['name']) > 25 else ''}
+                    </div>
+                    <div style="
+                        font-weight: bold;
+                        color: {score_color};
+                        font-family: 'JetBrains Mono', monospace;
+                    ">{sejr['score']}</div>
+                </div>
+                """, unsafe_allow_html=True)
+    else:
+        st.info("No archived victories yet.")
 
 else:
     # PRODUCTION ROOM - Active workspace

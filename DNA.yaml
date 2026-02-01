@@ -187,30 +187,69 @@ admiral_konkurrence:
     - "scripts/admiral_tracker.py - Score management"
 
 # ═══════════════════════════════════════════════════════════
-# SCRIPTS (9 stk)
+# SCRIPTS (15 Python + 8 Shell + 1 shared module = 24 stk)
 # ═══════════════════════════════════════════════════════════
 
 scripts:
-  count: 9
-  list:
+  python_count: 15
+  shell_count: 8
+  shared_modules_count: 1
+  total_count: 24
+
+  python_scripts:
     - name: "generate_sejr.py"
-      purpose: "Opret ny sejr med alle 4 filer"
-    - name: "build_claude_context.py"
-      purpose: "Byg DYNAMISK CLAUDE.md fra actual state"
-    - name: "update_claude_focus.py"
-      purpose: "Opdater CLAUDE.md state"
+      purpose: "Opret ny sejr med alle 4 filer (atomisk)"
     - name: "auto_verify.py"
       purpose: "3-pass verification + scoring"
     - name: "auto_archive.py"
       purpose: "Arkivering (blokeret til 3-pass done)"
+    - name: "build_claude_context.py"
+      purpose: "Byg DYNAMISK CLAUDE.md fra actual state"
+    - name: "update_claude_focus.py"
+      purpose: "Opdater CLAUDE.md state"
     - name: "auto_track.py"
       purpose: "State tracking + STATE.md"
     - name: "auto_learn.py"
-      purpose: "Pattern learning + PATTERNS.yaml"
+      purpose: "Pattern learning + PATTERNS.json"
     - name: "auto_predict.py"
       purpose: "Predictions + NEXT.md"
     - name: "admiral_tracker.py"
       purpose: "Konkurrence score tracking + leaderboard"
+    - name: "auto_health_check.py"
+      purpose: "System integrity guard — finder + reparerer problemer (12 checks)"
+    - name: "automation_pipeline.py"
+      purpose: "Kvalitets-pipeline: syntax, linting, security, rapport"
+    - name: "token_tools.py"
+      purpose: "Token counting, cost estimation + lokal fil-cache"
+    - name: "yaml_utils.py"
+      purpose: "Delt YAML modul (PyYAML wrapper, erstatter buggy flat parser)"
+    - name: "view.py"
+      purpose: "Terminal status viewer for aktive sejr"
+    - name: "generate_icon_sizes.py"
+      purpose: "Generér PNG varianter af SVG icons (rsvg-convert)"
+
+  shared_modules:
+    - name: "checkbox_utils.py"
+      location: "root"
+      purpose: "Centraliseret count_checkboxes() — importeret af web_app, masterpiece, auto_verify, pages/"
+
+  shell_scripts:
+    - name: "sejr_dashboard.sh"
+      purpose: "Enforcement dashboard — formateret terminal overblik"
+    - name: "sejrliste_status.sh"
+      purpose: "Unified system overview (apps, URLs, sejr, patterns)"
+    - name: "sejr-watch.sh"
+      purpose: "Realtids overvagning via inotifywait"
+    - name: "sejr-terminal.sh"
+      purpose: "Interaktiv terminal med kommandoer (verify, track, predict, learn)"
+    - name: "cron_auto_learn.sh"
+      purpose: "Cron wrapper for auto_learn med log rotation"
+    - name: "cron_health_check.sh"
+      purpose: "Cron wrapper for health check + desktop notification ved fejl"
+    - name: "show_phone_url.sh"
+      purpose: "Vis telefon-URL + QR kode for web app"
+    - name: "start_web_en.sh"
+      purpose: "Start Streamlit web app (English) paa port 8502"
 
 # ═══════════════════════════════════════════════════════════
 # STATUS
@@ -230,6 +269,7 @@ files:
   root:
     - "README.md - Overblik (v3.0.0)"
     - "DNA.yaml - Denne fil"
+    - "checkbox_utils.py - Delt modul: centraliseret count_checkboxes()"
     - "enforcement_engine.py - 3-pass enforcement"
     - "intro_integration.py - INTRO integration"
     - "masterpiece_en.py - GTK4 desktop app (English)"
@@ -286,7 +326,7 @@ quality_standards:
 
 verification:
   system_exists: "ls '/home/rasmus/Desktop/sejrliste systemet'"
-  scripts_count: "ls scripts/*.py | wc -l  # Expected: 9"
+  scripts_count: "ls scripts/*.py | wc -l  # Expected: 15"
   templates_count: "ls 00_TEMPLATES/* | wc -l  # Expected: 4"
   view_works: "python3 view.py"
   generate_works: "python3 scripts/generate_sejr.py --name 'Test'"
