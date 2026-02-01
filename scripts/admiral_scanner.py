@@ -109,18 +109,22 @@ class AdmiralScanner:
                              str(sejr_dir))
 
         # 2. Check DK/EN file parity
-        dk_en_pairs = [
-            ("web_app.py", "web_app_en.py"),
-            ("masterpiece.py", "masterpiece_en.py"),
+        # web_app pair: should be same size (both simple Streamlit apps)
+        # masterpiece pair: EN is PRIMARY (with INTRO integration), DK is simplified alternative
+        parity_pairs = [
+            ("web_app.py", "web_app_en.py", 50),        # strict parity — same features
         ]
-        for dk_file, en_file in dk_en_pairs:
+        info_pairs = [
+            ("masterpiece.py", "masterpiece_en.py"),     # EN is primary, DK is simplified
+        ]
+        for dk_file, en_file, threshold in parity_pairs:
             dk_path = SEJRLISTE_PATH / dk_file
             en_path = SEJRLISTE_PATH / en_file
             if dk_path.exists() and en_path.exists():
                 dk_lines = len(dk_path.read_text(encoding="utf-8").splitlines())
                 en_lines = len(en_path.read_text(encoding="utf-8").splitlines())
                 diff = abs(dk_lines - en_lines)
-                if diff > 20:
+                if diff > threshold:
                     self.add("SEJRLISTE", "MEDIUM", "PARITY",
                              f"{dk_file} ({dk_lines}L) vs {en_file} ({en_lines}L) — {diff} lines difference",
                              str(dk_path),
@@ -128,6 +132,15 @@ class AdmiralScanner:
                 else:
                     self.add("SEJRLISTE", "INFO", "PARITY",
                              f"{dk_file} ↔ {en_file} — OK ({diff}L diff)", str(dk_path))
+        for dk_file, en_file in info_pairs:
+            dk_path = SEJRLISTE_PATH / dk_file
+            en_path = SEJRLISTE_PATH / en_file
+            if dk_path.exists() and en_path.exists():
+                dk_lines = len(dk_path.read_text(encoding="utf-8").splitlines())
+                en_lines = len(en_path.read_text(encoding="utf-8").splitlines())
+                self.add("SEJRLISTE", "INFO", "PARITY",
+                         f"{dk_file} ({dk_lines}L) vs {en_file} ({en_lines}L) — EN is primary app with INTRO integration",
+                         str(en_path))
 
         # 3. Check docs freshness
         docs_dir = SEJRLISTE_PATH / "docs"
@@ -245,18 +258,29 @@ class AdmiralScanner:
                              str(subdir),
                              "Add content or remove directory")
 
-        # 4. Check for contradictory I-files (services claimed UP vs DOWN)
+        # 4. Check for contradictory I-files (same port claimed BOTH active AND inactive)
         for i_file in i_files:
             try:
                 content = i_file.read_text(encoding="utf-8")
-                # Check for ports claimed as active
-                port_claims = re.findall(r'port\s+(\d{4,5}).*(?:AKTIV|UP|running|operational)', content, re.IGNORECASE)
-                not_running = re.findall(r'(?:IKKE|NOT)\s+(?:AKTIV|running|active)', content, re.IGNORECASE)
-                if port_claims and not_running:
+                active_ports = set()
+                inactive_ports = set()
+                for line in content.splitlines():
+                    port_match = re.search(r'(?:port|:)\s*(\d{4,5})', line, re.IGNORECASE)
+                    if not port_match:
+                        continue
+                    port = port_match.group(1)
+                    # Check inactive FIRST (IKKE/NOT + status keyword)
+                    if re.search(r'(?:IKKE|NOT)\s+(?:AKTIV|aktive?|running|active|lytter)', line, re.IGNORECASE):
+                        inactive_ports.add(port)
+                    elif re.search(r'(?<![Ii]n)\b(?:AKTIV|UP|running|operational|listening)\b', line, re.IGNORECASE):
+                        active_ports.add(port)
+                # Only flag if the SAME port is claimed both active AND inactive
+                contradicted = active_ports & inactive_ports
+                if contradicted:
                     self.add("INTRO", "MEDIUM", "DRIFT",
-                             f"'{i_file.name}' has contradictory status claims (ports UP + NOT RUNNING)",
+                             f"'{i_file.name}' has contradictory status for port(s): {', '.join(sorted(contradicted))}",
                              str(i_file),
-                             "Fact-check and resolve contradictions")
+                             "Fact-check: same port claimed both active AND inactive")
             except Exception:
                 pass
 
