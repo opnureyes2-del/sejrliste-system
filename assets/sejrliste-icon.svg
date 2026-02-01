@@ -1,39 +1,137 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <!-- Background circle with orange gradient -->
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
   <defs>
+    <!-- Navy Background (Admiral standard) -->
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#ff9f43"/>
-      <stop offset="50%" style="stop-color:#f97316"/>
-      <stop offset="100%" style="stop-color:#ef4444"/>
+      <stop offset="0%" style="stop-color:#0A0E27"/>
+      <stop offset="100%" style="stop-color:#1A1F3A"/>
     </linearGradient>
+
+    <!-- Gold Gradient (Admiral standard) -->
     <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#feca57"/>
-      <stop offset="100%" style="stop-color:#fbbf24"/>
+      <stop offset="0%" style="stop-color:#fcd34d"/>
+      <stop offset="50%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
     </linearGradient>
+
+    <!-- Trophy Body Gradient -->
+    <linearGradient id="trophyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fde68a"/>
+      <stop offset="40%" style="stop-color:#fbbf24"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
+    </linearGradient>
+
+    <!-- 5 Quality Colors -->
+    <linearGradient id="fokusGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ef4444"/>
+      <stop offset="100%" style="stop-color:#dc2626"/>
+    </linearGradient>
+    <linearGradient id="overblikGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#2563eb"/>
+    </linearGradient>
+    <linearGradient id="noejeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+    <linearGradient id="udviklingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a855f7"/>
+      <stop offset="100%" style="stop-color:#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="sammenhaengGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
+    </linearGradient>
+
+    <!-- Glow Effect -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Soft Gold Glow -->
+    <filter id="goldGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feFlood flood-color="#f59e0b" flood-opacity="0.4"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Drop Shadow -->
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.4"/>
+    </filter>
   </defs>
 
-  <!-- Main circle -->
-  <circle cx="64" cy="64" r="60" fill="url(#bgGrad)" stroke="#1e1e2e" stroke-width="4"/>
+  <!-- Background Circle -->
+  <circle cx="128" cy="128" r="124" fill="url(#bgGrad)" stroke="url(#goldGrad)" stroke-width="3"/>
 
-  <!-- Trophy/Victory symbol -->
-  <path d="M44 45 L84 45 L80 65 Q75 85 64 90 Q53 85 48 65 Z"
-        fill="url(#goldGrad)" stroke="#1e1e2e" stroke-width="2"/>
+  <!-- Subtle outer ring (DNA reference) -->
+  <circle cx="128" cy="128" r="118" fill="none" stroke="#f59e0b" stroke-width="0.5" opacity="0.3"/>
 
-  <!-- Trophy handles -->
-  <path d="M44 50 Q30 50 30 60 Q30 70 44 70"
-        fill="none" stroke="url(#goldGrad)" stroke-width="4" stroke-linecap="round"/>
-  <path d="M84 50 Q98 50 98 60 Q98 70 84 70"
-        fill="none" stroke="url(#goldGrad)" stroke-width="4" stroke-linecap="round"/>
+  <!-- 5 Quality Stars arranged in arc above trophy -->
+  <g filter="url(#glow)">
+    <!-- FOKUS (Red) - leftmost -->
+    <polygon points="58,52 61,59 69,59 63,64 65,72 58,67 51,72 53,64 47,59 55,59"
+             fill="url(#fokusGrad)"/>
+    <!-- OVERBLIK (Blue) -->
+    <polygon points="88,38 91,45 99,45 93,50 95,58 88,53 81,58 83,50 77,45 85,45"
+             fill="url(#overblikGrad)"/>
+    <!-- SAMMENHÆNG (Gold) - center top -->
+    <polygon points="128,30 132,40 142,40 134,47 137,57 128,50 119,57 122,47 114,40 124,40"
+             fill="url(#sammenhaengGrad)"/>
+    <!-- NØJE ØJE (Green) -->
+    <polygon points="168,38 171,45 179,45 173,50 175,58 168,53 161,58 163,50 157,45 165,45"
+             fill="url(#noejeGrad)"/>
+    <!-- UDVIKLING (Purple) - rightmost -->
+    <polygon points="198,52 201,59 209,59 203,64 205,72 198,67 191,72 193,64 187,59 195,59"
+             fill="url(#udviklingGrad)"/>
+  </g>
 
-  <!-- Trophy base -->
-  <rect x="54" y="90" width="20" height="8" rx="2" fill="url(#goldGrad)" stroke="#1e1e2e" stroke-width="1"/>
-  <rect x="48" y="98" width="32" height="6" rx="2" fill="url(#goldGrad)" stroke="#1e1e2e" stroke-width="1"/>
+  <!-- Trophy - Main Body -->
+  <g filter="url(#goldGlow)">
+    <!-- Trophy bowl -->
+    <path d="M88 82 L168 82 L162 120 Q155 155 128 165 Q101 155 94 120 Z"
+          fill="url(#trophyGrad)" stroke="url(#goldGrad)" stroke-width="2"/>
 
-  <!-- Star on trophy -->
-  <polygon points="64,52 67,60 76,60 69,66 72,75 64,70 56,75 59,66 52,60 61,60"
-           fill="#1e1e2e"/>
+    <!-- Trophy handles - left -->
+    <path d="M88 90 Q62 90 62 108 Q62 126 88 126"
+          fill="none" stroke="url(#goldGrad)" stroke-width="4" stroke-linecap="round"/>
+    <!-- Trophy handles - right -->
+    <path d="M168 90 Q194 90 194 108 Q194 126 168 126"
+          fill="none" stroke="url(#goldGrad)" stroke-width="4" stroke-linecap="round"/>
 
-  <!-- Checkmark overlay -->
-  <path d="M50 38 L58 46 L78 26"
-        fill="none" stroke="#10b981" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Trophy stem -->
+    <rect x="118" y="165" width="20" height="18" rx="3" fill="url(#trophyGrad)" stroke="url(#goldGrad)" stroke-width="1.5"/>
+    <!-- Trophy base -->
+    <rect x="100" y="183" width="56" height="12" rx="4" fill="url(#trophyGrad)" stroke="url(#goldGrad)" stroke-width="1.5"/>
+    <!-- Trophy base plate -->
+    <rect x="92" y="195" width="72" height="8" rx="3" fill="url(#goldGrad)" stroke="#d97706" stroke-width="1"/>
+  </g>
+
+  <!-- Central Star inside trophy (Admiral Excellence) -->
+  <g filter="url(#glow)">
+    <polygon points="128,92 133,105 147,105 136,114 140,127 128,118 116,127 120,114 109,105 123,105"
+             fill="url(#goldGrad)" opacity="0.9"/>
+  </g>
+
+  <!-- Checkmark - Victory Symbol -->
+  <g filter="url(#glow)">
+    <path d="M108 136 L122 150 L152 112"
+          fill="none" stroke="#10b981" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+  </g>
+
+  <!-- SEJRLISTE text -->
+  <text x="128" y="224" text-anchor="middle"
+        font-family="Arial, sans-serif" font-size="14" font-weight="bold"
+        fill="url(#goldGrad)" letter-spacing="3" filter="url(#shadow)">SEJRLISTE</text>
+
+  <!-- Subtle bottom accent line -->
+  <line x1="78" y1="234" x2="178" y2="234" stroke="url(#goldGrad)" stroke-width="1" opacity="0.4"/>
 </svg>

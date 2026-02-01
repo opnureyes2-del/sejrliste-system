@@ -1,0 +1,22 @@
+{
+    "folders": [
+        { "name": "MIN ADMIRAL", "path": "/home/rasmus/Desktop/MIN ADMIRAL" },
+        { "name": "ELLE.md", "path": "/home/rasmus/Desktop/ELLE.md" },
+        { "name": "Sejrliste", "path": "/home/rasmus/Desktop/sejrliste systemet" },
+        { "name": "MASTER FOLDERS", "path": "/home/rasmus/Desktop/MASTER FOLDERS(INTRO)" },
+        { "name": "INTRO FOLDER", "path": "/home/rasmus/Desktop/INTRO FOLDER SYSTEM" },
+        { "name": "HJERNESKADE", "path": "/home/rasmus/Desktop/MANUAL I TILFÆLDE AF HJERNESKADE" },
+        { "name": "INSTALLATIONER", "path": "/home/rasmus/Desktop/INSTALLATIONER , SKILLS" }
+    ],
+    "settings": {
+        "git.autofetch": true,
+        "git.confirmSync": false,
+        "git.enableSmartCommit": true,
+        "editor.fontFamily": "'JetBrains Mono', 'Fira Code', monospace",
+        "editor.fontSize": 14,
+        "terminal.integrated.fontFamily": "'JetBrains Mono'",
+        "terminal.integrated.fontSize": 13,
+        "workbench.colorTheme": "Default Dark Modern",
+        "scm.defaultViewMode": "tree"
+    }
+}

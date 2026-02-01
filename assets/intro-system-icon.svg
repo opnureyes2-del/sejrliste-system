@@ -1,38 +1,166 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
-  <!-- Background circle with gradient — same design language as sejrliste-icon -->
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
   <defs>
+    <!-- Navy Background (Admiral standard) -->
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#6366f1"/>
-      <stop offset="50%" style="stop-color:#7c3aed"/>
-      <stop offset="100%" style="stop-color:#a855f7"/>
+      <stop offset="0%" style="stop-color:#0A0E27"/>
+      <stop offset="100%" style="stop-color:#1A1F3A"/>
     </linearGradient>
+
+    <!-- Gold Gradient (Admiral standard) -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fcd34d"/>
+      <stop offset="50%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
+    </linearGradient>
+
+    <!-- Folder Body Gradient -->
     <linearGradient id="folderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#feca57"/>
+      <stop offset="0%" style="stop-color:#fde68a"/>
+      <stop offset="40%" style="stop-color:#fbbf24"/>
+      <stop offset="100%" style="stop-color:#b45309"/>
+    </linearGradient>
+
+    <!-- Folder Tab Gradient -->
+    <linearGradient id="tabGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fcd34d"/>
       <stop offset="100%" style="stop-color:#f59e0b"/>
     </linearGradient>
+
+    <!-- 5 Quality Colors -->
+    <linearGradient id="fokusGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ef4444"/>
+      <stop offset="100%" style="stop-color:#dc2626"/>
+    </linearGradient>
+    <linearGradient id="overblikGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#2563eb"/>
+    </linearGradient>
+    <linearGradient id="noejeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+    <linearGradient id="udviklingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a855f7"/>
+      <stop offset="100%" style="stop-color:#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="sammenhaengGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
+    </linearGradient>
+
+    <!-- Layer line gradients -->
+    <linearGradient id="line1Grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ef4444"/>
+      <stop offset="100%" style="stop-color:#3b82f6"/>
+    </linearGradient>
+    <linearGradient id="line2Grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#a855f7"/>
+    </linearGradient>
+    <linearGradient id="line3Grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#fcd34d"/>
+    </linearGradient>
+
+    <!-- Glow Effect -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Soft Glow for folder -->
+    <filter id="folderGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-color="#f59e0b" flood-opacity="0.3"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Drop Shadow -->
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.4"/>
+    </filter>
   </defs>
 
-  <!-- Main circle (same style as sejrliste-icon) -->
-  <circle cx="64" cy="64" r="60" fill="url(#bgGrad)" stroke="#1e1e2e" stroke-width="4"/>
+  <!-- Background Circle -->
+  <circle cx="128" cy="128" r="124" fill="url(#bgGrad)" stroke="url(#goldGrad)" stroke-width="3"/>
 
-  <!-- Folder icon -->
-  <path d="M26 44 L26 94 L102 94 L102 52 L60 52 L54 44 Z"
-        fill="url(#folderGrad)" stroke="#1e1e2e" stroke-width="2"/>
-  <!-- Folder tab -->
-  <path d="M26 44 L54 44 L60 52 L26 52 Z"
-        fill="#fbbf24" stroke="#1e1e2e" stroke-width="1"/>
+  <!-- Subtle outer ring -->
+  <circle cx="128" cy="128" r="118" fill="none" stroke="#f59e0b" stroke-width="0.5" opacity="0.3"/>
 
-  <!-- LINEN: 3-lags hint — 3 horizontal lines representing the 3 architecture layers -->
-  <line x1="36" y1="62" x2="92" y2="62" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.95"/>
-  <line x1="36" y1="72" x2="82" y2="72" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.75"/>
-  <line x1="36" y1="82" x2="72" y2="82" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.55"/>
+  <!-- Hierarchy tree (top section) — shows folder organization -->
+  <g opacity="0.6" filter="url(#glow)">
+    <!-- Root node -->
+    <circle cx="128" cy="42" r="5" fill="url(#goldGrad)"/>
+    <!-- Branch lines from root -->
+    <line x1="128" y1="47" x2="88" y2="62" stroke="url(#goldGrad)" stroke-width="1.5"/>
+    <line x1="128" y1="47" x2="128" y2="62" stroke="url(#goldGrad)" stroke-width="1.5"/>
+    <line x1="128" y1="47" x2="168" y2="62" stroke="url(#goldGrad)" stroke-width="1.5"/>
+    <!-- Child nodes -->
+    <circle cx="88" cy="64" r="4" fill="url(#fokusGrad)"/>
+    <circle cx="128" cy="64" r="4" fill="url(#noejeGrad)"/>
+    <circle cx="168" cy="64" r="4" fill="url(#overblikGrad)"/>
+  </g>
 
-  <!-- LINEN "L" letter badge -->
-  <circle cx="98" cy="36" r="16" fill="#10b981" stroke="#1e1e2e" stroke-width="2"/>
-  <text x="98" y="42" text-anchor="middle" font-size="18" font-weight="bold" fill="white" font-family="Arial, sans-serif">L</text>
+  <!-- Main Folder (large, central) -->
+  <g filter="url(#folderGlow)">
+    <!-- Folder body -->
+    <rect x="48" y="88" width="160" height="100" rx="6" fill="url(#folderGrad)" stroke="url(#goldGrad)" stroke-width="2"/>
+    <!-- Folder tab -->
+    <path d="M48 92 L48 82 Q48 76 54 76 L100 76 L108 68 Q112 64 118 64 L200 64 Q206 64 206 70 L206 82 L208 88"
+          fill="url(#tabGrad)" stroke="url(#goldGrad)" stroke-width="2"/>
+  </g>
 
-  <!-- 3 small dots for 3 layers -->
-  <circle cx="40" cy="92" r="2" fill="#10b981" opacity="0.8"/>
-  <circle cx="48" cy="92" r="2" fill="#f59e0b" opacity="0.8"/>
-  <circle cx="56" cy="92" r="2" fill="#a855f7" opacity="0.8"/>
+  <!-- 3 LINEN Layer Lines (inside folder) — glowing, multi-colored -->
+  <g filter="url(#glow)">
+    <!-- Layer 1 — FOKUS/OVERBLIK (red→blue) -->
+    <line x1="68" y1="110" x2="188" y2="110" stroke="url(#line1Grad)" stroke-width="3.5" stroke-linecap="round" opacity="0.95"/>
+    <!-- Layer 2 — NØJE/UDVIKLING (green→purple) -->
+    <line x1="68" y1="132" x2="172" y2="132" stroke="url(#line2Grad)" stroke-width="3.5" stroke-linecap="round" opacity="0.8"/>
+    <!-- Layer 3 — SAMMENHÆNG (gold) -->
+    <line x1="68" y1="154" x2="152" y2="154" stroke="url(#line3Grad)" stroke-width="3.5" stroke-linecap="round" opacity="0.65"/>
+  </g>
+
+  <!-- Layer labels (tiny, subtle) -->
+  <g font-family="Arial, sans-serif" font-size="7" fill="#B4C6E7" opacity="0.7">
+    <text x="192" y="112">LINEN</text>
+    <text x="176" y="134">INTRO</text>
+    <text x="156" y="156">DATA</text>
+  </g>
+
+  <!-- "I" Badge (top-right) — INTRO identifier -->
+  <g filter="url(#glow)">
+    <circle cx="206" cy="52" r="18" fill="url(#bgGrad)" stroke="url(#goldGrad)" stroke-width="2"/>
+    <text x="206" y="59" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="22" font-weight="900"
+          fill="url(#goldGrad)">I</text>
+  </g>
+
+  <!-- 5 Quality Dots at bottom of folder -->
+  <g filter="url(#glow)">
+    <circle cx="88" cy="176" r="4" fill="url(#fokusGrad)"/>
+    <circle cx="108" cy="176" r="4" fill="url(#overblikGrad)"/>
+    <circle cx="128" cy="176" r="4" fill="url(#noejeGrad)"/>
+    <circle cx="148" cy="176" r="4" fill="url(#udviklingGrad)"/>
+    <circle cx="168" cy="176" r="4" fill="url(#sammenhaengGrad)"/>
+  </g>
+
+  <!-- INTRO text -->
+  <text x="128" y="218" text-anchor="middle"
+        font-family="Arial, sans-serif" font-size="14" font-weight="bold"
+        fill="url(#goldGrad)" letter-spacing="4" filter="url(#shadow)">INTRO</text>
+
+  <!-- Subtitle -->
+  <text x="128" y="234" text-anchor="middle"
+        font-family="Arial, sans-serif" font-size="8"
+        fill="#B4C6E7" letter-spacing="2" opacity="0.7">MASTER FOLDERS</text>
+
+  <!-- Subtle bottom accent line -->
+  <line x1="78" y1="242" x2="178" y2="242" stroke="url(#goldGrad)" stroke-width="1" opacity="0.4"/>
 </svg>

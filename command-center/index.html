@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADMIRAL Command Center — Cirkelline</title>
+<style>
+  :root {
+    --navy: #0A0E27;
+    --navy-light: #1A1F3A;
+    --navy-mid: #0D1129;
+    --gold: #f59e0b;
+    --gold-light: #fcd34d;
+    --gold-dark: #d97706;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --green: #10b981;
+    --purple: #a855f7;
+    --cyan: #06b6d4;
+    --text: #B4C6E7;
+    --text-dim: #5a6a8b;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    border-bottom: 2px solid var(--gold);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--gold);
+    letter-spacing: 4px;
+  }
+  .header .subtitle {
+    color: var(--text-dim);
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+  .header .status {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .status-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* Grid Layout */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 30px 40px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--navy-mid);
+    border: 1px solid var(--navy-light);
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover {
+    border-color: var(--gold);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(245, 158, 11, 0.15);
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    border-radius: 12px 0 0 12px;
+  }
+  .card.gold::before { background: var(--gold); }
+  .card.red::before { background: var(--red); }
+  .card.blue::before { background: var(--blue); }
+  .card.green::before { background: var(--green); }
+  .card.purple::before { background: var(--purple); }
+  .card.cyan::before { background: var(--cyan); }
+
+  .card-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+  .card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gold-light);
+    margin-bottom: 8px;
+  }
+  .card p {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+  .card .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+  .badge.active { background: var(--green); color: var(--navy); }
+  .badge.pending { background: var(--gold); color: var(--navy); }
+  .badge.info { background: var(--blue); color: white; }
+
+  /* Section headers */
+  .section {
+    padding: 0 40px;
+    margin-top: 10px;
+  }
+  .section h2 {
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--navy-light);
+    padding-bottom: 8px;
+    margin-bottom: 0;
+  }
+
+  /* Quick Actions */
+  .actions {
+    display: flex;
+    gap: 10px;
+    padding: 20px 40px;
+    flex-wrap: wrap;
+  }
+  .action-btn {
+    padding: 10px 20px;
+    border: 1px solid var(--gold);
+    background: transparent;
+    color: var(--gold);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .action-btn:hover {
+    background: var(--gold);
+    color: var(--navy);
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-dim);
+    font-size: 11px;
+    letter-spacing: 2px;
+    border-top: 1px solid var(--navy-light);
+    margin-top: 20px;
+  }
+
+  /* Pentagon visualization */
+  .pentagon-section {
+    text-align: center;
+    padding: 20px 0;
+  }
+  .quality-bar {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 10px;
+  }
+  .quality {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .quality .dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+  }
+  .quality .label {
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>ADMIRAL</h1>
+    <div class="subtitle">COMMAND CENTER — CIRKELLINE • KV1NT</div>
+  </div>
+  <div class="status">
+    <div class="status-dot"></div>
+    <span style="font-size:12px; color:var(--green)">SYSTEMER AKTIVE</span>
+  </div>
+</div>
+
+<!-- 5 Kvaliteter bar -->
+<div class="pentagon-section">
+  <div class="quality-bar">
+    <div class="quality"><div class="dot" style="background:var(--red)"></div><div class="label">FOKUS</div></div>
+    <div class="quality"><div class="dot" style="background:var(--blue)"></div><div class="label">OVERBLIK</div></div>
+    <div class="quality"><div class="dot" style="background:var(--green)"></div><div class="label">NØJE ØJE</div></div>
+    <div class="quality"><div class="dot" style="background:var(--purple)"></div><div class="label">UDVIKLING</div></div>
+    <div class="quality"><div class="dot" style="background:var(--gold)"></div><div class="label">SAMMENHÆNG</div></div>
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="actions">
+  <a class="action-btn" href="http://localhost:8501" target="_blank">Sejrliste Web</a>
+  <a class="action-btn" href="http://localhost:3030" target="_blank">Grafana</a>
+  <a class="action-btn" href="http://localhost:9090" target="_blank">Prometheus</a>
+  <a class="action-btn" href="https://github.com/dashboard" target="_blank">GitHub</a>
+  <a class="action-btn" href="https://claude.ai" target="_blank">Claude AI</a>
+  <a class="action-btn" href="https://gemini.google.com" target="_blank">Gemini</a>
+  <a class="action-btn" href="https://chatgpt.com" target="_blank">ChatGPT</a>
+</div>
+
+<!-- SYSTEMER -->
+<div class="section"><h2>Vores Systemer</h2></div>
+<div class="grid">
+  <a class="card gold" onclick="openFolder('MIN ADMIRAL')">
+    <div class="card-icon">⭐</div>
+    <h3>MIN ADMIRAL</h3>
+    <p>Kv1nts sjæl — 5 kvaliteter, 7 DNA lag, 3 passes. Permanent standard.</p>
+    <span class="badge active">AKTIV</span>
+  </a>
+  <a class="card green" onclick="openFolder('sejrliste systemet')">
+    <div class="card-icon">🏆</div>
+    <h3>Sejrliste System</h3>
+    <p>55/55 health checks, 77/77 tests. Desktop + Web (port 8501).</p>
+    <span class="badge active">100%</span>
+  </a>
+  <a class="card purple" onclick="openFolder('ELLE.md')">
+    <div class="card-icon">🧠</div>
+    <h3>ELLE</h3>
+    <p>Enhanced Learning & Living. 10 ORGANIC teams, AHO multi-model.</p>
+    <span class="badge active">AKTIV</span>
+  </a>
+  <a class="card blue" onclick="openFolder('MASTER FOLDERS(INTRO)')">
+    <div class="card-icon">📘</div>
+    <h3>INTRO System</h3>
+    <p>Master Folders — DNA, Struktur, System, Funktioner. LINEN 3-lags.</p>
+    <span class="badge active">AKTIV</span>
+  </a>
+  <a class="card red" onclick="openFolder('MANUAL I TILFÆLDE AF HJERNESKADE')">
+    <div class="card-icon">🏥</div>
+    <h3>Manual</h3>
+    <p>Nødprocedurer — i tilfælde af hjerneskade. Kritisk dokumentation.</p>
+    <span class="badge info">KLAR</span>
+  </a>
+  <a class="card cyan" onclick="openFolder('projekts')">
+    <div class="card-icon">🔧</div>
+    <h3>Projekts</h3>
+    <p>Cirkelline ecosystem — alle aktive projekter samlet.</p>
+    <span class="badge pending">7 PROJEKTER</span>
+  </a>
+</div>
+
+<!-- INFRASTRUKTUR -->
+<div class="section"><h2>Infrastruktur</h2></div>
+<div class="grid">
+  <div class="card blue">
+    <div class="card-icon">🐳</div>
+    <h3>Docker</h3>
+    <p>18 containers kører: Grafana, Loki, Prometheus, PostgreSQL, Redis, Nginx, m.fl.</p>
+    <span class="badge active">18 UP</span>
+  </div>
+  <div class="card green">
+    <div class="card-icon">⏰</div>
+    <h3>Cron Jobs</h3>
+    <p>22 automatiske opgaver: Scanner 07:50, Health 07:55, Learn 08:00, Enforce 08:00.</p>
+    <span class="badge active">22 JOBS</span>
+  </div>
+  <div class="card purple">
+    <div class="card-icon">🤖</div>
+    <h3>AHO — AI Backends</h3>
+    <p>Admiral Hybrid Organic: Ollama ✅ Groq ✅ Gemini ✅ (+3 venter)</p>
+    <span class="badge pending">3/6</span>
+  </div>
+  <div class="card gold">
+    <div class="card-icon">📡</div>
+    <h3>Tailscale</h3>
+    <p>2 enheder forbundet. Sejrliste tilgængelig via VPN fra mobil.</p>
+    <span class="badge active">ONLINE</span>
+  </div>
+</div>
+
+<!-- VÆRKTØJER -->
+<div class="section"><h2>Værktøjer</h2></div>
+<div class="grid">
+  <a class="card gold" href="http://localhost:8501" target="_blank">
+    <div class="card-icon">📊</div>
+    <h3>Sejrliste Web App</h3>
+    <p>Streamlit dashboard — port 8501</p>
+    <span class="badge active">KØRENDE</span>
+  </a>
+  <a class="card blue" href="http://localhost:3030" target="_blank">
+    <div class="card-icon">📈</div>
+    <h3>Grafana Monitoring</h3>
+    <p>System metrics og dashboards</p>
+    <span class="badge active">KØRENDE</span>
+  </a>
+  <a class="card green" onclick="openFolder('RASMUS TODO')">
+    <div class="card-icon">✅</div>
+    <h3>TODO</h3>
+    <p>Rasmus' opgaveliste — aktive og kommende opgaver</p>
+    <span class="badge pending">3 API KEYS</span>
+  </a>
+  <a class="card cyan" onclick="openVSCode()">
+    <div class="card-icon">💻</div>
+    <h3>VS Code</h3>
+    <p>Admiral Dark tema — åbn workspace</p>
+    <span class="badge info">EDITOR</span>
+  </a>
+</div>
+
+<!-- AUTONOMI STATUS -->
+<div class="section"><h2>Autonom Drift</h2></div>
+<div class="grid">
+  <div class="card green">
+    <div class="card-icon">🔄</div>
+    <h3>Automatisk Scanning</h3>
+    <p>Admiral Scanner kl 07:50 → Health Check 07:55 → Auto Learn 08:00</p>
+    <span class="badge active">DAGLIGT</span>
+  </div>
+  <div class="card green">
+    <div class="card-icon">🛡️</div>
+    <h3>Auto Guardian</h3>
+    <p>Systemovervågning hvert 60. minut. Disk monitor. Production loop.</p>
+    <span class="badge active">HVER TIME</span>
+  </div>
+  <div class="card green">
+    <div class="card-icon">💾</div>
+    <h3>Context Auto-Backup</h3>
+    <p>Git commit + push af context kl 23:30 hver dag.</p>
+    <span class="badge active">DAGLIGT</span>
+  </div>
+  <div class="card gold">
+    <div class="card-icon">🧹</div>
+    <h3>Auto Cleanup</h3>
+    <p>Log cleanup, Docker prune, Git GC — alt kører automatisk.</p>
+    <span class="badge active">UGENTLIGT</span>
+  </div>
+</div>
+
+<div class="footer">
+  CIRKELLINE • KV1NT • ADMIRAL+ • 5 KVALITETER • 7 DNA LAG • 3 PASSES<br>
+  <span style="opacity:0.5">Session 27c — 2026-02-01</span>
+</div>
+
+<script>
+function openFolder(name) {
+  // Try to open via xdg-open (works on Linux with custom protocol)
+  window.location.href = 'file:///home/rasmus/Desktop/' + encodeURIComponent(name);
+}
+function openVSCode() {
+  window.location.href = 'vscode://file/home/rasmus/Desktop/sejrliste%20systemet';
+}
+</script>
+
+</body>
+</html>
