@@ -124,6 +124,34 @@ else
     echo "  PATTERNS.json not found"
 fi
 
+# --- ADMIRAL SCANNER BRIEFING ---
+echo -e "${BOLD}ADMIRAL SCANNER${NC}"
+echo "---------------"
+BRIEFING_FILE="${SYSTEM_PATH}/_CURRENT/MORNING_BRIEFING.md"
+if [ -f "$BRIEFING_FILE" ]; then
+    briefing_age=$(( ($(date +%s) - $(stat -c %Y "$BRIEFING_FILE")) / 3600 ))
+    critical=$(grep -c "🔴" "$BRIEFING_FILE" 2>/dev/null || echo "0")
+    medium=$(grep -c "🟡" "$BRIEFING_FILE" 2>/dev/null || echo "0")
+    echo "  Last scan: ${briefing_age}h ago"
+    if [ "$critical" -gt 1 ]; then
+        echo -e "  ${RED}${critical} CRITICAL issues across systems${NC}"
+    fi
+    if [ "$medium" -gt 1 ]; then
+        echo -e "  ${YELLOW}${medium} MEDIUM issues across systems${NC}"
+    fi
+    if [ "$critical" -le 1 ] && [ "$medium" -le 1 ]; then
+        echo -e "  ${GREEN}All systems healthy${NC}"
+    fi
+    echo "  Full briefing: cat _CURRENT/MORNING_BRIEFING.md"
+else
+    echo -e "  ${YELLOW}No briefing yet — run: python3 scripts/admiral_scanner.py${NC}"
+fi
+if crontab -l 2>/dev/null | grep -q "admiral_scanner"; then
+    echo -e "  Scanner cron: ${GREEN}ACTIVE (daily 07:50)${NC}"
+else
+    echo -e "  Scanner cron: ${RED}NOT SET${NC}"
+fi
+
 echo ""
 echo -e "${BOLD}================================================================${NC}"
 echo -e "  ${BOLD}sejrliste${NC} — run this command anytime for status"

@@ -440,7 +440,7 @@ class HealthCheck:
     # ══════════════════════════════════════════════════════════════════════
 
     def check_services(self):
-        """Verify system services are running."""
+        """Verify system services and cron jobs are running."""
         print("\n── SERVICES ──")
         try:
             result = subprocess.run(
@@ -453,6 +453,23 @@ class HealthCheck:
                 self.fail("sejrliste-web.service", result.stdout.strip())
         except Exception:
             self.warn("sejrliste-web.service", "Cannot check")
+
+        # CHECK 13: Verify all 3 cron jobs exist
+        try:
+            result = subprocess.run(["crontab", "-l"], capture_output=True, text=True, timeout=5)
+            cron_content = result.stdout
+            required_crons = {
+                "admiral_scanner": "Daily scanner at 07:50",
+                "health_check": "Daily health at 07:55",
+                "auto_learn": "Daily learning at 08:00",
+            }
+            for cron_name, desc in required_crons.items():
+                if cron_name in cron_content:
+                    self.ok(f"Cron: {cron_name}", desc)
+                else:
+                    self.fail(f"Cron: {cron_name} MISSING", f"Expected: {desc}")
+        except Exception:
+            self.warn("Cannot check crontab")
 
     # ══════════════════════════════════════════════════════════════════════
     # CHECK 7: Documentation freshness — versions must match

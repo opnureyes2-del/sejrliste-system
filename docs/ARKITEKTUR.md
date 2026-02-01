@@ -209,7 +209,7 @@ head -1 AUTO_LOG.jsonl | python3 -c "import sys,json; json.load(sys.stdin)"
 └─────────────────────────────────────────────────────────┘
 
 ┌── Cron Jobs ────────────────────────────────────────────┐
-│  07:55  auto_health_check.py --repair (52 checks, 12 kategorier)       │
+│  07:55  auto_health_check.py --repair (55 checks, 13 kategorier)       │
 │  08:00  auto_learn.py (pattern learning)                 │
 └─────────────────────────────────────────────────────────┘
 ```
