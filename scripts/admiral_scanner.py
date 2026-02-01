@@ -334,6 +334,27 @@ class AdmiralScanner:
                          str(item),
                          "Consider renaming to remove .md suffix")
 
+        # 3b. Check crontab for stale ELLE paths
+        # PERMANENT PREVENTION: Renamed dirs leave stale refs in crontab (2026-02-01)
+        try:
+            crontab = subprocess.run(["crontab", "-l"], capture_output=True, text=True, timeout=5)
+            if crontab.returncode == 0:
+                for line in crontab.stdout.splitlines():
+                    if line.strip().startswith('#') or not line.strip():
+                        continue
+                    # Check for .md suffix dirs in cron paths
+                    for md_dir_match in re.finditer(r'ELLE\.md/(\w+)\.md/', line):
+                        dirname = md_dir_match.group(1)
+                        correct_dir = ELLE_PATH / dirname
+                        stale_dir = ELLE_PATH / f"{dirname}.md"
+                        if correct_dir.exists() and not stale_dir.exists():
+                            self.add("ELLE", "MEDIUM", "STALE_PATH",
+                                     f"Crontab references '{dirname}.md/' but dir was renamed to '{dirname}/'",
+                                     line.strip()[:80],
+                                     f"Fix crontab: replace {dirname}.md/ with {dirname}/")
+        except Exception:
+            pass
+
         # 4. Check organic teams activity
         organic_dir = ELLE_PATH / "ORGANIC_TEAMS"
         if organic_dir.exists():
