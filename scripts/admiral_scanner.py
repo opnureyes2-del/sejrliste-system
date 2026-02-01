@@ -595,7 +595,7 @@ class AdmiralScanner:
         def system_score(system: str) -> int:
             system_findings = [f for f in self.findings if f.system == system]
             if not system_findings:
-                return 0
+                return 100  # No findings = no problems = perfect score
             crit = len([f for f in system_findings if f.severity == "CRITICAL"])
             med = len([f for f in system_findings if f.severity == "MEDIUM"])
             low_count = len([f for f in system_findings if f.severity == "LOW"])
