@@ -12,6 +12,7 @@ import os
 import sys
 import json
 import re
+import subprocess
 from pathlib import Path
 from datetime import datetime, timedelta
 from typing import List, Dict, Tuple
@@ -405,6 +406,125 @@ class AdmiralScanner:
                              str(journal_path))
 
     # ═══════════════════════════════════════════════════════════════════════════
+    #  INFRASTRUCTURE SCAN (Docker, Tailscale, Disk, Services)
+    # ═══════════════════════════════════════════════════════════════════════════
+
+    def scan_infrastructure(self):
+        """Scan the full ROG desktop infrastructure."""
+        print("\n━━━ SCANNING: INFRASTRUCTURE ━━━")
+
+        # 1. Docker containers
+        try:
+            result = subprocess.run(
+                ["docker", "ps", "--format", "{{.Names}}\t{{.Status}}"],
+                capture_output=True, text=True, timeout=10
+            )
+            if result.returncode == 0:
+                containers = [l.split('\t') for l in result.stdout.strip().splitlines() if l.strip()]
+                healthy = [c for c in containers if "healthy" in (c[1] if len(c) > 1 else "")]
+                unhealthy = [c for c in containers if "unhealthy" in (c[1] if len(c) > 1 else "")]
+                total = len(containers)
+
+                self.add("INFRA", "INFO", "DRIFT", f"Docker: {total} containers running, {len(healthy)} healthy")
+
+                for c in unhealthy:
+                    self.add("INFRA", "CRITICAL", "DRIFT",
+                             f"Docker container UNHEALTHY: {c[0]}",
+                             fix_hint=f"docker logs {c[0]}")
+
+                # Check for expected containers
+                expected = ["cc-cle", "cc-postgres", "cc-redis"]
+                for exp in expected:
+                    if not any(exp in c[0] for c in containers):
+                        self.add("INFRA", "MEDIUM", "DRIFT",
+                                 f"Expected container '{exp}' NOT running",
+                                 fix_hint=f"Check docker-compose for {exp}")
+            else:
+                self.add("INFRA", "LOW", "DRIFT", "Docker not running or not accessible")
+        except Exception as e:
+            self.add("INFRA", "LOW", "DRIFT", f"Cannot check Docker: {e}")
+
+        # 2. Tailscale mesh status
+        try:
+            result = subprocess.run(
+                ["tailscale", "status", "--json"],
+                capture_output=True, text=True, timeout=10
+            )
+            if result.returncode == 0:
+                ts_data = json.loads(result.stdout)
+                peers = ts_data.get("Peer", {})
+                self_online = ts_data.get("Self", {}).get("Online", False)
+
+                if self_online:
+                    self.add("INFRA", "INFO", "DRIFT", "Tailscale ROG: ONLINE")
+                else:
+                    self.add("INFRA", "CRITICAL", "DRIFT", "Tailscale ROG: OFFLINE!")
+
+                for peer_id, peer in peers.items():
+                    name = peer.get("HostName", "unknown")
+                    online = peer.get("Online", False)
+                    if not online:
+                        last_seen = peer.get("LastSeen", "unknown")
+                        self.add("INFRA", "LOW", "DRIFT",
+                                 f"Tailscale peer '{name}': OFFLINE (last: {last_seen[:19] if len(last_seen) > 19 else last_seen})")
+                    else:
+                        self.add("INFRA", "INFO", "DRIFT", f"Tailscale peer '{name}': ONLINE")
+        except Exception as e:
+            self.add("INFRA", "LOW", "DRIFT", f"Cannot check Tailscale: {e}")
+
+        # 3. Disk space
+        try:
+            import shutil
+            total, used, free = shutil.disk_usage("/home")
+            pct = int(used / total * 100)
+            free_gb = free / (1024**3)
+            if pct > 90:
+                self.add("INFRA", "CRITICAL", "DRIFT",
+                         f"Disk {pct}% full — only {free_gb:.0f}GB free!",
+                         fix_hint="Clean up large directories")
+            elif pct > 80:
+                self.add("INFRA", "MEDIUM", "DRIFT",
+                         f"Disk {pct}% full — {free_gb:.0f}GB free",
+                         fix_hint="Consider cleanup soon")
+            else:
+                self.add("INFRA", "INFO", "DRIFT", f"Disk: {pct}% used, {free_gb:.0f}GB free")
+        except Exception as e:
+            self.add("INFRA", "LOW", "DRIFT", f"Cannot check disk: {e}")
+
+        # 4. Ollama AI
+        try:
+            import urllib.request
+            resp = urllib.request.urlopen("http://localhost:11434/api/version", timeout=5)
+            data = json.loads(resp.read())
+            version = data.get("version", "?")
+            self.add("INFRA", "INFO", "DRIFT", f"Ollama: v{version} RUNNING")
+        except Exception:
+            self.add("INFRA", "LOW", "DRIFT", "Ollama: NOT running")
+
+        # 5. Large directory warnings
+        large_dirs = {
+            "/home/rasmus/Desktop/projekts/": 29,
+            "/home/rasmus/Desktop/ELLE.md/": 19,
+        }
+        for dir_path, expected_gb in large_dirs.items():
+            p = Path(dir_path)
+            if p.exists():
+                try:
+                    result = subprocess.run(
+                        ["du", "-s", str(p)],
+                        capture_output=True, text=True, timeout=30
+                    )
+                    size_kb = int(result.stdout.split()[0])
+                    size_gb = size_kb / (1024 * 1024)
+                    if size_gb > expected_gb * 1.2:  # 20% growth alert
+                        self.add("INFRA", "LOW", "OPPORTUNITY",
+                                 f"'{p.name}/' grew to {size_gb:.1f}GB (was ~{expected_gb}GB)",
+                                 str(p),
+                                 "Check for unnecessary data growth")
+                except Exception:
+                    pass
+
+    # ═══════════════════════════════════════════════════════════════════════════
     #  CROSS-SYSTEM ANALYSIS
     # ═══════════════════════════════════════════════════════════════════════════
 
@@ -474,7 +594,9 @@ class AdmiralScanner:
         lines.append("| System | Score | Status |")
         lines.append("|--------|-------|--------|")
 
-        for name, score in [("Sejrliste", sejr_score), ("INTRO", intro_score), ("ELLE", elle_score), ("Context", context_score)]:
+        infra_score = system_score("INFRA")
+
+        for name, score in [("Sejrliste", sejr_score), ("INTRO", intro_score), ("ELLE", elle_score), ("Context", context_score), ("Infrastructure", infra_score)]:
             icon = "🟢" if score >= 90 else "🟡" if score >= 70 else "🔴"
             lines.append(f"| {name} | {score}% | {icon} |")
 
@@ -534,6 +656,7 @@ class AdmiralScanner:
         self.scan_intro()
         self.scan_elle()
         self.scan_context()
+        self.scan_infrastructure()
         self.scan_cross_system()
 
         # Print summary
