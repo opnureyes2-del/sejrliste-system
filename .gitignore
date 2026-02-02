@@ -47,3 +47,10 @@ _unused/
 # Virtual environments — lokale Python pakker (115+ pakker)
 venv/
 .venv/
+
+# --- ENVIRONMENT FILES (NEVER commit secrets\!) ---
+.env
+.env.local
+.env.production
+.env*.local
+*.env
