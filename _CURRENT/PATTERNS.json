@@ -9,11 +9,11 @@
       "pattern": "SUCCESS RATE: 9/11 sejr opnår GRAND ADMIRAL (81%)",
       "prevention": "Bevar 3-pass system med obligatorisk review",
       "optimization": "Fokusér på Pass 1 kvalitet for at reducere Pass 2-3 arbejde",
-      "applied_count": 1,
+      "applied_count": 2,
       "time_saved_total": "0 min",
       "confidence": 0.98,
       "first_seen": "2026-01-25",
-      "last_applied": "2026-01-31 16:34"
+      "last_applied": "2026-02-05 12:10"
     },
     {
       "pattern": "BUG LÆRT: auto_learn.py fejlede fordi den ledte efter SEJR_LISTE.md i arkiver, men den fil SLETTES ved arkiver",
@@ -149,11 +149,11 @@
       "pattern": "SUCCESS RATE: 11/14 sejr opnår GRAND ADMIRAL (78%)",
       "prevention": "Bevar 3-pass system med obligatorisk review",
       "optimization": "Fokusér på Pass 1 kvalitet for at reducere Pass 2-3 arbejde",
-      "applied_count": 1,
+      "applied_count": 2,
       "time_saved_total": "0 min",
       "confidence": 0.98,
       "first_seen": "2026-01-25",
-      "last_applied": "2026-01-31 16:34"
+      "last_applied": "2026-02-05 12:10"
     },
     {
       "pattern": "REUSABLE TEMPLATE: 11 identificeret",
@@ -209,11 +209,11 @@
       "pattern": "SUCCESS RATE: 11/11 sejr opnår GRAND ADMIRAL (100%)",
       "prevention": "Bevar 3-pass system med obligatorisk review",
       "optimization": "Fokusér på Pass 1 kvalitet for at reducere Pass 2-3 arbejde",
-      "applied_count": 1,
+      "applied_count": 2,
       "time_saved_total": "0 min",
       "confidence": 0.98,
       "first_seen": "2026-01-25",
-      "last_applied": "2026-01-31 16:34"
+      "last_applied": "2026-02-05 12:10"
     },
     {
       "pattern": "REUSABLE TEMPLATE: 10 identificeret",
@@ -399,11 +399,11 @@
       "pattern": "SUCCESS RATE: 19/20 sejr opnår GRAND ADMIRAL (95%)",
       "prevention": "Bevar 3-pass system med obligatorisk review",
       "optimization": "Fokusér på Pass 1 kvalitet for at reducere Pass 2-3 arbejde",
-      "applied_count": 0,
+      "applied_count": 1,
       "time_saved_total": "0 min",
       "confidence": 0.98,
       "first_seen": "2026-01-28",
-      "last_applied": null
+      "last_applied": "2026-02-05 12:10"
     },
     {
       "pattern": "WORKFLOW: 1. if/elif chain ordering er KRITISK for view switching - library view skal være SIDST",
@@ -489,11 +489,11 @@
       "pattern": "SUCCESS RATE: 30/31 sejr opnår GRAND ADMIRAL (96%)",
       "prevention": "Bevar 3-pass system med obligatorisk review",
       "optimization": "Fokusér på Pass 1 kvalitet for at reducere Pass 2-3 arbejde",
-      "applied_count": 0,
+      "applied_count": 1,
       "time_saved_total": "0 min",
       "confidence": 0.98,
       "first_seen": "2026-01-31",
-      "last_applied": null
+      "last_applied": "2026-02-05 12:10"
     },
     {
       "pattern": "FREQUENT ACTION: sejr_created (23x across sejr)",
