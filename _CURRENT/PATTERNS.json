@@ -1,8 +1,8 @@
 {
   "system": {
     "version": "1.0.0",
-    "last_learned": "2026-02-05 13:21",
-    "total_patterns": 53
+    "last_learned": "2026-02-05 21:50",
+    "total_patterns": 54
   },
   "learned_patterns": [
     {
@@ -527,6 +527,16 @@
     },
     {
       "pattern": "FREQUENT ACTION: sejr_created (24x across sejr)",
+      "prevention": "Consider automating sejr_created",
+      "optimization": "Create script/hotkey for sejr_created",
+      "applied_count": 0,
+      "time_saved_total": "0 min",
+      "confidence": 0.9,
+      "first_seen": "2026-02-05",
+      "last_applied": null
+    },
+    {
+      "pattern": "FREQUENT ACTION: sejr_created (25x across sejr)",
       "prevention": "Consider automating sejr_created",
       "optimization": "Create script/hotkey for sejr_created",
       "applied_count": 0,

@@ -9,11 +9,11 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 
-# Check staged files for .env patterns
-BLOCKED_FILES=$(git diff --cached --name-only | grep -iE '^\.(env|env\.local|env\.production|env\.development|env\.staging)$' || true)
+# Check staged files for ANY .env pattern (any path, any .env variant)
+BLOCKED_FILES=$(git diff --cached --name-only | grep -iE '(^|/)\.env($|\.)' || true)
 
 # Also check for common credential files
-CRED_FILES=$(git diff --cached --name-only | grep -iE '(credentials\.json|secrets\.json|\.pem$|\.key$|githubtoken|api.?key)' || true)
+CRED_FILES=$(git diff --cached --name-only | grep -iE '(credentials\.json|secrets\.json|\.pem$|\.key$|githubtoken|api.?key|_api_keys|\.secret)' || true)
 
 if [ -n "$BLOCKED_FILES" ]; then
     echo -e "${RED}⛔ ENV GUARD: Blokeret! Disse .env filer må IKKE committes:${NC}"

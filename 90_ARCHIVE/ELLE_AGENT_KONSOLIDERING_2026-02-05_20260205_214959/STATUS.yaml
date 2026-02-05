@@ -47,14 +47,14 @@ pass_tracking:
     name: "7-DNA Review"
     status: "complete"
     complete: true
-    score: 8
+    score: 9
     checkboxes_done: 7
     checkboxes_total: 7
     percentage: 100
     final_verification: true
 
   totals:
-    score: 25
+    score: 26
     required_score: 24
     tests_passed: 5
     tests_required: 5
@@ -82,7 +82,7 @@ score_tracking:
   totals:
     positive_points: 0
     negative_points: 0
-    total_score: 25
+    total_score: 26
     rank: "GRAND ADMIRAL"
 
 # ═══════════════════════════════════════════════════════════
