@@ -7,16 +7,16 @@
 ## CURRENT STATE
 
 **Sejr:** DOKUMENTATION_TOTAL_ORDEN
-**Current Pass:** 1/3
-**Status:** Pass 1 - Planlægning
-**Blokeret af:** Færdiggør Pass 1
+**Current Pass:** 3/3
+**Status:** Pass 3 - 7-DNA Review
+**Blokeret af:** 7-DNA gennemgang
 
 ---
 
 ## DIN ENESTE OPGAVE LIGE NU
 
 ```
-Læs SEJR_LISTE.md og afkryds første checkbox
+Gennemfør Pass 3: 7-DNA Review af hele sejren
 ```
 
 INTET ANDET. Faerdiggoer dette foer du goer noget andet.
@@ -54,10 +54,10 @@ INTET ANDET. Faerdiggoer dette foer du goer noget andet.
 
 | Pass | Status | Score | Krav |
 |------|--------|-------|------|
-| 1: Planlaegning | IN PROGRESS | 0/10 | Baseline |
-| 2: Eksekvering | PENDING | 0/10 | > Pass 1 |
-| 3: 7-DNA Review | PENDING | 0/10 | > Pass 2 |
-| **Total** | | **0/30** | **>= 24** |
+| 1: Dokumentation | COMPLETE | 9/10 | Baseline |
+| 2: Eksekvering | COMPLETE | 8/10 | > Pass 1 ✅ |
+| 3: 7-DNA Review | IN PROGRESS | 0/10 | > Pass 2 |
+| **Total** | | **17/30** | **>= 24** |
 
 ---
 

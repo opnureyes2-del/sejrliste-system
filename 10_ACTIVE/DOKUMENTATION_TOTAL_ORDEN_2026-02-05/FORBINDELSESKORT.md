@@ -95,8 +95,8 @@ GitHub: opnureyes2-del/
 GitHub: eenvywithin/ (Ivo)
     └── cirkelline-system ──── projekts/projects/cirkelline-system-DO-NOT-PUSH/ 🔒 READ ONLY
 
-INGEN GIT:
-    ├── Pictures/Admiral/ ─── MANGLER git repo (KRITISK)
+LOKALT GIT (mangler remote):
+    ├── Pictures/Admiral/ ─── git init 2026-02-05 (95c2fc8, 48 filer)
     ├── projekts/projects/cirkelline-kv1ntos/ ── git SLETTET med vilje
     ├── Desktop/ORGANIZE/ ── arkiv, ingen VCS
     ├── Desktop/RASMUS TODO/ ── ingen VCS
@@ -265,12 +265,16 @@ projekts/projects/ (lokal udvikling)
     └── cloudflared tunnel — gentagne failures
 
 🔴 RØD (Kræver handling):
-    ├── MANUAL HJERNESKADE/ — 26 filer DIRTY (recovery manual!)
-    ├── 115 GB backups — fylder og er muligvis overflødige
-    ├── NVIDIA GPU — driver offline
-    ├── 12 inaktive services — crashed gentagne gange
-    ├── integration-bridge — 1 commit unpushed
-    └── commander-and-agent + kommandor-og-agenter — dirty repos
+    ├── NVIDIA GPU — driver offline (kræver MOK enrollment)
+    ├── 12 inaktive autogen services — timer-baserede (normalt)
+    └── cloudflared tunnel — gentagne connection failures (auto-retries)
+
+✅ LØST (2026-02-05):
+    ├── MANUAL HJERNESKADE — committed + pushed ✅
+    ├── 115 GB backups — SLETTET ✅
+    ├── integration-bridge — pushed ✅
+    ├── commander-and-agent — committed + pushed ✅
+    └── kommandor-og-agenter — committed + pushed ✅
 ```
 
 ---
@@ -278,19 +282,17 @@ projekts/projects/ (lokal udvikling)
 ## 9. ANBEFALING TIL PASS 2 (PRIORITERET RÆKKEFØLGE)
 
 ```
-KRITISK (gør FØRST):
-1. Commit MANUAL HJERNESKADE (26 dirty filer i din recovery manual)
-2. Push integration-bridge (1 commit = 1 kommando)
-3. Pull cirkelline-system-DO-NOT-PUSH (10 behind)
+UDFØRT (2026-02-05):
+✅ 1. MANUAL HJERNESKADE committed + pushed (5e38bec)
+✅ 2. integration-bridge pushed (741f9bf)
+✅ 3. cirkelline-system synkroniseret (b1d08cc)
+✅ 4. projekts/CLAUDE.md port rettet (3030→5555)
+✅ 5. I5 status rettet (selvmodsigende udsagn fjernet)
+✅ 6. ELLE.md committed + pushed (bc257ba + 7411ef0)
+✅ 7. Pictures/Admiral/ git init (95c2fc8, 48 filer)
+✅ 8. 115 GB backups slettet (disk 57%→44%)
 
-VIGTIG (gør DEREFTER):
-4. Ret port-fejl i projekts/CLAUDE.md (3030 → 5555)
-5. Ret I5 status (porte kører, ikke nede)
-6. Commit ELLE.md (5 modified + 29 untracked)
-7. Init git i Pictures/Admiral/
-
-OPRYDNING (gør SIDST):
-8. Slet 115 GB backups (efter verifikation)
+AFVENTER:
 9. Konverter RASMUS TODO til sejrliste-opgaver
 10. Ryd ELLE.md/REPORTS/ (29.218 filer, 127 MB auto-genereret)
 ```
