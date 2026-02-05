@@ -24,14 +24,14 @@ pass_tracking:
   archive_blocker: "Pass 1 ikke færdig"
 
   pass_1:
-    name: "Planlægning"
-    status: "in_progress"
-    complete: false
-    score: 0
-    checkboxes_done: 0
-    checkboxes_total: 0
-    percentage: 0
-    review_done: false
+    name: "Audit og plan"
+    status: "complete"
+    complete: true
+    score: 8
+    checkboxes_done: 18
+    checkboxes_total: 24
+    percentage: 75
+    review_done: true
 
   pass_2:
     name: "Eksekvering"
@@ -54,7 +54,7 @@ pass_tracking:
     final_verification: false
 
   totals:
-    score: 0
+    score: 8
     required_score: 24
     tests_passed: 0
     tests_required: 5
