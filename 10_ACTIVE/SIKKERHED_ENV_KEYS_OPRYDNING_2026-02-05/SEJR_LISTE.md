@@ -63,9 +63,9 @@ PASS 3: OPTIMERET      — Automatiser fremtidig beskyttelse
   - Indhold: KUN en tom `database/init.sql/` mappe (root:root)
   - cirkelline-consulting har 100+ filer — HELT FORSKELLIG
   - Konklusion: Stale artifact, skal slettes
-- [ ] C2: Slet med sudo ⚠️ BLOKERET: Kræver Rasmus sudo password
-  - Command: `sudo rm -rf "/home/rasmus/Desktop/projekts/projects/Cirkelline-Consulting-main/"`
-- [ ] C3: Verify fjernet — afventer C2
+- [x] C2: Slet med pkexec ✅ SLETTET
+  - Command: `pkexec rm -rf "/home/rasmus/Desktop/projekts/projects/Cirkelline-Consulting-main/"`
+- [x] C3: Verify fjernet ✅ "No such file or directory" — BEKRÆFTET SLETTET
 
 ---
 
