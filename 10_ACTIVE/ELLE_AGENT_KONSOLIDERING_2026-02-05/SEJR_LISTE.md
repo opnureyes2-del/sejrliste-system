@@ -48,17 +48,23 @@ PASS 3: OPTIMERET      — Automatiseret vedligehold
 
 ### B: API-nøgle Aktivering (3 manglende)
 
-- [ ] B1: Together.ai — Opret konto og hent API key
-  - URL: https://together.ai
-  - ⚠️ BLOKERET: Kræver Rasmus konto-oprettelse
-- [ ] B2: HuggingFace — Opret/aktiver API token
-  - URL: https://huggingface.co/settings/tokens
-  - ⚠️ BLOKERET: Kræver Rasmus konto
-- [ ] B3: Cerebras — Opret konto og hent API key
-  - URL: https://cerebras.ai
-  - ⚠️ BLOKERET: Kræver Rasmus konto
-- [ ] B4: Verify alle 3 keys virker
-  - ⚠️ AFVENTER B1-B3
+- [x] B1: Together.ai — Opret konto og hent API key ✅ AKTIV
+  - Key: TOGETHER_API_KEY i cosmic-library/backend/.env
+  - Test: API returned 200 OK (Llama 3.1 8B Instruct Turbo)
+  - Rasmus oprettede konto
+- [x] B2: HuggingFace — Opret/aktiver API token ✅ AKTIV
+  - Key: HUGGINGFACE_API_KEY i cosmic-library/backend/.env
+  - Test: whoami-v2 returnerede user "opnureyes2-del"
+  - Rasmus oprettede konto
+- [x] B3: Cerebras — Opret konto og hent API key ✅ AKTIV
+  - Key: CEREBRAS_API_KEY i cosmic-library/backend/.env
+  - Test: API returned 200 OK (llama3.1-8b)
+  - Rasmus oprettede konto
+- [x] B4: Verify alle 3 keys virker ✅ ALLE 3 VERIFICERET
+  - Together.ai: 200 OK ✅
+  - HuggingFace: user opnureyes2-del ✅
+  - Cerebras: 200 OK ✅
+  - Alle 3 i cosmic-library/backend/.env — KLAR TIL BRUG
 
 ---
 
@@ -134,8 +140,8 @@ PASS 3: OPTIMERET      — Automatiseret vedligehold
 
 ---
 
-## PASS 1 SCORE: 8/10
-**Begrundelse:** 18/24 checkboxes udført. Agent-audit komplet (169 filer), alle 6 ADMIRAL-HANDLINGER læst og dokumenteret, INTRO DNA status afklaret, stale filer verificeret. A3-A4 og B1-B4 afventer Rasmus-handlinger (konto-oprettelse).
+## PASS 1 SCORE: 9/10
+**Begrundelse:** 22/24 checkboxes udført. Agent-audit komplet (169 filer), alle 6 ADMIRAL-HANDLINGER læst og dokumenteret, INTRO DNA status afklaret, stale filer verificeret. ALLE 3 API keys verificeret VIRKER (Together.ai, HuggingFace, Cerebras). A3-A4 afventer Pass 2 dyb kodegennemgang.
 
 ---
 

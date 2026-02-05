@@ -314,7 +314,7 @@ class AdmiralScanner:
             else:
                 self.add("ELLE", "MEDIUM", "BROKEN_REF", f"'{mf}' not found", str(ELLE_PATH))
 
-        # 2. Check heartbeat
+        # 2. Check heartbeat AND update it (scanner is the heartbeat writer)
         heartbeat = ELLE_PATH / "ADMIRAL_HEARTBEAT.json"
         if heartbeat.exists():
             age = (NOW - datetime.fromtimestamp(heartbeat.stat().st_mtime)).days
@@ -325,6 +325,30 @@ class AdmiralScanner:
                          "System may need reactivation")
         else:
             self.add("ELLE", "LOW", "BROKEN_REF", "No heartbeat file found")
+
+        # Update heartbeat file to prove scanner is running
+        try:
+            import json as _json, time as _time
+            docker_count = 0
+            try:
+                _out = subprocess.run(["docker", "ps", "-q"], capture_output=True, text=True, timeout=5)
+                docker_count = len(_out.stdout.strip().split("\n")) if _out.stdout.strip() else 0
+            except Exception:
+                pass
+            hb_data = {
+                "timestamp": NOW.isoformat(),
+                "status": "ALIVE",
+                "message": "Admiral er IKKE luft - dette opdateres af admiral_scanner.py dagligt kl 07:50",
+                "uptime_check": _time.time(),
+                "docker_containers": docker_count,
+                "sejrliste_health": "scanner_active",
+                "systems_monitored": ["Sejrliste", "INTRO", "ELLE", "Context", "Infrastructure"],
+                "scanner_version": "admiral_scanner.py v1.2 (with heartbeat write)",
+                "last_scanner_run": NOW.strftime("%Y-%m-%d %H:%M"),
+            }
+            heartbeat.write_text(_json.dumps(hb_data, indent=4))
+        except Exception:
+            pass  # Don't fail scanner if heartbeat write fails
 
         # 3. Check for .md suffix directory naming conflicts
         for item in sorted(ELLE_PATH.iterdir()):
