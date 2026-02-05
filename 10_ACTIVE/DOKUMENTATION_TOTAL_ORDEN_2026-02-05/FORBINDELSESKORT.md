@@ -30,7 +30,7 @@
 ├─────────────────────────────────────────────────────────────────────────┤
 │ LAG 5: PLAN — Hvad skal ske fremover?                                │
 │   RASMUS TODO/ ──────────> 120 timers roadmap + API keys             │
-│   ORGANIZE/ ─────────────> Arkiveret historie (jan-faser)            │
+│   ORGANIZE/ ─────────────> ❌ SLETTET 2026-02-05                     │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -95,12 +95,12 @@ GitHub: opnureyes2-del/
 GitHub: eenvywithin/ (Ivo)
     └── cirkelline-system ──── projekts/projects/cirkelline-system-DO-NOT-PUSH/ 🔒 READ ONLY
 
-LOKALT GIT (mangler remote):
-    ├── Pictures/Admiral/ ─── git init 2026-02-05 (95c2fc8, 48 filer)
+LOKALT GIT (status opdateret 2026-02-05):
+    ├── Pictures/Admiral/ ─── ✅ GitHub remote: opnureyes2-del/Admiral-HQ
+    ├── Desktop/MIN ADMIRAL/ ── ✅ GitHub remote: opnureyes2-del/min-admiral-standard
     ├── projekts/projects/cirkelline-kv1ntos/ ── git SLETTET med vilje
-    ├── Desktop/ORGANIZE/ ── arkiv, ingen VCS
     ├── Desktop/RASMUS TODO/ ── ingen VCS
-    └── Desktop/MIN ADMIRAL/ ── har git lokalt
+    └── Desktop/ORGANIZE/ ── ❌ SLETTET 2026-02-05
 ```
 
 ---
@@ -232,16 +232,16 @@ projekts/projects/ (lokal udvikling)
 
 ## 7. FORBINDELSER DER MANGLER (HULLER I SYSTEMET)
 
-| Fra | Til | Mangler | Konsekvens |
-|-----|-----|---------|-----------|
-| cosmic-library | cirkelline-system | Deploy endpoint | Agents kan ikke graduere |
-| RASMUS TODO | sejrliste systemet | Sejr-opgaver | TODO aldrig konverteret til sejrs |
-| Admiral HQ | Git | Versionsstyring | 138 KB kode uden backup |
-| MIN ADMIRAL | ELLE.md | Regel-sync | Regler kan afvige over tid |
-| HJERNESKADE | Git | Commit | 26 filer med uforsikret arbejde |
-| ELLE.md | ORGANIZE | Arkivering | Gamle ELLE filer aldrig arkiveret |
-| projekts/openclaw | INTRO | Dokumentation | 2 GB projekt uden INTRO coverage |
-| projekts/agents | NOGET SOM HELST | Brug | 44 KB agent framework bruges ikke |
+| Fra | Til | Mangler | Konsekvens | Status |
+|-----|-----|---------|-----------|--------|
+| cosmic-library | cirkelline-system | Deploy endpoint | Agents kan ikke graduere | ⚠️ ÅBEN |
+| RASMUS TODO | sejrliste systemet | Sejr-opgaver | TODO aldrig konverteret til sejrs | ⚠️ ÅBEN |
+| Admiral HQ | Git | Versionsstyring | 138 KB kode uden backup | ✅ LØST (GitHub remote) |
+| MIN ADMIRAL | ELLE.md | Regel-sync | Regler kan afvige over tid | ⚠️ ÅBEN |
+| HJERNESKADE | Git | Commit | 26 filer med uforsikret arbejde | ✅ LØST (committed) |
+| ELLE.md | ORGANIZE | Arkivering | Gamle ELLE filer aldrig arkiveret | ✅ ORGANIZE slettet |
+| projekts/openclaw | INTRO | Dokumentation | 2 GB projekt uden INTRO coverage | ⚠️ ÅBEN |
+| projekts/agents | NOGET SOM HELST | Brug | 44 KB agent framework bruges ikke | ⚠️ ÅBEN |
 
 ---
 
@@ -257,12 +257,19 @@ projekts/projects/ (lokal udvikling)
     └── cosmic-library — kører (EFTER fix), git clean, port 7778
 
 🟡 GUL (Fungerer men har issues):
-    ├── MASTER FOLDERS(INTRO)/ — forældede oplysninger (A2, A3)
     ├── ELLE.md/ — 29 untracked, 29.218 auto-rapporter vokser
-    ├── Admiral HQ — kører men ingen git, tomme core/mapper
     ├── cirkelline-kv1ntos — kører men ingen git overhovedet
-    ├── projekts/CLAUDE.md — forkert port (A4)
     └── cloudflared tunnel — gentagne failures
+
+✅ LØST (2026-02-05, session 2):
+    ├── MASTER FOLDERS(INTRO)/ — ✅ OPDATERET: SERVICES.md, DOCKER.md, healthcheck.sh
+    ├── Admiral HQ — ✅ GitHub remote + core/config + core/routing UDFYLDT
+    ├── projekts/CLAUDE.md — ✅ Port rettet (3030→5555)
+    ├── 96_HYBRID_ORGANIC — ✅ Alle 4 faser udfyldt med STATUS.md
+    ├── Dashboard — ✅ Korrekte tal (14 timers, 23 containers, 10 DBs, 29 cron)
+    ├── env_guard_hook — ✅ Testet + deployed til 9 repos
+    ├── credential_scanner — ✅ Skrevet + i cron (søndag 05:00)
+    ├── healthcheck.sh — ✅ 34/34 PASS, 0 FAIL
 
 🔴 RØD (Kræver handling):
     ├── NVIDIA GPU — driver offline (kræver MOK enrollment)

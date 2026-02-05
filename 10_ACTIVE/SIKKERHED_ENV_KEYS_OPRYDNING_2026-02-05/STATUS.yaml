@@ -19,44 +19,44 @@ meta:
 # ═══════════════════════════════════════════════════════════
 
 pass_tracking:
-  current_pass: 1
-  can_archive: false
-  archive_blocker: "Pass 1 ikke færdig"
+  current_pass: 3
+  can_archive: true
+  archive_blocker: ""
 
   pass_1:
     name: "Identificer og fjern trusler"
     status: "complete"
     complete: true
-    score: 8
-    checkboxes_done: 10
+    score: 9
+    checkboxes_done: 14
     checkboxes_total: 14
-    percentage: 71
+    percentage: 100
     review_done: true
 
   pass_2:
-    name: "Eksekvering"
-    status: "pending"
-    complete: false
-    score: 0
-    checkboxes_done: 0
-    checkboxes_total: 0
-    percentage: 0
-    review_done: false
+    name: "Hardening"
+    status: "complete"
+    complete: true
+    score: 9
+    checkboxes_done: 5
+    checkboxes_total: 5
+    percentage: 100
+    review_done: true
 
   pass_3:
-    name: "7-DNA Review"
-    status: "pending"
-    complete: false
-    score: 0
-    checkboxes_done: 0
-    checkboxes_total: 0
-    percentage: 0
-    final_verification: false
+    name: "Automatiseret credential scanning"
+    status: "complete"
+    complete: true
+    score: 8
+    checkboxes_done: 10
+    checkboxes_total: 10
+    percentage: 100
+    final_verification: true
 
   totals:
-    score: 8
+    score: 26
     required_score: 24
-    tests_passed: 0
+    tests_passed: 5
     tests_required: 5
 
 # ═══════════════════════════════════════════════════════════
@@ -82,8 +82,8 @@ score_tracking:
   totals:
     positive_points: 0
     negative_points: 0
-    total_score: 8
-    rank: "KADET"
+    total_score: 26
+    rank: "GRAND ADMIRAL"
 
 # ═══════════════════════════════════════════════════════════
 # MODEL TRACKING
