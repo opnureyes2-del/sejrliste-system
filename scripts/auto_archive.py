@@ -38,6 +38,56 @@ def write_yaml_simple(filepath: Path, data: dict):
 # 3-PASS ARCHIVE ENFORCEMENT
 # ============================================================================
 
+def _extract_status_fields(status: dict) -> dict:
+    """Extract status fields from either flat or nested STATUS.yaml format.
+
+    Supports both:
+    - Flat format: status.get("pass_1_complete") (legacy)
+    - Nested format: status['pass_tracking']['pass_1']['complete'] (current)
+    """
+    pt = status.get("pass_tracking", {})
+    st = status.get("score_tracking", {})
+
+    if pt:
+        # Nested format (current standard)
+        p1 = pt.get("pass_1", {})
+        p2 = pt.get("pass_2", {})
+        p3 = pt.get("pass_3", {})
+        totals = st.get("totals", pt.get("totals", {}))
+        return {
+            "can_archive": pt.get("can_archive", False),
+            "current_pass": pt.get("current_pass", 0),
+            "pass_1_complete": p1.get("complete", False),
+            "pass_2_complete": p2.get("complete", False),
+            "pass_3_complete": p3.get("complete", False),
+            "pass_1_score": p1.get("score", 0),
+            "pass_2_score": p2.get("score", 0),
+            "pass_3_score": p3.get("score", 0),
+            "total_score": totals.get("total_score", totals.get("score", 0)),
+            "final_verification_complete": p3.get("final_verification", False),
+            "pass_1_checkboxes": p1.get("checkboxes_done", 0),
+            "pass_2_checkboxes": p2.get("checkboxes_done", 0),
+            "pass_3_checkboxes": p3.get("checkboxes_done", 0),
+        }
+    else:
+        # Flat format (legacy)
+        return {
+            "can_archive": status.get("can_archive", False),
+            "current_pass": status.get("current_pass", 0),
+            "pass_1_complete": status.get("pass_1_complete", False),
+            "pass_2_complete": status.get("pass_2_complete", False),
+            "pass_3_complete": status.get("pass_3_complete", False),
+            "pass_1_score": status.get("pass_1_score", 0),
+            "pass_2_score": status.get("pass_2_score", 0),
+            "pass_3_score": status.get("pass_3_score", 0),
+            "total_score": status.get("total_score", 0),
+            "final_verification_complete": status.get("final_verification_complete", False),
+            "pass_1_checkboxes": status.get("pass_1_checkboxes", 0),
+            "pass_2_checkboxes": status.get("pass_2_checkboxes", 0),
+            "pass_3_checkboxes": status.get("pass_3_checkboxes", 0),
+        }
+
+
 def check_3pass_complete(sejr_path: Path) -> dict:
     """Check if all 3 passes are complete and scores improve."""
     status_file = sejr_path / "STATUS.yaml"
@@ -49,46 +99,46 @@ def check_3pass_complete(sejr_path: Path) -> dict:
         }
 
     status = parse_yaml_simple(status_file)
+    s = _extract_status_fields(status)
 
     # Check can_archive flag
-    if status.get("can_archive", False):
+    if s["can_archive"]:
         return {
             "can_archive": True,
-            "total_score": status.get("total_score", 0),
-            "current_pass": status.get("current_pass", 0),
+            "total_score": s["total_score"],
+            "current_pass": s["current_pass"],
         }
 
     # Build detailed reason
     reasons = []
 
-    if not status.get("pass_1_complete", False):
+    if not s["pass_1_complete"]:
         reasons.append("Pass 1 ikke færdig")
 
-    if not status.get("pass_2_complete", False):
+    if not s["pass_2_complete"]:
         reasons.append("Pass 2 ikke færdig")
-    elif status.get("pass_2_score", 0) <= status.get("pass_1_score", 0):
-        reasons.append(f"Pass 2 score ({status.get('pass_2_score', 0)}) skal være højere end Pass 1 ({status.get('pass_1_score', 0)})")
+    elif s["pass_2_score"] <= s["pass_1_score"]:
+        reasons.append(f"Pass 2 score ({s['pass_2_score']}) skal være højere end Pass 1 ({s['pass_1_score']})")
 
-    if not status.get("pass_3_complete", False):
+    if not s["pass_3_complete"]:
         reasons.append("Pass 3 ikke færdig")
-    elif status.get("pass_3_score", 0) <= status.get("pass_2_score", 0):
-        reasons.append(f"Pass 3 score ({status.get('pass_3_score', 0)}) skal være højere end Pass 2 ({status.get('pass_2_score', 0)})")
+    elif s["pass_3_score"] <= s["pass_2_score"]:
+        reasons.append(f"Pass 3 score ({s['pass_3_score']}) skal være højere end Pass 2 ({s['pass_2_score']})")
 
-    if not status.get("final_verification_complete", False):
+    if not s["final_verification_complete"]:
         reasons.append("Final verification ikke færdig (minimum 5 tests)")
 
-    total_score = status.get("total_score", 0)
-    if total_score < 24:
-        reasons.append(f"Total score for lav ({total_score}/30, minimum 24)")
+    if s["total_score"] < 24:
+        reasons.append(f"Total score for lav ({s['total_score']}/30, minimum 24)")
 
     return {
         "can_archive": False,
         "reason": "\n   • ".join([""] + reasons) if reasons else "Ukendt",
-        "current_pass": status.get("current_pass", 1),
-        "total_score": total_score,
-        "pass_1_score": status.get("pass_1_score", 0),
-        "pass_2_score": status.get("pass_2_score", 0),
-        "pass_3_score": status.get("pass_3_score", 0),
+        "current_pass": s["current_pass"],
+        "total_score": s["total_score"],
+        "pass_1_score": s["pass_1_score"],
+        "pass_2_score": s["pass_2_score"],
+        "pass_3_score": s["pass_3_score"],
     }
 
 
