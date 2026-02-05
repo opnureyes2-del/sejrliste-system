@@ -307,5 +307,6 @@ AFVENTER:
 ---
 
 **Genereret:** 2026-02-05 af Kv1nt (Admiral Inspektion)
-**Verificeret mod:** 16 parallelle scans af hele Desktop
+**Opdateret:** 2026-02-05 21:15 — Korrektioner efter reel kodning og verifikation
+**Verificeret mod:** 16 parallelle scans + healthcheck.sh (34/34 PASS)
 **Formaal:** Vise at en Admiral ikke bare tæller bøger — men forstår biblioteket
