@@ -398,11 +398,12 @@ def generate_sejr_diplom(sejr_path: Path, archive_path: Path, status: dict) -> P
     """Generate SEJR_DIPLOM.md from template with all data filled in."""
     template_path = sejr_path.parent.parent / "00_TEMPLATES" / "SEJR_DIPLOM.md"
 
-    # Get scores
-    p1_score = status.get('pass_1_score', 0)
-    p2_score = status.get('pass_2_score', 0)
-    p3_score = status.get('pass_3_score', 0)
-    total_score = status.get('total_score', 0)
+    # Get scores (supports both flat and nested STATUS.yaml)
+    s = _extract_status_fields(status)
+    p1_score = s['pass_1_score']
+    p2_score = s['pass_2_score']
+    p3_score = s['pass_3_score']
+    total_score = s['total_score']
 
     # Get rank
     rank_name, rank_emoji = get_rank_from_score(total_score)
@@ -421,11 +422,11 @@ def generate_sejr_diplom(sejr_path: Path, archive_path: Path, status: dict) -> P
     p3_checkboxes = learnings.get('pass_3_checkboxes', 0)
     # Fall back to STATUS.yaml if SEJR_LISTE.md parsing failed
     if p1_checkboxes == 0:
-        p1_checkboxes = status.get('pass_1_checkboxes', 'N/A')
+        p1_checkboxes = s.get('pass_1_checkboxes', 'N/A')
     if p2_checkboxes == 0:
-        p2_checkboxes = status.get('pass_2_checkboxes', 'N/A')
+        p2_checkboxes = s.get('pass_2_checkboxes', 'N/A')
     if p3_checkboxes == 0:
-        p3_checkboxes = status.get('pass_3_checkboxes', 'N/A')
+        p3_checkboxes = s.get('pass_3_checkboxes', 'N/A')
     total_checkboxes = f"{p1_checkboxes}+{p2_checkboxes}+{p3_checkboxes}"
 
     # Build diplom content
@@ -555,10 +556,10 @@ def create_archive_conclusion(sejr_path: Path, archive_path: Path, status: dict)
 
 | Pass | Score |
 |------|-------|
-| Pass 1 | {status.get('pass_1_score', 'N/A')}/10 |
-| Pass 2 | {status.get('pass_2_score', 'N/A')}/10 |
-| Pass 3 | {status.get('pass_3_score', 'N/A')}/10 |
-| **TOTAL** | **{status.get('total_score', 'N/A')}/30** |
+| Pass 1 | {_extract_status_fields(status)['pass_1_score']}/10 |
+| Pass 2 | {_extract_status_fields(status)['pass_2_score']}/10 |
+| Pass 3 | {_extract_status_fields(status)['pass_3_score']}/10 |
+| **TOTAL** | **{_extract_status_fields(status)['total_score']}/30** |
 
 ---
 
@@ -643,13 +644,13 @@ def archive_sejr(sejr_name: str, system_path: Path, force: bool = False):
     # Generate SEJR DIPLOM (with error recovery)
     try:
         diplom_file = generate_sejr_diplom(sejr_path, archive_path, status)
-        rank_name, rank_emoji = get_rank_from_score(status.get('total_score', 0))
+        rank_name, rank_emoji = get_rank_from_score(_extract_status_fields(status)['total_score'])
         print(f" Generated diplom: {diplom_file}")
         print(f"   {rank_emoji} RANG: {rank_name}")
     except Exception as e:
         print(f"[WARN]  Warning: Could not generate diplom: {e}")
         print(f"   Archive continues without SEJR_DIPLOM.md")
-        rank_name, rank_emoji = get_rank_from_score(status.get('total_score', 0))
+        rank_name, rank_emoji = get_rank_from_score(_extract_status_fields(status)['total_score'])
 
     # Copy ALL files from active sejr to archive (preserves complete history)
     copied_count = 0
@@ -670,10 +671,10 @@ def archive_sejr(sejr_name: str, system_path: Path, force: bool = False):
         'archive_path': str(archive_path),
         'archived_by': 'auto_archive.py',
         'force_archived': force and not check["can_archive"],
-        'pass_1_score': status.get('pass_1_score', 0),
-        'pass_2_score': status.get('pass_2_score', 0),
-        'pass_3_score': status.get('pass_3_score', 0),
-        'total_score': status.get('total_score', 0),
+        'pass_1_score': _extract_status_fields(status)['pass_1_score'],
+        'pass_2_score': _extract_status_fields(status)['pass_2_score'],
+        'pass_3_score': _extract_status_fields(status)['pass_3_score'],
+        'total_score': _extract_status_fields(status)['total_score'],
         'three_pass_verified': check["can_archive"],
     }
 
@@ -687,7 +688,7 @@ def archive_sejr(sejr_name: str, system_path: Path, force: bool = False):
 
     print(f"\n[OK] ARCHIVE COMPLETE")
     print(f"   3-Pass verified: {'[OK]' if check['can_archive'] else '[FAIL] (forced)'}")
-    print(f"   Total score: {status.get('total_score', 0)}/30")
+    print(f"   Total score: {_extract_status_fields(status)['total_score']}/30")
     print(f"   {rank_emoji} Rang: {rank_name}")
     print(f"   Location: {archive_path}")
 
@@ -739,16 +740,17 @@ def update_archive_index(system_path: Path):
         status = parse_yaml_simple(status_file) if status_file.exists() else {}
         metadata = parse_yaml_simple(metadata_file) if metadata_file.exists() else {}
 
-        total_score = status.get('total_score', 0)
+        s = _extract_status_fields(status)
+        total_score = s['total_score']
         rank_name, rank_emoji = get_rank_from_score(total_score)
 
         archived_sejr.append({
             'name': folder.name,
             'path': folder,
             'total_score': total_score,
-            'pass_1_score': status.get('pass_1_score', 0),
-            'pass_2_score': status.get('pass_2_score', 0),
-            'pass_3_score': status.get('pass_3_score', 0),
+            'pass_1_score': s['pass_1_score'],
+            'pass_2_score': s['pass_2_score'],
+            'pass_3_score': s['pass_3_score'],
             'rank_name': rank_name,
             'rank_emoji': rank_emoji,
             'archived_at': metadata.get('archived_at', 'Unknown'),
@@ -913,7 +915,7 @@ if __name__ == "__main__":
                 status = parse_yaml_simple(folder / "STATUS.yaml")
                 if status:
                     generate_sejr_diplom(folder, folder, status)
-                    rank_name, rank_emoji = get_rank_from_score(status.get('total_score', 0))
+                    rank_name, rank_emoji = get_rank_from_score(_extract_status_fields(status)['total_score'])
                     print(f" Generated: {folder.name} ({rank_emoji} {rank_name})")
                     generated += 1
         print(f"\n[OK] Generated {generated} diploms")

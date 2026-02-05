@@ -6,12 +6,14 @@
 # Oprettet: 2026-02-05 af Kv1nt (DOKUMENTATION_TOTAL_ORDEN Pass 3)
 
 REPOS=(
+  # Core system repos
   "/home/rasmus/Desktop/MANUAL I TILFÆLDE AF HJERNESKADE"
   "/home/rasmus/Desktop/MIN ADMIRAL"
   "/home/rasmus/Desktop/ELLE.md"
   "/home/rasmus/Desktop/INTRO FOLDER SYSTEM"
   "/home/rasmus/Desktop/MASTER FOLDERS(INTRO)"
   "/home/rasmus/Desktop/sejrliste systemet"
+  # Project repos
   "/home/rasmus/Desktop/projekts/projects/integration-bridge"
   "/home/rasmus/Desktop/projekts/projects/commander-and-agent"
   "/home/rasmus/Desktop/projekts/projects/kommandor-og-agenter"
@@ -19,6 +21,14 @@ REPOS=(
   "/home/rasmus/Desktop/projekts/projects/cosmic-library"
   "/home/rasmus/Desktop/projekts/projects/cirkelline-consulting"
   "/home/rasmus/Desktop/projekts/projects/commando-center"
+  "/home/rasmus/Desktop/projekts/projects/cirkelline-kv1ntos"
+  "/home/rasmus/Desktop/projekts/projects/cirkelline-agents"
+  "/home/rasmus/Desktop/projekts/projects/cirkelline-system-DO-NOT-PUSH"
+  # Third-party / research repos (ELLE.md agents)
+  "/home/rasmus/Desktop/ELLE.md/AGENTS/agenticSeek"
+  "/home/rasmus/Desktop/ELLE.md/AGENTS/AIOS"
+  # External
+  "/home/rasmus/Desktop/projekts/openclaw"
   "/home/rasmus/Pictures/Admiral"
 )
 
