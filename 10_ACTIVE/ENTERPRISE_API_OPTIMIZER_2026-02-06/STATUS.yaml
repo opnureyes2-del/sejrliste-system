@@ -5,12 +5,12 @@ current_pass: 1
 total_passes: 3
 
 pass_1:
-  status: "in_progress"
+  status: "completed"
   started: "2026-02-06T15:30:00Z"
-  completed: null
-  score: null
-  time_minutes: null
-  review_done: false
+  completed: "2026-02-06T20:15:00Z"
+  score: 8
+  time_minutes: 70
+  review_done: true
 
 pass_2:
   status: "not_started"
