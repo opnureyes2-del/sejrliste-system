@@ -1,0 +1,43 @@
+name: "ENTERPRISE_API_OPTIMIZER"
+created: "2026-02-06T15:30:00Z"
+owner: "Kv1nt (Admiral)"
+current_pass: 1
+total_passes: 3
+
+pass_1:
+  status: "in_progress"
+  started: "2026-02-06T15:30:00Z"
+  completed: null
+  score: null
+  time_minutes: null
+  review_done: false
+
+pass_2:
+  status: "not_started"
+  started: null
+  completed: null
+  score: null
+  time_minutes: null
+  review_done: false
+
+pass_3:
+  status: "not_started"
+  started: null
+  completed: null
+  score: null
+  time_minutes: null
+  review_done: false
+
+total_score: null
+total_time_minutes: null
+can_archive: false
+
+# Metrics
+checkboxes_total: 35
+checkboxes_done: 12
+completion_percentage: 34
+
+# Success Criteria
+tests_required: 5
+tests_passed: 0
+verification_commands: []
