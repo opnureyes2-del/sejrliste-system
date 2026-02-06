@@ -19,44 +19,44 @@ meta:
 # ═══════════════════════════════════════════════════════════
 
 pass_tracking:
-  current_pass: 1
-  can_archive: false
-  archive_blocker: "Pass 1 ikke færdig"
+  current_pass: 3
+  can_archive: true
+  archive_blocker: ""
 
   pass_1:
-    name: "Planlægning"
-    status: "in_progress"
-    complete: false
-    score: 0
-    checkboxes_done: 0
-    checkboxes_total: 0
-    percentage: 0
-    review_done: false
+    name: "Konsolidér 8 scripts til 1 CLI"
+    status: "complete"
+    complete: true
+    score: 9
+    checkboxes_done: 4
+    checkboxes_total: 4
+    percentage: 100
+    review_done: true
 
   pass_2:
-    name: "Eksekvering"
-    status: "pending"
-    complete: false
-    score: 0
-    checkboxes_done: 0
-    checkboxes_total: 0
-    percentage: 0
-    review_done: false
+    name: "Test alle subcommands"
+    status: "complete"
+    complete: true
+    score: 9
+    checkboxes_done: 5
+    checkboxes_total: 5
+    percentage: 100
+    review_done: true
 
   pass_3:
     name: "7-DNA Review"
-    status: "pending"
-    complete: false
-    score: 0
-    checkboxes_done: 0
-    checkboxes_total: 0
-    percentage: 0
-    final_verification: false
+    status: "complete"
+    complete: true
+    score: 9
+    checkboxes_done: 12
+    checkboxes_total: 12
+    percentage: 100
+    final_verification: true
 
   totals:
-    score: 0
+    score: 27
     required_score: 24
-    tests_passed: 0
+    tests_passed: 5
     tests_required: 5
 
 # ═══════════════════════════════════════════════════════════
@@ -65,11 +65,11 @@ pass_tracking:
 
 score_tracking:
   positive:
-    checkbox_done: 0
-    pass_complete: 0
-    verified_working: 0
-    test_passed: 0
-    admiral_moment: 0
+    checkbox_done: 21
+    pass_complete: 3
+    verified_working: 5
+    test_passed: 5
+    admiral_moment: 1
     sejr_archived: 0
 
   negative:
@@ -80,10 +80,10 @@ score_tracking:
     focus_lost: 0
 
   totals:
-    positive_points: 0
+    positive_points: 35
     negative_points: 0
-    total_score: 0
-    rank: "KADET"
+    total_score: 27
+    rank: "GRAND ADMIRAL"
 
 # ═══════════════════════════════════════════════════════════
 # MODEL TRACKING
