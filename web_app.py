@@ -105,42 +105,60 @@ st.set_page_config(
 
 ENTERPRISE_CSS = """
 <style>
-/* Premium fonts */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+/* OPUS+ Premium fonts - Orbitron for headers */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/*  PREMIUM DARK THEME - Cirkelline Chakra Colors */
+/*  OPUS+ NAVY THEME - Gold + Cyan + Navy Admiral Branding */
 :root {
-    --bg-primary: #0a0e1a;
-    --bg-secondary: #0f1424;
-    --bg-tertiary: #151b2e;
-    --bg-elevated: #1a2236;
-    --border-color: rgba(99, 102, 241, 0.15);
-    --border-glow: rgba(139, 92, 246, 0.3);
-    --text-primary: #ff6b35;      /* ORANGE-RODLIG - mere rod-orange som Rasmus vil have */
-    --text-secondary: #ff8c42;    /* ORANGE - sekundaer tekst */
-    --text-muted: #64748b;
-    --accent-violet: #8b5cf6;
-    --accent-indigo: #6366f1;
-    --accent-cyan: #22d3ee;
+    --navy-deep: #0F172A;
+    --navy-dark: #1E293B;
+    --navy-medium: #334155;
+    --navy-light: #475569;
+    --gold-primary: #FFD700;
+    --gold-light: #FFED4E;
+    --cyan-primary: #00FFFF;
+    --cyan-light: #7FFFD4;
+    --bg-primary: #0F172A;
+    --bg-secondary: #1E293B;
+    --bg-tertiary: #334155;
+    --bg-elevated: #475569;
+    --border-color: rgba(0, 255, 255, 0.15);
+    --border-glow: rgba(255, 215, 0, 0.3);
+    --text-primary: #FFD700;
+    --text-secondary: #00FFFF;
+    --text-muted: #94A3B8;
+    --accent-gold: #FFD700;
+    --accent-cyan: #00FFFF;
     --accent-emerald: #10b981;
-    --accent-orange: #f97316;
-    --accent-pink: #ec4899;
-    --accent-gold: #fbbf24;
     --accent-red: #ef4444;
-    --glow-violet: 0 0 30px rgba(139, 92, 246, 0.3);
-    --glow-indigo: 0 0 30px rgba(99, 102, 241, 0.3);
-    --glow-cyan: 0 0 20px rgba(34, 211, 238, 0.2);
-    --glass-bg: rgba(15, 20, 36, 0.8);
-    --glass-border: rgba(255, 255, 255, 0.08);
+    --glow-gold: 0 0 30px rgba(255, 215, 0, 0.4);
+    --glow-cyan: 0 0 30px rgba(0, 255, 255, 0.4);
+    --glow-navy: 0 0 40px rgba(15, 23, 42, 0.6);
+    --glass-bg: rgba(30, 41, 59, 0.8);
+    --glass-border: rgba(0, 255, 255, 0.15);
 }
 
-/*  ANIMATED GRADIENT BACKGROUND */
+/*  OPUS+ ANIMATED NAVY GRADIENT BACKGROUND */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 .stApp {
     background:
-        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse 60% 40% at 100% 100%, rgba(99, 102, 241, 0.1) 0%, transparent 40%),
-        radial-gradient(ellipse 50% 30% at 0% 50%, rgba(34, 211, 238, 0.08) 0%, transparent 30%),
-        linear-gradient(180deg, var(--bg-primary) 0%, #0d1220 100%);
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 255, 255, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 100% 100%, rgba(255, 215, 0, 0.08) 0%, transparent 40%),
+        radial-gradient(ellipse 50% 30% at 0% 50%, rgba(0, 255, 255, 0.06) 0%, transparent 30%),
+        linear-gradient(135deg, #0F172A 0%, #1E293B 25%, #0F172A 50%, #1E293B 75%, #0F172A 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
     font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
     min-height: 100vh;
 }
@@ -150,35 +168,36 @@ ENTERPRISE_CSS = """
 footer {visibility: hidden;}
 header {visibility: hidden;}
 
-/*  PREMIUM HEADER WITH GLOW */
+/*  OPUS+ ADMIRAL HEADER WITH ORBITRON */
 .premium-header {
-    background: linear-gradient(135deg, var(--glass-bg) 0%, rgba(20, 25, 45, 0.9) 100%);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: linear-gradient(135deg, var(--glass-bg) 0%, rgba(30, 41, 59, 0.95) 100%);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
     padding: 1.5rem 2rem;
-    border-bottom: 1px solid var(--glass-border);
+    border-bottom: 2px solid var(--glass-border);
     border-radius: 0 0 20px 20px;
     margin: -1rem -1rem 1.5rem -1rem;
-    box-shadow: var(--glow-indigo);
+    box-shadow: var(--glow-gold), var(--glow-cyan);
 }
 
 .premium-header h1 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--accent-violet) 0%, var(--accent-cyan) 100%);
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--gold-primary) 0%, var(--cyan-primary) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin: 0;
-    font-size: 1.75rem;
-    letter-spacing: -0.03em;
+    font-size: 2rem;
+    letter-spacing: 0.05em;
+    text-shadow: var(--glow-gold);
 }
 
-/*  GLASSMORPHISM SIDEBAR */
+/*  OPUS+ NAVY ADMIRAL SIDEBAR */
 section[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, rgba(15, 20, 36, 0.95) 0%, rgba(10, 14, 26, 0.98) 100%) !important;
-    border-right: 1px solid var(--glass-border) !important;
-    box-shadow: 4px 0 30px rgba(0, 0, 0, 0.3) !important;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 41, 59, 0.95) 100%) !important;
+    border-right: 2px solid var(--glass-border) !important;
+    box-shadow: 4px 0 40px rgba(0, 0, 0, 0.5), inset -1px 0 20px rgba(0, 255, 255, 0.1) !important;
 }
 
 section[data-testid="stSidebar"] > div {
@@ -186,24 +205,37 @@ section[data-testid="stSidebar"] > div {
 }
 
 section[data-testid="stSidebar"] .stMarkdown {
-    color: var(--text-primary);
+    color: var(--gold-primary);
 }
 
 section[data-testid="stSidebar"] .stMarkdown h1,
 section[data-testid="stSidebar"] .stMarkdown h2,
 section[data-testid="stSidebar"] .stMarkdown h3 {
-    background: linear-gradient(135deg, var(--accent-violet) 0%, var(--accent-indigo) 100%);
+    font-family: 'Orbitron', sans-serif;
+    background: linear-gradient(135deg, var(--gold-primary) 0%, var(--cyan-primary) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-weight: 600;
+    font-weight: 700;
+    text-shadow: var(--glow-gold);
 }
 
-/*  PREMIUM PROJECT CARDS - Glassmorphism + Glow */
+/*  OPUS+ BREATHING PROJECT CARDS - Animated Glassmorphism */
+@keyframes breathe {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: var(--glow-gold), var(--glow-cyan);
+    }
+    50% {
+        transform: scale(1.02);
+        box-shadow: 0 0 40px rgba(255, 215, 0, 0.6), 0 0 40px rgba(0, 255, 255, 0.6);
+    }
+}
+
 .sejr-card {
-    background: linear-gradient(145deg, var(--glass-bg) 0%, rgba(20, 26, 46, 0.7) 100%);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
+    background: linear-gradient(145deg, var(--glass-bg) 0%, rgba(30, 41, 59, 0.8) 100%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 2px solid var(--glass-border);
     border-radius: 16px;
     padding: 1.25rem 1.5rem;
     margin: 0.75rem 0;
@@ -211,6 +243,7 @@ section[data-testid="stSidebar"] .stMarkdown h3 {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    animation: breathe 3s ease-in-out infinite;
 }
 
 .sejr-card::before {
@@ -219,16 +252,17 @@ section[data-testid="stSidebar"] .stMarkdown h3 {
     top: 0;
     left: 0;
     right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent-violet), var(--accent-cyan), var(--accent-violet));
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold-primary), var(--cyan-primary), var(--gold-primary));
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
 .sejr-card:hover {
     border-color: var(--border-glow);
-    box-shadow: var(--glow-violet), inset 0 1px 0 rgba(255,255,255,0.05);
-    transform: translateY(-2px);
+    box-shadow: var(--glow-gold), var(--glow-cyan), inset 0 1px 0 rgba(255,255,255,0.1);
+    transform: translateY(-4px) scale(1.03);
+    animation: none;
 }
 
 .sejr-card:hover::before {
@@ -236,39 +270,51 @@ section[data-testid="stSidebar"] .stMarkdown h3 {
 }
 
 .sejr-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-primary);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--gold-primary);
     margin-bottom: 0.35rem;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.03em;
+    text-shadow: var(--glow-gold);
 }
 
 .sejr-meta {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.75rem;
-    color: var(--text-muted);
+    color: var(--cyan-primary);
     letter-spacing: 0.02em;
 }
 
-/*  PREMIUM ANIMATED PROGRESS BARS */
+/*  OPUS+ ANIMATED PROGRESS BARS - Gold/Cyan */
 .progress-bar-container {
-    background: linear-gradient(90deg, rgba(15, 20, 36, 0.8) 0%, rgba(20, 27, 46, 0.6) 100%);
-    border-radius: 10px;
-    height: 10px;
+    background: linear-gradient(90deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.7) 100%);
+    border-radius: 12px;
+    height: 12px;
     overflow: hidden;
     margin: 0.75rem 0;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--glass-border);
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--glass-border);
 }
 
 .progress-bar-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--accent-violet) 0%, var(--accent-indigo) 50%, var(--accent-cyan) 100%);
+    background: linear-gradient(90deg, var(--gold-primary) 0%, var(--cyan-primary) 50%, var(--gold-primary) 100%);
+    background-size: 200% 100%;
+    animation: progressFlow 3s ease-in-out infinite;
     border-radius: 10px;
     transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.5), 0 0 25px rgba(0, 255, 255, 0.5), inset 0 1px 0 rgba(255,255,255,0.3);
     position: relative;
+}
+
+@keyframes progressFlow {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
 }
 
 .progress-bar-fill::after {
@@ -278,7 +324,7 @@ section[data-testid="stSidebar"] .stMarkdown h3 {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
     animation: shimmer 2s infinite;
 }
 
@@ -288,50 +334,57 @@ section[data-testid="stSidebar"] .stMarkdown h3 {
 }
 
 .progress-bar-fill.complete {
-    background: linear-gradient(90deg, var(--accent-emerald) 0%, var(--accent-cyan) 100%);
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+    background: linear-gradient(90deg, var(--gold-primary) 0%, var(--cyan-primary) 100%);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6), 0 0 30px rgba(0, 255, 255, 0.6), inset 0 1px 0 rgba(255,255,255,0.3);
 }
 
-/*  PREMIUM WORKSPACE SECTIONS - Glass Panels */
+/*  OPUS+ WORKSPACE SECTIONS - Navy Glass Panels */
 .workspace-section {
-    background: linear-gradient(180deg, var(--glass-bg) 0%, rgba(10, 14, 26, 0.85) 100%);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border);
+    background: linear-gradient(180deg, var(--glass-bg) 0%, rgba(15, 23, 42, 0.9) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 2px solid var(--glass-border);
     border-radius: 20px;
     padding: 1.75rem 2rem;
     margin: 1.25rem 0;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.04);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.08), var(--glow-gold);
     position: relative;
+    transition: all 0.3s ease;
+}
+
+.workspace-section:hover {
+    box-shadow: 0 12px 50px rgba(0, 0, 0, 0.5), var(--glow-gold), var(--glow-cyan);
 }
 
 .workspace-section::before {
     content: '';
     position: absolute;
-    top: -1px;
+    top: -2px;
     left: 20%;
     right: 20%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent-violet), transparent);
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold-primary), var(--cyan-primary), transparent);
 }
 
 .workspace-header {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    color: var(--text-primary);
-    font-size: 1.2rem;
-    border-bottom: 1px solid var(--glass-border);
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    color: var(--gold-primary);
+    font-size: 1.3rem;
+    border-bottom: 2px solid var(--glass-border);
     padding-bottom: 1rem;
     margin-bottom: 1.25rem;
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    text-shadow: var(--glow-gold);
 }
 
 .workspace-header::before {
-    content: '◆';
-    color: var(--accent-violet);
-    font-size: 0.8rem;
+    content: '⬢';
+    color: var(--cyan-primary);
+    font-size: 1rem;
+    text-shadow: var(--glow-cyan);
 }
 
 /*  PREMIUM FILE MANAGER - Neon Dropzone */
@@ -470,21 +523,23 @@ section[data-testid="stSidebar"] .stMarkdown h3 {
     50% { box-shadow: 0 0 25px rgba(99, 102, 241, 0.4); }
 }
 
-/*  PREMIUM ACTION BUTTONS - Gradient + Glow */
+/*  OPUS+ ACTION BUTTONS - Gold/Cyan Admiral Style */
 .action-btn {
-    background: linear-gradient(135deg, var(--accent-violet) 0%, var(--accent-indigo) 100%);
-    border: none;
-    border-radius: 10px;
-    padding: 0.6rem 1.25rem;
-    color: white;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    font-size: 0.875rem;
+    background: linear-gradient(135deg, var(--gold-primary) 0%, var(--cyan-primary) 100%);
+    border: 2px solid var(--gold-primary);
+    border-radius: 12px;
+    padding: 0.7rem 1.5rem;
+    color: var(--navy-deep);
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4), 0 4px 20px rgba(0, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 
 .action-btn::before {
@@ -494,13 +549,13 @@ section[data-testid="stSidebar"] .stMarkdown h3 {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
     transition: left 0.5s ease;
 }
 
 .action-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 25px rgba(139, 92, 246, 0.5);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 35px rgba(255, 215, 0, 0.7), 0 8px 35px rgba(0, 255, 255, 0.7);
 }
 
 .action-btn:hover::before {
@@ -508,21 +563,23 @@ section[data-testid="stSidebar"] .stMarkdown h3 {
 }
 
 .action-btn-success {
-    background: linear-gradient(135deg, var(--accent-emerald) 0%, var(--accent-cyan) 100%);
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    background: linear-gradient(135deg, var(--gold-primary) 0%, var(--cyan-primary) 100%);
+    border: 2px solid var(--cyan-primary);
+    box-shadow: 0 4px 20px rgba(0, 255, 255, 0.5);
 }
 
 .action-btn-success:hover {
-    box-shadow: 0 6px 25px rgba(16, 185, 129, 0.5);
+    box-shadow: 0 8px 35px rgba(0, 255, 255, 0.8);
 }
 
 .action-btn-danger {
-    background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-orange) 100%);
-    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+    background: linear-gradient(135deg, var(--accent-red) 0%, var(--gold-primary) 100%);
+    border: 2px solid var(--accent-red);
+    box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
 }
 
 .action-btn-danger:hover {
-    box-shadow: 0 6px 25px rgba(239, 68, 68, 0.5);
+    box-shadow: 0 8px 35px rgba(239, 68, 68, 0.7);
 }
 
 /*  PREMIUM LOG STREAM - Terminal Style */
@@ -587,18 +644,28 @@ section[data-testid="stSidebar"] .stMarkdown h3 {
     text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
 }
 
-/*  PREMIUM STAT CARDS - Glowing Metrics */
+/*  OPUS+ GLOWING STAT CARDS - Breathing Metrics */
+@keyframes metricGlow {
+    0%, 100% {
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.6), 0 0 20px rgba(255, 215, 0, 0.4);
+    }
+    50% {
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.6), 0 0 40px rgba(0, 255, 255, 0.4);
+    }
+}
+
 .stat-card {
-    background: linear-gradient(145deg, var(--glass-bg) 0%, rgba(20, 26, 46, 0.7) 100%);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
+    background: linear-gradient(145deg, var(--glass-bg) 0%, rgba(30, 41, 59, 0.85) 100%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 2px solid var(--glass-border);
     border-radius: 16px;
     padding: 1.5rem;
     text-align: center;
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
+    animation: breathe 3s ease-in-out infinite;
 }
 
 .stat-card::before {
@@ -608,33 +675,35 @@ section[data-testid="stSidebar"] .stMarkdown h3 {
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, var(--accent-violet), var(--accent-cyan));
-    opacity: 0.6;
+    background: linear-gradient(90deg, var(--gold-primary), var(--cyan-primary), var(--gold-primary));
+    opacity: 0.8;
 }
 
 .stat-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--glow-indigo);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: var(--glow-gold), var(--glow-cyan);
+    animation: none;
 }
 
 .stat-value {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 2.25rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-cyan) 100%);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--gold-primary) 0%, var(--cyan-primary) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-shadow: none;
+    animation: metricGlow 2s ease-in-out infinite;
 }
 
 .stat-label {
     font-family: 'JetBrains Mono', monospace;
-    color: var(--text-muted);
-    font-size: 0.75rem;
+    color: var(--cyan-primary);
+    font-size: 0.8rem;
     margin-top: 0.5rem;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
+    font-weight: 600;
 }
 
 /*  PREMIUM SCORE BADGES - Neon Glow */
@@ -688,27 +757,29 @@ section[data-testid="stSidebar"] .stMarkdown h3 {
 
 /*  STREAMLIT ELEMENTS - Premium Override */
 
-/* Buttons */
+/* OPUS+ Buttons */
 .stButton > button {
-    background: linear-gradient(135deg, var(--accent-violet) 0%, var(--accent-indigo) 100%) !important;
-    border: none !important;
+    background: linear-gradient(135deg, var(--gold-primary) 0%, var(--cyan-primary) 100%) !important;
+    border: 2px solid var(--gold-primary) !important;
     border-radius: 12px !important;
-    padding: 0.65rem 1.5rem !important;
-    color: white !important;
-    font-family: 'Space Grotesk', sans-serif !important;
-    font-weight: 600 !important;
+    padding: 0.7rem 1.5rem !important;
+    color: var(--navy-deep) !important;
+    font-family: 'Orbitron', sans-serif !important;
+    font-weight: 700 !important;
     font-size: 0.9rem !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3) !important;
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4), 0 4px 20px rgba(0, 255, 255, 0.4) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
 }
 
 .stButton > button:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.5) !important;
+    transform: translateY(-3px) scale(1.05) !important;
+    box-shadow: 0 8px 35px rgba(255, 215, 0, 0.7), 0 8px 35px rgba(0, 255, 255, 0.7) !important;
 }
 
 .stButton > button:active {
-    transform: translateY(0) !important;
+    transform: translateY(-1px) !important;
 }
 
 /* Select boxes */
@@ -1422,6 +1493,19 @@ def get_session_duration() -> str:
 st.markdown(ENTERPRISE_CSS, unsafe_allow_html=True)
 
 # ═══════════════════════════════════════════════════════════════════════════════
+# OPUS+ AUTO-REFRESH - 1 SECOND REFRESH
+# ═══════════════════════════════════════════════════════════════════════════════
+
+st.markdown("""
+<script>
+    // OPUS+ 1-second auto-refresh
+    setTimeout(function() {
+        window.parent.location.reload();
+    }, 1000);
+</script>
+""", unsafe_allow_html=True)
+
+# ═══════════════════════════════════════════════════════════════════════════════
 # ANIMATED PARTICLES BACKGROUND
 # ═══════════════════════════════════════════════════════════════════════════════
 
@@ -1457,17 +1541,17 @@ st.markdown("""
         position: absolute;
         width: 6px;
         height: 6px;
-        background: linear-gradient(135deg, var(--accent-violet) 0%, var(--accent-cyan) 100%);
+        background: linear-gradient(135deg, var(--gold-primary) 0%, var(--cyan-primary) 100%);
         border-radius: 50%;
         opacity: 0.4;
         animation: particle-float linear infinite;
-        box-shadow: 0 0 10px var(--accent-violet), 0 0 20px var(--accent-indigo);
+        box-shadow: 0 0 10px var(--gold-primary), 0 0 20px var(--cyan-primary);
     }
     .particle.large {
         width: 12px;
         height: 12px;
         opacity: 0.2;
-        box-shadow: 0 0 20px var(--accent-violet), 0 0 40px var(--accent-indigo);
+        box-shadow: 0 0 20px var(--gold-primary), 0 0 40px var(--cyan-primary);
     }
     @keyframes particle-float {
         0% {
