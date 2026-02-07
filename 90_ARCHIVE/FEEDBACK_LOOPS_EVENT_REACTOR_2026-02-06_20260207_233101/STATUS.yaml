@@ -1,0 +1,17 @@
+can_archive: true
+completion_percentage: 100
+current_pass: 3
+final_verification_complete: true
+last_verification: '2026-02-07T07:49:32.051050+01:00'
+pass_1_complete: true
+pass_1_pct: 100
+pass_1_score: 8
+pass_2_complete: true
+pass_2_pct: 100
+pass_2_score: 9
+pass_3_complete: true
+pass_3_pct: 100
+pass_3_score: 10
+sejr_name: FEEDBACK_LOOPS_EVENT_REACTOR_2026-02-06
+status: archived
+total_score: 27

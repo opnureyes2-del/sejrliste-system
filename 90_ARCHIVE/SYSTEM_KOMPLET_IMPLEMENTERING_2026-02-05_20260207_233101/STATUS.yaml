@@ -1,0 +1,96 @@
+can_archive: true
+completion_percentage: 100
+current_pass: 3
+final_verification_complete: true
+last_verification: '2026-02-07T07:49:32.033928+01:00'
+meta:
+  created: '2026-02-05T13:38:22.840337+01:00'
+  created_by: generate_sejr.py
+  folder: SYSTEM_KOMPLET_IMPLEMENTERING_2026-02-05
+  last_updated: '2026-02-05T13:38:22.840337+01:00'
+  sejr_name: SYSTEM_KOMPLET_IMPLEMENTERING
+  session_id: sess_cf32282b4eda
+model_tracking:
+  current_model: null
+  human_activity:
+    approvals: 0
+    corrections: 0
+    sessions: 0
+  models_used: []
+  sessions:
+  - action: SEJR_CREATED
+    actor: generate_sejr.py
+    id: sess_cf32282b4eda
+    started: '2026-02-05T13:38:22.840337+01:00'
+pass_1_complete: true
+pass_1_pct: 100
+pass_1_score: 8
+pass_2_complete: true
+pass_2_pct: 100
+pass_2_score: 9
+pass_3_complete: true
+pass_3_pct: 100
+pass_3_score: 8
+pass_tracking:
+  archive_blocker: ''
+  can_archive: true
+  current_pass: 3
+  pass_1:
+    checkboxes_done: 8
+    checkboxes_total: 8
+    complete: true
+    name: Audit og identifikation
+    percentage: 100
+    review_done: true
+    score: 8
+    status: complete
+  pass_2:
+    checkboxes_done: 18
+    checkboxes_total: 18
+    complete: true
+    name: Implementering og eksekvering
+    percentage: 100
+    review_done: true
+    score: 9
+    status: complete
+  pass_3:
+    checkboxes_done: 12
+    checkboxes_total: 12
+    complete: true
+    final_verification: true
+    name: Test og automatisering + 7-DNA
+    percentage: 100
+    score: 8
+    status: complete
+  totals:
+    required_score: 24
+    score: 25
+    tests_passed: 5
+    tests_required: 5
+score_tracking:
+  negative:
+    focus_lost: 0
+    lie_detected: 0
+    memory_loss: 0
+    rule_break: 0
+    token_waste: 0
+  positive:
+    admiral_moment: 0
+    checkbox_done: 0
+    pass_complete: 0
+    sejr_archived: 0
+    test_passed: 0
+    verified_working: 0
+  totals:
+    negative_points: 0
+    positive_points: 0
+    rank: GRAND ADMIRAL
+    total_score: 25
+sejr_name: SYSTEM_KOMPLET_IMPLEMENTERING_2026-02-05
+statistics:
+  total_actions: 1
+  total_sessions: 1
+  total_time_minutes: 0
+  unique_models: 0
+status: archived
+total_score: 25
