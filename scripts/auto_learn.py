@@ -512,6 +512,96 @@ def learn_from_completed(system_path: Path):
     else:
         print("[INFO]  No new patterns identified")
 
+# ============================================================================
+# PS1: TEMPLATE SELVLÆRING — Templates arver visdom fra ALLE sejre
+# ============================================================================
+
+def update_templates_with_learnings(system_path: Path, patterns: list):
+    """Opdater CLAUDE.md template med de 5 vigtigste patterns.
+    Nye sejre arver automatisk visdom fra alle tidligere sejre.
+    """
+    template_path = system_path / "00_TEMPLATES" / "CLAUDE.md"
+    if not template_path.exists():
+        print("[WARN]  Template CLAUDE.md not found")
+        return
+
+    content = template_path.read_text()
+
+    # Byg learnings block fra top-5 patterns
+    sorted_patterns = sorted(patterns, key=lambda x: x.get("frequency", 0), reverse=True)[:5]
+    learnings_block = f"## ARVET VISDOM FRA {len(patterns)} PATTERNS\n\n"
+    for p in sorted_patterns:
+        freq = p.get('frequency', 0)
+        rec = p.get('recommendation', p.get('pattern', ''))
+        learnings_block += f"- **{p['pattern']}** (set {freq}x → {rec})\n"
+    learnings_block += "\n"
+
+    # Erstat eksisterende eller tilføj før FORBUDT
+    if "## ARVET VISDOM" in content:
+        content = re.sub(
+            r'## ARVET VISDOM.*?(?=\n---|\n## [A-Z]|\Z)',
+            learnings_block,
+            content,
+            flags=re.DOTALL
+        )
+    elif "## FORBUDT" in content:
+        content = content.replace("## FORBUDT", learnings_block + "---\n\n## FORBUDT")
+    else:
+        content += "\n---\n\n" + learnings_block
+
+    template_path.write_text(content)
+    print(f"[OK]    Template opdateret med top-{len(sorted_patterns)} patterns")
+
+
+def update_status_template_with_metrics(system_path: Path, all_sejr_data: list):
+    """Gem historiske gennemsnit som reference for nye sejre."""
+    if not all_sejr_data:
+        return
+
+    scores = []
+    for sejr in all_sejr_data:
+        metrics = sejr.get("metrics", {})
+        if metrics.get("pass1_score") is not None:
+            scores.append({
+                "pass1": metrics.get("pass1_score", 0),
+                "pass2": metrics.get("pass2_score", 0),
+                "pass3": metrics.get("pass3_score", 0),
+            })
+
+    if not scores:
+        return
+
+    avg_p1 = sum(s["pass1"] for s in scores) / len(scores)
+    avg_p2 = sum(s["pass2"] for s in scores) / len(scores)
+    avg_p3 = sum(s["pass3"] for s in scores) / len(scores)
+
+    metrics_data = {
+        "historical_averages": {
+            "pass1": round(avg_p1, 1),
+            "pass2": round(avg_p2, 1),
+            "pass3": round(avg_p3, 1),
+            "total": round(avg_p1 + avg_p2 + avg_p3, 1),
+            "sejre_analyseret": len(scores),
+        },
+        "last_updated": datetime.now().isoformat(),
+    }
+
+    output = system_path / "_CURRENT" / "HISTORICAL_METRICS.json"
+    output.write_text(json.dumps(metrics_data, indent=2, ensure_ascii=False))
+    print(f"[OK]    Historiske metrics: avg {metrics_data['historical_averages']['total']}/30 fra {len(scores)} sejre")
+
+
 if __name__ == "__main__":
     system_path = Path(__file__).parent.parent
     learn_from_completed(system_path)
+
+    # PS1: Opdater templates med patterns
+    patterns_file = system_path / "_CURRENT" / "PATTERNS.json"
+    if patterns_file.exists():
+        try:
+            pdata = json.loads(patterns_file.read_text())
+            all_patterns = pdata.get("patterns", [])
+            if all_patterns:
+                update_templates_with_learnings(system_path, all_patterns)
+        except Exception as e:
+            print(f"[WARN]  Template update failed: {e}")
