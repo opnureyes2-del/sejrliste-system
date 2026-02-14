@@ -23,7 +23,7 @@ set -euo pipefail
 # Version: 3.0.0 | Opdateret: 2026-01-31
 # ═══════════════════════════════════════════════════════════════
 
-cd "/home/rasmus/Desktop/sejrliste systemet"
+cd "/home/rasmus/sejrliste systemet"
 exec "./venv/bin/streamlit" run web_app.py \
     --server.port 8501 \
     --server.address 0.0.0.0 \
