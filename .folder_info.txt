@@ -5,8 +5,8 @@
 [36m──────────────────────────────────────────────────────────────[0m
   14 filer | 14 mapper | Size: 0
   Git: [32mclean[0m
-  Last: 1e62bf4 Admiral Brain auto-commit: Dirty git repository (2026-02-15 12:13)
-  Aktivitet: [33m30 filer opdateret (24t)[0m
+  Last: fa2e5da Admiral Brain auto-commit: Dirty git repository needs to be committed and pushed (2026-02-15 12:43)
+  Aktivitet: [33m28 filer opdateret (24t)[0m
 [36m──────────────────────────────────────────────────────────────[0m
   [1mPORTE:[0m
     [32m●[0m :8501 Sejrliste Web — LIVE
