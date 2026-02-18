@@ -1,0 +1,2054 @@
+{
+  "current_checkpoint_id": "CP_112",
+  "skipped_checkpoints": [],
+  "enforcement_log": [],
+  "checkpoints": [
+    {
+      "id": "CP_000",
+      "name": "[PHASE_4] GitHub search: \"enterprise api optimizer rate limiting cache",
+      "verification_type": "command",
+      "verification_command": "git status",
+      "expected_result": null,
+      "manual_confirm": false,
+      "dependencies": [],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.860710",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_001",
+      "name": "[PHASE_4] Documentation search: \"API rate limiting best practices 2026",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_000"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.860774",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_002",
+      "name": "[PHASE_4] Web search: \"multi-agent API coordination 2026\"",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_001"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.860840",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_003",
+      "name": "[PHASE_4] Previous projects søgt: `grep -r \"rate.*limit\\|cache.*api\" ~",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_002"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.860886",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_004",
+      "name": "[PHASE_4] Pattern library checked",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_003"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.860908",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_005",
+      "name": "[PHASE_4] Valgt: **Alternativ 1 (Standalone service)**",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_004"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.860928",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_006",
+      "name": "[PHASE_4] Begrundelse dokumenteret:",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_005"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.860947",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_007",
+      "name": "[PHASE_4] Hvad skal bygges:",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_006"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.860965",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_008",
+      "name": "[PHASE_4] Hvorfor:",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_007"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.860982",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_009",
+      "name": "[PHASE_4] Success criteria:",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_008"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.860999",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_010",
+      "name": "[PHASE_4] Arkitektur skitseret:",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_009"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861016",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_011",
+      "name": "[PHASE_4] Dependencies identificeret:",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_010"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861036",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_012",
+      "name": "[PHASE_4] Kode skrevet: `enterprise_optimizer.py` (~2000 linjer)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_011"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861055",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_013",
+      "name": "[PHASE_4] Kode skrevet: `optimizer_client.py` (~200 linjer)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_012"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861073",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_014",
+      "name": "[PHASE_4] Service fil: `admiral-optimizer.service`",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_013"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861091",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_015",
+      "name": "[PHASE_4] Opdater `admiral_fleet.py` med optimizer support",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_014"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861109",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_016",
+      "name": "[PHASE_4] RabbitMQ integration",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_015"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861126",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_017",
+      "name": "[PHASE_4] Modificer 3 test agenter til at bruge optimizer",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_016"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861145",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_018",
+      "name": "[PHASE_4] Alle komponenter forbundet og testet",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_017"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861163",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_019",
+      "name": "[PHASE_4] Service kører",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_018"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861182",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_020",
+      "name": "[PHASE_4] Database oprettet og skrivbar",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_019"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861199",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_021",
+      "name": "[PHASE_4] Client kan forbinde",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_020"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861216",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_022",
+      "name": "[PHASE_4] Cache gemmer og henter",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_021"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861234",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_023",
+      "name": "[PHASE_4] Dedupe detekterer duplicates",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_022"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861250",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_024",
+      "name": "[PHASE_4] Rate limiter blokerer ved grænse",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_023"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861272",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_025",
+      "name": "[PHASE_4] Basic test passed",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_024"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861289",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_026",
+      "name": "[PHASE_4] git add: Core files + 3 agent integrations + fleet CLI + tes",
+      "verification_type": "command",
+      "verification_command": "git status",
+      "expected_result": null,
+      "manual_confirm": false,
+      "dependencies": [
+        "CP_025"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861312",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_027",
+      "name": "[PHASE_4] git commit: Commit 9313ca5 (optimizer core) + 3148b06 (integ",
+      "verification_type": "command",
+      "verification_command": "git status",
+      "expected_result": null,
+      "manual_confirm": false,
+      "dependencies": [
+        "CP_026"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861333",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_028",
+      "name": "[PHASE_4] git push: `git push origin main`",
+      "verification_type": "command",
+      "verification_command": "git status",
+      "expected_result": null,
+      "manual_confirm": false,
+      "dependencies": [
+        "CP_027"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861351",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_029",
+      "name": "[PHASE_4] Remote sync verified: Pushed to github.com:opnureyes2-del/EL",
+      "verification_type": "command",
+      "verification_command": "git status",
+      "expected_result": null,
+      "manual_confirm": false,
+      "dependencies": [
+        "CP_028"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861370",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_030",
+      "name": "[PHASE_4] Working tree clean: ✅ All changes committed",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_029"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861401",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_031",
+      "name": "[PHASE_0] Alle PHASE 0-4 checkboxes afkrydset",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_030"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861416",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_032",
+      "name": "[PHASE_0] Koden KØRER (ikke perfekt, men fungerende)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_031"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861440",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_033",
+      "name": "[PHASE_0] Minimum 1 test passed (3/3 integration tests)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_032"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861458",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_034",
+      "name": "[PHASE_4] Git committed og pushed",
+      "verification_type": "command",
+      "verification_command": "git status",
+      "expected_result": null,
+      "manual_confirm": false,
+      "dependencies": [
+        "CP_033"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861476",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_035",
+      "name": "[PHASE_4] Identificeret: NONE critical, minor opportunity with CoT tem",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_034"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861497",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_036",
+      "name": "[PHASE_4] Beskrivelse: CoT templates regenerated on every call (neglig",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_035"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861518",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_037",
+      "name": "[PHASE_4] Dupliceret kode: Minimal - `cache_key = self.get_cache_key()",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_036"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861538",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_038",
+      "name": "[PHASE_4] Manglende error handling: NONE - All 4 exception handlers us",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_037"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861558",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_039",
+      "name": "[PHASE_4] Hardcoded values: CONFIG dict has 7 hardcoded constants (600",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_038"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861581",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_040",
+      "name": "[PHASE_4] Moved 7 hardcoded CONFIG values to os.environ with OPTIMIZER",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_039"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861601",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_041",
+      "name": "[PHASE_4] Added defaults so code works without env vars",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_040"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861619",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_042",
+      "name": "[PHASE_4] Added env vars to ~/.admiral_api_keys_systemd.env",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_041"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861636",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_043",
+      "name": "[PHASE_4] Created comprehensive test suite: `AGENTS/agents/tests/test_",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_042"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861671",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_044",
+      "name": "[PHASE_4] Test classes: Cache (4), Deduplication (2), RateLimiter (3),",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_043"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861701",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_045",
+      "name": "[PHASE_4] All 30 tests pass in 6.34s",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_044"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861719",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_046",
+      "name": "[PHASE_4] Uses mocking for AIBackendRotator, temp directories for DB i",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_045"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861739",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_047",
+      "name": "[PHASE_4] Upgraded all 6 templates to 4-phase structured reasoning",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_046"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861758",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_048",
+      "name": "[PHASE_4] Code analysis: Comprehension → Correctness → Quality → Actio",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_047"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861795",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_049",
+      "name": "[PHASE_4] Debugging: Symptom Classification → 5-Whys Root Cause → Diag",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_048"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861845",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_050",
+      "name": "[PHASE_4] Creative: Brief Analysis → 3 Ideation Directions → Draft → S",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_049"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861876",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_051",
+      "name": "[PHASE_4] Reasoning: Decomposition → Evidence → Analysis → Confidence-",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_050"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861906",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_052",
+      "name": "[PHASE_4] All templates now enforce evidence-based conclusions and exp",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_051"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861926",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_053",
+      "name": "[PHASE_4] CircuitBreaker class: per-backend failure tracking, 5 failur",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_052"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861948",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_054",
+      "name": "[PHASE_4] Retry logic: 3 attempts with exponential backoff (1s, 2s, 4s",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_053"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861967",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_055",
+      "name": "[PHASE_4] Publishes optimizer.circuit_breaker.open and optimizer.retry",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_054"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.861987",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_056",
+      "name": "[PHASE_4] 4 tests for circuit breaker behavior",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_055"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862006",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_057",
+      "name": "[PHASE_4] Tracks: total_calls, cache_hits, cache_misses, dedup_saves, ",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_056"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862027",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_058",
+      "name": "[PHASE_4] Tracks: avg_latency_ms, backend_usage distribution, agent_us",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_057"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862046",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_059",
+      "name": "[PHASE_4] Integrated into get_status() for dashboard consumption",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_058"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862065",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_060",
+      "name": "[PHASE_4] 2 tests for metrics recording and optimizer status",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_059"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862084",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_061",
+      "name": "[PHASE_4] compute_real_metrics() queries SQLite DB directly for actual",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_060"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862104",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_062",
+      "name": "[PHASE_4] 5-column metrics row with real cache hit rate, dedup saves, ",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_061"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862122",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_063",
+      "name": "[PHASE_4] 4th tab: Fleet Status with backend/agent distribution charts",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_062"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862142",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_064",
+      "name": "[PHASE_4] Responsive design with DNA theme applied",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_063"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862159",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_065",
+      "name": "[PHASE_4] admiral_quality.py (12h timer, AI code review)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_064"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862177",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_066",
+      "name": "[PHASE_4] admiral_autohealer.py (10min timer, auto-fix)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_065"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862195",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_067",
+      "name": "[PHASE_4] admiral_council.py (3h timer, system evaluation)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_066"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862213",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_068",
+      "name": "[PHASE_4] admiral_expander.py (24h timer, capability expansion)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_067"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862232",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_069",
+      "name": "[PHASE_4] admiral_learning.py (12h timer, pattern extraction)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_068"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862249",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_070",
+      "name": "[PHASE_4] admiral_intel.py (6h timer, threat assessment)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_069"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862267",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_071",
+      "name": "[PHASE_4] query_kommandor.py (manual, system queries)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_070"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862284",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_072",
+      "name": "[PHASE_4] auto_activator_simple.py (polling, task execution)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_071"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862303",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_073",
+      "name": "[PHASE_4] hybrid_council.py (manual, 3-model voting)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_072"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862320",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_074",
+      "name": "[PHASE_4] Created admiral_log_shipper.py: reads journalctl, pushes to ",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_073"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862339",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_075",
+      "name": "[PHASE_4] Timer: 30s interval via admiral-log-shipper.timer",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_074"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862357",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_076",
+      "name": "[PHASE_4] Labels: job=admiral-fleet, service=<name>, host=rasmus-deskt",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_075"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862376",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_077",
+      "name": "[PHASE_4] Verified: 151 log lines from 2 services successfully pushed ",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_076"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862397",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_078",
+      "name": "[PHASE_4] enterprise_optimizer.py: v3.0 → v3.3",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_077"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862424",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_079",
+      "name": "[PHASE_4] prompt_templates.py: v1.0 → v2.0",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_078"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862449",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_080",
+      "name": "[PHASE_4] optimizer_dashboard.py: v3.0 → v3.2",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_079"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862473",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_081",
+      "name": "[PHASE_4] All changes committed and pushed",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_080"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862491",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_082",
+      "name": "[PHASE_4] Working tree clean",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_081"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862508",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_083",
+      "name": "[PHASE_4] ALL 6 Pass 1 review items fixed (CONFIG, tests, CoT, dashboa",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_082"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862528",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_084",
+      "name": "[PHASE_4] 30 pytest tests (was 3 integration tests) — 10x improvement",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_083"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862557",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_085",
+      "name": "[PHASE_4] 9 agents integrated (was 3) — 3x improvement",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_084"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862582",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_086",
+      "name": "[PHASE_4] Circuit breaker + retry (production-grade resilience, not in",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_085"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862607",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_087",
+      "name": "[PHASE_4] MetricsTracker with real-time analytics (not in Pass 1)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_086"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862627",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_088",
+      "name": "[PHASE_4] CoT v2.0 templates with 4-phase reasoning (not in Pass 1)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_087"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862647",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_089",
+      "name": "[PHASE_4] Dashboard v3.2 with DB-driven real metrics (not in Pass 1)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_088"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862666",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_090",
+      "name": "[PHASE_4] Loki log shipping for observability (not in Pass 1)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_089"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862683",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_091",
+      "name": "[PHASE_4] All 9 Pass 2 agents PLUS 8 new integrations:",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_090"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862701",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_092",
+      "name": "[PHASE_4] Flat 600s TTL replaced with task-type-aware TTL:",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_091"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862719",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_093",
+      "name": "[PHASE_4] 4 tests for TTL detection and fallback",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_092"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862736",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_094",
+      "name": "[PHASE_4] flush_cache(agent_id, older_than) — flush by agent, by age, ",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_093"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862764",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_095",
+      "name": "[PHASE_4] get_stale_entries() — detect expired but not evicted entries",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_094"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862793",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_096",
+      "name": "[PHASE_4] Auto-cleanup thread runs every 30 minutes (DNA Layer 5: SELF",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_095"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862825",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_097",
+      "name": "[PHASE_4] 4 tests for invalidation behavior",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_096"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862844",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_098",
+      "name": "[PHASE_4] CostCalculator class with per-1K-token pricing for 10 provid",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_097"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862862",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_099",
+      "name": "[PHASE_4] Provider auto-detection from model name",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_098"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862880",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_100",
+      "name": "[PHASE_4] Cost tracked per-agent and per-model in MetricsTracker",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_099"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862899",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_101",
+      "name": "[PHASE_4] 3 tests for cost calculation and tracking",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_100"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862917",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_102",
+      "name": "[PHASE_4] 10 concurrent agents hitting optimizer simultaneously — thre",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_101"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862946",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_103",
+      "name": "[PHASE_4] Cache hit rate verification under load (50%+ on repeated cal",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_102"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862966",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_104",
+      "name": "[PHASE_4] 2 dedicated load tests",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_103"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.862983",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_105",
+      "name": "[PHASE_4] **DNA 1 SELF-AWARE:** _get_health() — monitors DB size, stal",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_104"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863018",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_106",
+      "name": "[PHASE_4] **DNA 3 SELF-VERIFYING:** startup_self_test() — 5 checks on ",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_105"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863071",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_107",
+      "name": "[PHASE_4] **DNA 5 SELF-ARCHIVING:** cleanup_stale_cache() — periodic a",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_106"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863125",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_108",
+      "name": "[PHASE_4] 6 new tests for DNA layer improvements",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_107"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863158",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_109",
+      "name": "[PHASE_4] enterprise_optimizer.py: v3.4 → v3.5",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_108"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863186",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_110",
+      "name": "[PHASE_4] Tests: 44 → 50 (6 new DNA tests)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_109"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863209",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_111",
+      "name": "[PHASE_4] Agents: 14 → 17 (confirmed via grep)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_110"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863233",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_112",
+      "name": "[PHASE_4] All changes committed and pushed",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_111"
+      ],
+      "state": " AVAILABLE",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_113",
+      "name": "[PHASE_4] Working tree clean",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_112"
+      ],
+      "state": " LOCKED",
+      "verification_proof": null,
+      "verified_at": null,
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_114",
+      "name": "[PHASE_4] ALL Pass 2 review items addressed (agents 17, TTL tuning, ca",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_113"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863272",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_115",
+      "name": "[PHASE_4] 50 pytest tests (was 44 in late Pass 2) — comprehensive cove",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_114"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863303",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_116",
+      "name": "[PHASE_4] 17 agents integrated (was 9 in Pass 2) — 89% improvement",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_115"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863332",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_117",
+      "name": "[PHASE_4] 7-DNA gennemgang: 6.5/7 layers PASS",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_116"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863351",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_118",
+      "name": "[PHASE_4] Startup self-test: 5/5 checks (DNA Layer 3)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_117"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863369",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_119",
+      "name": "[PHASE_4] Auto-cleanup: 30-min periodic stale cache eviction (DNA Laye",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_118"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863389",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_120",
+      "name": "[PHASE_4] Health monitoring: DB size, error rate, uptime (DNA Layer 1)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_119"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863408",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_121",
+      "name": "[PHASE_4] Cost tracking: 10 providers, per-agent/model breakdown",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_120"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863426",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_122",
+      "name": "[PHASE_4] Load testing: 10 concurrent agents verified thread-safe",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_121"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863445",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_123",
+      "name": "[PHASE_4] Pass 1 complete + reviewed (8/10)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_122"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863462",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_124",
+      "name": "[PHASE_4] Pass 2 complete + reviewed (9/10, score > Pass 1)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_123"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863479",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_125",
+      "name": "[PHASE_4] Pass 3 complete + final verification (10/10, score > Pass 2)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_124"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863498",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_126",
+      "name": "[PHASE_4] Total score >= 24/30 (27/30 = GRAND ADMIRAL)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_125"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863516",
+      "attempts": 0,
+      "last_error": null
+    },
+    {
+      "id": "CP_127",
+      "name": "[PHASE_4] All 5+ final tests passed (50/50)",
+      "verification_type": "manual",
+      "verification_command": null,
+      "expected_result": null,
+      "manual_confirm": true,
+      "dependencies": [
+        "CP_126"
+      ],
+      "state": "[OK] VERIFIED",
+      "verification_proof": "Pre-existing checkbox",
+      "verified_at": "2026-02-18T18:59:38.863533",
+      "attempts": 0,
+      "last_error": null
+    }
+  ],
+  "last_updated": "2026-02-18T18:59:38.864474"
+}
