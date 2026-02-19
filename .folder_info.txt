@@ -4,8 +4,8 @@
   Streamlit app der tracker sejre, mål, og fremskridt
 [36m──────────────────────────────────────────────────────────────[0m
   14 filer | 14 mapper | Size: 0
-  Git: [32mclean[0m
-  Last: 210ad6c Admiral Brain auto-commit: Dirty repository needs to be committed and pushed. (2026-02-19 07:06)
+  Git: [33m2 dirty[0m
+  Last: bcda29e Admiral Brain auto-commit: dirty git repo (2026-02-19 07:53)
   Aktivitet: [33m27 filer opdateret (24t)[0m
 [36m──────────────────────────────────────────────────────────────[0m
   [1mPORTE:[0m
