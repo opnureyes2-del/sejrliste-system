@@ -4,8 +4,8 @@
   Streamlit app der tracker sejre, mål, og fremskridt
 [36m──────────────────────────────────────────────────────────────[0m
   14 filer | 14 mapper | Size: 0
-  Git: [33m4 dirty[0m
-  Last: 7fadb2f Auto-commit: scanner-generated files (2026-02-22 18:15)
+  Git: [33m2 dirty[0m
+  Last: ae22c40 brain: auto-commit — .directory, .folder_info.txt, _CURRENT/PATTERNS.json, _CURRENT/PATTERNS.yaml (2026-02-22 20:43)
   Aktivitet: [33m25 filer opdateret (24t)[0m
 [36m──────────────────────────────────────────────────────────────[0m
   [1mPORTE:[0m
