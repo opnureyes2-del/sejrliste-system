@@ -5,7 +5,7 @@
 [36m──────────────────────────────────────────────────────────────[0m
   14 filer | 14 mapper | Size: 0
   Git: [32mclean[0m
-  Last: 4a6a8e7 brain: auto-commit — _CURRENT/ADMIRAL_HEARTBEAT.json, _CURRENT/MORNING_BRIEFING.md (2026-02-23 06:11)
+  Last: 1a6360a brain: auto-commit — .folder_info.txt (2026-02-23 06:27)
   Aktivitet: [33m25 filer opdateret (24t)[0m
 [36m──────────────────────────────────────────────────────────────[0m
   [1mPORTE:[0m
