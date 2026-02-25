@@ -5,7 +5,7 @@
 [36m──────────────────────────────────────────────────────────────[0m
   14 filer | 14 mapper | Size: 0
   Git: [32mclean[0m
-  Last: 88d6a69 brain: auto-commit — .folder_info.txt (2026-02-25 20:04)
+  Last: 83ea20d brain: auto-commit — .folder_info.txt (2026-02-25 20:34)
   Aktivitet: [33m25 filer opdateret (24t)[0m
 [36m──────────────────────────────────────────────────────────────[0m
   [1mPORTE:[0m
