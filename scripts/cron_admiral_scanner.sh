@@ -8,6 +8,10 @@ SYSTEM_PATH="/home/rasmus/Desktop/sejrliste systemet"
 VENV_PYTHON="$SYSTEM_PATH/venv/bin/python3"
 LOG_FILE="$SYSTEM_PATH/_CURRENT/cron_scanner.log"
 
+# Ensure systemctl --user works from cron
+export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
+
 # Run scanner
 if "$VENV_PYTHON" "$SYSTEM_PATH/scripts/admiral_scanner.py" --brief >> "$LOG_FILE" 2>&1; then
     echo "[$(date '+%Y-%m-%d %H:%M')] Scanner OK" >> "$LOG_FILE"

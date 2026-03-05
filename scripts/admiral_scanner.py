@@ -153,21 +153,21 @@ class AdmiralScanner:
                              str(doc),
                              "Review if content is still accurate")
 
-        # 4. Check systemd service
+        # 4. Check web service (HTTP check — works from cron without DBUS)
         try:
             import subprocess
             result = subprocess.run(
-                ["systemctl", "--user", "is-active", "sejrliste-web.service"],
-                capture_output=True, text=True, timeout=5
+                ["curl", "-s", "-o", "/dev/null", "-w", "%{http_code}", "http://localhost:8501"],
+                capture_output=True, text=True, timeout=10
             )
-            if result.stdout.strip() == "active":
-                self.add("SEJRLISTE", "INFO", "DRIFT", "Web service: ACTIVE")
+            if result.stdout.strip() == "200":
+                self.add("SEJRLISTE", "INFO", "DRIFT", "Web service: ACTIVE (HTTP 200 on :8501)")
             else:
                 self.add("SEJRLISTE", "CRITICAL", "DRIFT",
-                         f"Web service NOT active: {result.stdout.strip()}",
-                         fix_hint="systemctl --user start sejrliste-web.service")
+                         f"Web service NOT responding: HTTP {result.stdout.strip()} on :8501",
+                         fix_hint="systemctl --user restart sejrliste-web.service")
         except Exception as e:
-            self.add("SEJRLISTE", "LOW", "DRIFT", f"Could not check service: {e}")
+            self.add("SEJRLISTE", "LOW", "DRIFT", f"Could not check web service: {e}")
 
         # 5. Check cron jobs exist
         try:
