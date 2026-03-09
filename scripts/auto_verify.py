@@ -364,27 +364,9 @@ def run_verification(sejr_path: Path):
     # Update STATUS.yaml
     status = parse_yaml_simple(status_file) if status_file.exists() else {}
 
-    status['sejr_name'] = sejr_path.name
-    status['last_verification'] = datetime.now(timezone.utc).astimezone().isoformat()
-    status['current_pass'] = results['current_pass']
+    now_iso = datetime.now(timezone.utc).astimezone().isoformat()
 
-    status['pass_1_complete'] = results['pass_1']['complete']
-    status['pass_1_score'] = results['pass_1']['score']
-    status['pass_1_pct'] = int(results['pass_1']['completion_pct'])
-
-    status['pass_2_complete'] = results['pass_2']['complete']
-    status['pass_2_score'] = results['pass_2']['score']
-    status['pass_2_pct'] = int(results['pass_2']['completion_pct'])
-
-    status['pass_3_complete'] = results['pass_3']['complete']
-    status['pass_3_score'] = results['pass_3']['score']
-    status['pass_3_pct'] = int(results['pass_3']['completion_pct'])
-
-    status['final_verification_complete'] = results['final_verification']['complete']
-    status['total_score'] = results['total_score']
-    status['can_archive'] = results['can_archive']
-
-    # Overall completion percentage (weighted across all passes)
+    # Overall completion percentage
     total_done = (
         results['pass_1']['checkboxes_done'] +
         results['pass_2']['checkboxes_done'] +
@@ -397,17 +379,81 @@ def run_verification(sejr_path: Path):
         results['pass_3']['checkboxes_total'] +
         results['final_verification']['total']
     )
-    status['completion_percentage'] = int((total_done / total_items * 100)) if total_items > 0 else 0
+    completion_pct = int((total_done / total_items * 100)) if total_items > 0 else 0
 
     # Status label
     if results['can_archive']:
-        status['status'] = 'ready_to_archive'
+        status_label = 'ready_to_archive'
     elif results['current_pass'] == 1:
-        status['status'] = 'pass_1_in_progress'
+        status_label = 'pass_1_in_progress'
     elif results['current_pass'] == 2:
-        status['status'] = 'pass_2_in_progress'
+        status_label = 'pass_2_in_progress'
     else:
-        status['status'] = 'pass_3_in_progress'
+        status_label = 'pass_3_in_progress'
+
+    # === NEW unified format (STATUS_TEMPLATE.yaml compliant) ===
+    status['meta'] = {
+        'sejr_name': sejr_path.name,
+        'folder': sejr_path.name,
+        'last_updated': now_iso,
+        'created': status.get('meta', {}).get('created', now_iso),
+    }
+    status['pass_tracking'] = {
+        'current_pass': results['current_pass'],
+        'can_archive': results['can_archive'],
+        'status': status_label,
+        'completion_percentage': completion_pct,
+        'final_verification_complete': results['final_verification']['complete'],
+        'total_score': results['total_score'],
+        'pass_1': {
+            'complete': results['pass_1']['complete'],
+            'score': results['pass_1']['score'],
+            'max_score': 10,
+            'percentage': int(results['pass_1']['completion_pct']),
+            'checkboxes_done': results['pass_1']['checkboxes_done'],
+            'checkboxes_total': results['pass_1']['checkboxes_total'],
+        },
+        'pass_2': {
+            'complete': results['pass_2']['complete'],
+            'score': results['pass_2']['score'],
+            'max_score': 10,
+            'percentage': int(results['pass_2']['completion_pct']),
+            'checkboxes_done': results['pass_2']['checkboxes_done'],
+            'checkboxes_total': results['pass_2']['checkboxes_total'],
+        },
+        'pass_3': {
+            'complete': results['pass_3']['complete'],
+            'score': results['pass_3']['score'],
+            'max_score': 10,
+            'percentage': int(results['pass_3']['completion_pct']),
+            'checkboxes_done': results['pass_3']['checkboxes_done'],
+            'checkboxes_total': results['pass_3']['checkboxes_total'],
+        },
+    }
+    # Preserve existing score_tracking and model_tracking if present
+    if 'score_tracking' not in status:
+        status['score_tracking'] = {'totals': {'total_score': results['total_score']}}
+    if 'model_tracking' not in status:
+        status['model_tracking'] = {'models_used': [], 'sessions': []}
+
+    # === BACKWARDS COMPAT: Keep flat keys for web_app ===
+    status['sejr_name'] = sejr_path.name
+    status['last_verification'] = now_iso
+    status['current_pass'] = results['current_pass']
+    status['pass_1_complete'] = results['pass_1']['complete']
+    status['pass_1_score'] = results['pass_1']['score']
+    status['pass_1_pct'] = int(results['pass_1']['completion_pct'])
+    status['pass_2_complete'] = results['pass_2']['complete']
+    status['pass_2_score'] = results['pass_2']['score']
+    status['pass_2_pct'] = int(results['pass_2']['completion_pct'])
+    status['pass_3_complete'] = results['pass_3']['complete']
+    status['pass_3_score'] = results['pass_3']['score']
+    status['pass_3_pct'] = int(results['pass_3']['completion_pct'])
+    status['final_verification_complete'] = results['final_verification']['complete']
+    status['total_score'] = results['total_score']
+    status['can_archive'] = results['can_archive']
+    status['completion_percentage'] = completion_pct
+    status['status'] = status_label
 
     write_yaml_simple(status_file, status)
     print(f"[OK] Status updated: {status_file}")

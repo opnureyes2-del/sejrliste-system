@@ -1,3 +1,5 @@
+# STATUS.yaml - Unified format (migrated 2026-03-09T23:44:03.297833+01:00)
+
 can_archive: true
 completion_percentage: 100
 current_pass: 3
@@ -15,3 +17,36 @@ pass_3_score: 10
 sejr_name: FEEDBACK_LOOPS_EVENT_REACTOR_2026-02-06
 status: archived
 total_score: 27
+meta:
+  sejr_name: FEEDBACK_LOOPS_EVENT_REACTOR_2026-02-06
+  folder: FEEDBACK_LOOPS_EVENT_REACTOR_2026-02-06_20260207_233101
+  last_updated: '2026-02-07T07:49:32.051050+01:00'
+  created: '2026-02-07T07:49:32.051050+01:00'
+pass_tracking:
+  current_pass: 3
+  can_archive: true
+  status: archived
+  completion_percentage: 100
+  final_verification_complete: true
+  total_score: 27
+  pass_1:
+    complete: true
+    score: 8
+    max_score: 10
+    percentage: 100
+  pass_2:
+    complete: true
+    score: 9
+    max_score: 10
+    percentage: 100
+  pass_3:
+    complete: true
+    score: 10
+    max_score: 10
+    percentage: 100
+score_tracking:
+  totals:
+    total_score: 27
+model_tracking:
+  models_used: []
+  sessions: []

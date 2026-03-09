@@ -1378,28 +1378,45 @@ def get_sejr_status(sejr_path: Path) -> dict:
         result["checkboxes_total"] = total
         result["progress"] = int((done / total * 100) if total > 0 else 0)
 
-    # Get verify status - FIXED: Read correct fields from STATUS.yaml
+    # Get verify status — supports BOTH new nested and old flat format
     if status_file.exists():
         try:
             data = parse_yaml_simple(status_file.read_text())
-            # total_score is the correct field name
-            score = data.get('total_score', 0)
-            if score == 0:
-                # Fallback: Calculate from pass scores
-                p1 = data.get('pass_1_score', 0)
-                p2 = data.get('pass_2_score', 0)
-                p3 = data.get('pass_3_score', 0)
-                score = p1 + p2 + p3
-            result["score"] = f"{score}/30"
-            # Determine phase from pass status
-            if data.get('pass_3_complete'):
-                result["phase"] = "COMPLETE"
-            elif data.get('pass_2_complete'):
-                result["phase"] = "PASS 3"
-            elif data.get('pass_1_complete'):
-                result["phase"] = "PASS 2"
+            # New nested format (pass_tracking.total_score)
+            pt = data.get('pass_tracking', {})
+            if pt:
+                score = pt.get('total_score', 0)
+                p1 = pt.get('pass_1', {})
+                p2 = pt.get('pass_2', {})
+                p3 = pt.get('pass_3', {})
+                if score == 0:
+                    score = p1.get('score', 0) + p2.get('score', 0) + p3.get('score', 0)
+                result["score"] = f"{score}/30"
+                if p3.get('complete'):
+                    result["phase"] = "COMPLETE"
+                elif p2.get('complete'):
+                    result["phase"] = "PASS 3"
+                elif p1.get('complete'):
+                    result["phase"] = "PASS 2"
+                else:
+                    result["phase"] = "PASS 1"
             else:
-                result["phase"] = "PASS 1"
+                # Old flat format fallback
+                score = data.get('total_score', 0)
+                if score == 0:
+                    p1 = data.get('pass_1_score', 0)
+                    p2 = data.get('pass_2_score', 0)
+                    p3 = data.get('pass_3_score', 0)
+                    score = p1 + p2 + p3
+                result["score"] = f"{score}/30"
+                if data.get('pass_3_complete'):
+                    result["phase"] = "COMPLETE"
+                elif data.get('pass_2_complete'):
+                    result["phase"] = "PASS 3"
+                elif data.get('pass_1_complete'):
+                    result["phase"] = "PASS 2"
+                else:
+                    result["phase"] = "PASS 1"
         except Exception:
             pass
 
