@@ -26,5 +26,5 @@ set -euo pipefail
 cd "/home/rasmus/sejrliste systemet"
 exec "./venv/bin/streamlit" run web_app.py \
     --server.port 8501 \
-    --server.address 0.0.0.0 \
+    --server.address 127.0.0.1 \
     --server.headless true
