@@ -5,8 +5,8 @@
 [36m──────────────────────────────────────────────────────────────[0m
   14 filer | 14 mapper | Size: 0
   Git: [32mclean[0m
-  Last: 2255417 brain: auto-commit — .folder_info.txt (2026-02-27 02:40)
-  Aktivitet: [33m25 filer opdateret (24t)[0m
+  Last: c3d3767 Auto-commit: scanner-generated files (2026-03-22 12:15)
+  Aktivitet: [33m24 filer opdateret (24t)[0m
 [36m──────────────────────────────────────────────────────────────[0m
   [1mPORTE:[0m
     [32m●[0m :8501 Sejrliste Web — LIVE
