@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-06 12:00:03",
+  "timestamp": "2026-04-06 18:00:28",
   "status": "ALIVE",
-  "health_score": 40,
+  "health_score": 30,
   "docker_count": 7,
-  "services_active": 2,
+  "services_active": 1,
   "disk_percent": 39,
   "ollama": true,
   "cron_jobs": 32,
-  "issues": 5,
+  "issues": 6,
   "orchestrator_version": "1.0.0"
 }
