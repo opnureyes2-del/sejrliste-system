@@ -1,7 +1,3 @@
-# STATUS.yaml - REPAIRED from corrupted flat format
-# Repaired: 2026-01-31T17:08:54.621768
-# Original was corrupted by buggy parse_yaml_simple/write_yaml_simple
-
 meta:
   sejr_name: WEB_APP_DEPLOYMENT_2026-01-25
   folder: WEB_APP_DEPLOYMENT_2026-01-25
@@ -100,3 +96,15 @@ statistics:
   unique_models: 0
   last_verification: ''
   completion_percentage: 0
+deprecation:
+  deprecated: true
+  deprecated_ts_utc: '2026-04-19T17:15:47Z'
+  deprecated_by: PID=13687 KV1NT-PRO (S130 TRIN 3)
+  classification_by: PID=15608 KV1NT-PRO (S130 klassifikation af 22 ALDRIG STARTET)
+  category: F
+  reason: deployment ceremony erstattet af myaddspace Cloudflare-tunnel S128
+  superseded_by: myaddspace tunnel-deployment S128
+  reference_doc: Desktop/New 0 and alle 0s/SEJRLISTE/SESSION_130_22_ALDRIG_STARTET_KLASSIFIKATION.md
+deprecated: true
+deprecated_reason: deployment ceremony erstattet af myaddspace Cloudflare-tunnel S128
+superseded_by: myaddspace tunnel-deployment S128

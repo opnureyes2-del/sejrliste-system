@@ -1,68 +1,46 @@
-# STATUS.yaml - UNIFIED STATUS (Single Source of Truth)
-# Alt status data i ÉN fil - ingen redundans
-# Sejr: AUTOFIX_SCRIPTS_KONSOLIDERING
-
-# ═══════════════════════════════════════════════════════════
-# META
-# ═══════════════════════════════════════════════════════════
-
 meta:
-  sejr_name: "AUTOFIX_SCRIPTS_KONSOLIDERING"
-  folder: "AUTOFIX_SCRIPTS_KONSOLIDERING_2026-02-05"
-  created: "2026-02-05T21:42:21.237018+01:00"
-  created_by: "generate_sejr.py"
-  session_id: "sess_e38797043046"
-  last_updated: "2026-02-05T21:42:21.237018+01:00"
-
-# ═══════════════════════════════════════════════════════════
-# 3-PASS TRACKING
-# ═══════════════════════════════════════════════════════════
-
+  sejr_name: AUTOFIX_SCRIPTS_KONSOLIDERING
+  folder: AUTOFIX_SCRIPTS_KONSOLIDERING_2026-02-05
+  created: '2026-02-05T21:42:21.237018+01:00'
+  created_by: generate_sejr.py
+  session_id: sess_e38797043046
+  last_updated: '2026-02-05T21:42:21.237018+01:00'
 pass_tracking:
   current_pass: 3
   can_archive: true
-  archive_blocker: ""
-
+  archive_blocker: ''
   pass_1:
-    name: "Konsolidér 8 scripts til 1 CLI"
-    status: "complete"
+    name: Konsolidér 8 scripts til 1 CLI
+    status: complete
     complete: true
     score: 9
     checkboxes_done: 4
     checkboxes_total: 4
     percentage: 100
     review_done: true
-
   pass_2:
-    name: "Test alle subcommands"
-    status: "complete"
+    name: Test alle subcommands
+    status: complete
     complete: true
     score: 9
     checkboxes_done: 5
     checkboxes_total: 5
     percentage: 100
     review_done: true
-
   pass_3:
-    name: "7-DNA Review"
-    status: "complete"
+    name: 7-DNA Review
+    status: complete
     complete: true
     score: 9
     checkboxes_done: 12
     checkboxes_total: 12
     percentage: 100
     final_verification: true
-
   totals:
     score: 27
     required_score: 24
     tests_passed: 5
     tests_required: 5
-
-# ═══════════════════════════════════════════════════════════
-# SCORE TRACKING
-# ═══════════════════════════════════════════════════════════
-
 score_tracking:
   positive:
     checkbox_done: 21
@@ -71,24 +49,17 @@ score_tracking:
     test_passed: 5
     admiral_moment: 1
     sejr_archived: 0
-
   negative:
     token_waste: 0
     memory_loss: 0
     lie_detected: 0
     rule_break: 0
     focus_lost: 0
-
   totals:
     positive_points: 35
     negative_points: 0
     total_score: 27
-    rank: "GRAND ADMIRAL"
-
-# ═══════════════════════════════════════════════════════════
-# MODEL TRACKING
-# ═══════════════════════════════════════════════════════════
-
+    rank: GRAND ADMIRAL
 model_tracking:
   current_model: null
   models_used: []
@@ -97,17 +68,26 @@ model_tracking:
     approvals: 0
     corrections: 0
   sessions:
-    - id: "sess_e38797043046"
-      started: "2026-02-05T21:42:21.237018+01:00"
-      actor: "generate_sejr.py"
-      action: "SEJR_CREATED"
-
-# ═══════════════════════════════════════════════════════════
-# STATISTICS
-# ═══════════════════════════════════════════════════════════
-
+  - id: sess_e38797043046
+    started: '2026-02-05T21:42:21.237018+01:00'
+    actor: generate_sejr.py
+    action: SEJR_CREATED
 statistics:
   total_sessions: 1
   total_actions: 1
   total_time_minutes: 0
   unique_models: 0
+deprecation:
+  deprecated: true
+  deprecated_ts_utc: '2026-04-19T17:15:47Z'
+  deprecated_by: PID=13687 KV1NT-PRO (S130 TRIN 3)
+  classification_by: PID=15608 KV1NT-PRO (S130 klassifikation af 22 ALDRIG STARTET)
+  category: B
+  reason: scripts-layout ændret siden februar 2026, ny konsolidering nødvendig som
+    separat sejr
+  superseded_by: UI_KONSOLIDERING_S130 (hvis relevant)
+  reference_doc: Desktop/New 0 and alle 0s/SEJRLISTE/SESSION_130_22_ALDRIG_STARTET_KLASSIFIKATION.md
+deprecated: true
+deprecated_reason: scripts-layout ændret siden februar 2026, ny konsolidering nødvendig
+  som separat sejr
+superseded_by: UI_KONSOLIDERING_S130 (hvis relevant)

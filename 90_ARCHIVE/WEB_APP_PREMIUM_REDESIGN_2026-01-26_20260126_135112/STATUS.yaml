@@ -1,68 +1,46 @@
-# STATUS.yaml - UNIFIED STATUS (Single Source of Truth)
-# Alt status data i ÉN fil - ingen redundans
-# Sejr: WEB_APP_PREMIUM_REDESIGN
-
-# ═══════════════════════════════════════════════════════════
-# META
-# ═══════════════════════════════════════════════════════════
-
 meta:
-  sejr_name: "WEB_APP_PREMIUM_REDESIGN"
-  folder: "WEB_APP_PREMIUM_REDESIGN_2026-01-26"
-  created: "2026-01-26T12:05:44.051367+01:00"
-  created_by: "generate_sejr.py"
-  session_id: "sess_ed1768adeb54"
-  last_updated: "2026-01-26T14:00:00.000000+01:00"
-
-# ═══════════════════════════════════════════════════════════
-# 3-PASS TRACKING
-# ═══════════════════════════════════════════════════════════
-
+  sejr_name: WEB_APP_PREMIUM_REDESIGN
+  folder: WEB_APP_PREMIUM_REDESIGN_2026-01-26
+  created: '2026-01-26T12:05:44.051367+01:00'
+  created_by: generate_sejr.py
+  session_id: sess_ed1768adeb54
+  last_updated: '2026-01-26T14:00:00.000000+01:00'
 pass_tracking:
   current_pass: 3
   can_archive: true
   archive_blocker: null
-
   pass_1:
-    name: "Planlægning"
-    status: "complete"
+    name: Planlægning
+    status: complete
     complete: true
     score: 8
     checkboxes_done: 28
     checkboxes_total: 28
     percentage: 100
     review_done: true
-
   pass_2:
-    name: "Eksekvering"
-    status: "complete"
+    name: Eksekvering
+    status: complete
     complete: true
     score: 9
     checkboxes_done: 38
     checkboxes_total: 38
     percentage: 100
     review_done: true
-
   pass_3:
-    name: "7-DNA Review"
-    status: "complete"
+    name: 7-DNA Review
+    status: complete
     complete: true
     score: 10
     checkboxes_done: 40
     checkboxes_total: 40
     percentage: 100
     final_verification: true
-
   totals:
     score: 27
     required_score: 24
     tests_passed: 5
     tests_required: 5
-
-# ═══════════════════════════════════════════════════════════
-# SCORE TRACKING
-# ═══════════════════════════════════════════════════════════
-
 score_tracking:
   positive:
     checkbox_done: 106
@@ -71,52 +49,52 @@ score_tracking:
     test_passed: 5
     admiral_moment: 1
     sejr_archived: 0
-
   negative:
     token_waste: 0
     memory_loss: 0
     lie_detected: 0
     rule_break: 0
     focus_lost: 0
-
   totals:
     positive_points: 120
     negative_points: 0
     total_score: 27
-    rank: "GRAND ADMIRAL"
-
-# ═══════════════════════════════════════════════════════════
-# MODEL TRACKING
-# ═══════════════════════════════════════════════════════════
-
+    rank: GRAND ADMIRAL
 model_tracking:
-  current_model: "claude-opus-4-5-20251101"
+  current_model: claude-opus-4-5-20251101
   models_used:
-    - "claude-opus-4-5-20251101"
+  - claude-opus-4-5-20251101
   human_activity:
     sessions: 3
     approvals: 3
     corrections: 0
   sessions:
-    - id: "sess_ed1768adeb54"
-      started: "2026-01-26T12:05:44.051367+01:00"
-      actor: "generate_sejr.py"
-      action: "SEJR_CREATED"
-    - id: "sess_pass1_complete"
-      started: "2026-01-26T12:50:00.000000+01:00"
-      actor: "claude-opus-4-5-20251101"
-      action: "PASS_1_COMPLETE"
-    - id: "sess_all_complete"
-      started: "2026-01-26T14:00:00.000000+01:00"
-      actor: "claude-opus-4-5-20251101"
-      action: "ALL_PASSES_COMPLETE"
-
-# ═══════════════════════════════════════════════════════════
-# STATISTICS
-# ═══════════════════════════════════════════════════════════
-
+  - id: sess_ed1768adeb54
+    started: '2026-01-26T12:05:44.051367+01:00'
+    actor: generate_sejr.py
+    action: SEJR_CREATED
+  - id: sess_pass1_complete
+    started: '2026-01-26T12:50:00.000000+01:00'
+    actor: claude-opus-4-5-20251101
+    action: PASS_1_COMPLETE
+  - id: sess_all_complete
+    started: '2026-01-26T14:00:00.000000+01:00'
+    actor: claude-opus-4-5-20251101
+    action: ALL_PASSES_COMPLETE
 statistics:
   total_sessions: 3
   total_actions: 106
   total_time_minutes: 150
   unique_models: 1
+deprecation:
+  deprecated: true
+  deprecated_ts_utc: '2026-04-19T17:15:47Z'
+  deprecated_by: PID=13687 KV1NT-PRO (S130 TRIN 3)
+  classification_by: PID=15608 KV1NT-PRO (S130 klassifikation af 22 ALDRIG STARTET)
+  category: C
+  reason: redesign del af samlet UI-revisit
+  superseded_by: UI_KONSOLIDERING_S130
+  reference_doc: Desktop/New 0 and alle 0s/SEJRLISTE/SESSION_130_22_ALDRIG_STARTET_KLASSIFIKATION.md
+deprecated: true
+deprecated_reason: redesign del af samlet UI-revisit
+superseded_by: UI_KONSOLIDERING_S130

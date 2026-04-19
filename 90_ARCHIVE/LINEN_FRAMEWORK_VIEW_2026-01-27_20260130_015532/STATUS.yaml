@@ -1,7 +1,5 @@
-# STATUS.yaml - Unified format (migrated 2026-03-09T23:44:03.329430+01:00)
-
 sejr_name: LINEN_FRAMEWORK_VIEW_2026-01-27
-last_verification: '2026-01-30T01:16:40.760819+01:00'
+last_verification: '2026-04-19T16:32:49+00:00'
 current_pass: 3
 pass_1_complete: true
 pass_1_score: 10
@@ -12,22 +10,22 @@ pass_2_pct: 100
 pass_3_complete: true
 pass_3_score: 10
 pass_3_pct: 100
-final_verification_complete: false
+final_verification_complete: true
 total_score: 30
-can_archive: false
+can_archive: true
 completion_percentage: 100
-status: pass_3_in_progress
+status: COMPLETE
 meta:
   sejr_name: LINEN_FRAMEWORK_VIEW_2026-01-27
   folder: LINEN_FRAMEWORK_VIEW_2026-01-27_20260130_015532
-  last_updated: '2026-01-30T01:16:40.760819+01:00'
+  last_updated: '2026-04-19T16:32:49+00:00'
   created: '2026-01-30T01:16:40.760819+01:00'
 pass_tracking:
   current_pass: 3
-  can_archive: false
-  status: pass_3_in_progress
+  can_archive: true
+  status: COMPLETE
   completion_percentage: 100
-  final_verification_complete: false
+  final_verification_complete: true
   total_score: 30
   pass_1:
     complete: true
